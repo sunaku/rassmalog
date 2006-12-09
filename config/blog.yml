@@ -7,3 +7,5 @@ info: |
 link: Put the URL of your published blog here.
 
 host: Put the rsync or SSH address of your published blog here.
+
+encoding: utf-8
