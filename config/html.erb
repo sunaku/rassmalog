@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link rel="alternate" type="application/rss+xml" href="<%= @blog.link %>/rss.xml" title="RSS feed for this blog." />
+    <link rel="stylesheet" type="text/css" href="common.css" />
+    <title><%= @blog.name %> - <%= @entry.name %></title>
+  </head>
+  <body>
+    <div id="navigation">
+      <ul>Tags: <% @tags.keys.each do |tag| %>
+        <li><%= tag.to_link %> (<%= @tags[tag].length %>)</li>
+      <% end %></ul>
+      <ul>Archives: <% @archives.keys.each do |arch| %>
+        <li><%= arch.to_link %> (<%= @archives[arch].length %>)</li>
+      <% end %></ul>
+      <ul>Entries: <% @entries.each do |entry| %>
+        <li><%= entry.to_link %></li>
+      <% end %></ul>
+    </div>
+    <%= @content %>
+  </body>
+</html>

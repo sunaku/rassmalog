@@ -1,0 +1,13 @@
+name: An example entry
+
+date: Wed, 02 Oct 2002 08:00:00 EST
+
+tags:
+  - examples
+  - documentation
+  - boring stuff
+
+text: |
+  Hello, World!
+
+  This is an _example_ entry.

@@ -1,0 +1,9 @@
+name: Put the name of your blog here.
+
+info: |
+  Describe your blog here.
+  Take as much space as you need!
+
+link: Put the URL of your published blog here.
+
+host: Put the rsync or SSH address of your published blog here.

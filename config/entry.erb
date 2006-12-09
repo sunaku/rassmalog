@@ -1,0 +1,11 @@
+<div class="entry">
+
+h1(title). <%= @entry.name %>
+
+<%= @entry.text %>
+
+----
+Posted on <%= @entry.rss_date %>.<br/>
+Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
+
+</div>
