@@ -1,0 +1,6 @@
+Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and Ruby.
+
+The name "rassmalog" is derived from the word "rassmalai", which is a
+delicious Indian dessert, and the words "rss", "yml", and "blog".
+
+http://www.soe.ucsc.edu/~snk/pub/src/rassmalog/
