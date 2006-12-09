@@ -56,7 +56,24 @@ class NamedLinkHash < Hash
       yield k, self[k]
     end
   end
+
+  # Renders, within the context of the given blog, a HTML page for the given key.
+  def render aKey, aBlog
+    entries = self[aKey]
+
+    aBlog.instance_eval do
+      @page_title = aKey.to_s.capitalize
+      heading = "<h1>#{@page_title}</h1>\n\n"
+
+      @page_content = entries.inject heading do |memo, entry|
+        memo << entry.to_html
+      end
+
+      HTML_TEMPLATE.result(binding)
+    end
+  end
 end
+
 
 # Notify the user about some action being performed.
 def notify *args
@@ -103,6 +120,21 @@ end
       "<a href=#{url.inspect}>#{name}</a>"
     end
 
+    def entry.to_html
+      @entry = self
+      ENTRY_TEMPLATE.result(binding).to_html
+    end
+
+    # Renders, within the context of the given blog, a HTML page for this entry.
+    def entry.render aBlog
+      t, c = name, to_html
+      aBlog.instance_eval do
+        @page_title = t
+        @page_content = c
+        HTML_TEMPLATE.result binding
+      end
+    end
+
     entry
   end.sort_by do |entry|
     entry.date_obj
@@ -123,20 +155,13 @@ end
       @archives[arch] << entry
   end
 
-# generate blog output
+# generate pages for entries
   @entries.each do |entry|
     dst = File.join('output', entry.url)
 
     file dst => ['output', entry.src_file] do
-      @entry = entry
-      entryOutput = ENTRY_TEMPLATE.result(binding).to_html
-
-      @page_title = @entry.name
-      @page_content = entryOutput
-      pageOutput = HTML_TEMPLATE.result(binding)
-
       File.open dst, 'w' do |f|
-        f << pageOutput
+        f << entry.render(self)
       end
 
       notify :entry, dst
@@ -146,21 +171,21 @@ end
     CLEAN.include dst
   end
 
-  {:tag => @tags, :archive => @archives}.each_pair do |msg, hash|
-    hash.each_pair do |item, entries|
-      dst = File.join('output', item.url)
+# generate archive pages for entries
+  index = NamedLinkHash.new
+  index['index'] = @entries[0..5]
+
+  {
+    :tag => @tags,
+    :archive => @archives,
+    :index => index,
+  }.each_pair do |msg, h|
+    h.keys.each do |k|
+      dst = File.join('output', k.url)
 
       file dst => ['output'] do
-        @page_title = "#{msg}: #{item}".capitalize
-        @page_content = entries.inject("<h1>#{@page_title}</h1>\n\n") do |memo, entry|
-          @entry = entry
-          memo << ENTRY_TEMPLATE.result(binding).to_html
-        end
-
-        pageOutput = HTML_TEMPLATE.result(binding)
-
         File.open dst, 'w' do |f|
-          f << pageOutput
+          f << h.render(k, self)
         end
 
         notify msg, dst
