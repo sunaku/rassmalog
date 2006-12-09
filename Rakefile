@@ -135,3 +135,13 @@ end
 
 directory 'output'
 CLOBBER.include 'output'
+
+FileList['input/*'].each do |src|
+  dst = "output/#{File.basename src}"
+
+  file dst => ['output', src] do
+    cp_r src, dst, :preserve => true
+  end
+
+  task :default => dst
+end
