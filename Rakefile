@@ -138,9 +138,9 @@ end
     entry
   end.sort_by do |entry|
     entry.date_obj
-  end
+  end.reverse!
 
-  # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in chronological order
+  # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
   @entries.each do |entry|
     # determine which tags this entry belongs to
       entry.tags.each do |tag|
