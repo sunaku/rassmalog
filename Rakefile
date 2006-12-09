@@ -196,10 +196,23 @@ end
     end
   end
 
+# generate RSS feed
+  file 'output/rss.xml' => ['output'] do |t|
+    File.open t.name, 'w' do |f|
+      f << RSS_TEMPLATE.result(binding)
+    end
+
+    notify :rss, t.name
+  end
+
+  task :default => 'output/rss.xml'
+  CLEAN.include 'output/rss.xml'
+
 
 directory 'output'
 CLOBBER.include 'output'
 
+# copy everything from input/ into output/
 FileList['input/*'].each do |src|
   dst = "output/#{File.basename src}"
 

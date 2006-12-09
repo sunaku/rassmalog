@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="<%= @blog.encoding %>"?>
+<rss version="2.0">
+<channel>
+  <title><%= @blog.name %></title>
+  <link><%= @blog.link %></link>
+  <description><%= @blog.info %></description>
+<%
+  @entries.each do |entry|
+    url = "#{@blog.link}/#{entry.url}"
+%>
+  <item>
+    <title><%= entry.name %></title>
+    <link><%= url %></link>
+    <guid><%= url %></guid>
+    <description><%= CGI.escapeHTML entry.text.to_html %></description>
+    <pubDate><%= entry.rss_date %></pubDate>
+  </item>
+<% end %>
+</channel>
+</rss>
