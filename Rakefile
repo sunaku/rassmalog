@@ -44,17 +44,25 @@ module NamedLink
   end
 end
 
+# Notify the user about some action being performed.
+def notify *args
+  printf "%8s  %s\n", *args
+end
 
-# load the blog.yml configuration file
+def load_yaml_file aFile
+  OpenStruct.new(YAML.load_file(aFile))
+end
+
+
+# load blog configuration
   class OpenStruct
     # remove b/c rake hijacks this method!
     # thus, we are unable to access @blog.link
     undef_method :link
   end
 
-  @blog = OpenStruct.new(YAML.load_file('config/blog.yml'))
+  @blog = load_yaml_file('config/blog.yml')
 
-# load ERB templates
   FileList['config/*.erb'].each do |f|
     name = File.basename(f, File.extname(f))
     var = "#{name.upcase}_TEMPLATE"
@@ -62,7 +70,7 @@ end
     Kernel.const_set var.to_sym, ERB.new(File.read(f))
   end
 
-# parse blog entries
+# load blog entries
   @tags = Hash.new {|h,k| h[k] = []}
   @archives = Hash.new {|h,k| h[k] = []}
 
@@ -77,10 +85,11 @@ end
   end
 
   @entries = FileList['entries/*.yml'].map do |src|
-    entry = OpenStruct.new YAML.load_file(src)
+    entry = load_yaml_file(src)
     entry.src_file = src
     entry.date_obj = DateTime.parse entry.date
     entry.rss_date = entry.date_obj.strftime "%a, %d %b %Y %H:%M:%S %Z"
+    entry.tags = entry.tags.to_a rescue [entry.tags]
 
     def entry.url
       "#{date_obj}-#{name}.html".to_file_name
@@ -90,11 +99,15 @@ end
       "<a href=#{url.inspect}>#{name}</a>"
     end
 
-    # determine which tags this entry belongs to
-      tags = entry.tags
-      tags = [tags] unless tags.respond_to? :each
+    entry
+  end.sort_by do |entry|
+    entry.date_obj
+  end
 
-      tags.each do |tag|
+  # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in chronological order
+  @entries.each do |entry|
+    # determine which tags this entry belongs to
+      entry.tags.each do |tag|
         tag.extend NamedLink
         @tags[tag] << entry
       end
@@ -104,32 +117,55 @@ end
       arch = "#{date.year}-#{date.month}"
 
       @archives[arch] << entry
-
-    entry
   end
 
 # generate blog output
   @entries.each do |entry|
-    date = DateTime.parse entry.date
-    name = entry.name.to_file_name
-    dst = File.join('output', "#{date}-#{name}") << '.html'
+    dst = File.join('output', entry.url)
 
     file dst => ['output', entry.src_file] do
       @entry = entry
       entryOutput = ENTRY_TEMPLATE.result(binding).to_html
 
-      @content = entryOutput
+      @page_title = @entry.name
+      @page_content = entryOutput
       pageOutput = HTML_TEMPLATE.result(binding)
 
       File.open dst, 'w' do |f|
         f << pageOutput
       end
 
-      puts dst
+      notify :entry, dst
     end
 
     task :default => dst
     CLEAN.include dst
+  end
+
+  {:tag => @tags, :archive => @archives}.each_pair do |msg, hash|
+    hash.keys.each do |item|
+      entries = hash[item]
+      dst = File.join('output', item.url)
+
+      file dst => ['output'] do
+        @page_title = "#{msg}: #{item}".capitalize
+        @page_content = entries.inject("<h1>#{@page_title}</h1>\n\n") do |memo, entry|
+          @entry = entry
+          memo << ENTRY_TEMPLATE.result(binding).to_html
+        end
+
+        pageOutput = HTML_TEMPLATE.result(binding)
+
+        File.open dst, 'w' do |f|
+          f << pageOutput
+        end
+
+        notify msg, dst
+      end
+
+      task :default => dst
+      CLEAN.include dst
+    end
   end
 
 
