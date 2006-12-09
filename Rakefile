@@ -44,6 +44,20 @@ module NamedLink
   end
 end
 
+class NamedLinkHash < Hash
+  alias old_keys keys
+
+  def keys
+    old_keys.map! {|k| k.dup.extend NamedLink}
+  end
+
+  def each_pair
+    keys.each do |k|
+      yield k, self[k]
+    end
+  end
+end
+
 # Notify the user about some action being performed.
 def notify *args
   printf "%8s  %s\n", *args
@@ -71,18 +85,8 @@ end
   end
 
 # load blog entries
-  @tags = Hash.new {|h,k| h[k] = []}
-  @archives = Hash.new {|h,k| h[k] = []}
-
-  [@tags, @archives].each do |h|
-    class << h
-      alias old_keys keys
-
-      def keys
-        old_keys.map! {|k| k.dup.extend NamedLink}
-      end
-    end
-  end
+  @tags = NamedLinkHash.new {|h,k| h[k] = []}
+  @archives = NamedLinkHash.new {|h,k| h[k] = []}
 
   @entries = FileList['entries/*.yml'].map do |src|
     entry = load_yaml_file(src)
@@ -143,8 +147,7 @@ end
   end
 
   {:tag => @tags, :archive => @archives}.each_pair do |msg, hash|
-    hash.keys.each do |item|
-      entries = hash[item]
+    hash.each_pair do |item, entries|
       dst = File.join('output', item.url)
 
       file dst => ['output'] do
