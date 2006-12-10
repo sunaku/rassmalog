@@ -23,12 +23,18 @@ require 'rake/rdoctask'
 
 require 'yaml'
 require 'erb'
-require 'cgi'
+include ERB::Util
 require 'ostruct'
 require 'date'
 
 require 'config/format'
 
+
+class DateTime
+  def rfc822
+    strftime "%a, %d %b %Y %H:%M:%S %Z"
+  end
+end
 
 class String
   def to_file_name
@@ -112,7 +118,7 @@ end
     entry = load_yaml_file(src)
     entry.src_file = src
     entry.date_obj = DateTime.parse entry.date
-    entry.rss_date = entry.date_obj.strftime "%a, %d %b %Y %H:%M:%S %Z"
+    entry.rss_date = entry.date_obj.rfc822
     entry.tags = entry.tags.to_a rescue [entry.tags]
 
     def entry.url
@@ -202,7 +208,8 @@ end
 # generate RSS feed
   file 'output/rss.xml' => ['output'] do |t|
     File.open t.name, 'w' do |f|
-      f << RSS_TEMPLATE.result(binding)
+      # lstrip because XML declaration must be at start of file
+      f << RSS_TEMPLATE.result(binding).lstrip
     end
 
     notify :rss, t.name

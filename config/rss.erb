@@ -8,19 +8,23 @@
 <?xml version="1.0" encoding="<%= @blog.encoding %>"?>
 <rss version="2.0">
 <channel>
-  <title><%= @blog.name %></title>
+  <title><%=h @blog.name %></title>
   <link><%= @blog.url %></link>
-  <description><%= @blog.info %></description>
+  <description><%=h @blog.info %></description>
+  <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
 <%
   @entries.each do |entry|
-    url = File.join(@blog.url, entry.url)
+    url = File.join @blog.url, u(entry.url)
 %>
   <item>
-    <title><%= entry.name %></title>
+    <title><%=h entry.name %></title>
     <link><%= url %></link>
     <guid><%= url %></guid>
-    <description><%= CGI.escapeHTML entry.text.to_html %></description>
     <pubDate><%= entry.rss_date %></pubDate>
+    <description><%=h entry.text.to_html %></description>
+  <% entry.tags.each do |tag| %>
+    <category><%=h tag %></category>
+  <% end %>
   </item>
 <% end %>
 </channel>
