@@ -223,7 +223,7 @@ COMMON_DEPS = ['output', 'config/blog.yml']
   index[Page.new('index')] = @entries[0, @blog.index]
 
   (@chapters + [index]).each do |chapter|
-    chapter.pages.sort.each do |page|
+    chapter.pages.each do |page|
       dst = File.join('output', page.url)
 
       file dst => COMMON_DEPS do

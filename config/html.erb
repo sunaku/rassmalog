@@ -63,7 +63,7 @@
         <% @chapters.each do |chapter| %>
           <li><%= chapter.name %>:
             <ul>
-              <% chapter.pages.each do |page| %>
+              <% chapter.pages.sort.each do |page| %>
                 <li><%= page.to_link %> (<%= chapter[page].length %>)</li>
               <% end %>
             </ul>
