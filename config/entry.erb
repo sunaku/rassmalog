@@ -2,20 +2,32 @@
 # = List of available variables
 # * @blog   => data from the blog configuration file
 # * @entry  => data from a blog entry file
+
+  toc, text = @entry.text.table_of_contents
 %>
 
 <div class="entry">
 
 h1(name). <%= @entry.to_link %>
 
+<% unless toc.empty? %>
+  <div class="toc">
+
+Contents
+
+<%= toc %>
+
+  </div>
+<% end %>
+
   <div class="text">
 
-<%= @entry.text %>
+<%= text %>
 
   </div>
 
   <p class="info">
     Posted on <%= @entry.rss_date %>.<br/>
-    Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.<br/>
+    Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
   </p>
 </div>

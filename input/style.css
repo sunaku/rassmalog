@@ -29,10 +29,6 @@ body {
   overflow: auto;
 }
 
-#navigation li {
-  margin-left: -1.25em;
-}
-
 #footer {
   margin-top: 2em;
   text-align: right;
@@ -54,6 +50,11 @@ body {
 
 .entry .name a {
   text-decoration: none;
+}
+
+.entry .toc {
+  float: right;
+  overflow: auto;
 }
 
 .entry .text {
@@ -110,8 +111,12 @@ th {
 }
 
 
-/* miscellaneous */
+/* other */
 
 a img {
   border: none;
+}
+
+li {
+  margin-left: -1.5em;
 }
