@@ -27,3 +27,7 @@ navigation:
   - links:
     - RubyForge: http://rubyforge.org
     - Ruby: http://ruby-lang.org
+
+  - this:
+    - menu is:
+      - hierarchical!
