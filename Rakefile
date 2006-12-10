@@ -19,11 +19,14 @@
 =end
 
 require 'rake/clean'
+require 'rake/rdoctask'
+
 require 'yaml'
 require 'erb'
 require 'cgi'
 require 'ostruct'
 require 'date'
+
 require 'config/format'
 
 
@@ -209,16 +212,24 @@ end
   CLEAN.include 'output/rss.xml'
 
 
-directory 'output'
-CLOBBER.include 'output'
+# generate output directory
+  directory 'output'
+  CLOBBER.include 'output'
 
-# copy everything from input/ into output/
-FileList['input/*'].each do |src|
-  dst = "output/#{File.basename src}"
+  # copy everything from input/ into output/
+    FileList['input/*'].each do |src|
+      dst = "output/#{File.basename src}"
 
-  file dst => ['output', src] do
-    cp_r src, dst, :preserve => true
+      file dst => ['output', src] do
+        cp_r src, dst, :preserve => true
+      end
+
+      task :default => dst
+    end
+
+# generate API documentation
+  Rake::RDocTask.new do |rd|
+    rd.main = "README"
+    rd.rdoc_dir = 'doc'
+    rd.rdoc_files.include("README", "config/*.rb")
   end
-
-  task :default => dst
-end
