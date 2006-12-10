@@ -43,7 +43,10 @@ class String
   end
 end
 
-module NamedLink
+
+## data structures for organizing entries
+
+module Page
   def url
     "#{to_s.to_file_name}.html"
   end
@@ -53,25 +56,32 @@ module NamedLink
   end
 end
 
-class NamedLinkHash < Hash
-  alias old_keys keys
+# A mapping from a page to an array of entries.
+class Chapter < Hash
+  attr_reader :name
 
-  def keys
-    old_keys.map! {|k| k.dup.extend NamedLink}
+  def initialize aName, *aArgs, &aBlock
+    @name = aName
+    super *aArgs, &aBlock
+  end
+
+  def pages
+    keys.map! {|k| k.dup.extend Page}
   end
 
   def each_pair
-    keys.each do |k|
+    pages.each do |k|
       yield k, self[k]
     end
   end
 
-  # Renders, within the context of the given blog, a HTML page for the given key.
-  def render aKey, aBlog
-    entries = self[aKey]
+  # Renders, within the context of the given blog, the given page into HTML.
+  def render aPage, aBlog
+    entries = self[aPage]
+    title = "#{name}: #{aPage}"
 
     aBlog.instance_eval do
-      @page_title = aKey.to_s.capitalize
+      @page_title = title
       heading = "<h2>#{@page_title}</h2>\n\n"
 
       @page_content = entries.inject heading do |memo, entry|
@@ -89,12 +99,13 @@ def notify *args
   printf "%8s  %s\n", *args
 end
 
+# Loads the given YAML file into an OpenStruct.
 def load_yaml_file aFile
   OpenStruct.new(YAML.load_file(aFile))
 end
 
 
-COMMON_DEPS = ['output', 'config/blog.yml']
+## input processing stage
 
 # load blog configuration
   class OpenStruct
@@ -113,9 +124,6 @@ COMMON_DEPS = ['output', 'config/blog.yml']
   end
 
 # load blog entries
-  @tags = NamedLinkHash.new {|h,k| h[k] = []}
-  @archives = NamedLinkHash.new {|h,k| h[k] = []}
-
   @entries = FileList['entries/*.yml'].map do |src|
     entry = load_yaml_file(src)
     entry.src_file = src
@@ -151,20 +159,46 @@ COMMON_DEPS = ['output', 'config/blog.yml']
     entry.date_obj
   end.reverse!
 
+# organize blog entries into chapters
+  @tags = Chapter.new("Tags") {|h,k| h[k] = []}
+  @archives = Chapter.new("Archives") {|h,k| h[k] = []}
+
   # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
   @entries.each do |entry|
     # determine which tags this entry belongs to
       entry.tags.each do |tag|
-        tag.extend NamedLink
+        tag.extend Page
         @tags[tag] << entry
       end
 
     # determine which archive this entry belongs to
       date = entry.date_obj
-      arch = "#{date.year}-#{date.month}"
+      arch = date.strftime "%B %Y"
 
       @archives[arch] << entry
   end
+
+  @chapters = [@tags, @archives]
+
+
+## output generation stage
+
+COMMON_DEPS = ['output', 'config/blog.yml']
+
+# generate output directory
+  directory 'output'
+  CLOBBER.include 'output'
+
+  # copy everything from input/ into output/
+    FileList['input/*'].each do |src|
+      dst = "output/#{File.basename src}"
+
+      file dst => [src, 'output'] do
+        cp_r src, dst, :preserve => true
+      end
+
+      task :default => dst
+    end
 
 # generate pages for entries
   @entries.each do |entry|
@@ -183,24 +217,20 @@ COMMON_DEPS = ['output', 'config/blog.yml']
   end
 
 # generate archive pages for entries
-  index = NamedLinkHash.new
+  index = Chapter.new 'Blog'
   index['index'] = @entries[0, @blog.index]
 
-  {
-    :tag => @tags,
-    :archive => @archives,
-    :index => index,
-  }.each_pair do |msg, h|
-    h.keys.sort.each do |k|
-      dst = File.join('output', k.url)
+  (@chapters + [index]).each do |chapter|
+    chapter.pages.sort.each do |page|
+      dst = File.join('output', page.url)
 
       file dst => COMMON_DEPS do
         File.open dst, 'w' do |f|
           # lstrip because XML declaration must be at start of file
-          f << h.render(k, self).lstrip
+          f << chapter.render(page, self).lstrip
         end
 
-        notify msg, dst
+        notify chapter.name, dst
       end
 
       task :default => dst
@@ -222,20 +252,7 @@ COMMON_DEPS = ['output', 'config/blog.yml']
   CLEAN.include 'output/rss.xml'
 
 
-# generate output directory
-  directory 'output'
-  CLOBBER.include 'output'
-
-  # copy everything from input/ into output/
-    FileList['input/*'].each do |src|
-      dst = "output/#{File.basename src}"
-
-      file dst => [src, 'output'] do
-        cp_r src, dst, :preserve => true
-      end
-
-      task :default => dst
-    end
+## other Rake tasks
 
 # generate API documentation
   Rake::RDocTask.new do |rd|

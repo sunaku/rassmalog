@@ -4,6 +4,7 @@
 # * @entries        => an array of all available blog entries
 # * @tags           => a hash of the form: {name => array of entries}
 # * @archives       => a hash of the form: {name => array of entries}
+# * @chapters       => an array of objects like @tags and @archives
 # * @page_title     => title of the HTML page
 # * @page_content   => body of the HTML page
 %>
@@ -59,18 +60,11 @@
       <a type="application/rss+xml" href="rss.xml"><img src="images/feed-icon.png" alt="RSS feed for this blog." title="RSS feed for this blog." /></a>
 
       <ul>
-        <%
-          # listing of entry archives
-          {
-            'Tags' => @tags,
-            'Archives' => @archives,
-          }.
-          each_pair do |caption, hash|
-        %>
-          <li><%= caption %>:
+        <% @chapters.each do |chapter| %>
+          <li><%= chapter.name %>:
             <ul>
-              <% hash.keys.each do |key| %>
-                <li><%= key.to_link %> (<%= hash[key].length %>)</li>
+              <% chapter.pages.each do |page| %>
+                <li><%= page.to_link %> (<%= chapter[page].length %>)</li>
               <% end %>
             </ul>
           </li>
