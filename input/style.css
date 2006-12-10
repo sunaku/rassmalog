@@ -4,7 +4,7 @@ body {
   font-family: sans-serif;
   line-height: 2em;
 
-  margin-left: 275px;
+  margin-left: 250px;
   margin-right: 50px;
   margin-bottom: 5em;
   max-width: 600px;
@@ -61,7 +61,7 @@ body {
 }
 
 .entry .info {
-  border-top: thin dashed silver;
+  border-top: thin dashed darkgray;
   font-size: small;
 }
 
