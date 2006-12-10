@@ -46,17 +46,25 @@ end
 
 ## data structures for organizing entries
 
-module Page
+# Holds information about a "page", which is a collection of entries.
+Page = Struct.new :name, :url
+class Page
+  alias old_url url
+
   def url
-    "#{to_s.to_file_name}.html"
+    (old_url || name).to_s.to_file_name << '.html'
   end
 
   def to_link
-    "<a href=#{url.inspect}>#{self}</a>"
+    "<a href=#{url.inspect}>#{name}</a>"
+  end
+
+  def <=> aOther
+    name <=> aOther.name
   end
 end
 
-# A mapping from a page to an array of entries.
+# A mapping from a Page to its entries.
 class Chapter < Hash
   attr_reader :name
 
@@ -65,20 +73,12 @@ class Chapter < Hash
     super *aArgs, &aBlock
   end
 
-  def pages
-    keys.map! {|k| k.dup.extend Page}
-  end
-
-  def each_pair
-    pages.each do |k|
-      yield k, self[k]
-    end
-  end
+  alias pages keys
 
   # Renders, within the context of the given blog, the given page into HTML.
   def render aPage, aBlog
     entries = self[aPage]
-    title = "#{name}: #{aPage}"
+    title = "#{name}: #{aPage.name}"
 
     aBlog.instance_eval do
       @page_title = title
@@ -166,14 +166,16 @@ end
   # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
   @entries.each do |entry|
     # determine which tags this entry belongs to
-      entry.tags.each do |tag|
-        tag.extend Page
-        @tags[tag] << entry
+      entry.tags.map! do |tag|
+        page = Page.new tag
+        @tags[page] << entry
+
+        page
       end
 
     # determine which archive this entry belongs to
       date = entry.date_obj
-      arch = date.strftime "%B %Y"
+      arch = Page.new date.strftime("%B %Y"), date.strftime("%Y-%m")
 
       @archives[arch] << entry
   end
@@ -218,7 +220,7 @@ COMMON_DEPS = ['output', 'config/blog.yml']
 
 # generate archive pages for entries
   index = Chapter.new 'Blog'
-  index['index'] = @entries[0, @blog.index]
+  index[Page.new('index')] = @entries[0, @blog.index]
 
   (@chapters + [index]).each do |chapter|
     chapter.pages.sort.each do |page|
