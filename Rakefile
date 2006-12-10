@@ -183,7 +183,7 @@ end
     :archive => @archives,
     :index => index,
   }.each_pair do |msg, h|
-    h.keys.each do |k|
+    h.keys.sort.each do |k|
       dst = File.join('output', k.url)
 
       file dst => ['output'] do

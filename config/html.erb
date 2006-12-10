@@ -1,3 +1,29 @@
+<%
+  # Recursively expands the given @blog.navigation data structure into an itemized list of links.
+  def navigation_to_html aLink
+    result = ''
+
+    if aLink.respond_to? :to_ary
+      aLink.each do |link|
+        result << navigation_to_html(link)
+      end
+    elsif aLink.respond_to? :each_pair
+      aLink.each_pair do |name, url|
+        link = if url.respond_to? :to_ary
+          "#{name.capitalize}: <ul>#{navigation_to_html url}</ul>"
+        else
+          "<a href=#{url.inspect}>#{name}</a>"
+        end
+
+        result << "<li>#{link}</li>"
+      end
+    else
+      raise aLink
+    end
+
+    result << "\n"
+  end
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -8,15 +34,23 @@
   </head>
   <body>
     <div id="navigation">
-      <ul>Tags: <% @tags.keys.each do |tag| %>
-        <li><%= tag.to_link %> (<%= @tags[tag].length %>)</li>
-      <% end %></ul>
-      <ul>Archives: <% @archives.keys.each do |arch| %>
-        <li><%= arch.to_link %> (<%= @archives[arch].length %>)</li>
-      <% end %></ul>
-      <ul>Entries: <% @entries.each do |entry| %>
-        <li><%= entry.to_link %></li>
-      <% end %></ul>
+      <a href="index.html"><img src="images/home.png" alt="Home" title="Home" /></a>
+
+      <ul>
+        <%= navigation_to_html @blog.navigation %>
+
+        <li>Tags: <ul><% @tags.keys.each do |tag| %>
+          <li><%= tag.to_link %> (<%= @tags[tag].length %>)</li>
+        <% end %></ul></li>
+
+        <li>Archives: <ul><% @archives.keys.each do |arch| %>
+          <li><%= arch.to_link %> (<%= @archives[arch].length %>)</li>
+        <% end %></ul></li>
+
+        <li>Entries: <ul><% @entries.each do |entry| %>
+          <li><%= entry.to_link %></li>
+        <% end %></ul></li>
+      </ul>
     </div>
     <%= @page_content %>
   </body>

@@ -1,11 +1,34 @@
+# The name of your blog.
 name: Put the name of your blog here.
 
 info: |
   Describe your blog here.
-  Take as much space as you need!
+  Fill as many lines as you need!
 
-link: Put the URL of your published blog here.
+# The URL of your published blog.
+link: http://foo.bar/~cat/blog/
 
-host: Put the rsync or SSH address of your published blog here.
+# The rsync or SSH address of your published blog.
+host: cat@foo.bar:blog/
 
+# The character set used in your entries.
 encoding: utf-8
+
+# Number of entries to display on the front page.
+index: 5
+
+
+# configuration of generated HTML pages
+
+navigation:
+  - projects:
+    - Rassmalog: http://rassmalog.rubyforge.org
+    - Ruby-VPI: http://ruby-vpi.rubyforge.org
+
+  - links:
+    - RubyForge: http://rubyforge.org
+    - Ruby: http://ruby-lang.org
+    - Ruby: http://ruby-lang.org
+
+
+# everything else
