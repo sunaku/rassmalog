@@ -1,0 +1,120 @@
+body {
+  font-family: sans-serif;
+  line-height: 2em;
+
+  margin-left: 275px;
+  margin-right: 50px;
+  margin-bottom: 5em;
+  max-width: 600px;
+}
+
+a img {
+  border: none;
+}
+
+
+
+/* headings */
+
+th, h1, h2, h3, h4, h5, h6, .title {
+  font-family: serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 5em;
+  padding: 0.5em;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  -moz-border-radius: 1em;
+  border-radius: 1em;
+}
+
+h1 {
+  padding: 1em;
+  background-color: mistyrose;
+}
+
+h2 {
+  background-color: bisque;
+}
+
+h3 {
+  background-color: oldlace;
+}
+
+
+/* table of contents */
+
+#navigation {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+
+  max-width: 200px;
+  padding: 1em;
+  overflow: auto;
+
+  background-color: white;
+}
+
+#navigation h1, #navigation h2, #navigation h3, #navigation h4, #navigation h5, #navigation h6 {
+  font-size: smaller;
+}
+
+#navigation li {
+  margin-left: -1.25em;
+}
+
+
+/* admonitions */
+
+.admonition {
+  border: thin solid steelblue;
+  background-color: aliceblue;
+  padding: 1em;
+  padding-top: 0px;
+}
+
+.admonition img {
+  margin-right: 2em;
+}
+
+
+/* source code */
+
+tt {
+  font-weight: bold;
+  background-color: lemonchiffon;
+}
+
+pre, blockquote .code {
+  padding: 1em;
+  line-height: normal;
+  overflow: auto;
+  display: block;
+}
+
+pre {
+  border: thin solid darkgray;
+  background-color: whitesmoke;
+}
+
+.code {
+  border: thin solid darkkhaki;
+  background-color: ivory;
+}
+
+
+/* tables */
+
+th, td {
+  padding: 1em;
+  border: thin solid silver;
+}
+
+th {
+  background-color: whitesmoke;
+}

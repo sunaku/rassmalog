@@ -29,7 +29,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=<%= @blog.encoding %>"/>
     <link rel="alternate" type="application/rss+xml" href="<%= @blog.link %>/rss.xml" title="RSS feed for this blog." />
-    <link rel="stylesheet" type="text/css" href="common.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <title><%= @blog.name %> - <%= @page_title %></title>
   </head>
   <body>
@@ -39,17 +39,22 @@
       <ul>
         <%= navigation_to_html @blog.navigation %>
 
-        <li>Tags: <ul><% @tags.keys.each do |tag| %>
-          <li><%= tag.to_link %> (<%= @tags[tag].length %>)</li>
-        <% end %></ul></li>
-
-        <li>Archives: <ul><% @archives.keys.each do |arch| %>
-          <li><%= arch.to_link %> (<%= @archives[arch].length %>)</li>
-        <% end %></ul></li>
-
-        <li>Entries: <ul><% @entries.each do |entry| %>
-          <li><%= entry.to_link %></li>
-        <% end %></ul></li>
+        <%
+          # listing of entry archives
+          {
+            'Tags' => @tags,
+            'Archives' => @archives,
+          }.
+          each_pair do |caption, hash|
+        %>
+          <li><%= caption %>:
+            <ul>
+              <% hash.keys.each do |key| %>
+                <li><%= key.to_link %> (<%= hash[key].length %>)</li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
       </ul>
     </div>
     <%= @page_content %>
