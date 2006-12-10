@@ -3,14 +3,18 @@
 # * @blog   => data from the blog configuration file
 # * @entry  => data from a blog entry file
 
-  toc, text = @entry.text.table_of_contents
+  text = @entry.text
+
+  if text.respond_to? :table_of_contents
+    toc, text = text.table_of_contents
+  end
 %>
 
 <div class="entry">
 
 h1(name). <%= @entry.to_link %>
 
-<% unless toc.empty? %>
+<% if toc and !toc.empty? %>
   <div class="toc">
     Contents
 
