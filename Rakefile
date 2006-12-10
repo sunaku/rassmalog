@@ -94,6 +94,8 @@ def load_yaml_file aFile
 end
 
 
+COMMON_DEPS = ['output', 'config/blog.yml']
+
 # load blog configuration
   class OpenStruct
     # remove b/c rake hijacks this method!
@@ -168,7 +170,7 @@ end
   @entries.each do |entry|
     dst = File.join('output', entry.url)
 
-    file dst => ['output', entry.src_file] do
+    file dst => [entry.src_file, *COMMON_DEPS] do
       File.open dst, 'w' do |f|
         f << entry.render(self)
       end
@@ -192,7 +194,7 @@ end
     h.keys.sort.each do |k|
       dst = File.join('output', k.url)
 
-      file dst => ['output'] do
+      file dst => COMMON_DEPS do
         File.open dst, 'w' do |f|
           # lstrip because XML declaration must be at start of file
           f << h.render(k, self).lstrip
@@ -207,7 +209,7 @@ end
   end
 
 # generate RSS feed
-  file 'output/rss.xml' => ['output'] do |t|
+  file 'output/rss.xml' => COMMON_DEPS do |t|
     File.open t.name, 'w' do |f|
       # lstrip because XML declaration must be at start of file
       f << RSS_TEMPLATE.result(binding).lstrip
@@ -228,7 +230,7 @@ end
     FileList['input/*'].each do |src|
       dst = "output/#{File.basename src}"
 
-      file dst => ['output', src] do
+      file dst => [src, 'output'] do
         cp_r src, dst, :preserve => true
       end
 
