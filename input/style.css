@@ -1,3 +1,5 @@
+/* page layout */
+
 body {
   font-family: sans-serif;
   line-height: 2em;
@@ -8,44 +10,13 @@ body {
   max-width: 600px;
 }
 
-a img {
-  border: none;
-}
-
-
-
-/* headings */
-
-th, h1, h2, h3, h4, h5, h6, .title {
-  font-family: serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin-top: 5em;
-  padding: 0.5em;
-}
-
-h1, h2, h3 {
+#header {
   text-align: center;
-  -moz-border-radius: 1em;
-  border-radius: 1em;
 }
 
-h1 {
-  padding: 1em;
-  background-color: mistyrose;
+#header blockquote {
+  font-style: italic;
 }
-
-h2 {
-  background-color: bisque;
-}
-
-h3 {
-  background-color: oldlace;
-}
-
-
-/* table of contents */
 
 #navigation {
   position: fixed;
@@ -56,30 +27,49 @@ h3 {
   max-width: 200px;
   padding: 1em;
   overflow: auto;
-
-  background-color: white;
-}
-
-#navigation h1, #navigation h2, #navigation h3, #navigation h4, #navigation h5, #navigation h6 {
-  font-size: smaller;
 }
 
 #navigation li {
   margin-left: -1.25em;
 }
 
-
-/* admonitions */
-
-.admonition {
-  border: thin solid steelblue;
-  background-color: aliceblue;
-  padding: 1em;
-  padding-top: 0px;
+#footer {
+  margin-top: 2em;
+  text-align: right;
+  font-size: small;
 }
 
-.admonition img {
-  margin-right: 2em;
+
+/* entry */
+
+.entry {
+  margin-bottom: 4em;
+}
+
+.entry .name {
+  border-bottom: thin solid gray;
+  font-size: x-large;
+  font-weight: lighter;
+}
+
+.entry .name a {
+  text-decoration: none;
+}
+
+.entry .text {
+}
+
+.entry .info {
+  border-top: thin dashed silver;
+  font-size: small;
+}
+
+
+
+/* headings */
+
+th, h1, h2, h3, h4, h5, h6, .title {
+  font-family: serif;
 }
 
 
@@ -117,4 +107,11 @@ th, td {
 
 th {
   background-color: whitesmoke;
+}
+
+
+/* miscellaneous */
+
+a img {
+  border: none;
 }

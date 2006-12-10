@@ -72,7 +72,7 @@ class NamedLinkHash < Hash
 
     aBlog.instance_eval do
       @page_title = aKey.to_s.capitalize
-      heading = "<h1>#{@page_title}</h1>\n\n"
+      heading = "<h2>#{@page_title}</h2>\n\n"
 
       @page_content = entries.inject heading do |memo, entry|
         memo << entry.to_html

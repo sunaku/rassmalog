@@ -6,12 +6,16 @@
 
 <div class="entry">
 
-h1(title). <%= @entry.name %>
+h1(name). <%= @entry.to_link %>
+
+  <div class="text">
 
 <%= @entry.text %>
 
-----
-Posted on <%= @entry.rss_date %>.<br/>
-Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
+  </div>
 
+  <p class="info">
+    Posted on <%= @entry.rss_date %>.<br/>
+    Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.<br/>
+  </p>
 </div>
