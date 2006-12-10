@@ -185,6 +185,9 @@ end
 
 ## output generation stage
 
+desc "Generate the blog."
+task :blog
+
 # generate output directory
   directory 'output'
   CLOBBER.include 'output'
@@ -197,7 +200,7 @@ end
         cp_r src, dst, :preserve => true
       end
 
-      task :default => dst
+      task :blog => dst
     end
 
 # generate pages for entries
@@ -212,7 +215,7 @@ end
       notify :entry, dst
     end
 
-    task :default => dst
+    task :blog => dst
     CLEAN.include dst
   end
 
@@ -234,7 +237,7 @@ end
         notify chapter.name, dst
       end
 
-      task :default => dst
+      task :blog => dst
       CLEAN.include dst
     end
   end
@@ -249,11 +252,13 @@ end
     notify :rss, t.name
   end
 
-  task :default => 'output/rss.xml'
+  task :blog => 'output/rss.xml'
   CLEAN.include 'output/rss.xml'
 
 
 ## other Rake tasks
+
+task :default => :blog
 
 # generate API documentation
   Rake::RDocTask.new do |rd|
@@ -264,7 +269,7 @@ end
 
 
 desc "Publish blog to host."
-task :publish => [:default, 'output'] do
+task :publish => [:blog, 'output'] do
   cmd = %w[rsync --rsh=ssh --archive --compress --update --progress]
   args = ['output/', @blog.host]
 
