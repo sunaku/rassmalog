@@ -1,12 +1,13 @@
 # The name of your blog.
 name: Put the name of your blog here.
 
+# Description of your blog.
 info: |
   Describe your blog here.
   Fill as many lines as you need!
 
 # The URL of your published blog.
-link: http://foo.bar/~cat/blog/
+url: http://foo.bar/~cat/blog/
 
 # The rsync or SSH address of your published blog.
 host: cat@foo.bar:blog/
@@ -17,9 +18,7 @@ encoding: utf-8
 # Number of entries to display on the front page.
 index: 5
 
-
-# configuration of generated HTML pages
-
+# Hierarchical navigation menu shown in all HTML pages.
 navigation:
   - projects:
     - Rassmalog: http://rassmalog.rubyforge.org
@@ -28,7 +27,3 @@ navigation:
   - links:
     - RubyForge: http://rubyforge.org
     - Ruby: http://ruby-lang.org
-    - Ruby: http://ruby-lang.org
-
-
-# everything else

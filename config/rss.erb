@@ -2,11 +2,11 @@
 <rss version="2.0">
 <channel>
   <title><%= @blog.name %></title>
-  <link><%= @blog.link %></link>
+  <link><%= @blog.url %></link>
   <description><%= @blog.info %></description>
 <%
   @entries.each do |entry|
-    url = "#{@blog.link}/#{entry.url}"
+    url = "#{@blog.url}/#{entry.url}"
 %>
   <item>
     <title><%= entry.name %></title>
