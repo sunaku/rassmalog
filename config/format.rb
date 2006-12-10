@@ -52,7 +52,7 @@ class String
   # applied. Otherwise, the programming language is assumed to be ruby.
   def coderay
     gsub %r{<(code)(.*?)>(.*?)</\1>}m do
-      code = $3.unescape_html
+      code = CGI.unescapeHTML $3
       atts = $2
 
       lang =
@@ -62,7 +62,7 @@ class String
           :ruby
         end
 
-      type =
+      tag =
         if code =~ /\n/
           :pre
         else
@@ -71,23 +71,23 @@ class String
 
       html = CodeRay.scan(code, lang).html(:css => :style)
 
-      %{<#{type} class="code"#{atts}>#{html}</#{type}>}
+      %{<#{tag} class="code"#{atts}>#{html}</#{tag}>}
     end
-  end
-
-  def escape_html
-    CGI.escapeHTML self
-  end
-
-  def unescape_html
-    CGI.unescapeHTML self
   end
 
 
   Heading = Struct.new :anchor, :title, :depth
   @@anchorNum = 0
 
-  # Returns a table of contents (in RedCloth format) from the RedCloth text in this string *and* the text which it can link to.
+  # Builds a table of contents from text formatted in Textile.
+  # Returns an array containing [toc, text] where:
+  #
+  # toc::   the generated table of contents (formatted in Textile)
+  #
+  # text::  a modified version of this string which contains anchors for the
+  #         hyperlinks in the table of contents (so that the TOC can link to
+  #         the content in this string)
+  #
   def table_of_contents
     headings = []
     text = self.dup
