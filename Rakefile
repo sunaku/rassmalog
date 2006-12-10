@@ -176,7 +176,7 @@ end
 
 # generate archive pages for entries
   index = NamedLinkHash.new
-  index['index'] = @entries[0..5]
+  index['index'] = @entries[0, @blog.index]
 
   {
     :tag => @tags,
