@@ -1,8 +1,73 @@
-Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and Ruby.
-It features an extensible formatting system, automatic tagging and
-archiving, and easy configuration.
+= Introduction
 
-The name "rassmalog" is derived from the word "rassmalai", which is a
-delicious Indian dessert, and the words "rss", "yml", and "blog".
+Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and Ruby.
+It features an extensible blog formatting mechanism, automatic tagging and
+archiving, and easy configuration. It uses the Textile formatting system but
+can be easily changed to use any formatting system.
+
+The name _rassmalog_ is derived from _rassmalai_ (a
+delicious Indian dessert) and the words "rss", "yml", and "blog".
+
+
+== Organization
+
+doc/:: API documentation from available files
+
+config/:: directory that contains all configuration files
+
+config/blog.yml:: the primary configuration file for your blog
+
+config/html.erb:: template used to generate all HTML files
+
+config/rss.erb:: template used to generate the RSS 2.0 feed
+
+config/entry.erb:: template that transforms an entry into Textile
+
+config/format.rb:: defines how text is transformed into HTML
+
+entries/:: directory that contains all blog entries
+
+entries/example.yml:: an example blog entry file
+
+input/::  directory that contains resources (such as images, stylesheets,
+          and so on) used by your blog
+
+output/:: directory that contains all generated files. All files from the
+          input/ directory are copied into this directory when you generate
+          your blog.
+
+
+= Requirements
+
+The following software is required:
+
+* RedCloth[http://whytheluckystiff.net/ruby/redcloth/]
+
+* CodeRay[http://coderay.rubychan.de/]
+
+If you have RubyGems[http://rubygems.org/] on your system, then you can
+install the above requirements by running the following command:
+
+  gem install redcloth coderay
+
+
+== Bypassing the requirements / using another text formatting system
+
+If you do not wish to install RedCloth and CodeRay, or if you wish to use a
+different text formatting system, then you must edit the "config/format.rb"
+file so that it does not make use of the above software.
+
+For example, if you replace the contents of the "config/format.rb" file with
+the following code, then the content of all entries will appear within
+gray-colored <pre> elements.
+
+  class String
+    def to_html
+      '<pre style="background-color: gray">' + self + '</pre>'
+    end
+  end
+
+
+= Configuration
 
 http://www.soe.ucsc.edu/~snk/pub/src/rassmalog/
