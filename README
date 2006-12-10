@@ -48,6 +48,8 @@ output/:: directory that contains all generated files. All files from the
 
 The following software is required:
 
+* Rake[http://docs.rubyrake.org/]
+
 * RedCloth[http://whytheluckystiff.net/ruby/redcloth/]
 
 * CodeRay[http://coderay.rubychan.de/]
@@ -55,7 +57,7 @@ The following software is required:
 If you have RubyGems[http://rubygems.org/] on your system, then you can
 install the above requirements by running the following command:
 
-  gem install redcloth coderay
+  gem install rake redcloth coderay
 
 
 == Bypassing the requirements / using another text formatting system
@@ -66,7 +68,8 @@ file so that it does not make use of the above software.
 
 For example, if you replace the contents of the "config/format.rb" file with
 the following code, then the content of all entries will appear within
-gray-colored <pre> elements.
+gray-colored <pre> elements. Also, this example does not require any
+external libraries.
 
   class String
     def to_html

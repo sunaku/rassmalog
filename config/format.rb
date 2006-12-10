@@ -3,19 +3,7 @@
 #
 # It features, in addition to the Textile formatting system (RedCloth) and
 # syntax coloring (CodeRay), smart source code sizing (block vs. inline
-# display) and automatic table of contents generation.
-#
-# It requires the following software to operate:
-#
-# * RedCloth[http://whytheluckystiff.net/ruby/redcloth/]
-#
-# * CodeRay[http://coderay.rubychan.de/]
-#
-# If you have RubyGems[http://rubygems.org/] on your system, then you can
-# install the above requirements by running the following command:
-#
-#   gem install redcloth coderay
-#
+# display) and table of contents generation.
 
 =begin
   Copyright 2006 Suraj N. Kurapati
