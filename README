@@ -2,11 +2,18 @@
 
 Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and Ruby.
 It features an extensible blog formatting mechanism, automatic tagging and
-archiving, and easy configuration. It uses the Textile formatting system but
-can be easily changed to use any formatting system.
+archiving, and easy configuration.
 
-The name _rassmalog_ is derived from _rassmalai_ (a
-delicious Indian dessert) and the words "rss", "yml", and "blog".
+Although it uses the Textile formatting system, it can be easily changed to
+use any formatting system. It is inspired by the
+Rog[http://rog.rubyforge.org] and hobix[http://hobix.com] blog engines.
+
+== Etymology
+
+The name _Rassmalog_ is derived from
+{Rasmalai}[http://en.wikipedia.org/wiki/Rasmalai] (a delicious Indian
+dessert) and is somewhat of a portmanteau of the words "rss", "yml", and
+"blog".
 
 
 == Organization
