@@ -243,3 +243,12 @@ COMMON_DEPS = ['output', 'config/blog.yml']
     rd.rdoc_dir = 'doc'
     rd.rdoc_files.include("README", "config/*.rb")
   end
+
+
+desc "Publish blog to host."
+task :publish => [:default, 'output'] do
+  cmd = %w[rsync --rsh=ssh --archive --compress --update --progress]
+  args = ['output/', @blog.host]
+
+  system *(cmd + args)
+end
