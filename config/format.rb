@@ -94,4 +94,47 @@ class String
   def unescape_html
     CGI.unescapeHTML self
   end
+
+
+  Heading = Struct.new :anchor, :title, :depth
+  @@anchorNum = 0
+
+  # Returns a table of contents (in RedCloth format) from the RedCloth text in this string *and* the text which it can link to.
+  def table_of_contents
+    headings = []
+    text = self.dup
+
+    # parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary
+      text.gsub! %r{^(\s*h(\d))(.*?[\}\)]?\.)(.*)$} do
+        target = $~.dup
+
+        title = target[4].strip
+        depth = target[2].to_i
+
+        hasAnchor = target[3] =~ /#(.*?)\)/
+        anchor = $1 || "anchor#{@@anchorNum += 1}"
+
+        headings << Heading.new(anchor, title, depth)
+
+        if hasAnchor
+          target.to_s
+        else
+          arrow =
+            if target[3] =~ /^(.*)(\(.*?)(\).*)$/
+              $1 + $2 + '#' + anchor + $3
+            else
+              '(#' + anchor + ')' + target[3]
+            end
+
+          target[1] + arrow + target[4]
+        end
+      end
+
+    # generate table of contents
+      toc = headings.map do |h|
+        %{#{'*' * h.depth} "#{h.title}":##{h.anchor}}
+      end.join("\n").redcloth
+
+    [toc, text]
+  end
 end
