@@ -6,17 +6,26 @@ info: |
   Describe your blog here.
   Fill as many lines as you need!
 
+# The name of the blog author.
+author: Put your name here.
+
+
 # The URL of your published blog.
 url: http://foo.bar/~cat/blog/
 
 # The rsync or SSH address of your published blog.
 host: cat@foo.bar:blog/
 
+
 # The character set used in your entries.
 encoding: utf-8
 
+# The language used in your entries.
+language: en-us
+
 # Number of entries to display on the front page.
 index: 5
+
 
 # Hierarchical navigation menu shown in all HTML pages.
 navigation:

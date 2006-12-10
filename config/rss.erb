@@ -8,8 +8,10 @@
 <?xml version="1.0" encoding="<%= @blog.encoding %>"?>
 <rss version="2.0">
 <channel>
+  <language><%=h @blog.language %></language>
   <title><%=h @blog.name %></title>
   <link><%= @blog.url %></link>
+  <author><%=h @blog.author %></author>
   <description><%=h @blog.info %></description>
   <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
 <%

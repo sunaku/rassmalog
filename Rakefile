@@ -194,7 +194,8 @@ end
 
       file dst => ['output'] do
         File.open dst, 'w' do |f|
-          f << h.render(k, self)
+          # lstrip because XML declaration must be at start of file
+          f << h.render(k, self).lstrip
         end
 
         notify msg, dst
