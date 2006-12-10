@@ -185,8 +185,6 @@ end
 
 ## output generation stage
 
-COMMON_DEPS = ['output', 'config/blog.yml']
-
 # generate output directory
   directory 'output'
   CLOBBER.include 'output'
@@ -204,9 +202,9 @@ COMMON_DEPS = ['output', 'config/blog.yml']
 
 # generate pages for entries
   @entries.each do |entry|
-    dst = File.join('output', entry.url)
+    dst = entry.dst_file = File.join('output', entry.url)
 
-    file dst => [entry.src_file, *COMMON_DEPS] do
+    file dst => [entry.src_file, 'output'] do
       File.open dst, 'w' do |f|
         f << entry.render(self)
       end
@@ -220,13 +218,14 @@ COMMON_DEPS = ['output', 'config/blog.yml']
 
 # generate archive pages for entries
   index = Chapter.new 'Blog'
-  index[Page.new('index')] = @entries[0, @blog.index]
+  index[Page.new('Home', 'index')] = @entries[0, @blog.index]
 
   (@chapters + [index]).each do |chapter|
-    chapter.pages.each do |page|
+    chapter.each_pair do |page, entries|
       dst = File.join('output', page.url)
+      deps = entries.map {|e| e.dst_file} << 'output'
 
-      file dst => COMMON_DEPS do
+      file dst => deps do
         File.open dst, 'w' do |f|
           # lstrip because XML declaration must be at start of file
           f << chapter.render(page, self).lstrip
@@ -241,7 +240,7 @@ COMMON_DEPS = ['output', 'config/blog.yml']
   end
 
 # generate RSS feed
-  file 'output/rss.xml' => COMMON_DEPS do |t|
+  file 'output/rss.xml' => 'output' do |t|
     File.open t.name, 'w' do |f|
       # lstrip because XML declaration must be at start of file
       f << RSS_TEMPLATE.result(binding).lstrip
