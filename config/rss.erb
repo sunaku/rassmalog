@@ -13,7 +13,7 @@
   <description><%= @blog.info %></description>
 <%
   @entries.each do |entry|
-    url = "#{@blog.url}/#{entry.url}"
+    url = File.join(@blog.url, entry.url)
 %>
   <item>
     <title><%= entry.name %></title>
