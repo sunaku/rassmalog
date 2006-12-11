@@ -22,7 +22,7 @@
         link = if url.respond_to? :to_ary
           "#{name.capitalize} <ul>#{navigation_to_html url}</ul>"
         else
-          "<a href=#{url.inspect}>#{name}</a>"
+          %{<a href="#{u url}">#{name}</a>}
         end
 
         result << "<li>#{link}</li>"
@@ -39,7 +39,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=<%= @blog.encoding %>" />
     <meta http-equiv="content-language" content="<%= @blog.language %>" />
-    <meta name="description" content=<%= @blog.info.inspect %> />
+    <meta name="description" content="<%=h @blog.info %>" />
     <meta name="author" content="<%= @blog.author %>" />
     <meta name="date" content="<%= DateTime.now %>" />
 

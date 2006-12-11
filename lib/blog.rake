@@ -60,7 +60,7 @@ class Page
   end
 
   def to_link
-    "<a href=#{url.inspect}>#{name}</a>"
+    %{<a href="#{u url}">#{name}</a>}
   end
 
   def <=> aOther
@@ -142,7 +142,7 @@ end
 
     # Returns a hyperlink to the generated HTML file.
     def entry.to_link
-      "<a href=#{url.inspect}>#{name}</a>"
+      %{<a href="#{u url}">#{name}</a>}
     end
 
     # Transforms this entry into HTML (for the generated HTML file).
