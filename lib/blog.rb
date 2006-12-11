@@ -91,7 +91,7 @@ class Chapter < Hash
   # Renders, within the context of the given blog, the given page into HTML.
   def render aPage
     entries = self[aPage]
-    title = "#{name}: #{aPage.name}"
+    title = "#{name} &mdash; #{aPage.name}"
 
     ERB_CONTEXT.instance_eval do
       @page_title = title
@@ -255,7 +255,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
 
 # generate archive pages for entries
   index = Chapter.new 'Index'
-  index[Page.new('Newest entries', 'index')] = @entries[0, @blog.index]
+  index[Page.new('newest entries', 'index')] = @entries[0, @blog.index]
 
   (@chapters + [index]).each do |chapter|
     chapter.each_pair do |page, entries|

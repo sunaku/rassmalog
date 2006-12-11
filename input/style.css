@@ -1,13 +1,5 @@
 /* page layout */
 
-#header {
-  text-align: center;
-}
-
-#header blockquote {
-  font-style: italic;
-}
-
 #navigation {
   position: fixed;
   left: 0px;
@@ -29,6 +21,21 @@ body {
   max-width: 600px;
 }
 
+
+/* header & footer */
+
+#header {
+  text-align: center;
+  margin-bottom: 3em;
+}
+
+#header .name {
+}
+
+#header .info {
+  font-style: italic;
+}
+
 #footer {
   text-align: right;
   font-size: small;
@@ -38,7 +45,7 @@ body {
 /* entry */
 
 .entry {
-  margin-bottom: 3em;
+  margin-bottom: 5em;
 }
 
 .entry .name {
@@ -66,6 +73,10 @@ body {
 .entry .text {
 }
 
+.entry .text img {
+  margin: 1em;
+}
+
 .entry .info {
   border-top: thin dashed gray;
   font-size: small;
@@ -74,17 +85,20 @@ body {
 
 /* headings */
 
-th, h1, h2, h3, h4, h5, h6, .title {
+th, h1, h2, h3, h4, h5, h6 {
   font-family: serif;
   font-weight: lighter;
+}
+
+h1 {
+  font-size: 1.75em;
 }
 
 
 /* source code */
 
 tt {
-  font-weight: bold;
-  background-color: lemonchiffon;
+  background-color: linen;
 }
 
 pre, blockquote .code {
