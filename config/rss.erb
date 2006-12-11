@@ -17,13 +17,30 @@
 <%
   @entries.each do |entry|
     url = File.join @blog.url, u(entry.url)
+    html = entry.text.to_html
+
+    # resolve relative URLs into absolute URLs
+      html.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
+        a, b = "#{$1}#{$2}", "#{$3}#{$4}"
+
+        case $3
+          when %r{^\w+://}
+            match
+
+          when /^#/ # relative to this entry
+            a + url + b
+
+          else # relative to this blog
+            a + @blog.url + b
+        end
+      end
 %>
   <item>
     <title><%=h entry.name %></title>
     <link><%= url %></link>
     <guid><%= url %></guid>
     <pubDate><%= entry.date.rfc822 %></pubDate>
-    <description><%=h entry.text.to_html %></description>
+    <description><%=h html %></description>
   <% entry.tags.each do |tag| %>
     <category><%=h tag %></category>
   <% end %>
