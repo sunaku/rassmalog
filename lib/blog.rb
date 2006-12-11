@@ -149,6 +149,14 @@ def load_yaml_file aFile
   OpenStruct.new(YAML.load_file(aFile))
 end
 
+# Writes the given content to the given file.
+def write_file aPath, aContent
+  File.open aPath, 'w' do |f|
+    # lstrip because XML declaration must be at start of file
+    f << aContent.lstrip
+  end
+end
+
 
 ## input processing stage
 
@@ -223,10 +231,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
     dst = entry.dst_file = File.join('output', entry.url)
 
     file dst => [entry.src_file, *COMMMON_DEPS] do
-      File.open dst, 'w' do |f|
-        f << entry.render
-      end
-
+      write_file dst, entry.render
       notify :entry, dst
     end
 
@@ -244,11 +249,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
       deps = entries.map {|e| e.dst_file} << 'output'
 
       file dst => deps do
-        File.open dst, 'w' do |f|
-          # lstrip because XML declaration must be at start of file
-          f << chapter.render(page).lstrip
-        end
-
+        write_file dst, chapter.render(page)
         notify chapter.name, dst
       end
 
@@ -259,11 +260,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
 
 # generate RSS feed
   file 'output/rss.xml' => COMMMON_DEPS do |t|
-    File.open t.name, 'w' do |f|
-      # lstrip because XML declaration must be at start of file
-      f << RSS_TEMPLATE.result(binding).lstrip
-    end
-
+    write_file t.name, RSS_TEMPLATE.result(binding)
     notify :rss, t.name
   end
 
