@@ -22,14 +22,15 @@
 =end
 
 require 'rake/clean'
-
+require 'config/format'
 require 'yaml'
-require 'erb'
-include ERB::Util
 require 'ostruct'
 require 'date'
 
-require 'config/format'
+require 'erb'
+include ERB::Util
+
+ERB_CONTEXT = self
 
 
 class DateTime
@@ -86,11 +87,11 @@ class Chapter < Hash
   alias pages keys
 
   # Renders, within the context of the given blog, the given page into HTML.
-  def render aPage, aBlog
+  def render aPage
     entries = self[aPage]
     title = "#{name}: #{aPage.name}"
 
-    aBlog.instance_eval do
+    ERB_CONTEXT.instance_eval do
       @page_title = title
       heading = "<h2>#{@page_title}</h2>\n\n"
 
@@ -122,9 +123,9 @@ module Entry
   end
 
   # Renders, within the context of the given blog, a HTML page for this entry.
-  def render aBlog
+  def render
     t, c = name, to_html
-    aBlog.instance_eval do
+    ERB_CONTEXT.instance_eval do
       @page_title = t
       @page_content = c
       HTML_TEMPLATE.result binding
@@ -223,7 +224,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
 
     file dst => [entry.src_file, *COMMMON_DEPS] do
       File.open dst, 'w' do |f|
-        f << entry.render(self)
+        f << entry.render
       end
 
       notify :entry, dst
@@ -245,7 +246,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
       file dst => deps do
         File.open dst, 'w' do |f|
           # lstrip because XML declaration must be at start of file
-          f << chapter.render(page, self).lstrip
+          f << chapter.render(page).lstrip
         end
 
         notify chapter.name, dst
