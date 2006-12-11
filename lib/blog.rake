@@ -194,6 +194,8 @@ end
 desc "Generate the blog."
 task :blog
 
+COMMMON_DEPS = FileList['config/*', 'output']
+
 # generate output directory
   directory 'output'
   CLOBBER.include 'output'
@@ -213,7 +215,7 @@ task :blog
   @entries.each do |entry|
     dst = entry.dst_file = File.join('output', entry.url)
 
-    file dst => [entry.src_file, 'output'] do
+    file dst => [entry.src_file, *COMMMON_DEPS] do
       File.open dst, 'w' do |f|
         f << entry.render(self)
       end
@@ -249,7 +251,7 @@ task :blog
   end
 
 # generate RSS feed
-  file 'output/rss.xml' => 'output' do |t|
+  file 'output/rss.xml' => COMMMON_DEPS do |t|
     File.open t.name, 'w' do |f|
       # lstrip because XML declaration must be at start of file
       f << RSS_TEMPLATE.result(binding).lstrip
