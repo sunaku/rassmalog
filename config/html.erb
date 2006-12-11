@@ -20,7 +20,7 @@
     elsif aLink.respond_to? :each_pair
       aLink.each_pair do |name, url|
         link = if url.respond_to? :to_ary
-          "#{name.capitalize}: <ul>#{navigation_to_html url}</ul>"
+          "#{name.capitalize} <ul>#{navigation_to_html url}</ul>"
         else
           "<a href=#{url.inspect}>#{name}</a>"
         end
@@ -61,7 +61,7 @@
 
       <ul>
         <% @chapters.each do |chapter| %>
-          <li><%= chapter.name %>:
+          <li><%= chapter.name %>
             <ul>
               <% chapter.pages.sort.each do |page| %>
                 <li><%= page.to_link %> (<%= chapter[page].length %>)</li>
