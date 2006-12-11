@@ -238,6 +238,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
       end
 
       task :blog => dst
+      CLEAN.include dst
     end
 
 # generate pages for entries
@@ -250,7 +251,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
     end
 
     task :blog => dst
-    CLEAN.include dst
+    CLOBBER.include dst
   end
 
 # generate archive pages for entries
@@ -268,7 +269,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
       end
 
       task :blog => dst
-      CLEAN.include dst
+      CLOBBER.include dst
     end
   end
 
@@ -279,4 +280,4 @@ COMMMON_DEPS = FileList['config/*', 'output']
   end
 
   task :blog => 'output/rss.xml'
-  CLEAN.include 'output/rss.xml'
+  CLOBBER.include 'output/rss.xml'
