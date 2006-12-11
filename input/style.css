@@ -59,6 +59,10 @@ body {
   margin-left: 1em;
 }
 
+.entry .toc ul {
+  margin-top: 0px;
+}
+
 .entry .text {
 }
 
@@ -119,6 +123,6 @@ a img {
   border: none;
 }
 
-li {
+#navigation li, .entry .toc li {
   margin-left: -1.5em;
 }
