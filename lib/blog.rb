@@ -69,7 +69,7 @@ class Page
 
   # Compares this page to the given page.
   def <=> aOther
-    name <=> aOther.name
+    url <=> aOther.url
   end
 end
 
