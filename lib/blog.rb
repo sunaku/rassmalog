@@ -71,6 +71,8 @@ class Page
   def <=> aOther
     url <=> aOther.url
   end
+
+  alias to_s name
 end
 
 # A mapping from a Page to its entries.
