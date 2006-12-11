@@ -65,6 +65,8 @@
       <a type="application/rss+xml" href="rss.xml"><img src="images/mozilla/feed-icon.png" alt="RSS feed for this blog." title="RSS feed for this blog." /></a>
 
       <ul>
+        <%= render_menu @blog.menu %>
+
         <% @chapters.each do |chapter| %>
           <li><%= chapter.name %>
             <ul>
@@ -74,8 +76,6 @@
             </ul>
           </li>
         <% end %>
-
-        <%= render_menu @blog.menu %>
       </ul>
     </div>
 
