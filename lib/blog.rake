@@ -128,7 +128,7 @@ end
   end
 
 # load blog entries
-  @entries = FileList['entries/*.{yml,yaml}'].map do |src|
+  @entries = FileList['entries/**/*.{yml,yaml}'].map do |src|
     entry = load_yaml_file(src)
     entry.src_file = src
     entry.date = DateTime.parse(entry.date.to_s)
