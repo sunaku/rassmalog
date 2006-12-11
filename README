@@ -1,12 +1,13 @@
 = Introduction
 
-Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and Ruby.
-It features an extensible blog formatting mechanism, automatic tagging and
-archiving, and easy configuration.
+Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and
+Textile. It features an extensible blog formatting mechanism, automatic
+tagging and archiving, and easy configuration.
 
 Although it uses the Textile formatting system, it can be easily changed to
-use any formatting system. It is inspired by the
+use any formatting system (see instructions below). It is inspired by the
 Rog[http://rog.rubyforge.org] and hobix[http://hobix.com] blog engines.
+
 
 == Etymology
 
@@ -16,7 +17,48 @@ dessert) and is somewhat of a portmanteau of the words "rss", "yml", and
 "blog".
 
 
+== Resources
+
+At the {project portal}[http://rubyforge.org/projects/rassmalog/], you can:
+
+* {download release packages}[http://rubyforge.org/frs/?group_id=2737]
+
+* {report bugs, submit patches and
+  requests}[http://rubyforge.org/tracker/?group_id=2737]
+
+* {use discussion forums}[http://rubyforge.org/forum/?group_id=2737]
+
+
+= Requirements
+
+The following software is required:
+
+* Rake[http://docs.rubyrake.org/]
+
+* RedCloth[http://whytheluckystiff.net/ruby/redcloth/]
+
+* CodeRay[http://coderay.rubychan.de/]
+
+If you have RubyGems[http://rubygems.org/] on your system, then you can
+install the above requirements by running the following command:
+
+  gem install rake redcloth coderay
+
+
+== Bypassing the requirements
+
+If you do not wish to install RedCloth and CodeRay, please see the section
+named "using another formatting system" below.
+
+
+= Installation
+
+Simply extract the release package anywhere you want.
+
+
 == Organization
+
+When you extract the release package, you would see the following:
 
 doc/:: API documentation from available files
 
@@ -44,32 +86,38 @@ output/:: directory that contains all generated files. All files from the
           your blog.
 
 
-= Requirements
+= Usage
 
-The following software is required:
+Inside the directory in which you extracted the release package, run the
+following command to see a list of available tasks:
 
-* Rake[http://docs.rubyrake.org/]
+  rake -T
 
-* RedCloth[http://whytheluckystiff.net/ruby/redcloth/]
+To generate your blog, run one of the following commands:
 
-* CodeRay[http://coderay.rubychan.de/]
+  rake
+  rake blog
 
-If you have RubyGems[http://rubygems.org/] on your system, then you can
-install the above requirements by running the following command:
+To publish your blog to your website, run the following command:
 
-  gem install rake redcloth coderay
+  rake publish
 
 
-== Bypassing the requirements / using another text formatting system
+== Configuration
 
-If you do not wish to install RedCloth and CodeRay, or if you wish to use a
-different text formatting system, then you must edit the "config/format.rb"
-file so that it does not make use of the above software.
+Edit the files inside the config/ directory to suit your taste. These files
+are described above in the "Organization" section.
 
-For example, if you replace the contents of the "config/format.rb" file with
-the following code, then the content of all entries will appear within
-gray-colored <pre> elements. Also, this example does not require any
-external libraries.
+
+=== Using another text formatting system
+
+If you wish to use a different text formatting system, you can do so by
+editing the "config/format.rb" file. However, before changing that file, be
+sure to read the description at its beginning.
+
+*Example*: If you replace the contents of the "config/format.rb" file with
+the following code, then the all entries will appear within gray-colored
+<pre> elements in the generated HTML files.
 
   class String
     def to_html
@@ -77,7 +125,11 @@ external libraries.
     end
   end
 
+In this manner, you can use any formatting system you wish.
 
-= Configuration
 
-http://www.soe.ucsc.edu/~snk/pub/src/rassmalog/
+= Hacking
+
+You can obtain the latest source code from the Darcs repository:
+
+  darcs get http://rassmalog.rubyforge.org/src/rassmalog/
