@@ -11,10 +11,10 @@ author: Put your name here.
 
 
 # The URL of your published blog.
-url: http://foo.bar/~cat/blog/
+url: http://your_host/~you/your_blog/
 
 # The rsync or SSH address of your published blog.
-host: cat@foo.bar:blog/
+host: you@your_host:your_blog/
 
 
 # The character set used in your entries.
@@ -24,7 +24,7 @@ encoding: utf-8
 language: en-us
 
 # Number of entries to display on the front page.
-index: 5
+index: 3
 
 
 # Hierarchical navigation menu shown in all HTML pages.
@@ -33,10 +33,14 @@ navigation:
     - Rassmalog: http://rassmalog.rubyforge.org
     - Ruby-VPI: http://ruby-vpi.rubyforge.org
 
-  - links:
-    - RubyForge: http://rubyforge.org
-    - Ruby: http://ruby-lang.org
+  - people:
+    - Author of Rassmalog: http://www.soe.ucsc.edu/~snk/
 
-  - this:
+  - links:
+    - Ruby: http://ruby-lang.org
+    - RubyForge: http://rubyforge.org
+
+  - hey, this:
     - menu is:
       - hierarchical!
+    - whatever...
