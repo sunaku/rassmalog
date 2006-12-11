@@ -13,14 +13,10 @@
   <h1 class="name"><%= @entry.to_link %></h1>
 
 <% if toc and !toc.empty? %>
-  <div class="toc">
-    Contents <%= toc.to_html %>
-  </div>
+  <div class="toc">Contents <%= toc.to_html %></div>
 <% end %>
 
-  <div class="text">
-    <%= text.to_html %>
-  </div>
+  <div class="text"><%= text.to_html %></div>
 
   <p class="info">
     Posted on <%= @entry.date.strftime "%c" %>.
