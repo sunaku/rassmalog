@@ -63,8 +63,8 @@ class Page
   end
 
   # Returns a relative hyperlink to this page.
-  def to_link
-    %{<a href="#{u url}">#{name}</a>}
+  def to_link aName = name
+    %{<a href="#{u url}">#{aName}</a>}
   end
 
   # Compares this page to the given page.
@@ -98,7 +98,7 @@ class Chapter < Hash
       heading = "<h2>#{@page_title}</h2>\n\n"
 
       @page_content = entries.inject heading do |memo, entry|
-        memo << entry.to_html
+        memo << entry.to_html(true)
       end
 
       HTML_TEMPLATE.result(binding)
@@ -114,14 +114,26 @@ module Entry
   end
 
   # Returns a hyperlink to the generated HTML file.
-  def to_link
-    %{<a href="#{u url}">#{name}</a>}
+  def to_link aName = name
+    %{<a href="#{u url}">#{aName}</a>}
   end
 
   # Transforms this entry into HTML (for the generated HTML file).
-  def to_html
-    @entry = self
-    ENTRY_TEMPLATE.result binding
+  def to_html aSummarize = false
+    old = text
+
+    # summarize the entry body
+      if aSummarize and text =~ /^.*?(\r?\n){2,}/m
+        link = to_link "Read the rest of this entry &rarr;"
+        self.text = $& << link
+      end
+
+    # transform the entry into HTML
+      @entry = self
+      html = ENTRY_TEMPLATE.result binding
+
+    self.text = old
+    html
   end
 
   # Renders, within the context of the given blog, a HTML page for this entry.
