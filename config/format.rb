@@ -90,10 +90,9 @@ class String
   #
   def table_of_contents
     headings = []
-    text = self.dup
 
     # parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary
-      text.gsub! %r{^(\s*h(\d))(.*?[\}\)]?\.)(.*)$} do
+      text = gsub %r{^(\s*h(\d))(.*?[\}\)]?\.)(.*)$} do
         target = $~.dup
 
         title = target[4].strip
