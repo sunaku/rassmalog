@@ -64,7 +64,7 @@ doc/:: API documentation from available files
 
 config/:: directory that contains all configuration files
 
-config/blog.yml:: the primary configuration file for your blog
+config/blog.yaml:: the primary configuration file for your blog
 
 config/html.erb:: template used to generate all HTML files
 
@@ -80,8 +80,8 @@ entries/::  directory that contains all blog entries. You can organize your
             For example, I like to put all entries related to Ruby
             programming within the entries/coding/ruby/ directory.
 
-entries/example.yml:: an example blog entry file. The file extension of a
-                      blog entry file must be "yml" or "yaml".
+entries/example.yaml::  an example blog entry file. The file extension of a
+                        blog entry file must be either "yaml" or "yml".
 
 input/::  directory that contains resources (such as images, stylesheets,
           and so on) used by your blog. Everything inside this directory is

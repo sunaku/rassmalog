@@ -175,7 +175,7 @@ end
 ## input processing stage
 
 # load blog configuration
-  @blog = load_yaml_file('config/blog.yml')
+  @blog = load_yaml_file('config/blog.yaml')
 
   FileList['config/*.erb'].each do |f|
     name = File.basename(f, File.extname(f))
