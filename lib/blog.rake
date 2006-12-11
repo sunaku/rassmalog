@@ -148,7 +148,7 @@ end
     # Transforms this entry into HTML (for the generated HTML file).
     def entry.to_html
       @entry = self
-      ENTRY_TEMPLATE.result(binding).to_html
+      ENTRY_TEMPLATE.result binding
     end
 
     # Renders, within the context of the given blog, a HTML page for this entry.
@@ -228,8 +228,8 @@ COMMMON_DEPS = FileList['config/*', 'output']
   end
 
 # generate archive pages for entries
-  index = Chapter.new 'Blog'
-  index[Page.new('Home', 'index')] = @entries[0, @blog.index]
+  index = Chapter.new 'Index'
+  index[Page.new('Newest entries', 'index')] = @entries[0, @blog.index]
 
   (@chapters + [index]).each do |chapter|
     chapter.each_pair do |page, entries|

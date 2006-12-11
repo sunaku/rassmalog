@@ -9,24 +9,17 @@
     toc, text = text.table_of_contents
   end
 %>
-
 <div class="entry">
-
-h1(name). <%= @entry.to_link %>
+  <h1 class="name"><%= @entry.to_link %></h1>
 
 <% if toc and !toc.empty? %>
   <div class="toc">
-    Contents
-
-<%= toc %>
-
+    Contents <%= toc.to_html %>
   </div>
 <% end %>
 
   <div class="text">
-
-<%= text.to_html %>
-
+    <%= text.to_html %>
   </div>
 
   <p class="info">
