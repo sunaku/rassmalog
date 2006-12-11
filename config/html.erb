@@ -1,12 +1,16 @@
 <%
-# = List of available variables
-# * @blog           => data from the blog configuration file
-# * @entries        => an array of all available blog entries
-# * @tags           => a hash of the form: {name => array of entries}
-# * @archives       => a hash of the form: {name => array of entries}
-# * @chapters       => an array of objects like @tags and @archives
-# * @page_title     => title of the HTML page
-# * @page_content   => body of the HTML page
+=begin
+  This is a template for generating HTML files for the blog.
+
+  The following variables are available for use in this template:
+  * @blog           => data from the blog configuration file
+  * @entries        => an array of all available blog entries
+  * @tags           => a hash of the form: {name => array of entries}
+  * @archives       => a hash of the form: {name => array of entries}
+  * @chapters       => an array of objects like @tags and @archives
+  * @page_title     => title of the HTML page
+  * @page_content   => body of the HTML page
+=end
 %>
 <%
   # Recursively expands the given @blog.menu data structure into an itemized list of links.
