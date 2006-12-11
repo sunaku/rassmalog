@@ -1,3 +1,6 @@
+# This file contains the logic for generating the blog. It is designed to be
+# embedded inside the main Rakefile in the parent directory because all
+# paths in this file are relative to the parent directory.
 =begin
   Copyright 2006 Suraj N. Kurapati
 
@@ -18,10 +21,6 @@
   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 =end
 
-# This file contains the logic for generating the blog. It is designed to be
-# embedded inside the main Rakefile in the parent directory because all
-# paths in this file are relative to the parent directory.
-
 require 'rake/clean'
 
 require 'yaml'
@@ -41,6 +40,7 @@ class DateTime
 end
 
 class String
+  # Transforms this string into a vaild file name.
   def to_file_name
     # file names cannot have slash
     gsub '/', '|'
@@ -50,19 +50,23 @@ end
 
 ## data structures for organizing entries
 
-# Holds information about a "page", which is a collection of entries.
 Page = Struct.new :name, :url
+
+# Represents a generated HTML page, which is associated with a list of entries. This association is maintained by the Chapter class.
 class Page
   alias old_url url
 
+  # Returns a relative URL to this page.
   def url
     (old_url || name).to_s.to_file_name << '.html'
   end
 
+  # Returns a relative hyperlink to this page.
   def to_link
     %{<a href="#{u url}">#{name}</a>}
   end
 
+  # Compares this page to the given page.
   def <=> aOther
     name <=> aOther.name
   end
@@ -72,6 +76,8 @@ end
 class Chapter < Hash
   attr_reader :name
 
+  # aName:: name of this chapter
+  # the rest:: arguments to Hash.new
   def initialize aName, *aArgs, &aBlock
     @name = aName
     super *aArgs, &aBlock
@@ -97,6 +103,40 @@ class Chapter < Hash
   end
 end
 
+module Entry
+  # Returns the name of the generated HTML file.
+  def url
+    stamp = date.strftime "%F"
+    "#{stamp}-#{name}.html".to_file_name
+  end
+
+  # Returns a hyperlink to the generated HTML file.
+  def to_link
+    %{<a href="#{u url}">#{name}</a>}
+  end
+
+  # Transforms this entry into HTML (for the generated HTML file).
+  def to_html
+    @entry = self
+    ENTRY_TEMPLATE.result binding
+  end
+
+  # Renders, within the context of the given blog, a HTML page for this entry.
+  def render aBlog
+    t, c = name, to_html
+    aBlog.instance_eval do
+      @page_title = t
+      @page_content = c
+      HTML_TEMPLATE.result binding
+    end
+  end
+
+  # Compares this entry to the given entry.
+  def <=> aOther
+    date <=> aOther.date
+  end
+end
+
 
 # Notify the user about some action being performed.
 def notify *args
@@ -112,12 +152,6 @@ end
 ## input processing stage
 
 # load blog configuration
-  class OpenStruct
-    # remove b/c rake hijacks this method!
-    # thus, we are unable to access @blog.link
-    undef_method :link
-  end
-
   @blog = load_yaml_file('config/blog.yml')
 
   FileList['config/*.erb'].each do |f|
@@ -133,38 +167,10 @@ end
     entry.src_file = src
     entry.date = DateTime.parse(entry.date.to_s)
     entry.tags = entry.tags.to_a rescue [entry.tags]
-
-    # Returns the name of the generated HTML file.
-    def entry.url
-      stamp = date.strftime "%F"
-      "#{stamp}-#{name}.html".to_file_name
-    end
-
-    # Returns a hyperlink to the generated HTML file.
-    def entry.to_link
-      %{<a href="#{u url}">#{name}</a>}
-    end
-
-    # Transforms this entry into HTML (for the generated HTML file).
-    def entry.to_html
-      @entry = self
-      ENTRY_TEMPLATE.result binding
-    end
-
-    # Renders, within the context of the given blog, a HTML page for this entry.
-    def entry.render aBlog
-      t, c = name, to_html
-      aBlog.instance_eval do
-        @page_title = t
-        @page_content = c
-        HTML_TEMPLATE.result binding
-      end
-    end
+    entry.extend Entry
 
     entry
-  end.sort_by do |entry|
-    entry.date
-  end.reverse!
+  end.sort.reverse!
 
 # organize blog entries into chapters
   @tags = Chapter.new("Tags") {|h,k| h[k] = []}
