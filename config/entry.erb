@@ -23,7 +23,7 @@
   </div>
 
   <p class="info">
-    Posted on <%= @entry.date.rfc822 %>.
+    Posted on <%= @entry.date.strftime "%c" %>.
     <br/>
     Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
   </p>
