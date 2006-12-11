@@ -30,7 +30,8 @@ h1(name). <%= @entry.to_link %>
   </div>
 
   <p class="info">
-    Posted on <%= @entry.date.rfc822 %>.<br/>
+    Posted on <%= @entry.date.rfc822 %>.
+    <br/>
     Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
   </p>
 </div>
