@@ -1,13 +1,28 @@
-name: An example entry
+# The name of this entry.
+name: Put the name of your entry here.
 
-date: Wed, 02 Oct 2002 08:00:00 EST
+# The date and time (optional) when this entry was started.
+# Here are some examples:
+#
+#   date: Thu, 01 Jan 1970 08:00:00 GMT
+#   date: 1970-01-01 8:00am
+#   date: 1/1/1970 8:00am
+#   date: jan 1st 1970 16:00 -08:00
+#   date: 1 january 1970
+#
+# See the documentation for DateTime.parse for
+# details about how the date should be written.
+#
+date: Jan 1 1970 8:00am #Put today's date and time here.
 
+# The tags (categories) which classify this entry.
 tags:
-  - examples
-  - documentation
-  - boring stuff
+  - example
+  - help
 
+# The content of this entry.
 text: |
-  Hello, World!
+  Write your thoughts here.
+  Fill as many lines as you need!
 
   This is an _example_ entry.
