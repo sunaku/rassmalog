@@ -74,16 +74,21 @@ config/entry.erb:: template that transforms an entry into Textile
 
 config/format.rb:: defines how text is transformed into HTML
 
-entries/:: directory that contains all blog entries
+entries/::  directory that contains all blog entries. You can organize your
+            blog entries within subdirectories of this directory.
 
-entries/example.yml:: an example blog entry file
+            For example, I like to put all entries related to Ruby
+            programming within the entries/coding/ruby/ directory.
+
+entries/example.yml:: an example blog entry file. The file extension of a
+                      blog entry file must be "yml" or "yaml".
 
 input/::  directory that contains resources (such as images, stylesheets,
-          and so on) used by your blog
+          and so on) used by your blog. Everything inside this directory is
+          automatically copied into the output/ directory when your blog is
+          generated.
 
-output/:: directory that contains all generated files. All files from the
-          input/ directory are copied into this directory when you generate
-          your blog.
+output/:: directory that contains all generated files.
 
 
 = Usage
