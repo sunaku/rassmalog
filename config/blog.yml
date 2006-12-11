@@ -28,7 +28,7 @@ index: 3
 
 
 # Hierarchical navigation menu shown in all HTML pages.
-navigation:
+menu:
   - projects:
     - Rassmalog: http://rassmalog.rubyforge.org
     - Ruby-VPI: http://ruby-vpi.rubyforge.org

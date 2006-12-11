@@ -9,18 +9,18 @@
 # * @page_content   => body of the HTML page
 %>
 <%
-  # Recursively expands the given @blog.navigation data structure into an itemized list of links.
-  def navigation_to_html aLink
+  # Recursively expands the given @blog.menu data structure into an itemized list of links.
+  def render_menu aMenu
     result = ''
 
-    if aLink.respond_to? :to_ary
-      aLink.each do |link|
-        result << navigation_to_html(link)
+    if aMenu.respond_to? :to_ary
+      aMenu.each do |link|
+        result << render_menu(link)
       end
-    elsif aLink.respond_to? :each_pair
-      aLink.each_pair do |name, url|
+    elsif aMenu.respond_to? :each_pair
+      aMenu.each_pair do |name, url|
         link = if url.respond_to? :to_ary
-          "#{name.capitalize} <ul>#{navigation_to_html url}</ul>"
+          "#{name} <ul>#{render_menu url}</ul>"
         else
           %{<a href="#{url}">#{name}</a>}
         end
@@ -28,7 +28,7 @@
         result << "<li>#{link}</li>"
       end
     else
-      result << "<li>#{aLink}</li>"
+      result << "<li>#{aMenu}</li>"
     end
 
     result << "\n"
@@ -47,7 +47,7 @@
     <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS feed for this blog." />
     <link rel="stylesheet" type="text/css" href="style.css" />
 
-    <title><%= @blog.name %> - <%= @page_title %></title>
+    <title><%= @blog.name %> &mdash; <%= @page_title %></title>
   </head>
   <body>
     <div id="header">
@@ -55,7 +55,7 @@
       <blockquote class="info"><%= @blog.info %></blockquote>
     </div>
 
-    <div id="navigation">
+    <div id="menu">
       <a href="index.html"><img src="images/tango/home.png" alt="Home" title="Home" /></a>
       <a type="application/rss+xml" href="rss.xml"><img src="images/mozilla/feed-icon.png" alt="RSS feed for this blog." title="RSS feed for this blog." /></a>
 
@@ -70,7 +70,7 @@
           </li>
         <% end %>
 
-        <%= navigation_to_html @blog.navigation %>
+        <%= render_menu @blog.menu %>
       </ul>
     </div>
 

@@ -1,6 +1,6 @@
 /* page layout */
 
-#navigation {
+#menu {
   position: fixed;
   left: 0px;
   top: 0px;
@@ -137,6 +137,6 @@ a img {
   border: none;
 }
 
-#navigation li, .entry .toc li {
+#menu li, .entry .toc li {
   margin-left: -1.5em;
 }
