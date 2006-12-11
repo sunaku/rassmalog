@@ -131,18 +131,21 @@ end
   @entries = FileList['entries/*.{yml,yaml}'].map do |src|
     entry = load_yaml_file(src)
     entry.src_file = src
-    entry.date_obj = DateTime.parse entry.date
-    entry.rss_date = entry.date_obj.rfc822
+    entry.date = DateTime.parse(entry.date.to_s)
     entry.tags = entry.tags.to_a rescue [entry.tags]
 
+    # Returns the name of the generated HTML file.
     def entry.url
-      "#{date_obj}-#{name}.html".to_file_name
+      stamp = date.strftime "%F"
+      "#{stamp}-#{name}.html".to_file_name
     end
 
+    # Returns a hyperlink to the generated HTML file.
     def entry.to_link
       "<a href=#{url.inspect}>#{name}</a>"
     end
 
+    # Transforms this entry into HTML (for the generated HTML file).
     def entry.to_html
       @entry = self
       ENTRY_TEMPLATE.result(binding).to_html
@@ -160,7 +163,7 @@ end
 
     entry
   end.sort_by do |entry|
-    entry.date_obj
+    entry.date
   end.reverse!
 
 # organize blog entries into chapters
@@ -178,8 +181,7 @@ end
       end
 
     # determine which archive this entry belongs to
-      date = entry.date_obj
-      arch = Page.new date.strftime("%B %Y"), date.strftime("%Y-%m")
+      arch = Page.new entry.date.strftime("%B %Y"), entry.date.strftime("%Y-%m")
 
       @archives[arch] << entry
   end
