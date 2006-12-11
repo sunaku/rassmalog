@@ -22,7 +22,7 @@
         link = if url.respond_to? :to_ary
           "#{name.capitalize} <ul>#{navigation_to_html url}</ul>"
         else
-          %{<a href="#{u url}">#{name}</a>}
+          %{<a href="#{url}">#{name}</a>}
         end
 
         result << "<li>#{link}</li>"
