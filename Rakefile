@@ -121,7 +121,7 @@ module Entry
 
     # summarize the entry body
       if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        link = to_link "Read the rest of this entry &rarr;"
+        link = to_link "Continue reading <big>&rarr;</big>"
         self.text = $& << link
       end
 
