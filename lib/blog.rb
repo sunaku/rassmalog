@@ -230,7 +230,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
   CLOBBER.include 'output'
 
   # copy everything from input/ into output/
-    FileList['input/*'].each do |src|
+    FileList['input/**/*'].each do |src|
       dst = "output/#{File.basename src}"
 
       file dst => [src, 'output'] do
