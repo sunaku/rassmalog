@@ -19,7 +19,7 @@
 =end
 
 
-load 'lib/blog.rake'
+load 'lib/blog.rb'
 task :default => :blog
 
 
