@@ -29,14 +29,14 @@ index: 3
 
 # Hierarchical navigation menu shown in all HTML pages.
 menu:
-  - projects:
+  - Projects:
     - Rassmalog: http://rassmalog.rubyforge.org
     - Ruby-VPI: http://ruby-vpi.rubyforge.org
 
-  - people:
+  - People:
     - Author of Rassmalog: http://www.soe.ucsc.edu/~snk/
 
-  - links:
+  - Links:
     - Ruby: http://ruby-lang.org
     - RubyForge: http://rubyforge.org
 
