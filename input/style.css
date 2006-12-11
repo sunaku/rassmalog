@@ -55,13 +55,17 @@ body {
 .entry .toc {
   float: right;
   overflow: auto;
+  border-left: thin dashed silver;
+  border-bottom: thin dashed silver;
+  padding-left: 1em;
+  margin-left: 1em;
 }
 
 .entry .text {
 }
 
 .entry .info {
-  border-top: thin dashed darkgray;
+  border-top: thin dashed gray;
   font-size: small;
 }
 
