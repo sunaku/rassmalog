@@ -1,23 +1,34 @@
+--
+Note: A HTML version of this file is available in the doc/ directory.
+++
+
+
 = Introduction
 
-Rassmalog is a simple, static blog engine based on RSS 2.0, YAML, and
-Textile. It features an extensible blog formatting mechanism, automatic
-tagging and archiving, and easy configuration.
+Rassmalog is a static blog engine based on RSS 2.0, YAML, and Textile. It
+features an extensible blog formatting mechanism, automatic tagging and
+archiving, and easy configuration.
 
-Although it uses the Textile formatting system, it can be easily changed to
-use any formatting system (see instructions below). It is inspired by the
-Rog[http://rog.rubyforge.org] and hobix[http://hobix.com] blog engines.
+* It can be easily changed to use _any_ formatting system (see the
+  "configuration" section below).
+
+* It is inspired by the
+  Rog[http://rog.rubyforge.org] and hobix[http://hobix.com] blog engines.
 
 
-== Etymology
+*Demonstration*
+
+See {the author's blog}[http://www.soe.ucsc.edu/~snk/] for a demonstration.
+Notice how Rassmalog also supports non-English languages.
+
+*Etymology*
 
 The name _Rassmalog_ is derived from
 {Rasmalai}[http://en.wikipedia.org/wiki/Rasmalai] (a delicious Indian
-dessert) and is somewhat of a portmanteau of the words "rss", "yml", and
-"blog".
+dessert) and is somewhat of a portmanteau of the words RSS, YAML, and blog.
 
 
-== Resources
+== Facilites
 
 At the {project portal}[http://rubyforge.org/projects/rassmalog/], you can:
 
@@ -60,7 +71,7 @@ Simply extract the release package anywhere you want.
 
 When you extract the release package, you would see the following:
 
-doc/:: API documentation from available files
+doc/:: directory that contains API documentation
 
 config/:: directory that contains all configuration files
 
@@ -74,14 +85,16 @@ config/entry.erb:: template that transforms an entry into Textile
 
 config/format.rb:: defines how text is transformed into HTML
 
-entries/::  directory that contains all blog entries. You can organize your
-            blog entries within subdirectories of this directory.
+entries/::  directory that contains all blog entry files. The file
+            name of a blog entry file can be anything (it does not have to
+            match the title of the entry). However, the file extension
+            of a blog entry file must be either "yaml" or "yml".
 
-            For example, I like to put all entries related to Ruby
-            programming within the entries/coding/ruby/ directory.
+            You can organize your blog entry files within subdirectories.
+            For example, I like to put all blog entry files related to Ruby
+            programming within the entries/code/ruby/ directory.
 
-entries/example.yaml::  an example blog entry file. The file extension of a
-                        blog entry file must be either "yaml" or "yml".
+entries/example.yaml:: an example blog entry file.
 
 input/::  directory that contains resources (such as images, stylesheets,
           and so on) used by your blog. Everything inside this directory is
@@ -93,17 +106,21 @@ output/:: directory that contains all generated files.
 
 = Usage
 
-Inside the directory in which you extracted the release package, run the
-following command to see a list of available tasks:
+In the location where you extracted the release package, run the following
+command to see a list of available tasks:
 
   rake -T
 
-To generate your blog, run one of the following commands:
+To generate your blog, run either of the following commands:
 
   rake
   rake blog
 
-To publish your blog to your website, run the following command:
+To _forcefully_ regenerate your blog, run the following command:
+
+  rake clobber blog
+
+To upload your blog to your website, run the following command:
 
   rake publish
 
@@ -117,8 +134,8 @@ are described above in the "Organization" section.
 === Using another text formatting system
 
 If you wish to use a different text formatting system, you can do so by
-editing the "config/format.rb" file. However, before changing that file, be
-sure to read the description at its beginning.
+editing the "config/format.rb" file (read the description at the top of that
+file before making changes).
 
 *Example*: If you replace the contents of the "config/format.rb" file with
 the following code, then the all entries will appear within gray-colored
