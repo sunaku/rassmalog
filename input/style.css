@@ -140,3 +140,7 @@ a img {
 #menu li, .entry .toc li {
   margin-left: -1.5em;
 }
+
+em, strong {
+  font-family: serif;
+}
