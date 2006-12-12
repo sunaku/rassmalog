@@ -42,7 +42,8 @@ class String
   # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
   def to_file_name
     gsub(%r{[/;?#]+}, '+'). # parts of a URL syntax
-    gsub(/\s+/, '-')        # removes need for %20 escapes
+    gsub(/\s+/, '-').       # remove the need for %20 escapes in URLs
+    downcase                # it's hard to remember capitalization in URLs
   end
 end
 
