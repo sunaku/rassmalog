@@ -45,7 +45,7 @@ body {
 /* entry */
 
 .entry {
-  margin-bottom: 5em;
+  margin-bottom: 3em;
 }
 
 .entry .name {
@@ -78,7 +78,7 @@ body {
 }
 
 .entry .info {
-  border-top: thin dashed gray;
+  border-top: thin dashed darkgray;
   font-size: small;
 }
 
