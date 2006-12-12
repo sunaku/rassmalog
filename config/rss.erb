@@ -13,11 +13,12 @@
 <?xml version="1.0" encoding="<%= @blog.encoding %>"?>
 <rss version="2.0">
 <channel>
-  <language><%=h @blog.language %></language>
   <title><%=h @blog.name %></title>
   <link><%= @blog.url %></link>
   <description><%=h @blog.info %></description>
+  <language><%=h @blog.language %></language>
   <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
+  <generator>Rassmalog</generator>
 <%
   @entries.each do |entry|
     url = File.join @blog.url, u(entry.url)
@@ -42,12 +43,12 @@
   <item>
     <title><%=h entry.name %></title>
     <link><%= url %></link>
-    <guid><%= url %></guid>
-    <pubDate><%= entry.date.rfc822 %></pubDate>
     <description><%=h html %></description>
+    <pubDate><%= entry.date.rfc822 %></pubDate>
   <% entry.tags.each do |tag| %>
     <category><%=h tag %></category>
   <% end %>
+    <guid><%= url %></guid>
   </item>
 <% end %>
 </channel>
