@@ -38,10 +38,11 @@ class DateTime
 end
 
 class String
-  # Transforms this string into a vaild file name.
+  # Transforms this string into a vaild file name that can be safely used in a URL.
+  # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
   def to_file_name
-    # file names cannot have slash
-    gsub '/', '|'
+    gsub(%r{[/;?#]+}, '+'). # parts of a URL syntax
+    gsub(/\s+/, '-')        # removes need for %20 escapes
   end
 end
 
