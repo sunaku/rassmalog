@@ -233,7 +233,7 @@ CONFIG_FILES = FileList['config/*']
 
   # copy everything from input/ into output/
     FileList['input/**/*'].each do |src|
-      dst = "output/#{File.basename src}"
+      dst = src.sub('input', 'output')
 
       file dst => [src, 'output'] do
         cp_r src, dst, :preserve => true
