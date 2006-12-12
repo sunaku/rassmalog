@@ -97,7 +97,7 @@ class Chapter < Hash
       heading = "<h2>#{@page_title}</h2>\n\n"
 
       @page_content = entries.inject heading do |memo, entry|
-        memo << entry.to_html(true)
+        memo << entry.to_html(@blog.summarize)
       end
 
       HTML_TEMPLATE.result(binding)

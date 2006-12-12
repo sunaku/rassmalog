@@ -26,6 +26,9 @@ language: en-us
 # Number of entries to display on the front page.
 index: 3
 
+# Specifies whether entries are summarized in archive pages.
+summarize: true
+
 
 # Hierarchical navigation menu shown in all HTML pages.
 menu:
