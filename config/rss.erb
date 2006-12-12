@@ -25,17 +25,21 @@
     html = entry.text.to_html
 
     # resolve relative URLs into absolute URLs
+    # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
       html.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
         a, b = "#{$1}#{$2}", "#{$3}#{$4}"
 
         case $3
-          when %r{^\w+://}
+          # already absolute
+          when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://}
             match
 
-          when /^#/ # relative to this entry
+          # relative to this entry
+          when /^#/
             a + url + b
 
-          else # relative to this blog
+          # relative to this blog
+          else
             a + @blog.url + b
         end
       end
