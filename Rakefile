@@ -182,7 +182,9 @@ end
   end
 
 # load blog entries
-  @entries = FileList['entries/**/*.{yml,yaml}'].map do |src|
+  ENTRY_FILES = FileList['entries/**/*.{yml,yaml}']
+
+  @entries = ENTRY_FILES.map do |src|
     entry = load_yaml_file(src)
     entry.src_file = src
     entry.date = DateTime.parse(entry.date.to_s)
@@ -221,7 +223,7 @@ desc "Generate the blog."
 task :blog
 task :default => :blog
 
-COMMMON_DEPS = FileList['config/*', 'output']
+CONFIG_FILES = FileList['config/*']
 
 # generate output directory
   directory 'output'
@@ -243,7 +245,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
   @entries.each do |entry|
     dst = entry.dst_file = File.join('output', entry.url)
 
-    file dst => [entry.src_file, *COMMMON_DEPS] do
+    file dst => [entry.src_file, 'output'] + CONFIG_FILES do
       write_file dst, entry.render
       notify :entry, dst
     end
@@ -272,7 +274,7 @@ COMMMON_DEPS = FileList['config/*', 'output']
   end
 
 # generate RSS feed
-  file 'output/rss.xml' => COMMMON_DEPS do |t|
+  file 'output/rss.xml' => ['output'] + CONFIG_FILES + ENTRY_FILES do |t|
     write_file t.name, RSS_TEMPLATE.result(binding)
     notify :rss, t.name
   end
