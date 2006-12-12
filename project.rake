@@ -62,5 +62,5 @@ end
 Rake::PackageTask.new PROJECT_ID, PROJECT_VERSION do |p|
   p.need_tar_gz = true
   p.need_zip = true
-  p.package_files.exclude('_darcs', __FILE__).include('**/*')
+  p.package_files.exclude('_darcs', File.basename(__FILE__)).include('**/*')
 end
