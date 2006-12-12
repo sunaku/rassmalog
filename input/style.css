@@ -98,7 +98,7 @@ h1 {
 /* source code */
 
 tt {
-  background-color: linen;
+  font-weight: bolder;
 }
 
 pre, blockquote .code {
