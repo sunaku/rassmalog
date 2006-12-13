@@ -27,8 +27,6 @@ require 'date'
 require 'erb'
 include ERB::Util
 
-ERB_CONTEXT = self
-
 
 class DateTime
   # Returns the RFC-822 representation, which is required by RSS, of this object.
@@ -100,12 +98,12 @@ class Chapter < Hash
     entries = self[aPage]
     title = "#{name} &mdash; #{aPage.name}"
 
-    ERB_CONTEXT.instance_eval do
+    Object.new.instance_eval do
       @page_title = title
       heading = "<h2>#{@page_title}</h2>\n\n"
 
       @page_content = entries.inject heading do |memo, entry|
-        memo << entry.to_html(@blog.summarize)
+        memo << entry.to_html(BLOG.summarize)
       end
 
       HTML_TEMPLATE.result(binding)
@@ -145,7 +143,7 @@ module Entry
   # Renders, within the context of the given blog, a HTML page for this entry.
   def render
     t, c = name, to_html
-    ERB_CONTEXT.instance_eval do
+    Object.new.instance_eval do
       @page_title = t
       @page_content = c
       HTML_TEMPLATE.result binding
@@ -181,7 +179,7 @@ end
 ## input processing stage
 
 # load blog configuration
-  @blog = load_yaml_file('config/blog.yaml')
+  BLOG = load_yaml_file('config/blog.yaml')
 
   FileList['config/*.erb'].each do |f|
     name = File.basename(f, File.extname(f))
@@ -191,7 +189,7 @@ end
   end
 
 # load translations
-  langFile = "config/lang/#{@blog.language}.yaml"
+  langFile = "config/lang/#{BLOG.language}.yaml"
 
   LANG =
     if File.exist? langFile
@@ -208,7 +206,7 @@ end
 # load blog entries
   ENTRY_FILES = FileList['entries/**/*.{yml,yaml}']
 
-  @entries = ENTRY_FILES.map do |src|
+  ENTRIES = ENTRY_FILES.map do |src|
     entry = load_yaml_file(src)
     entry.src_file = src
     entry.date = DateTime.parse(entry.date.to_s)
@@ -219,15 +217,15 @@ end
   end.sort.reverse!
 
 # organize blog entries into chapters
-  @tags = Chapter.new(LANG.translate("Tags")) {|h,k| h[k] = []}
-  @archives = Chapter.new(LANG.translate("Archives")) {|h,k| h[k] = []}
+  TAGS = Chapter.new(LANG.translate("Tags")) {|h,k| h[k] = []}
+  ARCHIVES = Chapter.new(LANG.translate("Archives")) {|h,k| h[k] = []}
 
   # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
-  @entries.each do |entry|
+  ENTRIES.each do |entry|
     # determine which tags this entry belongs to
       entry.tags.map! do |tag|
         page = Page.new tag
-        @tags[page] << entry
+        TAGS[page] << entry
 
         page
       end
@@ -235,10 +233,10 @@ end
     # determine which archive this entry belongs to
       arch = Page.new entry.date.strftime("%B %Y"), entry.date.strftime("%Y-%m")
 
-      @archives[arch] << entry
+      ARCHIVES[arch] << entry
   end
 
-  @chapters = [@tags, @archives]
+  CHAPTERS = [TAGS, ARCHIVES]
 
 
 ## output generation stage
@@ -266,7 +264,7 @@ CONFIG_FILES = FileList['config/*']
     end
 
 # generate pages for entries
-  @entries.each do |entry|
+  ENTRIES.each do |entry|
     dst = entry.dst_file = File.join('output', entry.url)
 
     file dst => [entry.src_file, 'output'] + CONFIG_FILES do
@@ -280,9 +278,9 @@ CONFIG_FILES = FileList['config/*']
 
 # generate archive pages for entries
   index = Chapter.new LANG.translate('Blog index')
-  index[Page.new(LANG.translate('Newest entries'), 'index')] = @entries[0, @blog.index]
+  index[Page.new(LANG.translate('Newest entries'), 'index')] = ENTRIES[0, BLOG.index]
 
-  (@chapters + [index]).each do |chapter|
+  (CHAPTERS + [index]).each do |chapter|
     chapter.each_pair do |page, entries|
       dst = File.join('output', page.url)
       deps = entries.map {|e| e.dst_file} << 'output'
@@ -312,7 +310,7 @@ CONFIG_FILES = FileList['config/*']
 desc "Upload the blog to your website."
 task :publish => [:blog, 'output'] do
   cmd = %w[rsync --rsh=ssh --archive --compress --update --progress]
-  args = ['output/', @blog.host]
+  args = ['output/', BLOG.host]
 
   system *(cmd + args)
 end

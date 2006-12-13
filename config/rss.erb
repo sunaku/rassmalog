@@ -3,25 +3,25 @@
   This is a template for generating the RSS feed for the blog.
 
   The following variables are available for use in this template:
-  * @blog       => data from the blog configuration file
-  * @entries    => an array of all available blog entries
-  * @tags       => a hash of the form: {name => array of entries}
-  * @archives   => a hash of the form: {name => array of entries}
-  * @chapters   => an array of objects like @tags and @archives
+  * BLOG       => data from the blog configuration file
+  * ENTRIES    => an array of all available blog entries
+  * TAGS       => a hash of the form: {name => array of entries}
+  * ARCHIVES   => a hash of the form: {name => array of entries}
+  * CHAPTERS   => an array of objects like TAGS and ARCHIVES
 =end
 %>
-<?xml version="1.0" encoding="<%= @blog.encoding %>"?>
+<?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
 <rss version="2.0">
 <channel>
-  <title><%=h @blog.name %></title>
-  <link><%= @blog.url %></link>
-  <description><%=h @blog.info %></description>
-  <language><%=h @blog.language %></language>
+  <title><%=h BLOG.name %></title>
+  <link><%= BLOG.url %></link>
+  <description><%=h BLOG.info %></description>
+  <language><%=h BLOG.language %></language>
   <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
   <generator>Rassmalog</generator>
 <%
-  @entries.each do |entry|
-    url = File.join @blog.url, u(entry.url)
+  ENTRIES.each do |entry|
+    url = File.join BLOG.url, u(entry.url)
     html = entry.text.to_html
 
     # resolve relative URLs into absolute URLs
@@ -40,7 +40,7 @@
 
           # relative to this blog
           else
-            a + @blog.url + b
+            a + BLOG.url + b
         end
       end
 %>
