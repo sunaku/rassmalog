@@ -121,7 +121,7 @@ module Entry
 
     # summarize the entry body
       if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        self.text = LANG["<big>Summary:</big> %s", $&]
+        self.text = "<big>#{LANG["Summary"]}</big>:\n#{$&}"
       end
 
     # transform the entry into HTML
