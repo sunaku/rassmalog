@@ -45,14 +45,6 @@ class String
   end
 end
 
-class OpenStruct
-  # Provides access to the member with the given name.
-  # This is just like accessing data from a Hash.
-  def [] aMember
-    send aMember
-  end
-end
-
 
 ## data structures for organizing entries
 
@@ -129,7 +121,7 @@ module Entry
 
     # summarize the entry body
       if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        self.text = LANG.translate("<big>Summary:</big> %s", $&)
+        self.text = LANG["<big>Summary:</big> %s", $&]
       end
 
     # transform the entry into HTML
@@ -198,9 +190,11 @@ end
       OpenStruct.new
     end
 
-  # Translates the given string and formats (see String#format) the result with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
-  def LANG.translate aString, *aArgs
-    (self[aString] || aString) % aArgs
+  class << LANG
+    # Translates the given string and then formats (see String#format) the translation with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
+    def [] aString, *aArgs
+      (self.send(aString) || aString) % aArgs
+    end
   end
 
 # load blog entries
@@ -217,8 +211,8 @@ end
   end.sort.reverse!
 
 # organize blog entries into chapters
-  TAGS = Chapter.new(LANG.translate("Tags")) {|h,k| h[k] = []}
-  ARCHIVES = Chapter.new(LANG.translate("Archives")) {|h,k| h[k] = []}
+  TAGS = Chapter.new(LANG["Tags"]) {|h,k| h[k] = []}
+  ARCHIVES = Chapter.new(LANG["Archives"]) {|h,k| h[k] = []}
 
   # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
   ENTRIES.each do |entry|
@@ -277,8 +271,8 @@ CONFIG_FILES = FileList['config/*']
   end
 
 # generate archive pages for entries
-  index = Chapter.new LANG.translate('Blog index')
-  index[Page.new(LANG.translate('Newest entries'), 'index')] = ENTRIES[0, BLOG.index]
+  index = Chapter.new LANG['Blog index']
+  index[Page.new(LANG['Newest entries'], 'index')] = ENTRIES[0, BLOG.index]
 
   (CHAPTERS + [index]).each do |chapter|
     chapter.each_pair do |page, entries|
