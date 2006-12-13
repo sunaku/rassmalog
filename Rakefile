@@ -47,6 +47,14 @@ class String
   end
 end
 
+class OpenStruct
+  # Provides access to the member with the given name.
+  # This is just like accessing data from a Hash.
+  def [] aMember
+    send aMember
+  end
+end
+
 
 ## data structures for organizing entries
 
@@ -123,8 +131,7 @@ module Entry
 
     # summarize the entry body
       if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        link = to_link "Continue reading <big>&rarr;</big>"
-        self.text = $& << link
+        self.text = LANG.translate("<big>Summary:</big> %s", $&)
       end
 
     # transform the entry into HTML
@@ -183,6 +190,21 @@ end
     Kernel.const_set var.to_sym, ERB.new(File.read(f))
   end
 
+# load translations
+  langFile = "config/lang/#{@blog.language}.yaml"
+
+  LANG =
+    if File.exist? langFile
+      load_yaml_file langFile
+    else
+      OpenStruct.new
+    end
+
+  # Translates the given string and formats (see String#format) the result with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
+  def LANG.translate aString, *aArgs
+    (self[aString] || aString) % aArgs
+  end
+
 # load blog entries
   ENTRY_FILES = FileList['entries/**/*.{yml,yaml}']
 
@@ -197,8 +219,8 @@ end
   end.sort.reverse!
 
 # organize blog entries into chapters
-  @tags = Chapter.new("Tags") {|h,k| h[k] = []}
-  @archives = Chapter.new("Archives") {|h,k| h[k] = []}
+  @tags = Chapter.new(LANG.translate("Tags")) {|h,k| h[k] = []}
+  @archives = Chapter.new(LANG.translate("Archives")) {|h,k| h[k] = []}
 
   # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
   @entries.each do |entry|
@@ -257,8 +279,8 @@ CONFIG_FILES = FileList['config/*']
   end
 
 # generate archive pages for entries
-  index = Chapter.new 'Index'
-  index[Page.new('newest entries', 'index')] = @entries[0, @blog.index]
+  index = Chapter.new LANG.translate('Blog index')
+  index[Page.new(LANG.translate('Newest entries'), 'index')] = @entries[0, @blog.index]
 
   (@chapters + [index]).each do |chapter|
     chapter.each_pair do |page, entries|

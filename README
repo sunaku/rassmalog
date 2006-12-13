@@ -85,6 +85,24 @@ config/entry.erb:: template that transforms an entry into Textile
 
 config/format.rb:: defines how text is transformed into HTML
 
+config/lang/::  directory that contains translations of English text used in
+                the core of Rassmalog. These translations do not include
+                English text used in the config/*.erb files.
+
+                The reason for this exclusion is that the config/*.erb files
+                are already separate from the core of Rassmalog, and thus
+                can be easily localized to any language. Whereas, in order
+                to localize the core of Rassmalog, you would have no choice
+                but to edit the source code -- which eventually becomes a
+                maintainance headache.
+
+config/lang/te-in.yaml::  translation file for the Telugu (India) language.
+                          You can enable this translation file by setting
+                          the value of the "language" parameter in the
+                          config/blog.yaml file to "te-in", as follows:
+
+                            language: te-in
+
 entries/::  directory that contains all blog entry files. The file
             name of a blog entry file can be anything (it does not have to
             match the title of the entry). However, the file extension
