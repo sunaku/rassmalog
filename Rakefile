@@ -294,7 +294,7 @@ CONFIG_FILES = FileList['config/*']
     chapter.each_pair do |page, entries|
       dst = File.join('output', page.url)
 
-      file dst => ENTRY_FILES do
+      file dst => ENTRY_FILES + CONFIG_FILES do
         write_file dst, chapter.render(page)
         notify chapter.name, dst
       end
