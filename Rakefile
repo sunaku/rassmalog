@@ -88,7 +88,7 @@ class Chapter < Hash
   # Renders, within the context of the given blog, the given page into HTML.
   def render aPage
     entries = self[aPage]
-    title = "#{name} &mdash; #{aPage.name}"
+    title = [name, aPage.name].compact.join " &mdash; "
 
     Object.new.instance_eval do
       @page_title = title
@@ -271,8 +271,8 @@ CONFIG_FILES = FileList['config/*']
   end
 
 # generate archive pages for entries
-  index = Chapter.new LANG['Blog index']
-  index[Page.new(LANG['Newest entries'], 'index')] = ENTRIES[0, BLOG.index]
+  index = Chapter.new LANG["Index"]
+  index[Page.new(nil, 'index')] = ENTRIES[0, BLOG.index]
 
   (CHAPTERS + [index]).each do |chapter|
     chapter.each_pair do |page, entries|
