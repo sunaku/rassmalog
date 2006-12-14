@@ -22,9 +22,10 @@ text: |
   ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
 
   * Blog entries are plain-text files with easy syntax (see this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html)
-  ** No special rules for naming blog entry files -- just throw them _somewhere_ inside the <tt>entries/</tt> directory.
+  ** _No_ obscure rules for naming blog entry files. The file name can be whatever you want!
+  ** _No_ obscure restrictions on how blog entry files are organized -- just keep them _somewhere_ beneath the <tt>entries/</tt> directory.
   ** Only _four_ parameters in a blog entry: _name_, _date_, _tags_, and _text_.
-  ** You can define your own parameters in a blog entry and use them in the templates _without_ any additional programming (thanks to Ruby's @OpenStruct@ class).
+  ** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
 
   * Templates are easily changable to suit your tastes:
   ** Only _two_ templates involved in generating HTML output.
@@ -75,9 +76,11 @@ text: |
     In this manner, you can create translation files for your own languages and enable them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can enjoy your translations! :-)
 
   * <tt>entries/</tt>
-    - directory that contains all blog entry files. The file name of a blog entry file can be _anything_. It does not have to match the title of the entry, or the date when the entry was started, or anything annoying like that.
+    - directory that contains all blog entry files.
 
-    You can organize your blog entry files within subdirectories. For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> directory.
+    The file name of a blog entry file can be _anything_ as long it ends with a <tt>.yaml</tt> extension. All other files beneath the <tt>entries/</tt> directory are ignored.
+
+    You can organize your blog entry files within subdirectories. For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.
 
   * <tt>entries/example.yaml</tt>
     - an example blog entry file.
