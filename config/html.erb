@@ -75,6 +75,14 @@
             </ul>
           </li>
         <% end %>
+
+        <li>Entries
+          <ul>
+            <% ENTRIES.each do |entry| %>
+              <li><%= entry.to_link %></li>
+            <% end %>
+          </ul>
+        </li>
       </ul>
     </div>
 
