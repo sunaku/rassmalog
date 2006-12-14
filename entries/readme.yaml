@@ -1,0 +1,162 @@
+name: Welcome to Rassmalog
+
+date: Wed Dec 13 01:28:17 PST 2006 @436 /Internet Time/
+
+tags:
+  - rassmalog
+
+text: |
+  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format, automatic tagging and archiving, and "easy configuration":#config. It is inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
+
+  The name _Rassmalog_ is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
+
+
+  h2. Motivation
+
+  Rassmalog is designed to be _easy to use_ and _easy to configure_. These goals are acheived partly through simplicity: Rassmalog's tiny code base contains only _six_ source files and _five_ of them are devoted to configuration. As a result,
+
+  * Nearly everything is automated:
+  ** Automatic _table of contents_ for blog entries.
+  ** Automatic _syntax coloring_ and smart sizing (inline vs. paragraph) for source code.
+  ** Automatic tag and month _archives_.
+  ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
+
+  * Blog entries are plain-text files with easy syntax (see this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html)
+  ** No special rules for naming blog entry files -- just throw them _somewhere_ inside the <tt>entries/</tt> directory.
+  ** Only _four_ parameters in a blog entry: _name_, _date_, _tags_, and _text_.
+  ** You can define your own parameters in a blog entry and use them in the templates _without_ any additional programming (thanks to Ruby's @OpenStruct@ class).
+
+  * Templates are easily changable to suit your tastes:
+  ** Only _two_ templates involved in generating HTML output.
+  ** Only _one_ template involved in generating an RSS feed.
+
+  * If you don't like Textile, you can easily "use _any_ text formatting system":#config you want for blog entries.
+
+  * Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization) of the central application. (See this "sample file":http://rassmalog.rubyforge.org/src/rassmalog/config/lang/te-in.yaml and "its effect":http://www.soe.ucsc.edu/~snk/ on the author's blog).
+
+  * Just try it out and _decide for yourself_! ;-)
+
+
+  h2. Requirements
+
+  The following software is required:
+
+  * "Rake":http://docs.rubyrake.org/
+  * "RedCloth":http://whytheluckystiff.net/ruby/redcloth/
+  * "CodeRay":http://coderay.rubychan.de/
+
+  If you have "RubyGems":http://rubygems.org/ on your system, then you can install the above requirements by running the following command:
+
+    gem install rake redcloth coderay
+
+
+  h3. Bypassing the requirements
+
+  If you do not wish to install RedCloth and CodeRay, please see the section named "using another formatting system":#config.format below.
+
+
+  h2. Installation
+
+  Simply extract the release package anywhere you want.
+
+
+  h3(#organization). Organization
+
+  When you extract the release package, you would see the following:
+
+  * <tt>doc/</tt>
+    - directory that contains API documentation
+
+  * <tt>config/</tt>
+    - directory that contains all configuration files
+
+  * <tt>config/blog.yaml</tt>
+    - the primary configuration file for your blog
+
+  * <tt>config/html.erb</tt>
+    - template used to generate all HTML files
+
+  * <tt>config/rss.erb</tt>
+    - template used to generate the RSS 2.0 feed
+
+  * <tt>config/entry.erb</tt>
+    - template that transforms an entry into Textile
+
+  * <tt>config/format.rb</tt>
+    - defines how text is transformed into HTML
+
+  * <tt>config/lang/</tt>
+    - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the <tt>config/*.erb</tt> files because those files are already separate from the core of Rassmalog.
+
+  * <tt>config/lang/te-in.yaml</tt>
+    - translation file for the Telugu (India) language.
+
+    You can enable this translation file by setting the value of the "language" parameter in the <tt>config/blog.yaml</tt> file to "te-in", as follows:
+
+      language: te-in
+
+  * <tt>entries/</tt>
+    - directory that contains all blog entry files. The file name of a blog entry file can be anything (it does not have to match the title of the entry). However, the file extension of a blog entry file must be either *yaml* or *yml*.
+
+    You can organize your blog entry files within subdirectories. For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> directory.
+
+  * <tt>entries/example.yaml</tt>
+    - an example blog entry file.
+
+  * <tt>input/</tt>
+    - directory that contains resources (such as images, stylesheets, and so on) used by your blog. Everything inside this directory is automatically copied into the output/ directory when your blog is generated.
+
+  * <tt>output/</tt>
+    - directory that contains all generated files.
+
+
+  h2. Usage
+
+  In the location where you extracted the release package, run the following command to see a list of available tasks:
+
+    rake -T
+
+  To generate your blog, run either of the following commands:
+
+    rake
+
+    rake blog
+
+  To _forcefully_ regenerate your blog, run the following command:
+
+    rake clobber blog
+
+  To upload your blog to your website, run the following command:
+
+    rake publish
+
+
+  h3(#config). Configuration
+
+  Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments/documentation to help you configure your blog.
+
+  Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Organization":#organization section.
+
+
+  h4(#config.format). Using another text formatting system
+
+  To use another text formatting system, simply replace the @String.to_html@ method, which is defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
+
+  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then the all entries will appear within gray-colored &lt;pre&gt; elements in the generated HTML files.
+
+  <code>
+  class String
+    def to_html
+      '<pre style="background-color: gray">' + self + '</pre>'
+    end
+  end
+  </code>
+
+  In this manner, you can extend Rassmalog to use any formatting system you wish.
+
+
+  h2. Hacking
+
+  You can obtain the latest source code from the Darcs repository:
+
+    darcs get http://rassmalog.rubyforge.org/src/rassmalog/
