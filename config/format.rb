@@ -92,34 +92,29 @@ class String
     headings = []
 
     # parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary
-      text = gsub %r{^(\s*h(\d))(.*?[\}\)]?\.)(.*)$} do
-        target = $~.dup
+      text = gsub %r{^(\s*h(\d))(.*)$} do
+        head, depth, rest = $1, $2, $3
 
-        title = target[4].strip
-        depth = target[2].to_i
+        # parse title and CSS/HTML parameters
+          rest =~ /^([\{\(].*?[\}\)])?\.(.*)$/
+          params, title = $1, $2.strip
 
-        hasAnchor = target[3] =~ /#(.*?)\)/
-        anchor = $1 || "anchor#{@@anchorNum += 1}"
+        # parse and insert anchor if necessary
+          if params =~ /(#.*?)\)/
+            anchor = $1
+          else
+            anchor = "#anchor#{@@anchorNum += 1}"
+            rest.insert 0, "(#{anchor})"
+          end
 
-        headings << Heading.new(anchor, title, depth)
+        headings << Heading.new(anchor, title.strip, depth.to_i)
 
-        if hasAnchor
-          target.to_s
-        else
-          arrow =
-            if target[3] =~ /^(.*)(\(.*?)(\).*)$/
-              $1 + $2 + '#' + anchor + $3
-            else
-              '(#' + anchor + ')' + target[3]
-            end
-
-          target[1] + arrow + target[4]
-        end
+        head + rest
       end
 
     # generate table of contents
       toc = headings.map do |h|
-        %{#{'*' * h.depth} "#{h.title}":##{h.anchor}}
+        %{#{'*' * h.depth} "#{h.title}":#{h.anchor}}
       end.join("\n").redcloth
 
     [toc, text]
