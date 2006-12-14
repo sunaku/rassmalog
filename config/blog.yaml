@@ -51,7 +51,7 @@ host: you@your_host:path/to/your/blog/
 # 1. The directory that needs to be uploaded.
 # 2. The value of the "host" parameter (see above).
 #
-uploader: rsync --rsh=ssh -azu
+uploader: rsync --rsh=ssh -auvz
 
 
 #
