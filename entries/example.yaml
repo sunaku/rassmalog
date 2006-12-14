@@ -1,6 +1,9 @@
+#
 # The name of this entry.
+#
 name: Put the name of your entry here.
 
+#
 # The date and time (optional) when this entry was started.
 # Here are some examples:
 #
@@ -9,18 +12,24 @@ name: Put the name of your entry here.
 #   date: 1/1/1970 8:00am
 #   date: jan 1st 1970 16:00 -08:00
 #   date: 1 january 1970
+#   date: Wed Dec 13 00:22:00 PST 2006 @390 /Internet Time/
+#   date: Wed Dec 13 21:31:04 PST 2006
 #
 # See the documentation for DateTime.parse for
 # details about how the date should be written.
 #
-date: Jan 1 1970 8:00am #Put today's date and time here.
+date: Dec 8 2006 11:00pm #Put today's date and time here.
 
-# The tags (categories) which classify this entry.
+#
+# The categories (tags) which classify this entry.
+#
 tags:
-  - example
-  - help
+  - examples
+  - rassmalog
 
+#
 # The content of this entry.
+#
 text: |
   Write your thoughts here.
   Fill as many lines as you need!
@@ -37,6 +46,8 @@ text: |
   sample":http://www.textism.com/tools/textile/?sample=2 from the "Textile
   website":http://www.textism.com/tools/textile/. It will show you how to
   format your text with Textile.
+
+  ---
 
 
   h2{color:green}. This is a title

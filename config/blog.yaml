@@ -1,36 +1,86 @@
-# The name of your blog.
-name: Put the name of your blog here.
+##
+## This is the primary configuration file for your blog.
+##
 
+
+#
+# The name of your blog.
+#
+name: Put the name of your blog here
+
+#
 # Description of your blog.
+#
 info: |
   Describe your blog here.
   Fill as many lines as you need!
 
+#
 # The name of the blog author.
-author: Put your name here.
+#
+author: Put your name here
 
-
+#
 # The URL of your published blog.
-url: http://your_host/~you/your_blog/
+#
+url: http://your.host.com/~you/path/to/your/blog/
 
+#
 # The rsync or SSH address of your published blog.
-host: you@your_host:your_blog/
+#
+# If you use a tool other than rsync to upload your blog,
+# then you don't need to bother with this feature. Instead,
+# you can manually upload the generated blog files.
+#
+# Examples:
+#
+#   user@host:path/relative/to/home/directory/
+#   user@host:/absolute/path/from/root/directory/
+#
+host: you@your_host:path/to/your/blog/
 
 
+#
 # The character set used in your entries.
+#
+# Examples:
+#
+#   encoding: utf-8       # Unicode (for all languages)
+#   encoding: x-sjis      # Shift JIS (for Japanese only)
+#   encoding: x-iscii-te  # Telugu ISCII (for Telugu only)
+#
 encoding: utf-8
 
-# The language used in your entries.
+#
+# The primary language used in your entries.
+# See http://www.html-reference.com/language.htm for syntax.
+#
+# Examples:
+#
+#   language: en-us # English (United States)
+#   language: ja-jp # Japanese (Japan)
+#   language: te-in # Telugu (India)
+#
 language: en-us
 
-# Number of entries to display on the front page.
+#
+# Maximum number of entries to display on the front page.
+#
 index: 3
 
-# Specifies whether entries are summarized in archive pages.
+#
+# Specifies whether entries are summarized in tag and archive pages.
+#
+# To disable this option, set the value to "false" like this:
+#
+#   summarize: false
+#
 summarize: true
 
 
-# Hierarchical navigation menu shown in all HTML pages.
+#
+# Hierarchical navigation menu shown in all generated HTML pages.
+#
 menu:
   - Projects:
     - Rassmalog: http://rassmalog.rubyforge.org
