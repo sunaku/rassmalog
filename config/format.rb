@@ -46,21 +46,28 @@ class String
     # prevent the content of these tags from being transformed by Textile
     # for example, Textile transforms quotation marks in code into curly ones (&#8192;) -- this ruins any source code in the content of the tags!
       PRESERVED_TAGS.each do |tag|
-        text.gsub! %r{<#{tag}(.*?)>(.*?)</#{tag}>}m, %{<pre tag=#{tag.inspect} \\1>\\2</pre>}
+        text.gsub! %r{<#{tag}(.*?)>(.*?)</#{tag}>}m, %{<pre tag=#{tag.inspect}\\1>\\2</pre>}
       end
 
     html = text.redcloth
 
-    # restore the original tags for the preserved content
+    # restore the original tags for the preserved tags
+      # unescape content of <pre> tags because they may contain nested preserved tags (redcloth escapes the content of <pre> tags)
+        html.gsub! %r{(<pre>)(.*?)(</pre>)}m do
+          $1 + CGI.unescapeHTML($2) + $3
+        end
+
       PRESERVED_TAGS.each do |tag|
         html.gsub! %r{<pre tag=#{tag.inspect}(.*?)>(.*?)</pre>}m, %{<#{tag}\\1>\\2</#{tag}>}
       end
 
-    # reject indented text in Textile as possible source code
-    # also, HTML escape the indented content in case it has HTML
-      html.gsub! %r{(<pre>)<code>(.*?)\s*</code>(</pre>)}m do
-        $1 + CGI.escapeHTML($2) + $3
-      end
+      # assume that indented text in Textile is NOT source code
+        html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
+
+      # escape content of <pre> tags, because we un-escaped it above
+        html.gsub! %r{(<pre>)(.*?)(</pre>)}m do
+          $1 + CGI.escapeHTML($2) + $3
+        end
 
     html.coderay
   end
