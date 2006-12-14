@@ -64,8 +64,19 @@
       <a type="application/rss+xml" href="rss.xml"><img src="images/mozilla/feed-icon.png" alt="RSS feed for this blog." title="RSS feed for this blog." /></a>
 
       <ul>
+        <!-- the heirarchical navigation menu -->
         <%= render_menu BLOG.menu %>
 
+        <!-- listing of the most recent entries -->
+        <li>Recent
+          <ul>
+            <% ENTRIES.recent.each do |entry| %>
+              <li><%= entry.to_link %></li>
+            <% end %>
+          </ul>
+        </li>
+
+        <!-- listing of all archives -->
         <% CHAPTERS.each do |chapter| %>
           <li><%= chapter.name %>
             <ul>
@@ -75,14 +86,6 @@
             </ul>
           </li>
         <% end %>
-
-        <li>Entries
-          <ul>
-            <% ENTRIES.each do |entry| %>
-              <li><%= entry.to_link %></li>
-            <% end %>
-          </ul>
-        </li>
       </ul>
     </div>
 

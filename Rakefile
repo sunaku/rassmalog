@@ -151,7 +151,7 @@ end
 
 # Notify the user about some action being performed.
 def notify *args
-  printf "%8s  %s\n", *args
+  printf "%12s  %s\n", *args
 end
 
 # Loads the given YAML file into an OpenStruct.
@@ -209,6 +209,11 @@ end
 
     entry
   end.sort.reverse!
+
+  # Returns the most recent entries
+  def ENTRIES.recent
+    self[0, BLOG.recent_entries || 0]
+  end
 
 # organize blog entries into chapters
   TAGS = Chapter.new(LANG["Tags"]) {|h,k| h[k] = []}
@@ -274,7 +279,7 @@ CONFIG_FILES = FileList['config/*']
   chaps =
     unless BLOG.front_page
       index = Chapter.new ''
-      index[Page.new(nil, 'index')] = ENTRIES[0, BLOG.recent_entries]
+      index[Page.new(nil, 'index')] = ENTRIES.recent
 
       (CHAPTERS + [index])
     else
@@ -301,9 +306,9 @@ CONFIG_FILES = FileList['config/*']
     src = 'output/' + BLOG.front_page
     dst = 'output/index.html'
 
-    file dst => ['output', src]  do
-      cp src, dst, :preserve => true
-      notify :index, src
+    file dst => ['output', src] do
+      cp src, dst, :preserve => true, :verbose => false
+      notify 'front page', src
     end
 
     task :blog => dst
@@ -312,7 +317,7 @@ CONFIG_FILES = FileList['config/*']
 # generate RSS feed
   file 'output/rss.xml' => ['output'] + CONFIG_FILES + ENTRY_FILES do |t|
     write_file t.name, RSS_TEMPLATE.result(binding)
-    notify :rss, t.name
+    notify 'RSS feed', t.name
   end
 
   task :blog => 'output/rss.xml'
