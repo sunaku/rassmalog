@@ -82,8 +82,8 @@ language: en-us
 # The name of a file in the output/ directory that should be the front page
 # of your blog. This allows you to display an entry as your front page.
 #
-# If you want your front page to be a listing of the most recent entries,
-# then simply make the value of this parameter blank:
+# If you want your front page to be an automatic listing of the most recent
+# entries, then simply make the value of this parameter blank:
 #
 #   front_page:   # nothing here!
 #
@@ -108,6 +108,7 @@ summarize_entries: true
 # Hierarchical navigation menu shown in all generated HTML pages.
 #
 menu:
+
   - Rassmalog:
     - Home page: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/

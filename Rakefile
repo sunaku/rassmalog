@@ -121,7 +121,7 @@ module Entry
 
     # summarize the entry body
       if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        self.text = "<big>#{LANG["Summary"]}</big>:\n#{$&}"
+        self.text = $& << "\n\n<big>#{to_link LANG["Read more..."]}</big>"
       end
 
     # transform the entry into HTML
@@ -278,8 +278,8 @@ CONFIG_FILES = FileList['config/*']
 # generate archive pages for entries
   chaps =
     unless BLOG.front_page
-      index = Chapter.new ''
-      index[Page.new(nil, 'index')] = ENTRIES.recent
+      index = Chapter.new nil
+      index[Page.new(LANG['Recent entries'], 'index')] = ENTRIES.recent
 
       (CHAPTERS + [index])
     else
