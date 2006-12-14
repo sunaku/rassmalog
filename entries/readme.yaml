@@ -6,7 +6,7 @@ tags:
   - rassmalog
 
 text: |
-  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format, automatic tagging and archiving, and "easy configuration":#config. It is inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
+  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format, automatic tagging and archiving, and easy configuration. It is inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
 
   The name _Rassmalog_ is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
 
@@ -17,7 +17,7 @@ text: |
 
   * Nearly everything is automated:
   ** Automatic _table of contents_ for blog entries.
-  ** Automatic _syntax coloring_ and smart sizing (inline vs. paragraph) for source code.
+  ** Automatic _syntax coloring_ and smart sizing (line vs. paragraph) for source code.
   ** Automatic tag and month _archives_.
   ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
 

@@ -28,7 +28,7 @@ require 'rake/packagetask'
 PROJECT_ID = :rassmalog
 PROJECT_SSH_URL = "snk@rubyforge.org:/var/www/gforge-projects/#{PROJECT_ID}"
 
-if File.read('HISTORY') =~ /\d+\.\d+\.\d+/
+if Dir['entries/history/*'].last =~ /\d+\.\d+\.\d+/
   PROJECT_VERSION = $&
 else
   raise "could not parse project version"
@@ -38,13 +38,13 @@ end
 task :default
 
 desc "Generate release packages."
-task :dist => [:clobber, :doc] do
+task :dist => [:clobber, 'output'] do
   sh 'rake', '-f', __FILE__, 'package'
 end
 
 desc "Upload the project website."
-task :web => :doc do |t|
-  sh 'scp', '-Cr', 'doc', PROJECT_SSH_URL
+task :web => 'output' do |t|
+  sh 'scp', '-Cr', 'output/*', PROJECT_SSH_URL
 end
 
 desc 'Connect to website FTP.'
@@ -52,12 +52,10 @@ task :ftp do
   sh 'lftp', "sftp://#{PROJECT_SSH_URL}"
 end
 
-
-Rake::RDocTask.new :doc do |rd|
-  rd.main = 'README'
-  rd.rdoc_dir = 'doc'
-  rd.rdoc_files.include 'README', 'HISTORY', 'config/*.rb'
+file 'output' do
+  sh 'rake'
 end
+
 
 Rake::PackageTask.new PROJECT_ID, PROJECT_VERSION do |p|
   p.need_tar_gz = true
