@@ -37,32 +37,9 @@ text: |
   * Just try it out and _decide for yourself_! ;-)
 
 
-  h2. Requirements
+  h2(#organization). Organization
 
-  The following software is required:
-
-  * "Rake":http://docs.rubyrake.org/
-  * "RedCloth":http://whytheluckystiff.net/ruby/redcloth/
-  * "CodeRay":http://coderay.rubychan.de/
-
-  If you have "RubyGems":http://rubygems.org/ on your system, then you can install the above requirements by running the following command:
-
-    gem install rake redcloth coderay
-
-
-  h3. Bypassing the requirements
-
-  If you do not wish to install RedCloth and CodeRay, please see the section named "using another formatting system":#config.format below.
-
-
-  h2. Installation
-
-  Simply extract the release package anywhere you want.
-
-
-  h3(#organization). Organization
-
-  When you extract the release package, you would see the following:
+  When you download and extract the release package, you would see the following:
 
   * <tt>doc/</tt>
     - directory that contains API documentation
@@ -91,9 +68,11 @@ text: |
   * <tt>config/lang/te-in.yaml</tt>
     - translation file for the Telugu (India) language.
 
-    You can enable this translation file by setting the value of the "language" parameter in the <tt>config/blog.yaml</tt> file to "te-in", as follows:
+    You can enable this translation file by setting the value of the @language@ parameter in the <tt>config/blog.yaml</tt> file to "te-in", as follows:
 
       language: te-in
+
+    In this manner, you can create translation files for your own languages and enable them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can enjoy your translations! :-)
 
   * <tt>entries/</tt>
     - directory that contains all blog entry files. The file name of a blog entry file can be _anything_. It does not have to match the title of the entry, or the date when the entry was started, or anything annoying like that.
@@ -108,6 +87,29 @@ text: |
 
   * <tt>output/</tt>
     - directory that contains all generated files.
+
+
+  h2. Requirements
+
+  The following software is required:
+
+  * "Rake":http://docs.rubyrake.org/
+  * "RedCloth":http://whytheluckystiff.net/ruby/redcloth/
+  * "CodeRay":http://coderay.rubychan.de/
+
+  If you have "RubyGems":http://rubygems.org/ on your system, then you can install the above requirements by running the following command:
+
+    gem install rake redcloth coderay
+
+
+  h3. Bypassing some requirements
+
+  If you do not wish to install RedCloth and CodeRay, please see the section named "using another formatting system":#config.format below.
+
+
+  h2. Installation
+
+  Simply extract the release package anywhere you want.
 
 
   h2. Usage
@@ -131,23 +133,23 @@ text: |
     rake publish
 
 
-  h3(#config). Configuration
+  h2(#config). Configuration
 
   Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments/documentation to help you configure your blog.
 
   Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Organization":#organization section.
 
 
-  h4(#config.format). Using another text formatting system
+  h3(#config.format). Using another text formatting system
 
   To use another text formatting system, simply replace the @String.to_html@ method, which is defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
 
-  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then the all entries will appear within gray-colored &lt;pre&gt; elements in the generated HTML files.
+  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then the all entries will appear within yellow-colored &lt;pre&gt; elements in the generated HTML files.
 
   <code>
   class String
     def to_html
-      '<pre style="background-color: gray">' + self + '</pre>'
+      '<pre style="background-color: yellow">' + self + '</pre>'
     end
   end
   </code>
