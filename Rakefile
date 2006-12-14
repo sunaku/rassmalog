@@ -95,7 +95,7 @@ class Chapter < Hash
       heading = "<h2>#{@page_title}</h2>\n\n"
 
       @page_content = entries.inject heading do |memo, entry|
-        memo << entry.to_html(BLOG.summarize)
+        memo << entry.to_html(BLOG.summarize_entries)
       end
 
       HTML_TEMPLATE.result(binding)
@@ -271,10 +271,17 @@ CONFIG_FILES = FileList['config/*']
   end
 
 # generate archive pages for entries
-  index = Chapter.new LANG["Index"]
-  index[Page.new(nil, 'index')] = ENTRIES[0, BLOG.index]
+  chaps =
+    unless BLOG.front_page
+      index = Chapter.new ''
+      index[Page.new(nil, 'index')] = ENTRIES[0, BLOG.recent_entries]
 
-  (CHAPTERS + [index]).each do |chapter|
+      (CHAPTERS + [index])
+    else
+      CHAPTERS
+    end
+
+  chaps.each do |chapter|
     chapter.each_pair do |page, entries|
       dst = File.join('output', page.url)
       deps = entries.map {|e| e.dst_file} << 'output'
@@ -287,6 +294,19 @@ CONFIG_FILES = FileList['config/*']
       task :blog => dst
       CLOBBER.include dst
     end
+  end
+
+# generate front page
+  if BLOG.front_page
+    src = 'output/' + BLOG.front_page
+    dst = 'output/index.html'
+
+    file dst => ['output', src]  do
+      cp src, dst, :preserve => true
+      notify :index, src
+    end
+
+    task :blog => dst
   end
 
 # generate RSS feed
