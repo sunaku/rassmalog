@@ -6,8 +6,8 @@
   * BLOG            => data from the blog configuration file
   * ENTRIES         => an array of all available blog entries
   * TAGS            => a hash of the form: {name => array of entries}
-  * ARCHIVES        => a hash of the form: {name => array of entries}
-  * CHAPTERS        => an array of objects like TAGS and ARCHIVES
+  * MONTHS          => a hash of the form: {name => array of entries}
+  * ARCHIVES        => an array of objects like TAGS and MONTHS
   * @page_title     => title of the HTML page
   * @page_content   => body of the HTML page
 =end
@@ -35,7 +35,7 @@
       result << "<li>#{aMenu}</li>"
     end
 
-    result << "\n"
+    result
   end
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -77,11 +77,11 @@
         </li>
 
         <!-- listing of all archives -->
-        <% CHAPTERS.each do |chapter| %>
-          <li><%= chapter.name %>
+        <% ARCHIVES.each do |archive| %>
+          <li><%= archive.name %>
             <ul>
-              <% chapter.pages.sort.each do |page| %>
-                <li><%= page.to_link %> (<%= chapter[page].length %>)</li>
+              <% archive.pages.sort.each do |page| %>
+                <li><%= page.to_link %> (<%= archive[page].length %>)</li>
               <% end %>
             </ul>
           </li>

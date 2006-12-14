@@ -219,7 +219,7 @@ end
 
 # organize blog entries into chapters
   TAGS = Chapter.new(LANG["Tags"]) {|h,k| h[k] = []}
-  ARCHIVES = Chapter.new(LANG["Archives"]) {|h,k| h[k] = []}
+  MONTHS = Chapter.new(LANG["Archives"]) {|h,k| h[k] = []}
 
   # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
   ENTRIES.each do |entry|
@@ -234,10 +234,10 @@ end
     # determine which archive this entry belongs to
       arch = Page.new entry.date.strftime("%B %Y"), entry.date.strftime("%Y-%m")
 
-      ARCHIVES[arch] << entry
+      MONTHS[arch] << entry
   end
 
-  CHAPTERS = [TAGS, ARCHIVES]
+  ARCHIVES = [TAGS, MONTHS]
 
 
 ## output generation stage
@@ -265,10 +265,12 @@ CONFIG_FILES = FileList['config/*']
     end
 
 # generate pages for entries
+  entryDeps = RECENT_ENTRY_FILES + CONFIG_FILES
+
   ENTRIES.each do |entry|
     dst = entry.dst_file = File.join('output', entry.url)
 
-    file dst => [entry.src_file, 'output'] + RECENT_ENTRY_FILES + CONFIG_FILES do
+    file dst => [entry.src_file, 'output'] + entryDeps do
       write_file dst, entry.render
       notify :entry, dst
     end
@@ -283,9 +285,9 @@ CONFIG_FILES = FileList['config/*']
       index = Chapter.new nil
       index[Page.new(LANG['Recent entries'], 'index')] = ENTRIES.recent
 
-      (CHAPTERS + [index])
+      ARCHIVES + [index]
     else
-      CHAPTERS
+      ARCHIVES
     end
 
   chaps.each do |chapter|
@@ -307,7 +309,7 @@ CONFIG_FILES = FileList['config/*']
     src = 'output/' + BLOG.front_page
     dst = 'output/index.html'
 
-    file dst => ['output', src] do
+    file dst => [src, 'output'] do
       cp src, dst, :preserve => true, :verbose => false
       notify 'front page', src
     end
