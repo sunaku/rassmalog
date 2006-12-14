@@ -95,12 +95,12 @@ class String
       text = gsub %r{^(\s*h(\d))(.*)$} do
         head, depth, rest = $1, $2, $3
 
-        # parse title and CSS/HTML parameters
-          rest =~ /^([\{\(].*?[\}\)])?\.(.*)$/
-          params, title = $1, $2.strip
+        # parse title and class attributes
+          rest =~ /^([\{\(\[].*?[\]\)\}])?\.(.*)$/
+          atts, title = $1, $2.strip
 
         # parse and insert anchor if necessary
-          if params =~ /(#.*?)\)/
+          if atts =~ /(#.*?)\)/
             anchor = $1
           else
             anchor = "#anchor#{@@anchorNum += 1}"
