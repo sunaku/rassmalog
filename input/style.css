@@ -98,7 +98,8 @@ h1 {
 /* source code */
 
 tt {
-  font-weight: bolder;
+  color: brown;
+  background-color: floralwhite;
 }
 
 pre, blockquote .code {
