@@ -96,7 +96,7 @@ text: |
       language: te-in
 
   * <tt>entries/</tt>
-    - directory that contains all blog entry files. The file name of a blog entry file can be anything (it does not have to match the title of the entry). However, the file extension of a blog entry file must be either *yaml* or *yml*.
+    - directory that contains all blog entry files. The file name of a blog entry file can be _anything_. It does not have to match the title of the entry, or the date when the entry was started, or anything annoying like that.
 
     You can organize your blog entry files within subdirectories. For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> directory.
 

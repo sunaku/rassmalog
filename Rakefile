@@ -198,7 +198,7 @@ end
   end
 
 # load blog entries
-  ENTRY_FILES = FileList['entries/**/*.{yml,yaml}']
+  ENTRY_FILES = FileList['entries/**/*']
 
   ENTRIES = ENTRY_FILES.map do |src|
     entry = load_yaml_file(src)
