@@ -130,7 +130,7 @@ text: |
 
   To upload your blog to your website, run the following command:
 
-    rake publish
+    rake upload
 
 
   h2(#config). Configuration

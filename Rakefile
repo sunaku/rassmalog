@@ -302,9 +302,9 @@ CONFIG_FILES = FileList['config/*']
 ## output publishing stage
 
 desc "Upload the blog to your website."
-task :publish => [:blog, 'output'] do
-  cmd = %w[rsync --rsh=ssh --archive --compress --update --progress]
-  args = ['output/', BLOG.host]
+task :upload => [:blog, 'output'] do
+  cmd = BLOG.uploader.split
+  cmd.push 'output/', BLOG.host
 
-  system *(cmd + args)
+  system *cmd
 end

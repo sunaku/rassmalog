@@ -29,8 +29,13 @@ url: http://your.host.com/~you/path/to/your/blog/
 # The rsync or SSH address of your published blog.
 #
 # If you use a tool other than rsync to upload your blog,
-# then you don't need to bother with this feature. Instead,
-# you can manually upload the generated blog files.
+# then you can either:
+#
+# 1. change the "uploader" parameter (see below) to
+#    accomodate your file uploading software.
+#
+# 2. don't bother with this feature. Instead, you
+#    you can manually upload your blog.
 #
 # Examples:
 #
@@ -38,6 +43,15 @@ url: http://your.host.com/~you/path/to/your/blog/
 #   user@host:/absolute/path/from/root/directory/
 #
 host: you@your_host:path/to/your/blog/
+
+#
+# The command that uploads your blog to your website.
+#
+# Two arguments are passed to this command:
+# 1. The directory that needs to be uploaded.
+# 2. The value of the "host" parameter (see above).
+#
+uploader: rsync --rsh=ssh -azu
 
 
 #
