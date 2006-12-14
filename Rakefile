@@ -215,6 +215,8 @@ end
     self[0, BLOG.recent_entries || 0]
   end
 
+  RECENT_ENTRY_FILES = ENTRIES.recent.map {|e| e.src_file}
+
 # organize blog entries into chapters
   TAGS = Chapter.new(LANG["Tags"]) {|h,k| h[k] = []}
   ARCHIVES = Chapter.new(LANG["Archives"]) {|h,k| h[k] = []}
@@ -266,7 +268,7 @@ CONFIG_FILES = FileList['config/*']
   ENTRIES.each do |entry|
     dst = entry.dst_file = File.join('output', entry.url)
 
-    file dst => [entry.src_file, 'output'] + CONFIG_FILES do
+    file dst => [entry.src_file, 'output'] + RECENT_ENTRY_FILES + CONFIG_FILES do
       write_file dst, entry.render
       notify :entry, dst
     end
@@ -289,9 +291,8 @@ CONFIG_FILES = FileList['config/*']
   chaps.each do |chapter|
     chapter.each_pair do |page, entries|
       dst = File.join('output', page.url)
-      deps = entries.map {|e| e.dst_file} << 'output'
 
-      file dst => deps do
+      file dst => ENTRY_FILES do
         write_file dst, chapter.render(page)
         notify chapter.name, dst
       end
