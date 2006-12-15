@@ -20,8 +20,14 @@ info: |
 #
 author: Put your name here
 
+
 #
 # The URL of your published blog.
+#
+# Examples:
+#
+#   url: http://your.host.com/~you/path/to/your/blog/
+#   url: http://you.your_host.com/
 #
 url: http://your.host.com/~you/path/to/your/blog/
 
@@ -37,10 +43,14 @@ url: http://your.host.com/~you/path/to/your/blog/
 # 2. don't bother with this feature. Instead, you
 #    you can manually upload your blog.
 #
-# Examples:
+# Syntax:
 #
 #   user@host:path/relative/to/home/directory/
 #   user@host:/absolute/path/from/root/directory/
+#
+# Examples:
+#
+#   host: you@your_host:path/to/your/blog/
 #
 host: you@your_host:path/to/your/blog/
 
@@ -50,6 +60,11 @@ host: you@your_host:path/to/your/blog/
 # Two arguments are passed to this command:
 # 1. The directory that needs to be uploaded.
 # 2. The value of the "host" parameter (see above).
+#
+# Examples:
+#
+#   uploader: rsync --rsh=ssh -auvz
+#   uploader: scp -Cr
 #
 uploader: rsync --rsh=ssh -auvz
 

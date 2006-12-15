@@ -6,7 +6,7 @@ tags:
   - rassmalog
 
 text: |
-  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format, automatic tagging and archiving, and easy configuration. It is inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
+  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format; automatic tagging, archiving, table of contents, and source code coloring; and easy configuration. It is inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
 
   The name _Rassmalog_ is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
 
@@ -41,9 +41,6 @@ text: |
   h2(#organization). Organization
 
   When you download and extract the release package, you would see the following:
-
-  * <tt>doc/</tt>
-    - directory that contains API documentation
 
   * <tt>config/</tt>
     - directory that contains all configuration files
@@ -88,8 +85,21 @@ text: |
   * <tt>input/</tt>
     - directory that contains resources (such as images, stylesheets, and so on) used by your blog. Everything inside this directory is automatically copied into the output/ directory when your blog is generated.
 
+  * <tt>input/styles/default.css</tt>
+    - the default CSS stylesheet provided with Rassmalog.
+
   * <tt>output/</tt>
     - directory that contains all generated files.
+
+
+  h3. Version numbering system
+
+  We _strictly_ follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7 since release 6.3.0. To summarize[1] this "major.minor.build" numbering policy,
+  * an increase in the _major_ number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
+  * an increase in the _minor_ number indicates that _functionally compatible_ changes have occurred. Thus, what worked in the previous version will work in the new one.
+  * an increase in the _build_ number indicates that the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
+
+  fn1. C. Gross, "Explaining Open Source Version Numbers", [Online document], 2005 Nov 28, [cited 2006 Aug 27], Available HTTP: "http://ablog.apress.com/?p=738":http://ablog.apress.com/?p=738
 
 
   h2. Requirements
