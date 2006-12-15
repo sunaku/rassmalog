@@ -6,7 +6,7 @@ tags:
   - rassmalog
 
 text: |
-  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format; automatic tagging, archiving, table of contents, and source code coloring; and easy configuration. It is inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
+  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents. It is "Free Software":http://www.gnu.org/copyleft/gpl.html inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
 
   The name _Rassmalog_ is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
 
@@ -157,7 +157,7 @@ text: |
 
   To use another text formatting system, simply replace the @String.to_html@ method, which is defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
 
-  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then the all entries will appear within yellow-colored &lt;pre&gt; elements in the generated HTML files.
+  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all entries will appear within yellow-colored &lt;pre&gt; elements in the generated HTML files.
 
   <code>
   class String
