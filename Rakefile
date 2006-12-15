@@ -39,9 +39,10 @@ class String
   # Transforms this string into a vaild file name that can be safely used in a URL.
   # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
   def to_file_name
-    gsub(%r{[/;?#]+}, '+'). # parts of a URL syntax
+    downcase.               # it's hard to remember capitalization in URLs
     gsub(/\s+/, '-').       # remove the need for %20 escapes in URLs
-    downcase                # it's hard to remember capitalization in URLs
+    gsub(%r{[/;?#]+}, '-'). # these are parts of a URL syntax
+    squeeze('-')
   end
 end
 
