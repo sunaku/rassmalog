@@ -44,7 +44,8 @@ end
 
 desc "Upload the project website."
 task :web => 'output' do |t|
-  sh 'scp', '-Cr', 'output/*', PROJECT_SSH_URL
+  args = FileList['output/*'] + [PROJECT_SSH_URL]
+  sh 'scp', '-Cr', *args
 end
 
 desc 'Connect to website FTP.'
