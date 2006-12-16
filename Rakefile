@@ -93,7 +93,7 @@ class Chapter < Hash
 
     Object.new.instance_eval do
       @page_title = title
-      heading = "<h2>#{@page_title}</h2>\n\n"
+      heading = %{<h2 id="title">#{@page_title}</h2>\n\n}
 
       @page_content = entries.inject heading do |memo, entry|
         memo << entry.to_html(BLOG.summarize_entries)
@@ -122,7 +122,7 @@ module Entry
 
     # summarize the entry body
       if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        self.text = $& << "\n\n<big>#{to_link LANG["Read more..."]}</big>"
+        self.text = $& << "\n\n#{to_link LANG["Read more..."]}"
       end
 
     # transform the entry into HTML
