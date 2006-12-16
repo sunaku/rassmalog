@@ -6,12 +6,43 @@ tags:
   - rassmalog
 
 text: |
-  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents. It is "Free Software":http://www.gnu.org/copyleft/gpl.html inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
+  Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It is "Free Software":http://www.gnu.org/copyleft/gpl.html inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
+
+  It is _static_ because it lives on your computer and generates HTML pages -- which can be uploaded to _any_ web server via FTP, SSH, SFTP, and so on. In contrast, a _dynamic_ blog engine would live on a web server and generate HTML pages when you visit them in your web browser.
 
   The name _Rassmalog_ is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
 
 
   h2. Motivation
+
+  bq=. "Your blog. Your content!"
+
+  With Rassmalog, you have full control of your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
+
+  * You can easily make backups and share them with a good friend.
+
+  * You're safe from the web server accidentally crashing or losing all of your data.
+
+  * If you decide to use another blog engine, your blog entries are readily transformed into the other blog's format because they are plain-text.
+
+  * You won't be rummaging through towering piles of "blog spam":http://en.wikipedia.org/wiki/Blog_spam via a clunky web interface because Rassmalog provides an _e-mail based_ commenting mechanism (which can be disabled if you want).
+
+    This may sound inconvenient, and perhaps old-fashioned at first, but sending e-mail is _extremely_ simple -- as "demonstrated daily":http://en.wikipedia.org/wiki/E-mail_spam by spammers across the world. @;-)@ But fear not, your e-mail address will be obfuscated in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.
+
+  With a dynamic blog engine, your content is stored in some obscure binary format within a database on a web server.
+
+  * If you want to make a backup, you might not even have access (depends on your blog host) to download the raw content from the database.
+
+  * If you decide to use another blog engine and if your blog host lets you download your content, then you can transform your content into the other blog's format.
+
+    However, you are now tasked with importing your content into the other blog. If you're lucky, the new blog will have some kind of import feature. Otherwise, you're sentenced to manual labor: copying and pasting your content into the new blog engine. @:-(@
+
+  * You will be rummaging through towering piles of "blog spam":http://en.wikipedia.org/wiki/Blog_spam eventually.
+
+
+  h2. Features
+
+  It features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents.
 
   Rassmalog is designed to be _easy to use_ and _easy to configure_. These goals are acheived partly through simplicity: Rassmalog's tiny code base contains only _six_ source files and _five_ of them are devoted to configuration. As a result,
 
@@ -22,10 +53,10 @@ text: |
   ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
 
   * Blog entries are plain-text files with easy syntax (see this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html)
+  ** Only _four_ parameters in a blog entry: _name_, _date_, _tags_, and _text_.
+  *** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
   ** _No_ obscure rules for naming blog entry files. The file name can be whatever you want!
   ** _No_ obscure restrictions on how blog entry files are organized -- just keep them _somewhere_ beneath the <tt>entries/</tt> directory.
-  ** Only _four_ parameters in a blog entry: _name_, _date_, _tags_, and _text_.
-  ** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
 
   * Templates are easily changable to suit your tastes:
   ** Only _two_ templates involved in generating HTML output.
@@ -33,9 +64,7 @@ text: |
 
   * If you don't like Textile, you can easily "use _any_ text formatting system":#config you want for blog entries.
 
-  * Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization) of the central application. (See this "sample file":http://rassmalog.rubyforge.org/src/rassmalog/config/lang/te-in.yaml and "its effect":http://www.soe.ucsc.edu/~snk/ on the author's blog).
-
-  * Just try it out and _decide for yourself_! ;-)
+  * Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization) of the central application. (See this "sample file":http://rassmalog.rubyforge.org/src/rassmalog/config/lang/te-in.yaml and "part of its effect":http://www.soe.ucsc.edu/~snk/ on the author's blog -- the rest of the translation took place in the templates).
 
 
   h2(#organization). Organization
@@ -55,13 +84,13 @@ text: |
     - template used to generate the RSS 2.0 feed
 
   * <tt>config/entry.erb</tt>
-    - template that transforms an entry into Textile
+    - template that transforms an entry into HTML
 
   * <tt>config/format.rb</tt>
     - defines how text is transformed into HTML
 
   * <tt>config/lang/</tt>
-    - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the <tt>config/*.erb</tt> files because those files are already separate from the core of Rassmalog.
+    - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
 
   * <tt>config/lang/te-in.yaml</tt>
     - translation file for the Telugu (India) language.
@@ -83,7 +112,7 @@ text: |
     - an example blog entry file.
 
   * <tt>input/</tt>
-    - directory that contains resources (such as images, stylesheets, and so on) used by your blog. Everything inside this directory is automatically copied into the output/ directory when your blog is generated.
+    - directory that contains resources, such as images and stylesheets, that are used by your blog. Everything inside this directory is automatically copied into the <tt>output/</tt> directory when your blog is generated.
 
   * <tt>input/styles/default.css</tt>
     - the default CSS stylesheet provided with Rassmalog.
