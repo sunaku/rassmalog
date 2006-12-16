@@ -44,6 +44,11 @@ class String
     gsub(%r{[/;?#]+}, '-'). # these are parts of a URL syntax
     squeeze('-')
   end
+
+  # Transforms this UTF-8 string into HTML entities.
+  def to_html_entities
+    unpack('U*').map! {|c| "&##{c};"}.join
+  end
 end
 
 
@@ -216,7 +221,7 @@ end
     self[0, BLOG.recent_entries || 0]
   end
 
-  RECENT_ENTRY_FILES = ENTRIES.recent.map {|e| e.src_file}
+  RECENT_ENTRY_FILES = ENTRIES.recent.map! {|e| e.src_file}
 
 # organize blog entries into chapters
   TAGS = Chapter.new(LANG["Tags"]) {|h,k| h[k] = []}

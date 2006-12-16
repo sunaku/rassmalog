@@ -20,6 +20,33 @@ info: |
 #
 author: Put your name here
 
+#
+# The e-mail address of the author or the e-mail address for receiving
+# comments about your blog entries.
+#
+# This address will be obfuscated into HTML entities so that e-mail address
+# harvesters won't bother to figure out what it is. For example, the address
+# "xxx@yyy.zzz" will be converted into the following *before* it is written
+# to a HTML file (see the "config/entry.erb" template for details):
+#
+#   &#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;
+#
+# If you do not wish to receive comments about your blog entries, or if you
+# absolutely *do not* want your e-mail address to be included in the output
+# (even in the obfuscated form), then you can simply leave this parameter
+# blank, as follows:
+#
+#   email:   # nothing here!
+#
+# Examples:
+#
+#   email: your+rassmalog@email.here
+#   email: your+comments@email.here
+#   email: your+blog@email.here
+#   email: your@email.here
+#
+email: your@email.here
+
 
 #
 # The URL of your published blog.

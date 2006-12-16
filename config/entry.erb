@@ -26,5 +26,9 @@
     Posted on <%= @entry.date.strftime "%c" %>.
     <br/>
     Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
+    <br/>
+<% if BLOG.email %>
+    You can <a href="<%= "mailto:#{BLOG.email}?subject=[Rassmalog] #{@entry.url}&body=#{@entry.name}".to_html_entities %>">post a comment about this entry</a>.
+<% end %>
   </p>
 </div>
