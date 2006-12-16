@@ -42,7 +42,7 @@ text: |
 
   * Incorrect parsing of an anchor for the table of contens has been fixed.
 
-  * The content of &lt;code&gt; and &lt;tt&gt; elements is now preserved verbatim by the @String#to_html@ method.
+  * The content of &lt;code&gt; and &lt;tt&gt; elements is now preserved verbatim by the @String.to_html@ method.
 
   * Text that is indented in Textile (which is supposed to be pre-formatted verbatim text) is no longer processed as source code.
 
