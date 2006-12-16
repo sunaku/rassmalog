@@ -1,21 +1,19 @@
 /* page layout */
 
 #menu {
-  position: fixed;
+  position: absolute;
   left: 0px;
   top: 0px;
-  bottom: 0px;
 
   max-width: 200px;
   padding: 1em;
-  overflow: auto;
 }
 
 body {
   font-family: sans-serif;
   line-height: 2em;
 
-  margin-left: 275px;
+  margin-left: 250px;
   margin-right: 50px;
   margin-bottom: 50px;
   max-width: 600px;
