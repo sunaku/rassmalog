@@ -53,6 +53,9 @@
     <category><%=h tag %></category>
   <% end %>
     <guid><%= url %></guid>
+  <% if BLOG.email %>
+    <comments><%= entry.comment_url %></comments>
+  <% end %>
   </item>
 <% end %>
 </channel>

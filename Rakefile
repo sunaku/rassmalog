@@ -121,6 +121,15 @@ module Entry
     %{<a href="#{u url}">#{aName}</a>}
   end
 
+  # Returns a url to submit comments for this entry.
+  def comment_url
+    addr = "mailto:#{BLOG.email}".to_html_entities
+    subj = u "[Rassmalog] #{name}"
+    body = u File.join(BLOG.url, url)
+
+    "#{addr}?subject=#{subj}&amp;body=#{body}"
+  end
+
   # Transforms this entry into HTML (for the generated HTML file).
   def to_html aSummarize = false
     old = text
