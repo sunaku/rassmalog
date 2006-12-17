@@ -131,11 +131,11 @@ class String
           atts, title = $1, $2.strip
 
         # parse and insert anchor if necessary
-          if atts =~ /(#.*?)\)/
+          if atts =~ /#(.*?)\)/
             anchor = $1
           else
-            anchor = "#anchor#{@@anchorNum += 1}"
-            rest.insert 0, "(#{anchor})"
+            anchor = "anchor#{@@anchorNum += 1}"
+            rest.insert 0, "(##{anchor})"
           end
 
         headings << Heading.new(anchor, title.strip, depth.to_i)
@@ -145,7 +145,7 @@ class String
 
     # generate table of contents
       toc = headings.map do |h|
-        %{#{'*' * h.depth} "#{h.title}":#{h.anchor}}
+        %{#{'*' * h.depth} "#{h.title}":##{h.anchor}}
       end.join("\n").redcloth
 
     [toc, text]
