@@ -28,7 +28,7 @@ require 'rake/packagetask'
 PROJECT_ID = :rassmalog
 PROJECT_SSH_URL = "snk@rubyforge.org:/var/www/gforge-projects/#{PROJECT_ID}"
 
-if Dir['entries/history/*'].last =~ /\d+\.\d+\.\d+/
+if Dir['entries/history/*'].sort.last =~ /\d+\.\d+\.\d+/
   PROJECT_VERSION = $&
 else
   raise "could not parse project version"
