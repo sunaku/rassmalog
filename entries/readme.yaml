@@ -15,7 +15,7 @@ text: |
 
   h2. Motivation
 
-  bq=. "Your blog. Your content!"
+  bq=. <big>"Your blog. Your content!"</big>
 
   With Rassmalog, you have full control of your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
 
@@ -84,7 +84,7 @@ text: |
     - template used to generate the RSS 2.0 feed
 
   * <tt>config/entry.erb</tt>
-    - template that transforms an entry into HTML
+    - template used to generate HTML for an entry
 
   * <tt>config/format.rb</tt>
     - defines how text is transformed into HTML

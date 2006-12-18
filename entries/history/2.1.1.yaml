@@ -1,0 +1,10 @@
+name: Version 2.1.1
+
+date: Mon Dec 18 10:25:04 PST 2006 @809 /Internet Time/
+
+tags:
+  - rassmalog
+  - history
+
+text: |
+  This release adds support for _e-mail based_ comments in the RSS feed, which was forgotten in the previous release.
