@@ -35,22 +35,27 @@ body {
 
 #title {
   text-align: center;
-  background-color: whitesmoke;
-  -moz-border-radius: 1em;
-  border-radius: 1em;
-  padding: 1em;
+  margin-bottom: 2em;
+  background-color: linen;
 }
 
 #footer {
-  text-align: right;
+  text-align: center;
   font-size: small;
+  background-color: seashell;
+}
+
+#title, #footer {
+  -moz-border-radius: 1em;
+  border-radius: 1em;
+  padding: 1em;
 }
 
 
 /* entry */
 
 .entry {
-  margin-bottom: 3em;
+  margin-bottom: 5em;
 }
 
 .entry .name {
@@ -84,6 +89,7 @@ body {
 
 .entry .info {
   border-top: thin dashed darkgray;
+  text-align: right;
   font-size: small;
 }
 
