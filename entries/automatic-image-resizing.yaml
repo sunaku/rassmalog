@@ -1,0 +1,64 @@
+name: Automatic image resizing for thumbnails
+
+date: Wed Dec 20 14:45:47 PST 2006 @990 /Internet Time/
+
+tags:
+  - rassmalog
+  - features
+
+text: |
+  "Manfred Schreiweis asked":http://rubyforge.org/forum/message.php?msg_id=16146 if there was a way to automatically resize images when copying them from <tt>input/images/</tt> into <tt>output/images/</tt>.
+
+  I have implemented this feature in "the code below":#code. However, I have not yet decided if I want to include this code in Rassmalog because I am not sure if everyone would like to use automatic thumbnails.
+
+
+  h2. Requirements
+
+  "RMagick":http://rmagick.rubyforge.org/ is required in order to resize images:
+
+    gem install rmagick
+
+  I had some trouble installing RMagick on my Ubuntu GNU/Linux machine, but "this blog post":http://blog.inlet-media.de/rmagick-does-not-play-well-on-ubuntu helped me through the installation.
+
+
+  h2. Installation
+
+  Add the "code shown below":#code to the _bottom_ of the file named <tt>Rakefile</tt>. Next, edit the code to suit your needs. For example, if you only wish to generate thumbnails for your images, then remove all items _except_ @:_small => [40, 30],@ from the @sizes@ hash.
+
+
+  h2(#code). The code!
+
+  <code>
+  # Resize images from input/images/ into output/images/.
+  # The code for resizing images is adapted from http://www.bigbold.com/snippets/posts/show/1173
+
+  require 'rubygems'
+  require 'RMagick'
+
+  sizes = {
+    # image label => [width, height]
+    :_large => [800, 600],
+    :_medium => [400, 300],
+    :_small => [40, 30],
+  }
+
+  FileList['input/images/**/*.{jpg,png,gif}'].each do |src|
+    name, ext = src.split('.', 2)
+    dstName = name.sub('input', 'output')
+
+    sizes.each_pair do |label, size|
+      dst = "#{dstName}#{label}.#{ext}"
+
+      file dst => [src, 'output'] do |t|
+        # workaround for block-scope limitation
+        a, b = t.prerequisites[0], t.name
+
+        Magick::ImageList.new(a).resize(*size).write b
+        notify :resize, b
+      end
+
+      task :blog => dst
+      CLOBBER.include dst
+    end
+  end
+  </code>
