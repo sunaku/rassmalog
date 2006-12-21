@@ -261,7 +261,7 @@ desc "Generate the blog."
 task :blog
 task :default => :blog
 
-CONFIG_FILES = FileList['config/*']
+CONFIG_FILES = FileList['config/**/*']
 
 # generate output directory
   directory 'output'
