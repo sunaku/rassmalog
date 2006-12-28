@@ -73,11 +73,13 @@ body {
   border-left: thin dashed silver;
   border-bottom: thin dashed silver;
   padding-left: 1em;
-  margin-left: 1em;
+  margin: 1em;
+  max-width: 50%;
 }
 
 .entry .toc ul {
   margin-top: 0px;
+  padding-right: 0px;
 }
 
 .entry .text {
