@@ -150,3 +150,18 @@ a img {
 em, strong {
   font-family: serif;
 }
+
+blockquote {
+  /*
+    This style is taken from Liferea
+    <http://liferea.sourceforge.net/>:
+
+    /usr/share/liferea/css/liferea.css
+  */
+  border-left: 2px solid #CCC;
+  background: #EEE;
+  padding: 5px;
+  font-style: italic;
+  margin: 5px 20px;
+  clear: both;
+}
