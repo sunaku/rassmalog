@@ -4,7 +4,7 @@ date: Wed Dec 20 14:45:47 PST 2006 @990 /Internet Time/
 
 tags:
   - rassmalog
-  - features
+  - tricks
 
 text: |
   "Manfred Schreiweis asked":http://rubyforge.org/forum/message.php?msg_id=16146 if there was a way to automatically resize images when copying them from <tt>input/images/</tt> into <tt>output/images/</tt>.

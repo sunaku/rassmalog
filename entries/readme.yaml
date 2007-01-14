@@ -15,7 +15,7 @@ text: |
 
   h2. Motivation
 
-  bq=. <big>"Your blog. Your content!"</big>
+  bq=. <big>Your blog. Your content!</big>
 
   With Rassmalog, you have full control of your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
 
@@ -42,9 +42,9 @@ text: |
 
   h2. Features
 
-  It features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents.
+  Rassmalog features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents.
 
-  Rassmalog is designed to be _easy to use_ and _easy to configure_. These goals are acheived partly through simplicity: Rassmalog's tiny code base contains only _six_ source files and _five_ of them are devoted to configuration. As a result,
+  It is designed to be _easy to use_ and _easy to configure_. These goals are acheived partly through simplicity: Rassmalog's tiny code base contains only _six_ source files and _five_ of them are devoted to configuration. As a result,
 
   * Nearly everything is automated:
   ** Automatic _table of contents_ for blog entries.
