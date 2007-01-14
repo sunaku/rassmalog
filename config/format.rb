@@ -107,7 +107,7 @@ class String
   end
 
 
-  Heading = Struct.new :anchor, :title, :depth
+  Heading = Struct.new :anchor, :title, :depth, :index
   @@anchorNum = 0
 
   # Builds a table of contents from text formatted in Textile.
@@ -124,11 +124,31 @@ class String
 
     # parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary
       text = gsub %r{^(\s*h(\d))(.*)$} do
-        head, depth, rest = $1, $2, $3
+        head, depth, rest = $1, $2.to_i, $3
 
         # parse title and class attributes
           rest =~ /^([\{\(\[].*?[\]\)\}])?\.(.*)$/
           atts, title = $1, $2.strip
+
+        # put heading index in title
+          prevDepth = headings.last.depth rescue 0
+          prevIndex = headings.last.index rescue ""
+          depthDiff = (depth - prevDepth).abs
+
+          index =
+            if depth > prevDepth
+              s = prevIndex + ('.1' * depthDiff)
+              s.sub /^\./, ''
+
+            elsif depth < prevDepth
+              s = prevIndex.sub /(\.\d+){#{depthDiff}}$/, ''
+              s.next
+
+            else
+              prevIndex.next
+            end
+
+          rest = "#{atts}. #{index} &nbsp; #{title}"
 
         # parse and insert anchor if necessary
           if atts =~ /#(.*?)\)/
@@ -138,14 +158,14 @@ class String
             rest.insert 0, "(##{anchor})"
           end
 
-        headings << Heading.new(anchor, title.strip, depth.to_i)
+        headings << Heading.new(anchor, title, depth, index)
 
         head + rest
       end
 
     # generate table of contents
       toc = headings.map do |h|
-        %{#{'*' * h.depth} "#{h.title}":##{h.anchor}}
+        %{#{'*' * h.depth} #{h.index} "#{h.title}":##{h.anchor}}
       end.join("\n").redcloth
 
     [toc, text]

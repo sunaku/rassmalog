@@ -99,6 +99,16 @@ h1 {
   font-size: 1.75em;
 }
 
+.entry .text h1,
+.entry .text h2,
+.entry .text h3,
+.entry .text h4,
+.entry .text h5,
+.entry .text h6 {
+  margin-top: 3em;
+  border-bottom: thin solid silver;
+}
+
 
 /* source code */
 
