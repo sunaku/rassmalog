@@ -8,12 +8,14 @@ tags:
 text: |
   Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It is "Free Software":http://www.gnu.org/copyleft/gpl.html inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
 
-  It is _static_ because it lives on your computer and generates HTML pages -- which can be uploaded to _any_ web server via FTP, SSH, SFTP, and so on. In contrast, a _dynamic_ blog engine would live on a web server and generate HTML pages when you visit them in your web browser.
+  It is *static* because it lives on your computer and generates HTML pages. These pages are then uploaded to _any_ web server via FTP, SSH, SFTP, and so on.
 
-  The name _Rassmalog_ is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
+  In contrast, a *dynamic* blog engine lives on a web server and generates HTML pages, on demand, when you visit them in your web browser.
+
+  The name "Rassmalog" is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is also a portmanteau of the words RSS, YAML, and blog.
 
 
-  h2. Motivation
+  h1. Motivation
 
   bq=. <big>Your blog. Your content!</big>
 
@@ -40,7 +42,7 @@ text: |
   * You will be rummaging through towering piles of "blog spam":http://en.wikipedia.org/wiki/Blog_spam eventually.
 
 
-  h2. Features
+  h1. Features
 
   Rassmalog features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents.
 
@@ -121,7 +123,7 @@ text: |
     - directory that contains all generated files.
 
 
-  h3. Version numbering system
+  h2. Version numbering system
 
   I _strictly_ follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. To summarize[1] this "major.minor.build" numbering policy,
   * an increase in the _major_ number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
@@ -131,7 +133,7 @@ text: |
   fn1. C. Gross, "Explaining Open Source Version Numbers", [Online document], 2005 Nov 28, [cited 2006 Aug 27], Available HTTP: "http://ablog.apress.com/?p=738":http://ablog.apress.com/?p=738
 
 
-  h2. Requirements
+  h1. Requirements
 
   The following software is required:
 
@@ -144,17 +146,17 @@ text: |
     gem install rake redcloth coderay
 
 
-  h3. Bypassing some requirements
+  h2. Bypassing some requirements
 
   If you do not wish to install RedCloth and CodeRay, please see the section named "using another formatting system":#config.format below.
 
 
-  h2. Installation
+  h1. Installation
 
   Simply extract the release package anywhere you want.
 
 
-  h2. Usage
+  h1. Usage
 
   In the location where you extracted the release package, run the following command to see a list of available tasks:
 
@@ -199,7 +201,7 @@ text: |
   In this manner, you can extend Rassmalog to use any formatting system you wish.
 
 
-  h2. Hacking
+  h1. Hacking
 
   You can obtain the latest source code from the Darcs repository:
 
