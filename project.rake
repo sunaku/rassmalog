@@ -38,11 +38,11 @@ end
 task :default
 
 desc "Generate release packages."
-task :dist => [:clobber, 'output'] do
+task :release => [:clobber, 'output'] do
   sh 'rake', '-f', __FILE__, 'package'
 end
 
-desc "Upload the project website."
+desc "Upload the project homepage."
 task :web => 'output' do |t|
   sh 'rsync', '-avz', 'output/', PROJECT_SSH_URL
 end
