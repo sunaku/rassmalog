@@ -52,6 +52,7 @@ class String
 end
 
 class ERB
+  # Renders this template within a fresh object configured by the given block.
   def render_with &aBlock
     dummy = Object.new
     dummy.instance_eval(&aBlock)
@@ -59,10 +60,12 @@ class ERB
   end
 end
 
+# Something that can be (hyper)linked to.
+# Objects that mix-in this module must define a #to_s method, whose value is used when determining the URL for this object.
 module Linkable
   # Returns a relative URL to this page.
   def url
-    self.to_s.to_file_name << '.html'
+    to_s.to_file_name << '.html'
   end
 
   # Returns a relative hyperlink to this page.
@@ -83,13 +86,12 @@ end
 class Entry < OpenStruct
   include Linkable
 
-  # Returns the name of the generated HTML file.
   def url
     stamp = date.strftime "%F"
     "#{stamp}-#{name}.html".to_file_name
   end
 
-  # Returns a url to submit comments for this entry.
+  # Returns a URL for submiting comments about this entry.
   def comment_url
     addr = "mailto:#{BLOG.email}".to_html_entities
     subj = u "[Rassmalog] #{name}"
@@ -98,7 +100,8 @@ class Entry < OpenStruct
     "#{addr}?subject=#{subj}&amp;body=#{body}"
   end
 
-  # Transforms this entry into HTML (for the generated HTML file).
+  # Transforms this entry into HTML.
+  # aSummarize:: Causes only the first paragraph of this entry's content to be included in the result.
   def to_html aSummarize = false
     old = text
 
@@ -117,7 +120,7 @@ class Entry < OpenStruct
     html
   end
 
-  # Renders, within the context of the given blog, a HTML page for this entry.
+  # Renders a HTML page for this Entry.
   def render
     t, c = name, to_html
     HTML_TEMPLATE.render_with do
@@ -132,12 +135,15 @@ class Entry < OpenStruct
   end
 end
 
-# A listing of entries.
+# A listing of blog entries (Entry objects).
 class Page
   include Linkable
 
   attr_reader :name, :entries, :chapter
 
+  # aName:: name of this page
+  # aEntries:: Entry objects that belong in this page
+  # aChapter:: Chapter object which contains this page
   def initialize aName, aEntries, aChapter
     @name = aName
     @entries = aEntries
@@ -146,6 +152,7 @@ class Page
 
   alias to_s name
 
+  # Renders a HTML page for this Page.
   def render
     page = self
 
@@ -175,14 +182,14 @@ class Page
   end
 end
 
-# A listing of pages.
+# A listing of pages (Page objects).
 class Chapter
   include Linkable
 
   attr_reader :name, :pages
 
-  # aName:: name of this chapter
-  # aHash:: mapping from page name to array of entries
+  # aName:: name of this Chapter
+  # aHash:: mapping from Page name to array of Entry
   def initialize aName, aHash
     @name = aName
     @pages = []
@@ -198,6 +205,7 @@ class Chapter
     'index_' + name.to_s.downcase
   end
 
+  # Renders a HTML page for this Chapter.
   def render
     chapter = self
 
@@ -242,8 +250,9 @@ def generate_html_task aPage, *aDeps #:nodoc:
   dst
 end
 
-# Generates an index of entries. This is special because it behaves kinda like a Chapter, but is not really a Chapter.
-def generate_special_index aName, aEntries, aMode, aFileName = nil
+# Generates an index, which is not a fully qualified Page but behaves like one, of entries.
+# NOTE: the aName parameter will be localized later by this method, so only provide English strings
+def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
   dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
   file dst => ENTRY_FILES + COMMON_DEPS do
