@@ -38,13 +38,13 @@ end
 task :default
 
 desc "Generate release packages."
-task :release => [:clobber, 'output'] do
+task :release => [:clobber, :rdoc, 'output'] do
   sh 'rake', '-f', __FILE__, 'package'
 end
 
 desc "Upload the project homepage."
-task :web => 'output' do |t|
-  sh 'rsync', '-avz', 'output/', PROJECT_SSH_URL
+task :web => [:rdoc, 'output'] do |t|
+  sh 'rsync', '-avz', 'ref', 'output/', PROJECT_SSH_URL
 end
 
 desc 'Connect to website FTP.'
@@ -56,6 +56,10 @@ file 'output' do
   sh 'rake'
 end
 
+Rake::RDocTask.new do |rd|
+  rd.rdoc_files.exclude('_darcs').include('**/*.rb')
+  rd.rdoc_dir = 'ref'
+end
 
 Rake::PackageTask.new PROJECT_ID, PROJECT_VERSION do |p|
   p.need_tar_gz = true
