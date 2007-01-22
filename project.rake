@@ -44,7 +44,7 @@ end
 
 desc "Upload the project homepage."
 task :web => [:rdoc, 'output'] do |t|
-  sh 'rsync', '-avz', 'ref', 'output/', PROJECT_SSH_URL
+  sh 'rsync', '-avz', '--delete', 'ref', 'output', PROJECT_SSH_URL
 end
 
 desc 'Connect to website FTP.'

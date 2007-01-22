@@ -215,10 +215,12 @@ menu:
     - Author's blog: http://www.soe.ucsc.edu/~snk/
 
   - Reference:
+    - Rassmalog API: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - ERB templates: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
-    - Learn YAML in 5 minutes: http://yaml.kwiki.org/?YamlInFiveMinutes
-    - YAML cookbook: http://yaml4r.sourceforge.net/cookbook/
+    - YAML:
+      - Tutorial: http://yaml.kwiki.org/?YamlInFiveMinutes
+      - Cookbook: http://yaml4r.sourceforge.net/cookbook/
 
   - hey! this:
     - menu is:
