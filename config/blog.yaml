@@ -157,7 +157,7 @@ recent_entries: 3
 #
 # To disable this option, set the value to "false" like this:
 #
-#   summarize: false
+#   summarize_entries: false
 #
 summarize_entries: true
 
