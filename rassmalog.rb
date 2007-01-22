@@ -227,6 +227,21 @@ def write_file aPath, aContent
   end
 end
 
+# Returns the path of the output file.
+def generate_html_task aPage, *aDeps #:nodoc:
+  dst = File.join('output', aPage.url)
+
+  file dst => aDeps.flatten + COMMON_DEPS do
+    notify aPage.class, dst
+    write_file dst, aPage.render
+  end
+
+  task :gen => dst
+  CLOBBER.include dst
+
+  dst
+end
+
 # Generates an index of entries. This is special because it behaves kinda like a Chapter, but is not really a Chapter.
 def generate_special_index aName, aEntries, aMode, aFileName = nil
   dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
@@ -356,51 +371,22 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
     CLEAN.include dst
   end
 
-# generate HTML for Entry objects
-  entryDeps = CONFIG_FILES
-
+# generate HTML for blog entries
   ENTRIES.each do |entry|
-    dst = entry.dst_file = File.join('output', entry.url)
-
-    file dst => [entry.src_file] + COMMON_DEPS do
-      write_file dst, entry.render
-      notify :entry, dst
-    end
-
-    task :gen => dst
-    CLOBBER.include dst
+    entry.dst_file = generate_html_task(entry, entry.src_file)
   end
 
-# generate HTML for Page objects
+# generate HTML for pages and chapters
   CHAPTERS.each do |chapter|
+    generate_html_task chapter, ENTRY_FILES
+
     chapter.pages.each do |page|
-      dst = File.join('output', page.url)
-
-      file dst => ENTRY_FILES + COMMON_DEPS do
-        notify page.name, dst
-        write_file dst, page.render
-      end
-
-      task :gen => dst
-      CLOBBER.include dst
+      generate_html_task page, ENTRY_FILES
     end
   end
 
   generate_special_index "Search", ENTRIES, false
   generate_special_index "Entries", ENTRIES, true
-
-# generate HTML for Chapter objects
-  CHAPTERS.each do |chapter|
-    dst = File.join('output', chapter.url)
-
-    file dst => ENTRY_FILES + COMMON_DEPS do |t|
-      notify chapter.name, dst
-      write_file dst, chapter.render
-    end
-
-    task :gen => dst
-    CLOBBER.include dst
-  end
 
 # generate front page
   dst = 'output/index.html'
