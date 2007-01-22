@@ -1,29 +1,29 @@
 /* page layout */
 
-#menu {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-
-  max-width: 200px;
-  padding: 1em;
+body {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
 }
 
-body {
-  font-family: sans-serif;
+#menu {
+  float: left;
+  clear: both;
+  padding-left: 1em;
+  max-width: 200px;
+}
 
-  margin-left: 250px;
-  margin-right: 50px;
-  margin-bottom: 50px;
+#content {
+  margin-left: 215px;
+  padding-right: 1em;
   max-width: 600px;
 }
 
 
-/* header & footer */
+/* layout elements */
 
-#header {
+#header, #navigation {
   text-align: center;
-  margin-bottom: 3em;
 }
 
 #header .name {
@@ -33,33 +33,32 @@ body {
   font-style: italic;
 }
 
-#title {
-  text-align: center;
-  margin-bottom: 2em;
+#content {
+  margin-top: 3em;
 }
 
 #footer {
+  margin-top: 5em;
   text-align: center;
   font-size: small;
+  clear: both;
 }
 
 
 /* entry */
 
 .entry {
-  margin-bottom: 5em;
+  margin-top: 5em;
 }
 
 .entry .name {
-  border-bottom: thin solid gray;
-  font-size: x-large;
 }
 
 .entry .name a {
   text-decoration: none;
 }
 
-.entry .toc {
+.entry .toc { /* NOTE: "toc" means "table of contents" */
   float: right;
   overflow: auto;
   border-left: thin dashed silver;
@@ -67,6 +66,7 @@ body {
   padding-left: 1em;
   margin: 1em;
   max-width: 50%;
+  background-color: white;
 }
 
 .entry .toc ul {
@@ -82,8 +82,7 @@ body {
 }
 
 .entry .info {
-  border-top: thin solid gainsboro;
-  text-align: right;
+  border-top: thin dashed silver;
   font-size: small;
 }
 
@@ -95,17 +94,13 @@ th, h1, h2, h3, h4, h5, h6 {
   font-weight: lighter;
 }
 
-h1 {
-  font-size: 1.75em;
-}
-
 .entry .text h1,
 .entry .text h2,
 .entry .text h3,
 .entry .text h4,
 .entry .text h5,
 .entry .text h6 {
-  margin-top: 3em;
+  margin-top: 1em;
   border-bottom: thin solid silver;
 }
 
@@ -147,7 +142,18 @@ th {
 }
 
 
-/* other */
+/* emphasis */
+
+body {
+  font-family: sans-serif;
+}
+
+em, strong, blockquote {
+  font-family: serif;
+}
+
+
+/* annoyances */
 
 a img {
   border: none;
@@ -157,21 +163,12 @@ a img {
   margin-left: -1.5em;
 }
 
-em, strong {
-  font-family: serif;
-}
+
+/* other */
 
 blockquote {
-  /*
-    This style is taken from Liferea
-    <http://liferea.sourceforge.net/>:
-
-    /usr/share/liferea/css/liferea.css
-  */
-  border-left: 2px solid #CCC;
-  background: #EEE;
-  padding: 5px;
-  font-style: italic;
-  margin: 5px 20px;
-  clear: both;
+  text-align: justify;
+  border-left: thick solid darkkhaki;
+  background: beige;
+  padding: 0.5em 1em 0.5em 1em;
 }

@@ -3,17 +3,17 @@
   This is a template for generating HTML files for the blog.
 
   The following variables are available for use in this template:
-  * BLOG            => data from the blog configuration file
-  * ENTRIES         => an array of all available blog entries
-  * TAGS            => a hash of the form: {name => array of entries}
-  * MONTHS          => a hash of the form: {name => array of entries}
-  * ARCHIVES        => an array of objects like TAGS and MONTHS
-  * @page_title     => title of the HTML page
-  * @page_content   => body of the HTML page
+  * BLOG        => data from the blog configuration file
+  * ENTRIES     => an array of all available blog entries
+  * TAGS        => a Chapter containing one Page per tag
+  * ARCHIVES    => a Chapter containing one Page per archive
+  * CHAPTERS    => an array of Chapter objects
+  * @title      => title for the HTML page we are generating
+  * @content    => body for the HTML page we are generating
 =end
 %>
 <%
-  # Recursively expands the given BLOG.menu data structure into an itemized list of links.
+  # Expands the given hierarchical menu into an itemized list of hyperlinks.
   def render_menu aMenu
     result = ''
 
@@ -51,7 +51,7 @@
     <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS feed for this blog." />
     <link rel="stylesheet" type="text/css" href="styles/default.css" />
 
-    <title><%= BLOG.name %> &mdash; <%= @page_title %></title>
+    <title><%= BLOG.name %> &mdash; <%= @title %></title>
   </head>
   <body>
     <div id="header">
@@ -59,37 +59,25 @@
       <div class="info"><%= BLOG.info.to_html %></div>
     </div>
 
-    <div id="menu">
-      <a href="index.html"><img src="images/tango/home.png" alt="Home" title="Home" /></a>
-      <a type="application/rss+xml" href="rss.xml"><img src="images/mozilla/feed-icon.png" alt="RSS feed for this blog." title="RSS feed for this blog." /></a>
-
-      <ul>
-        <!-- the heirarchical navigation menu -->
-        <%= render_menu BLOG.menu %>
-
-        <!-- listing of the most recent entries -->
-        <li>Recent
-          <ul>
-            <% ENTRIES.recent.each do |entry| %>
-              <li><%= entry.to_link %></li>
-            <% end %>
-          </ul>
-        </li>
-
-        <!-- listing of all archives -->
-        <% ARCHIVES.each do |archive| %>
-          <li><%= archive.name %>
-            <ul>
-              <% archive.pages.sort.each do |page| %>
-                <li><%= page.to_link %> (<%= archive[page].length %>)</li>
-              <% end %>
-            </ul>
-          </li>
-        <% end %>
-      </ul>
+    <div id="navigation">
+      <a href="index.html">Home</a>
+      &middot;
+      <a href="index_tags.html">Tags</a>
+      &middot;
+      <a href="index_archives.html">Archives</a>
+      &middot;
+      <a href="index_entries.html">Entries</a>
+      &middot;
+      <a href="index_search.html">Search</a>
+      &middot;
+      <a type="application/rss+xml" href="rss.xml">RSS feed</a>
     </div>
 
-    <%= @page_content %>
+    <div id="menu">
+      <ul><%= render_menu BLOG.menu %></ul>
+    </div>
+
+    <div id="content"><%= @content %></div>
 
     <div id="footer">
       Authored by <%= BLOG.author %>.

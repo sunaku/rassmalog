@@ -3,6 +3,10 @@
 ##
 
 
+############################################################################
+# Author information
+############################################################################
+
 #
 # The name of your blog.
 #
@@ -47,6 +51,10 @@ author: Put your name here
 #
 email: your@email.here
 
+
+############################################################################
+# Publishing information
+############################################################################
 
 #
 # The URL of your published blog.
@@ -96,6 +104,10 @@ host: you@your_host:path/to/your/blog/
 uploader: rsync --rsh=ssh -auvz
 
 
+############################################################################
+# Language information
+############################################################################
+
 #
 # The character set used in your entries.
 #
@@ -119,6 +131,10 @@ encoding: utf-8
 #
 language: en-us
 
+
+############################################################################
+# Blog generation
+############################################################################
 
 #
 # The name of a file in the output/ directory that should be the front page
@@ -145,12 +161,33 @@ recent_entries: 3
 #
 summarize_entries: true
 
+#
+# This parameter controls how frequently archives are created.
+#
+# To have one archive per year, specify:
+#
+#   archive_frequency: %Y
+#
+# To have one archive per month, specify:
+#
+#   archive_frequency: %Y-%m
+#
+# To have one archive per day, specify:
+#
+#   archive_frequency: %Y-%m-%d
+#
+# In these examples, the %... symbols are "format specifiers" for the
+# Time.strftime method. You can see the documentation for this method by
+# typing the following command at your terminal:
+#
+#   ri Time.strftime
+#
+archive_frequency: %Y-%m
 
 #
-# Hierarchical navigation menu shown in all generated HTML pages.
+# Hierarchical menu of links that is shown in all generated HTML pages.
 #
 menu:
-
   - Rassmalog:
     - Home page: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/

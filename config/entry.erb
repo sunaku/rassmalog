@@ -3,8 +3,8 @@
   This is a template for generating HTML for a blog entry.
 
   The following variables are available for use in this template:
-  * BLOG    => data from the blog configuration file
-  * @entry  => data from a blog entry file
+  * BLOG        => data from the blog configuration file
+  * @entry      => the Entry for which we are generating HTML
 =end
 
   text = @entry.text
@@ -22,13 +22,11 @@
 
   <div class="text"><%= text.to_html %></div>
 
-  <p class="info">
-    Posted on <%= @entry.date.strftime "%c" %>.
-    <br/>
-    Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
-    <br/>
+  <div class="info">
+    Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %> as <%= @entry.tags.map {|t| t.to_link}.join ', '
+    %>.
 <% if BLOG.email %>
-    You can <a href="<%= @entry.comment_url %>">post a comment about this entry</a>.
+    Send <a href="<%= @entry.comment_url %>">comments</a>.
 <% end %>
-  </p>
+  </div>
 </div>

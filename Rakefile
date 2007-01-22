@@ -51,18 +51,18 @@ class String
   end
 end
 
+class ERB
+  def render_with &aBlock
+    dummy = Object.new
+    dummy.instance_eval(&aBlock)
+    result dummy.instance_eval {binding}
+  end
+end
 
-## data structures for organizing entries
-
-Page = Struct.new :name, :url
-
-# Represents a generated HTML page, which is associated with a list of entries. This association is maintained by the Chapter class.
-class Page
-  alias old_url url
-
+module Linkable
   # Returns a relative URL to this page.
   def url
-    (old_url || name).to_s.to_file_name << '.html'
+    self.to_s.to_file_name << '.html'
   end
 
   # Returns a relative hyperlink to this page.
@@ -74,51 +74,19 @@ class Page
   def <=> aOther
     url <=> aOther.url
   end
-
-  alias to_s name
 end
 
-# A mapping from a Page to its entries.
-class Chapter < Hash
-  attr_reader :name
 
-  # aName:: name of this chapter
-  # the rest:: arguments to Hash.new
-  def initialize aName, *aArgs, &aBlock
-    @name = aName
-    super *aArgs, &aBlock
-  end
+## data structures for organizing entries
 
-  alias pages keys
+# A single blog entry.
+class Entry < OpenStruct
+  include Linkable
 
-  # Renders, within the context of the given blog, the given page into HTML.
-  def render aPage
-    entries = self[aPage]
-    title = [name, aPage.name].compact.join " &mdash; "
-
-    Object.new.instance_eval do
-      @page_title = title
-      heading = %{<h2 id="title">#{@page_title}</h2>\n\n}
-
-      @page_content = entries.inject heading do |memo, entry|
-        memo << entry.to_html(BLOG.summarize_entries)
-      end
-
-      HTML_TEMPLATE.result(binding)
-    end
-  end
-end
-
-module Entry
   # Returns the name of the generated HTML file.
   def url
     stamp = date.strftime "%F"
     "#{stamp}-#{name}.html".to_file_name
-  end
-
-  # Returns a hyperlink to the generated HTML file.
-  def to_link aName = name
-    %{<a href="#{u url}">#{aName}</a>}
   end
 
   # Returns a url to submit comments for this entry.
@@ -135,13 +103,15 @@ module Entry
     old = text
 
     # summarize the entry body
-      if aSummarize and text =~ /^.*?(\r?\n){2,}/m
-        self.text = $& << "\n\n#{to_link LANG["Read more..."]}"
+      paras = text.split(/(?:\r?\n){2,}/m)
+
+      if aSummarize
+        self.text = "#{paras.first}\n\n#{to_link LANG["Read more..."]}"
       end
 
     # transform the entry into HTML
-      @entry = self
-      html = ENTRY_TEMPLATE.result binding
+      entry = self
+      html = ENTRY_TEMPLATE.render_with {@entry = entry}
 
     self.text = old
     html
@@ -150,16 +120,91 @@ module Entry
   # Renders, within the context of the given blog, a HTML page for this entry.
   def render
     t, c = name, to_html
-    Object.new.instance_eval do
-      @page_title = t
-      @page_content = c
-      HTML_TEMPLATE.result binding
+    HTML_TEMPLATE.render_with do
+      @title, @content = t, c
     end
   end
 
   # Compares this entry to the given entry.
+  # This is used to sort a list of entries by date.
   def <=> aOther
     date <=> aOther.date
+  end
+end
+
+# A listing of entries.
+class Page
+  include Linkable
+
+  attr_reader :name, :entries, :chapter
+
+  def initialize aName, aEntries, aChapter
+    @name = aName
+    @entries = aEntries
+    @chapter = aChapter
+  end
+
+  alias to_s name
+
+  def render
+    page = self
+
+    HTML_TEMPLATE.render_with do
+      @title = page.name
+      @content = PAGE_TEMPLATE.render_with {@page = page}
+    end
+  end
+
+  # Returns the next page in the chapter.
+  def next
+    sibling(+1)
+  end
+
+  # Returns the previous page in the chapter.
+  def prev
+    sibling(-1)
+  end
+
+  private
+
+  def sibling aOffset
+    list = chapter.pages
+    pos = list.index(self)
+
+    list[(pos + aOffset) % list.length]
+  end
+end
+
+# A listing of pages.
+class Chapter
+  include Linkable
+
+  attr_reader :name, :pages
+
+  # aName:: name of this chapter
+  # aHash:: mapping from page name to array of entries
+  def initialize aName, aHash
+    @name = aName
+    @pages = []
+
+    aHash.each_pair do |k, v|
+      @pages << Page.new(k, v, self)
+    end
+
+    @pages.sort!
+  end
+
+  def to_s
+    'index_' + name.to_s.downcase
+  end
+
+  def render
+    chapter = self
+
+    HTML_TEMPLATE.render_with do
+      @title = chapter.name
+      @content = CHAPTER_TEMPLATE.render_with {@chapter = chapter}
+    end
   end
 end
 
@@ -169,9 +214,9 @@ def notify *args
   printf "%12s  %s\n", *args
 end
 
-# Loads the given YAML file into an OpenStruct.
-def load_yaml_file aFile
-  OpenStruct.new(YAML.load_file(aFile))
+# Loads the given YAML file into the given wrapper.
+def load_yaml_file aFile, aWrapper = OpenStruct
+  aWrapper.new(YAML.load_file(aFile))
 end
 
 # Writes the given content to the given file.
@@ -180,6 +225,24 @@ def write_file aPath, aContent
     # lstrip because XML declaration must be at start of file
     f << aContent.lstrip
   end
+end
+
+# Generates an index of entries. This is special because it behaves kinda like a Chapter, but is not really a Chapter.
+def generate_special_index aName, aEntries, aMode, aFileName = nil
+  dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
+
+  file dst => ENTRY_FILES + COMMON_DEPS do
+    index = HTML_TEMPLATE.render_with do
+      @title = LANG[aName]
+      @content = %{<h1>#{@title}</h1>} << aEntries.map {|e| e.to_html aMode}.join
+    end
+
+    notify aName, dst
+    write_file dst, index
+  end
+
+  task :gen => dst
+  CLOBBER.include dst
 end
 
 
@@ -216,11 +279,10 @@ end
   ENTRY_FILES = FileList['entries/**/*.yaml']
 
   ENTRIES = ENTRY_FILES.map do |src|
-    entry = load_yaml_file(src)
+    entry = load_yaml_file(src, Entry)
     entry.src_file = src
     entry.date = DateTime.parse(entry.date.to_s)
     entry.tags = entry.tags.to_a rescue [entry.tags]
-    entry.extend Entry
 
     entry
   end.sort.reverse!
@@ -233,121 +295,146 @@ end
   RECENT_ENTRY_FILES = ENTRIES.recent.map! {|e| e.src_file}
 
 # organize blog entries into chapters
-  TAGS = Chapter.new(LANG["Tags"]) {|h,k| h[k] = []}
-  MONTHS = Chapter.new(LANG["Archives"]) {|h,k| h[k] = []}
+  tags = Hash.new {|h,k| h[k] = []}
+  months = Hash.new {|h,k| h[k] = []}
 
-  # this stuff is done *after* the entries have been sorted, so that stuff in the archives appears in the correct chronological order
-  ENTRIES.each do |entry|
-    # determine which tags this entry belongs to
-      entry.tags.map! do |tag|
-        page = Page.new tag
-        TAGS[page] << entry
+  # parse tags and months from entries
+    ENTRIES.each do |entry|
+      entry.tags.each do |tag|
+        tags[tag] << entry
+      end.clear # will be restored later
 
-        page
+      months[entry.date.strftime(BLOG.archive_frequency)] << entry
+    end
+
+  # organize entries into pages
+    TAGS = Chapter.new('Tags', tags)
+    ARCHIVES = Chapter.new('Archives', months)
+
+    # restore tags for entry
+      TAGS.pages.each do |tag|
+        tag.entries.each do |entry|
+          entry.tags << tag
+        end
       end
 
-    # determine which archive this entry belongs to
-      arch = Page.new entry.date.strftime("%B %Y"), entry.date.strftime("%Y-%m")
+      ARCHIVES.pages.each do |month|
+        month.entries.each do |entry|
+          entry.archive = month
+        end
+      end
 
-      MONTHS[arch] << entry
-  end
-
-  ARCHIVES = [TAGS, MONTHS]
+  CHAPTERS = [TAGS, ARCHIVES]
 
 
 ## output generation stage
 
+task :default => :gen
+
 desc "Generate the blog."
-task :blog
-task :default => :blog
+task :gen
+
+desc "Regenerate the blog from scratch."
+task :regen => [:clobber, :gen]
 
 CONFIG_FILES = FileList['config/**/*']
+COMMON_DEPS = ['output'] + CONFIG_FILES
 
-# generate output directory
+# create output directory
   directory 'output'
   CLOBBER.include 'output'
 
-  # copy everything from input/ into output/
-    FileList['input/**/*'].each do |src|
-      dst = src.sub('input', 'output')
+# copy everything from input/ into output/
+  FileList['input/**/*'].each do |src|
+    dst = src.sub('input', 'output')
 
-      file dst => [src, 'output'] do
-        cp_r src, dst, :preserve => true
-      end
-
-      task :blog => dst
-      CLEAN.include dst
+    file dst => [src] + COMMON_DEPS do
+      cp_r src, dst, :preserve => true
     end
 
-# generate pages for entries
-  entryDeps = RECENT_ENTRY_FILES + CONFIG_FILES
+    task :gen => dst
+    CLEAN.include dst
+  end
+
+# generate HTML for Entry objects
+  entryDeps = CONFIG_FILES
 
   ENTRIES.each do |entry|
     dst = entry.dst_file = File.join('output', entry.url)
 
-    file dst => [entry.src_file, 'output'] + entryDeps do
+    file dst => [entry.src_file] + COMMON_DEPS do
       write_file dst, entry.render
       notify :entry, dst
     end
 
-    task :blog => dst
+    task :gen => dst
     CLOBBER.include dst
   end
 
-# generate archive pages for entries
-  chaps =
-    unless BLOG.front_page
-      index = Chapter.new nil
-      index[Page.new(LANG['Recent entries'], 'index')] = ENTRIES.recent
-
-      ARCHIVES + [index]
-    else
-      ARCHIVES
-    end
-
-  chaps.each do |chapter|
-    chapter.each_pair do |page, entries|
+# generate HTML for Page objects
+  CHAPTERS.each do |chapter|
+    chapter.pages.each do |page|
       dst = File.join('output', page.url)
 
-      file dst => ENTRY_FILES + CONFIG_FILES do
-        write_file dst, chapter.render(page)
-        notify chapter.name, dst
+      file dst => ENTRY_FILES + COMMON_DEPS do
+        notify page.name, dst
+        write_file dst, page.render
       end
 
-      task :blog => dst
+      task :gen => dst
       CLOBBER.include dst
     end
   end
 
-# generate front page
-  if BLOG.front_page
-    src = 'output/' + BLOG.front_page
-    dst = 'output/index.html'
+  generate_special_index "Search", ENTRIES, false
+  generate_special_index "Entries", ENTRIES, true
 
-    file dst => [src, 'output'] do
-      cp src, dst, :preserve => true, :verbose => false
-      notify 'front page', src
+# generate HTML for Chapter objects
+  CHAPTERS.each do |chapter|
+    dst = File.join('output', chapter.url)
+
+    file dst => ENTRY_FILES + COMMON_DEPS do |t|
+      notify chapter.name, dst
+      write_file dst, chapter.render
     end
 
-    task :blog => dst
+    task :gen => dst
+    CLOBBER.include dst
   end
 
+# generate front page
+  dst = 'output/index.html'
+
+  if BLOG.front_page
+    src = File.join('output', BLOG.front_page)
+
+    file dst => [src] + COMMON_DEPS do
+      notify 'front page', src
+      cp src, dst, :preserve => true, :verbose => false
+    end
+  else
+    generate_special_index "Recent entries", ENTRIES.recent, true, dst
+  end
+
+  task :gen => dst
+  CLOBBER.include dst
+
 # generate RSS feed
-  file 'output/rss.xml' => ['output'] + CONFIG_FILES + ENTRY_FILES do |t|
+  file 'output/rss.xml' => ENTRY_FILES + COMMON_DEPS do |t|
     write_file t.name, RSS_TEMPLATE.result(binding)
     notify 'RSS feed', t.name
   end
 
-  task :blog => 'output/rss.xml'
+  task :gen => 'output/rss.xml'
   CLOBBER.include 'output/rss.xml'
 
 
 ## output publishing stage
 
 desc "Upload the blog to your website."
-task :upload => [:blog, 'output'] do
+task :upload => [:gen, 'output'] do
   cmd = BLOG.uploader.split
   cmd.push 'output/', BLOG.host
 
-  system *cmd
+  system(*cmd)
 end
