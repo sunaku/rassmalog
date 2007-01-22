@@ -198,7 +198,8 @@ class Chapter
   # aName:: name of this Chapter
   # aHash:: mapping from Page name to array of Entry
   def initialize aName, aHash
-    @name = aName
+    @fileName = aName
+    @name = LANG[aName]
     @pages = []
 
     aHash.each_pair do |k, v|
@@ -209,7 +210,7 @@ class Chapter
   end
 
   def to_s
-    'index_' + name.to_s.downcase
+    'index_' + @fileName.downcase
   end
 
   # Renders a HTML page for this Chapter.
