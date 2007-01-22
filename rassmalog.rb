@@ -79,6 +79,13 @@ module Linkable
   end
 end
 
+class Language < OpenStruct
+  # Translates the given string and then formats (see String#format) the translation with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
+  def [] aString, *aArgs
+    (self.send(aString) || aString) % aArgs
+  end
+end
+
 
 ## data structures for organizing entries
 
@@ -284,20 +291,7 @@ end
 
 # load translations
   langFile = "config/lang/#{BLOG.language}.yaml"
-
-  LANG =
-    if File.exist? langFile
-      load_yaml_file langFile
-    else
-      OpenStruct.new
-    end
-
-  class << LANG
-    # Translates the given string and then formats (see String#format) the translation with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
-    def [] aString, *aArgs
-      (self.send(aString) || aString) % aArgs
-    end
-  end
+  LANG = load_yaml_file(langFile, Language) rescue Language.new
 
 # load blog entries
   ENTRY_FILES = FileList['entries/**/*.yaml']
