@@ -115,7 +115,7 @@ class Entry < OpenStruct
     # summarize the entry body
       paras = text.split(/(?:\r?\n){2,}/m)
 
-      if aSummarize
+      if aSummarize && paras.length > 1
         self.text = "#{paras.first}\n\n#{to_link LANG["Read more..."]}"
       end
 
