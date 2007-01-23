@@ -1,0 +1,74 @@
+name: Version 2.3.0
+
+date: Mon Jan 22 21:56:35 PST 2007 @289 /Internet Time/
+
+tags:
+  - rassmalog
+  - history
+
+text: |
+  This release implements a more logical blog organization, adds a @archive_frequency@ configuration parameter, adds API reference documentation, and improves the default CSS design.
+
+
+  h1. Blog organization
+
+  Previously, I was following the common blog convention of showing a list of all tags and archives on _every_ page. This caused lots of unnecessary coupling between generated HTML pages. For example, changing the tags of one entry would neccessitate HTML pages for _all_ entries to be regenerated (since _all_ pages have the list of tags and archives).
+
+  In addition, there was a subtle conflict between the user-defined hierarchical menu and the list of tags and archives. Although both of these things were important, they were essentially put in the same place (the navigation menu at the left-hand side). As a result, I was forced to choose between them -- which one should I show first?
+
+  I felt that the user-defined menu was more important than the list of tags and archives, so the former was put above the latter. This descision made it very unpleasant to access the list of tags and archives for the blog because you have to scroll all the way down the page. It was hard to see everything in such a narrow column anyways.
+
+  Another thing that bothered me about the previous organization was that I could not see a list of _all_ entries on one page. I had to hunt around in each tag and archive, _one by one_, just to see what was available in the blog. That was very unpleasant!
+
+  A related problem was the lack of a blog search mechanism. Since Rassmalog is a static blog engine, we cannot have a dynamic search engine like dynamic blogs. However, we _can_ use the Web browser to search for text on a single Web page.
+
+
+  h2. Let there be logic!
+
+  After thinking about the problems described above, I drafted the following, more logical, blog organization:
+
+  * Tags and archives are _not_ listed on every HTML page. They are listed on their own separate pages.
+
+  * Only the user-defined hierarchical menu is shown in the main navigation area (left-hand side of the Web page).
+
+  * An "entries" or "index" page, which contains a list of all entries in the blog, is generated.
+
+  * A "search" page, which contains the content of all entries in the blog (this is a _huge_ file) is generated. This will allow people to search for stuff in the blog using their browser's search mechanism.
+
+  One of the benefits of this organization is that it simplified the navigation of the blog. For example, a blog is now composed of:
+  * list of tags
+  * list of archives
+  * list of entries
+  * search page
+
+  As a result, the entire blog navigation can fit inside your mind -- making the blog seem very simple.
+
+
+  h1. @archive_frequency@ parameter
+
+  This parameter controls how frequently archives are created.
+
+  To have one archive per year, specify:
+
+    archive_frequency: %Y
+
+  To have one archive per month, specify:
+
+    archive_frequency: %Y-%m
+
+  To have one archive per day, specify:
+
+    archive_frequency: %Y-%m-%d
+
+  In these examples, the %... symbols are "format specifiers" for the
+  @Time.strftime@ method. You can see the documentation for this method by
+  typing the following command at your terminal:
+
+    ri Time.strftime
+
+
+  h1. API reference
+
+  The internals of Rassmalog were grotesque when I started hacking on it two days ago to implement the new blog organization. I cleaned up the mess and made the notion of pages and chapters, which was previously internal, explicit through the <tt>config/page.erb</tt> and <tt>config/chapter.erb</tt> templates.
+
+  As a result, I re-enabled the generation of "API reference documentation for the Rassmalog internals":../ref/index.html.

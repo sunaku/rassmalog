@@ -205,6 +205,7 @@ menu:
   - Rassmalog:
     - Home page: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
+    - Release history: history.html
     - Facilites:
       - Source code (browse online): http://rassmalog.rubyforge.org/src/rassmalog/
       - Downloads: http://rubyforge.org/frs/?group_id=2737

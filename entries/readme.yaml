@@ -17,13 +17,13 @@ text: |
 
   h1. Motivation
 
-  bq=. <big>Your blog. Your content!</big>
+  p=. <big>Your blog. Your content!</big>
 
-  With Rassmalog, you have full control of your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
+  With Rassmalog, you have _complete_ control over your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
 
   * You can easily make backups and share them with a good friend.
 
-  * You're safe from the web server accidentally crashing or losing all of your data.
+  * You are safe if your web server accidentally crashes or loses all of your data.
 
   * If you decide to use another blog engine, your blog entries are readily transformed into the other blog's format because they are plain-text.
 
@@ -46,30 +46,43 @@ text: |
 
   Rassmalog features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents.
 
-  It is designed to be _easy to use_ and _easy to configure_. These goals are acheived partly through simplicity: Rassmalog's tiny code base contains only _six_ source files and _five_ of them are devoted to configuration. As a result,
+  It is designed for ease of use and configuration. These goals are acheived partly through simplicity as Rassmalog's code base is tiny -- containing <big>less than 400 lines of code!</big> As a result,
 
   * Nearly everything is automated:
-  ** Automatic _table of contents_ for blog entries.
-  ** Automatic _syntax coloring_ and smart sizing (line vs. paragraph) for source code.
-  ** Automatic tag and month _archives_.
+  ** Automatic table of contents for blog entries.
+  ** Automatic syntax coloring and smart sizing (line vs. paragraph) for source code.
+  ** Automatic tag and month archives.
   ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
 
-  * Blog entries are plain-text files with easy syntax (see this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html)
-  ** Only _four_ parameters in a blog entry: *name*, *date*, *tags*, and *text*.
+  * Blog entries are plain-text files with easy syntax. (See this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html.)
+  ** Only four parameters in a blog entry: *name*, *date*, *tags*, and *text*.
   *** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
   ** _No_ obscure rules for naming blog entry files. The file name can be whatever you want!
   ** _No_ obscure restrictions on how blog entry files are organized -- just keep them _somewhere_ beneath the <tt>entries/</tt> directory.
 
   * Templates are easily changable to suit your tastes:
-  ** Only _two_ templates involved in generating HTML output.
-  ** Only _one_ template involved in generating an RSS feed.
+  ** Only four templates involved in generating HTML output.
+  ** Only one template involved in generating an RSS feed.
 
   * If you don't like Textile, you can easily "use _any_ text formatting system":#config you want for blog entries.
 
-  * Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization) of the central application. (See this "sample file":http://rassmalog.rubyforge.org/src/rassmalog/config/lang/te-in.yaml and "part of its effect":http://www.soe.ucsc.edu/~snk/ on the author's blog -- the rest of the translation took place in the templates).
+  * Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization) of the central application. (See this "sample file":http://rassmalog.rubyforge.org/src/rassmalog/config/lang/te-in.yaml and "part of its effect":http://www.soe.ucsc.edu/~snk/ on the author's blog -- the rest of the translation took place in the templates.)
 
 
-  h2(#organization). Organization
+  h1. Organization
+
+  The basic unit of content in Rassmalog is the *entry*. Entries are collected into *pages*. Pages are collected into *chapters*.
+
+  As you can see, there is a hierarchical relationship here:
+
+  * Chapter
+  ** Page
+  *** Entry
+
+  For example, a chapter shows a list of all available tags, a page shows a list of entries which have a particular tag, and an entry just shows its content.
+
+
+  h2(#manifest). Manifest
 
   When you download and extract the release package, you would see the following:
 
@@ -87,6 +100,12 @@ text: |
 
   * <tt>config/entry.erb</tt>
     - template used to generate HTML for an entry
+
+  * <tt>config/page.erb</tt>
+    - template used to generate HTML for a page
+
+  * <tt>config/chapter.erb</tt>
+    - template used to generate HTML for a chapter
 
   * <tt>config/format.rb</tt>
     - defines how text is transformed into HTML
@@ -125,12 +144,11 @@ text: |
 
   h2. Version numbering system
 
-  I _strictly_ follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. To summarize[1] this "major.minor.build" numbering policy,
-  * an increase in the _major_ number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
-  * an increase in the _minor_ number indicates that _functionally compatible_ changes have occurred. Thus, what worked in the previous version will work in the new one.
-  * an increase in the _build_ number indicates that the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
+  I _strictly_ follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. This @major.minor.build@ numbering policy "can be summarized":http://ablog.apress.com/?p=738 as follows:
+  * an increase in the *major* number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
+  * an increase in the *minor* number indicates that _functionally compatible_ changes have occurred. Thus, what worked in the previous version will work in the new one.
+  * an increase in the *build* number indicates that the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
 
-  fn1. C. Gross, "Explaining Open Source Version Numbers", [Online document], 2005 Nov 28, [cited 2006 Aug 27], Available HTTP: "http://ablog.apress.com/?p=738":http://ablog.apress.com/?p=738
 
 
   h1. Requirements
@@ -160,17 +178,23 @@ text: |
 
   In the location where you extracted the release package, run the following command to see a list of available tasks:
 
-    rake -T
+    rake --tasks
 
-  To generate your blog, run either of the following commands:
+  To generate your blog, run the following command:
 
     rake
 
-    rake blog
+  To remove only the files that were copied from <tt>input/</tt> to <tt>output/</tt>, run the following command:
 
-  To _forcefully_ regenerate your blog, run the following command:
+    rake clean
 
-    rake clobber blog
+  To remove all the generated files, run the following command:
+
+    rake clobber
+
+  To regenerate your blog from _scratch_, run the following command:
+
+    rake regen
 
   To upload your blog to your website, run the following command:
 
@@ -181,7 +205,7 @@ text: |
 
   Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments/documentation to help you configure your blog.
 
-  Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Organization":#organization section.
+  Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Manifest":#manifest section.
 
 
   h3(#config.format). Using another text formatting system
@@ -193,7 +217,7 @@ text: |
   <code>
   class String
     def to_html
-      '<pre style="background-color: yellow">' + self + '</pre>'
+      '<pre style="background: yellow">' + self + '</pre>'
     end
   end
   </code>
