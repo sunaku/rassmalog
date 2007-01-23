@@ -108,6 +108,7 @@ th, h1, h2, h3, h4, h5, h6 {
 /* source code */
 
 tt {
+  font-weight: bold;
   color: brown;
   background-color: floralwhite;
 }
@@ -162,6 +163,10 @@ blockquote {
 hr {
   background-color: red;
   border: none;
+}
+
+big {
+  font-size: x-large;
 }
 
 
