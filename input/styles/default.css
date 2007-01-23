@@ -10,11 +10,11 @@ body {
   float: left;
   clear: both;
   padding-left: 1em;
-  max-width: 200px;
+  max-width: 20%;
 }
 
 #content {
-  margin-left: 215px;
+  margin-left: 25%;
   padding-right: 1em;
   max-width: 600px;
 }
@@ -33,8 +33,15 @@ body {
   font-style: italic;
 }
 
+#navigation {
+  padding-bottom: 2em; /* puts #menu and #content at same height */
+}
+
 #content {
-  margin-top: 3em;
+}
+
+#content > h1 { /* heading that comes just before everything in #content */
+  margin-bottom: 1.5em;
 }
 
 #footer {
@@ -48,7 +55,7 @@ body {
 /* blog entry */
 
 .entry {
-  margin-top: 5em;
+  margin-bottom: 5em;
 }
 
 .entry .name {
