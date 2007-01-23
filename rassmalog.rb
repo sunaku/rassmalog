@@ -382,11 +382,16 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
 
 # generate HTML for pages and chapters
   CHAPTERS.each do |chapter|
-    generate_html_task chapter, ENTRY_FILES
+    chapterDeps = []
 
     chapter.pages.each do |page|
-      generate_html_task page, ENTRY_FILES
+      pageDeps = page.entries.map {|e| e.src_file}
+      generate_html_task page, pageDeps
+
+      chapterDeps.concat pageDeps
     end
+
+    generate_html_task chapter, chapterDeps
   end
 
   generate_special_index "Search", ENTRIES, false
