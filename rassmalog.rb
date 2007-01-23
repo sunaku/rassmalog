@@ -263,7 +263,7 @@ end
 def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
   dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
-  file dst => ENTRY_FILES + COMMON_DEPS do
+  file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
     index = HTML_TEMPLATE.render_with do
       @title = LANG[aName]
       @content = %{<h1>#{@title}</h1>} << aEntries.map {|e| e.to_html aMode}.join
@@ -394,8 +394,8 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
     generate_html_task chapter, chapterDeps
   end
 
-  generate_special_index "Search", ENTRIES, false
   generate_special_index "Entries", ENTRIES, true
+  generate_special_index "Search", ENTRIES, false
 
 # generate front page
   dst = 'output/index.html'
