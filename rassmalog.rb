@@ -367,7 +367,7 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
   FileList['input/**/*'].each do |src|
     dst = src.sub('input', 'output')
 
-    file dst => [src] + COMMON_DEPS do
+    file dst => [src, 'output'] do
       cp_r src, dst, :preserve => true
     end
 
