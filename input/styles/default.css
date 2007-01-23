@@ -45,7 +45,7 @@ body {
 }
 
 
-/* entry */
+/* blog entry */
 
 .entry {
   margin-top: 5em;
@@ -58,7 +58,7 @@ body {
   text-decoration: none;
 }
 
-.entry .toc { /* NOTE: "toc" means "table of contents" */
+.entry .toc { /* table of contents */
   float: right;
   overflow: auto;
   border-left: thin dashed silver;
@@ -100,7 +100,7 @@ th, h1, h2, h3, h4, h5, h6 {
 .entry .text h4,
 .entry .text h5,
 .entry .text h6 {
-  margin-top: 1em;
+  margin-top: 2.5em;
   border-bottom: thin solid silver;
 }
 
@@ -152,8 +152,20 @@ em, strong, blockquote {
   font-family: serif;
 }
 
+blockquote {
+  text-align: justify;
+  border-left: thick solid darkkhaki;
+  background: beige;
+  padding: 0.5em 1em 0.5em 1em;
+}
 
-/* annoyances */
+hr {
+  background-color: red;
+  border: none;
+}
+
+
+/* fix annoyances */
 
 a img {
   border: none;
@@ -161,14 +173,4 @@ a img {
 
 #menu li, .entry .toc li {
   margin-left: -1.5em;
-}
-
-
-/* other */
-
-blockquote {
-  text-align: justify;
-  border-left: thick solid darkkhaki;
-  background: beige;
-  padding: 0.5em 1em 0.5em 1em;
 }
