@@ -37,9 +37,9 @@ text: |
 
   sizes = {
     # image label => [width, height]
-    :_large => [800, 600],
-    :_medium => [400, 300],
-    :_small => [40, 30],
+    :_large   => [800, 600],
+    :_medium  => [400, 300],
+    :_small   => [40, 30],
   }
 
   FileList['input/images/**/*.{jpg,png,gif}'].each do |src|
@@ -50,14 +50,14 @@ text: |
       dst = "#{dstName}#{label}.#{ext}"
 
       file dst => [src, 'output'] do |t|
-        # workaround for block-scope limitation
+        # workaround for nested block scope
         a, b = t.prerequisites[0], t.name
 
-        Magick::ImageList.new(a).resize(*size).write b
         notify :resize, b
+        Magick::ImageList.new(a).resize(*size).write b
       end
 
-      task :blog => dst
+      task :default => dst
       CLOBBER.include dst
     end
   end
