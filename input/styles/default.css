@@ -120,14 +120,11 @@ tt {
   background-color: floralwhite;
 }
 
-pre, blockquote .code {
+pre {
   padding: 1em;
   line-height: normal;
   overflow: auto;
-  display: block;
-}
 
-pre {
   border: thin solid darkgray;
   background-color: whitesmoke;
 }
