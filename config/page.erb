@@ -16,6 +16,8 @@
 
 <%= @page.prev.to_link %> &larr; <%= @page.chapter.to_link %> &rarr; <%= @page.next.to_link %>
 
+<br/><br/>
+
 <% @page.entries.each do |entry| %>
   <%= entry.to_html BLOG.summarize_entries && :summary %>
 <% end %>
