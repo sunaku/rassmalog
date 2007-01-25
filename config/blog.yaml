@@ -4,7 +4,7 @@
 
 
 ############################################################################
-# Author information
+# Blog information
 ############################################################################
 
 
@@ -20,6 +20,11 @@ name: Put the name of your blog here
 info: |
   Describe your blog here.
   Fill as many lines as you need!
+
+
+############################################################################
+# Author information
+############################################################################
 
 
 #
@@ -175,7 +180,8 @@ summarize_entries: true
 
 
 #
-# This parameter controls how frequently archives are created.
+# This parameter controls how frequently archives are created. Its value is
+# evaluated by the Time.strftime method.
 #
 # To have one archive per year, specify:
 #
@@ -189,6 +195,10 @@ summarize_entries: true
 #
 #   archive_frequency: %Y-%m-%d
 #
+# To have one archive per some other criteria, specify your own value:
+#
+#   archive_frequency: put your own value here
+#
 # In these examples, the %... symbols are "format specifiers" for the
 # Time.strftime method. You can see the documentation for this method by
 # typing the following command at your terminal:
@@ -198,16 +208,22 @@ summarize_entries: true
 archive_frequency: %Y-%m
 
 
+
+############################################################################
+# Other content
+############################################################################
+
+
 #
 # Hierarchical menu of links that is shown in all generated HTML pages.
 #
 menu:
   - Rassmalog:
-    - Home page: http://rassmalog.rubyforge.org
+    - What's new?: history.html
+    - Website: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
-    - Release history: history.html
-    - Facilites:
-      - Source code (browse online): http://rassmalog.rubyforge.org/src/rassmalog/
+    - Facilities:
+      - Source code (browse online or <em>get</em> with Darcs): http://rassmalog.rubyforge.org/src/rassmalog/
       - Downloads: http://rubyforge.org/frs/?group_id=2737
       - Bugs: http://rubyforge.org/tracker/?group_id=2737
       - Patches: http://rubyforge.org/tracker/?group_id=2737

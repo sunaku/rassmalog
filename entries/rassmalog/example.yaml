@@ -15,8 +15,11 @@ name: Put the name of your entry here.
 #   date: Wed Dec 13 00:22:00 PST 2006 @390 /Internet Time/
 #   date: Wed Dec 13 21:31:04 PST 2006
 #
-# See the documentation for DateTime.parse for
-# details about how the date should be written.
+# For more information about the format of this parameter, see the
+# documentation for the DateTime.parse method by typing the following
+# command at your terminal:
+#
+#   ri DateTime.parse
 #
 date: Dec 8 2006 11:00pm #Put today's date and time here.
 

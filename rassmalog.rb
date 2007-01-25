@@ -60,8 +60,7 @@ class ERB
   end
 end
 
-# Something that can be (hyper)linked to.
-# Objects that mix-in this module must define a #to_s method, whose value is used when determining the URL for this object.
+# Something that can be (hyper)linked to. Objects that mix-in this module must define a #to_s method, whose value is used when determining the URL for this object.
 module Linkable
   # Returns a relative URL to this page.
   def url
@@ -107,8 +106,7 @@ class Entry < OpenStruct
     "#{addr}?subject=#{subj}&amp;body=#{body}"
   end
 
-  # Transforms this entry into HTML.
-  # aSummarize:: Causes only the first paragraph of this entry's content to be included in the result.
+  # Transforms this entry into HTML. If summarize is enabled, then only the first paragraph of this entry's content will be included in the result.
   def to_html aSummarize = false
     old = text
 
@@ -259,7 +257,7 @@ def generate_html_task aPage, *aDeps #:nodoc:
 end
 
 # Generates an index, which is not a fully qualified Page but behaves like one, of entries.
-# NOTE: the aName parameter will be localized later by this method, so only provide English strings
+# NOTE: the aName parameter will be translated later by this method, so only provide English strings here.
 def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
   dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
