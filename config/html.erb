@@ -55,6 +55,9 @@
     <title><%= BLOG.name %> &mdash; <%= @title %></title>
   </head>
   <body>
+    <!-- makes website more usable for text-mode browsers -->
+    <a href="#content" style="display: none">Jump to page content</a>
+
     <div id="header">
       <h1 class="name"><%= BLOG.name.to_html %></h1>
       <div class="info"><%= BLOG.info.to_html %></div>
