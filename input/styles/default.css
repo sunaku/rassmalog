@@ -3,20 +3,19 @@
 body {
   margin-left: auto;
   margin-right: auto;
-  max-width: 1000px;
+  max-width: 950px;
 }
 
 #menu {
   float: left;
-  clear: both;
   padding-left: 1em;
-  max-width: 20%;
+  max-width: 200px;
 }
 
 #content {
-  margin-left: 25%;
-  padding-right: 1em;
+  margin-left: 250px;
   max-width: 600px;
+  padding-right: 1em;
 }
 
 
@@ -160,7 +159,7 @@ em, strong, blockquote {
 blockquote {
   border-left: thick solid darkkhaki;
   background: beige;
-  padding: 0.5em 1em 0.5em 1em;
+  padding: 0.5em 1em 0.5em 1em; /* top right bottom left */
 }
 
 hr {
