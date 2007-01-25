@@ -88,6 +88,7 @@ body {
 }
 
 .entry .info {
+  text-align: right;
   border-top: thin dashed silver;
   font-size: small;
 }

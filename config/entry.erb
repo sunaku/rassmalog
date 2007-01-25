@@ -24,10 +24,12 @@
   <div class="text"><%= text.to_html %></div>
 
   <div class="info">
-    Written on <%= @entry.archive.to_link @entry.date.strftime("%c") %> as <%= @entry.tags.map {|t| t.to_link}.join ', '
-    %>.
+    Written on <%= @entry.archive.to_link @entry.date.strftime("%c") %>.
+    <br/>
+    Tagged as <%= @entry.tags.map {|t| t.to_link}.join ', ' %>.
 <% if BLOG.email %>
-    Send <a href="<%= @entry.comment_url %>">comments</a>.
+    <br/>
+    You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.
 <% end %>
   </div>
 </div>
