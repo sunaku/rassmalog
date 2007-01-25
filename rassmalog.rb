@@ -242,7 +242,7 @@ def write_file aPath, aContent
 end
 
 # Returns the path of the output file.
-def generate_html_task aPage, *aDeps #:nodoc:
+def generate_html_task aTask, aPage, *aDeps #:nodoc:
   dst = File.join('output', aPage.url)
 
   file dst => aDeps.flatten + COMMON_DEPS do
@@ -250,7 +250,7 @@ def generate_html_task aPage, *aDeps #:nodoc:
     write_file dst, aPage.render
   end
 
-  task :gen => dst
+  task aTask => dst
   CLOBBER.include dst
 
   dst
@@ -271,7 +271,7 @@ def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
     write_file dst, index
   end
 
-  task :gen => dst
+  task :index => dst
   CLOBBER.include dst
 end
 
@@ -346,13 +346,26 @@ end
 
 ## output generation stage
 
-task :default => :gen
-
 desc "Generate the blog."
-task :gen
+task :default => [:copy, :entry, :page, :chapter, :index]
+
+desc "Copy files from input/ into output/"
+task :copy
+
+desc "Generate HTML for entries."
+task :entry
+
+desc "Generate HTML for pages."
+task :page
+
+desc "Generate HTML for chapters."
+task :chapter
+
+desc "Generate HTML for indices."
+task :index
 
 desc "Regenerate the blog from scratch."
-task :regen => [:clobber, :gen]
+task :regen => [:clobber, :default]
 
 CONFIG_FILES = FileList['config/**/*']
 COMMON_DEPS = ['output'] + CONFIG_FILES
@@ -369,13 +382,13 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
       cp_r src, dst, :preserve => true
     end
 
-    task :gen => dst
+    task :copy => dst
     CLEAN.include dst
   end
 
 # generate HTML for blog entries
   ENTRIES.each do |entry|
-    entry.dst_file = generate_html_task(entry, entry.src_file)
+    entry.dst_file = generate_html_task(:entry, entry, entry.src_file)
   end
 
 # generate HTML for pages and chapters
@@ -384,12 +397,12 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
 
     chapter.pages.each do |page|
       pageDeps = page.entries.map {|e| e.src_file}
-      generate_html_task page, pageDeps
+      generate_html_task :page, page, pageDeps
 
       chapterDeps.concat pageDeps
     end
 
-    generate_html_task chapter, chapterDeps
+    generate_html_task :chapter, chapter, chapterDeps
   end
 
   generate_special_index "Entries", ENTRIES, true
@@ -409,7 +422,7 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
     generate_special_index "Recent entries", ENTRIES.recent, true, dst
   end
 
-  task :gen => dst
+  task :index => dst
   CLOBBER.include dst
 
 # generate RSS feed
@@ -418,14 +431,14 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
     notify 'RSS feed', t.name
   end
 
-  task :gen => 'output/rss.xml'
+  task :index => 'output/rss.xml'
   CLOBBER.include 'output/rss.xml'
 
 
 ## output publishing stage
 
 desc "Upload the blog to your website."
-task :upload => [:gen, 'output'] do
+task :upload => [:default, 'output'] do
   cmd = BLOG.uploader.split
   cmd.push 'output/', BLOG.host
 
