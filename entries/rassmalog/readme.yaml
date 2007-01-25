@@ -54,7 +54,7 @@ text: |
   ** Automatic tag and month archives.
   ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
 
-  * Blog entries are plain-text files with easy syntax. (See this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html.)
+  * Blog entries are plain-text files with easy syntax. (See this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/rassmalog/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html.)
   ** Only four parameters in a blog entry: *name*, *date*, *tags*, and *text*.
   *** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
   ** _No_ obscure rules for naming blog entry files. The file name can be whatever you want!
