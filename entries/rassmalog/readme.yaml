@@ -176,13 +176,42 @@ text: |
 
   h1. Usage
 
+  The following subsections discuss how Rassmalog is used.
+
+  h2. Tasks
+
   In the location where you extracted the release package, run the following command to see a list of available tasks:
 
-    rake --tasks
+    rake -T
+
+  For example, here is the output you would see when you run the above command:
+
+    $ rake -T
+    (in /home/sun/src/rassmalog)
+    rake chapter  # Generate HTML for chapters.
+    rake clean    # Remove any temporary products.
+    rake clobber  # Remove any generated file.
+    rake copy     # Copy files from input/ into output/
+    rake default  # Generate the blog.
+    rake entry    # Generate HTML for entries.
+    rake index    # Generate HTML for indices.
+    rake page     # Generate HTML for pages.
+    rake regen    # Regenerate the blog from scratch.
+    rake upload   # Upload the blog to your website.
+
+
+  h3. Generating your blog
 
   To generate your blog, run the following command:
 
     rake
+
+  To regenerate your blog from _scratch_, run the following command:
+
+    rake regen
+
+
+  h3. Removing generated files
 
   To remove only the files that were copied from <tt>input/</tt> to <tt>output/</tt>, run the following command:
 
@@ -192,20 +221,28 @@ text: |
 
     rake clobber
 
-  To regenerate your blog from _scratch_, run the following command:
 
-    rake regen
+  h3. Publishing your blog
 
   To upload your blog to your website, run the following command:
 
     rake upload
 
 
+  h3. Checking your work
+
+  To continuously preview a blog entry as you write it, run the command <pre>rake entry</pre> within an infinite loop in your shell, like this:
+
+    while true; do rake entry; sleep 1; done
+
+  Now, whenever you save your blog entry file, its HTML page will be generated for preview in your web browser.
+
+
   h2(#config). Configuration
 
-  Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments/documentation to help you configure your blog.
+  Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments and documentation to help guide you through you the configuration process. Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Manifest":#manifest section.
 
-  Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Manifest":#manifest section.
+  You are encouraged to generate your blog at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
 
 
   h3(#config.format). Using another text formatting system
