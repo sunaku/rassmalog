@@ -28,6 +28,28 @@ require 'erb'
 include ERB::Util
 
 
+## project information
+
+GENERATOR = OpenStruct.new(
+  :name     => 'Rassmalog',
+  :version  => '2.4.0',
+  :date     => '2007-01-17',
+  :url      => 'http://rassmalog.rubyforge.org'
+)
+
+class << GENERATOR
+  def to_s
+    name + ' ' + version
+  end
+
+  def to_link
+    %{<a href="#{u url}">#{self}</a>}
+  end
+end
+
+
+## utility logic
+
 class DateTime
   # Returns the RFC-822 representation, which is required by RSS, of this object.
   def rfc822
@@ -100,7 +122,7 @@ class Entry < OpenStruct
   # Returns a URL for submiting comments about this entry.
   def comment_url
     addr = "mailto:#{BLOG.email}".to_html_entities
-    subj = u "[Rassmalog] #{name}"
+    subj = u "[#{GENERATOR.name}] #{name}"
     body = u File.join(BLOG.url, url)
 
     "#{addr}?subject=#{subj}&amp;body=#{body}"
