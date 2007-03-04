@@ -121,11 +121,11 @@ class Entry < OpenStruct
 
   # Returns a URL for submiting comments about this entry.
   def comment_url
-    addr = "mailto:#{BLOG.email}".to_html_entities
-    subj = u "[#{GENERATOR.name}] #{name}"
-    body = u File.join(BLOG.url, url)
+    addr = "mailto:#{BLOG.email}"
+    subj = "[#{GENERATOR.name}] #{name}"
+    body = File.join(BLOG.url, url)
 
-    "#{addr}?subject=#{subj}&amp;body=#{body}"
+    "#{addr}?subject=#{subj}&body=#{body}".to_html_entities
   end
 
   # Transforms this entry into HTML. If summarize is enabled, then only the first paragraph of this entry's content will be included in the result.
