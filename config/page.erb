@@ -19,5 +19,5 @@
 <br/><br/>
 
 <% @page.entries.each do |entry| %>
-  <%= entry.to_html BLOG.summarize_entries && :summary %>
+  <%= entry.to_html(BLOG.summarize_entries && :summary) %>
 <% end %>
