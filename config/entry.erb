@@ -12,7 +12,7 @@
 
   # generate table of contents if possible
     if text.respond_to? :table_of_contents
-      toc, text = text.table_of_contents
+      index, text = text.table_of_contents
     end
 
   # evaluate ERB directives within the entry
@@ -21,8 +21,8 @@
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
 
-<% if toc and !toc.empty? %>
-  <div class="toc">Contents <%= toc.to_html %></div>
+<% if index and !index.empty? %>
+  <div id="index" class="index">Contents <%= index.to_html %></div>
 <% end %>
 
   <div class="text"><%= text.to_html %></div>

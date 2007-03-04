@@ -148,7 +148,7 @@ class String
               prevIndex.next
             end
 
-          rest = "#{atts}. #{index} &nbsp; #{title}"
+          rest = %{#{atts}. "#{index}":#index &nbsp; #{title}}
 
         # parse and insert anchor if necessary
           if atts =~ /#(.*?)\)/
