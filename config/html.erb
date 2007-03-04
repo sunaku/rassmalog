@@ -13,32 +13,6 @@
   * @content    => body for the HTML page we are generating
 =end
 %>
-<%
-  # Expands the given hierarchical menu into an itemized list of hyperlinks.
-  def render_menu aMenu
-    result = ''
-
-    if aMenu.respond_to? :to_ary
-      aMenu.each do |link|
-        result << render_menu(link)
-      end
-    elsif aMenu.respond_to? :each_pair
-      aMenu.each_pair do |name, url|
-        link = if url.respond_to? :to_ary
-          "#{name} <ul>#{render_menu url}</ul>"
-        else
-          %{<a href="#{url}">#{name}</a>}
-        end
-
-        result << "<li>#{link}</li>"
-      end
-    else
-      result << "<li>#{aMenu}</li>"
-    end
-
-    result
-  end
-%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
@@ -78,7 +52,7 @@
     </div>
 
     <div id="menu">
-      <ul><%= render_menu BLOG.menu %></ul>
+      <ul><%= BLOG.menu.to_html %></ul>
     </div>
 
     <div id="content"><%= @content %></div>

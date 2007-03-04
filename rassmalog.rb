@@ -281,6 +281,40 @@ end
 # load blog configuration
   BLOG = load_yaml_file('config/blog.yaml')
 
+  class << BLOG.menu
+    # Converts this hierarchical menu into HTML.
+    def to_html
+      @html ||= render_menu self
+    end
+
+    private
+
+    # Expands the given hierarchical menu into an itemized list of hyperlinks.
+    def render_menu aMenu
+      result = ''
+
+      if aMenu.respond_to? :to_ary
+        aMenu.each do |link|
+          result << render_menu(link)
+        end
+      elsif aMenu.respond_to? :each_pair
+        aMenu.each_pair do |name, url|
+          link = if url.respond_to? :to_ary
+            "#{name} <ul>#{render_menu url}</ul>"
+          else
+            %{<a href="#{url}">#{name}</a>}
+          end
+
+          result << "<li>#{link}</li>"
+        end
+      else
+        result << "<li>#{aMenu}</li>"
+      end
+
+      result
+    end
+  end
+
   FileList['config/*.erb'].each do |f|
     name = File.basename(f, File.extname(f))
     var = "#{name.upcase}_TEMPLATE"
