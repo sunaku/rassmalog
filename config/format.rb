@@ -165,7 +165,7 @@ class String
 
     # generate table of contents
       toc = headings.map do |h|
-        %{#{'*' * h.depth} #{h.index} "#{h.title}":##{h.anchor}}
+        %{#{'*' * h.depth} "#{h.title}":##{h.anchor}}
       end.join("\n").redcloth
 
     [toc, text]
