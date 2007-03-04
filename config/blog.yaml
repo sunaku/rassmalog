@@ -134,14 +134,20 @@ encoding: utf-8
 
 
 #
-# The primary language used in your entries.
-# See http://www.html-reference.com/language.htm for syntax.
+# The ISO-639 code and (optionally) the ISO-3166 country code for the
+# primary language used in your entries.
+#
+# See http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes for a list of
+# ISO-639 language codes.
+#
+# See http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Current_codes for a
+# list of ISO-3166 country codes.
 #
 # Examples:
 #
+#   language: en    # English
 #   language: en-us # English (United States)
-#   language: ja-jp # Japanese (Japan)
-#   language: te-in # Telugu (India)
+#   language: en-gb # English (Great Britain)
 #
 language: en-us
 
