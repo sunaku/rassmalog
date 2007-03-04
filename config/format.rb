@@ -138,10 +138,10 @@ class String
           index =
             if depth > prevDepth
               s = prevIndex + ('.1' * depthDiff)
-              s.sub /^\./, ''
+              s.sub(/^\./, '')
 
             elsif depth < prevDepth
-              s = prevIndex.sub /(\.\d+){#{depthDiff}}$/, ''
+              s = prevIndex.sub(/(\.\d+){#{depthDiff}}$/, '')
               s.next
 
             else
