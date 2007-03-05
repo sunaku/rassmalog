@@ -238,6 +238,7 @@ menu:
     - Author's blog: http://www.soe.ucsc.edu/~snk/
 
   - Reference:
+    - Examples: examples.html
     - Rassmalog API: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - ERB templates: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2

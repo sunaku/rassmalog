@@ -31,7 +31,7 @@ text: |
 
     This may sound inconvenient, and perhaps old-fashioned at first, but sending e-mail is _extremely_ simple -- as "demonstrated daily":http://en.wikipedia.org/wiki/E-mail_spam by spammers across the world. @;-)@ But fear not, because your e-mail address will be obfuscated in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.
 
-  With a dynamic blog engine, your content is stored in some obscure binary format within a database on a web server.
+  In contrast, with a dynamic blog engine, your content is stored in some obscure binary format within a database on a web server.
 
   * If you want to make a backup, you might not even have access (depends on your blog host) to download the raw content from the database.
 
@@ -44,9 +44,7 @@ text: |
 
   h1. Features
 
-  Rassmalog features an extensible "blog formatting mechanism":#config.format, easy configuration, and automatic tagging, archiving, syntax coloring, and table of contents.
-
-  It is designed for ease of use and configuration. These goals are acheived partly through simplicity as Rassmalog's code base is tiny -- containing <big>less than 400 lines of code!</big> As a result,
+  Rassmalog is designed for ease of use and configuration. These goals are achieved through simplicity: Rassmalog's code base is tiny, containing less than 500 lines of code! As a result,
 
   * Nearly everything is automated:
   ** Automatic table of contents for blog entries.
@@ -59,6 +57,7 @@ text: |
   *** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
   ** _No_ obscure rules for naming blog entry files. The file name can be whatever you want!
   ** _No_ obscure restrictions on how blog entry files are organized -- just keep them _somewhere_ beneath the <tt>entries/</tt> directory.
+  ** You can use ERB directives within the *text* of your blog entries.
 
   * Templates are easily changable to suit your tastes:
   ** Only four templates involved in generating HTML output.
@@ -66,7 +65,7 @@ text: |
 
   * If you don't like Textile, you can easily "use _any_ text formatting system":#config you want for blog entries.
 
-  * Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization) of the central application. (See this "sample file":http://rassmalog.rubyforge.org/src/rassmalog/config/lang/te-in.yaml and "part of its effect":http://www.soe.ucsc.edu/~snk/ on the author's blog -- the rest of the translation took place in the templates.)
+  * "Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization)":#config.lang of the central application.
 
 
   h1. Organization
@@ -113,14 +112,15 @@ text: |
   * <tt>config/lang/</tt>
     - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
 
-  * <tt>config/lang/te-in.yaml</tt>
-    - translation file for the Telugu (India) language.
+    Learn "how to use these translation files":#config.lang below.
 
-    You can enable this translation file by setting the value of the @language@ parameter in the <tt>config/blog.yaml</tt> file to "te-in", as follows:
-
-      language: te-in
-
-    In this manner, you can create translation files for your own languages and enable them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can enjoy your translations! :-)
+  <% # list all the translation files
+    Dir['config/lang/*.yaml'].each do |file|
+      lang = File.readlines(file).first.sub(/^#/, '')
+  %>
+  * <tt><%= file %></tt>
+    - <%= lang %> translation file.
+  <% end %>
 
   * <tt>entries/</tt>
     - directory that contains all blog entry files.
@@ -145,8 +145,11 @@ text: |
   h2. Version numbering system
 
   I _strictly_ follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. This @major.minor.build@ numbering policy "can be summarized":http://ablog.apress.com/?p=738 as follows:
+
   * an increase in the *major* number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
+
   * an increase in the *minor* number indicates that _functionally compatible_ changes have occurred. Thus, what worked in the previous version will work in the new one.
+
   * an increase in the *build* number indicates that the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
 
 
@@ -178,6 +181,7 @@ text: |
 
   The following subsections discuss how Rassmalog is used.
 
+
   h2. Tasks
 
   In the location where you extracted the release package, run the following command to see a list of available tasks:
@@ -186,18 +190,7 @@ text: |
 
   For example, here is the output you would see when you run the above command:
 
-    $ rake -T
-    (in /home/sun/src/rassmalog)
-    rake chapter  # Generate HTML for chapters.
-    rake clean    # Remove any temporary products.
-    rake clobber  # Remove any generated file.
-    rake copy     # Copy files from input/ into output/
-    rake default  # Generate the blog.
-    rake entry    # Generate HTML for entries.
-    rake index    # Generate HTML for indices.
-    rake page     # Generate HTML for pages.
-    rake regen    # Regenerate the blog from scratch.
-    rake upload   # Upload the blog to your website.
+    <pre><%= `rake -T` %></pre>
 
 
   h3. Generating your blog
@@ -243,6 +236,17 @@ text: |
   Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments and documentation to help guide you through you the configuration process. Next, proceed to editing the other files in the <tt>config/</tt> directory to suit your taste. These files are described above in the "Manifest":#manifest section.
 
   You are encouraged to generate your blog at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
+
+
+  h3(#config.lang). Using translation files
+
+  The <tt>config/lang/</tt> directory contains translation files for English text used in the core of Rassmalog. To enable one of these files, set the value of the @language@ parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.
+
+  For example, if you wish to enable the <tt>config/lang/foobar.yaml</tt> translation file, then you would set the @language@ parameter as follows:
+
+      language: foobar
+
+  In this manner, you can add or edit translation files for your own languages and use them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can also enjoy your translations! @:-)@
 
 
   h3(#config.format). Using another text formatting system

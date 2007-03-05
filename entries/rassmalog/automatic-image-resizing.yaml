@@ -5,6 +5,7 @@ date: Wed Dec 20 14:45:47 PST 2006 @990 /Internet Time/
 tags:
   - rassmalog
   - tricks
+  - examples
 
 text: |
   "Manfred Schreiweis asked":http://rubyforge.org/forum/message.php?msg_id=16146 if there was a way to automatically resize images when copying them from <tt>input/images/</tt> into <tt>output/images/</tt>.
@@ -30,7 +31,8 @@ text: |
 
   <code>
   # Resize images from input/images/ into output/images/.
-  # The code for resizing images is adapted from http://www.bigbold.com/snippets/posts/show/1173
+  # The code for resizing images is adapted from:
+  # http://www.bigbold.com/snippets/posts/show/1173
 
   require 'rubygems'
   require 'RMagick'
@@ -53,8 +55,8 @@ text: |
         # workaround for nested block scope
         a, b = t.prerequisites[0], t.name
 
-        notify :resize, b
         Magick::ImageList.new(a).resize(*size).write b
+        notify :resize, b
       end
 
       task :default => dst
