@@ -38,6 +38,25 @@ text: |
   Fill as many lines as you need!
 
 
+  h1. ERB example
+
+  The text of a blog entry is treated as an ERB template. Thus, you can use
+  ERB directives (which appear within @<%%@ and @%>@ tags) in the text of
+  your blog entries. For example,
+
+  * The current time is *<%= Time.now %>*.
+
+  * Say "Hello World!" three times:
+    <% 3.times do %>
+    * Hello World!
+    <% end %>
+
+  * The contents of the current directory are:
+    <% Dir['*'].each do |f| %>
+    * <tt><%= f %></tt>
+    <% end %>
+
+
   h1. Textile example
 
   The following text is "a
