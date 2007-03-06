@@ -226,7 +226,7 @@ archive_frequency: %Y-%m
 menu:
   - Rassmalog:
     - What's new?: history.html
-    - Home page: http://rassmalog.rubyforge.org
+    - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
     - Facilities:
       - Source code (browse online or <em>get</em> with Darcs): http://rassmalog.rubyforge.org/src/rassmalog/
@@ -238,7 +238,6 @@ menu:
     - Author's blog: http://www.soe.ucsc.edu/~snk/
 
   - Reference:
-    - Examples: examples.html
     - Rassmalog API: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - ERB templates: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2

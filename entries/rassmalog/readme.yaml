@@ -81,9 +81,12 @@ text: |
   For example, a chapter shows a list of all available tags, a page shows a list of entries which have a particular tag, and an entry just shows its content.
 
 
-  h2(#manifest). Manifest
+  h2(#manifest). Package manifest
 
-  When you download and extract the release package, you would see the following:
+  When you extract the release package, you would see the following:
+
+  * <tt>rassmalog.rb</tt>
+    - the core of Rassmalog
 
   * <tt>config/</tt>
     - directory that contains all configuration files
@@ -113,13 +116,11 @@ text: |
     - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
 
     Learn "how to use these translation files":#config.lang below.
-
   <% # list all the translation files
     Dir['config/lang/*.yaml'].each do |file|
       lang = File.readlines(file).first.sub(/^#/, '')
   %>
-  * <tt><%= file %></tt>
-    - <%= lang %> translation file.
+  ** <tt><%= file %></tt> - <%= lang %> translation file.
   <% end %>
 
   * <tt>entries/</tt>
@@ -144,7 +145,7 @@ text: |
 
   h2. Version numbering system
 
-  I _strictly_ follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. This @major.minor.build@ numbering policy "can be summarized":http://ablog.apress.com/?p=738 as follows:
+  I strictly follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. This @major.minor.build@ numbering policy "can be summarized":http://ablog.apress.com/?p=738 as follows:
 
   * an increase in the *major* number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
 

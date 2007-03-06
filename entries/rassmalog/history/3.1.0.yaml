@@ -1,0 +1,22 @@
+name: Version 3.1.0
+
+date: Mon Mar 05 16:01:21 PST 2007 @42 /Internet Time/
+
+tags:
+  - rassmalog
+  - history
+
+text: |
+  This release fixes the ability to use ERB directives in the text of blog entries, makes ERB directives behave like those of PHP, makes auto-generated HTML anchors more human readable, and corrects the German translation file.
+
+  h1. Acknowledgments
+
+  Thanks to Josef 'Jupp' Schugt for correcting the German translation file.
+
+  h1. Details
+
+  * Fixed RSS feed generation so that entry body is evaluated as an ERB template.
+
+  * Incorporated my "PHP-like ERB hack":http://www.soe.ucsc.edu/~snk/2006-08-26-making-erb-behave-like-php.html to prevent @<%% ... %>@ ERB directives from injecting extraneous newlines into the generated output.
+
+  * Auto-generated HTML anchors (for the table of contents) now make use of the text of the heading they refer to. This makes them more human readable than, say, "anchor153".

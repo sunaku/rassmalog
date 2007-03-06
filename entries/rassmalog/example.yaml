@@ -47,14 +47,14 @@ text: |
   * The current time is *<%= Time.now %>*.
 
   * Say "Hello World!" three times:
-    <% 3.times do %>
-    * Hello World!
-    <% end %>
+  <% 3.times do %>
+  ** Hello World!
+  <% end %>
 
   * The contents of the current directory are:
-    <% Dir['*'].each do |f| %>
-    * <tt><%= f %></tt>
-    <% end %>
+  <% Dir['*'].each do |f| %>
+  ** <tt><%= f %></tt>
+  <% end %>
 
 
   h1. Textile example
