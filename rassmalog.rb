@@ -28,7 +28,9 @@ require 'erb'
 include ERB::Util
 
 
-## project information
+############################################################################
+# project information
+############################################################################
 
 GENERATOR = OpenStruct.new(
   :name     => 'Rassmalog',
@@ -48,7 +50,9 @@ class << GENERATOR
 end
 
 
-## utility logic
+############################################################################
+# utility logic
+############################################################################
 
 class DateTime
   # Returns the RFC-822 representation, which is required by RSS, of this object.
@@ -100,6 +104,63 @@ class ERB
   end
 end
 
+# Notify the user about some action being performed.
+def notify *args
+  printf "%12s  %s\n", *args
+end
+
+# Loads the given YAML file into the given wrapper.
+def load_yaml_file aFile, aWrapper = OpenStruct
+  aWrapper.new(YAML.load_file(aFile))
+end
+
+# Writes the given content to the given file.
+def write_file aPath, aContent
+  File.open aPath, 'w' do |f|
+    # lstrip because XML declaration must be at start of file
+    f << aContent.lstrip
+  end
+end
+
+# Returns the path of the output file.
+def generate_html_task aTask, aPage, *aDeps #:nodoc:
+  dst = File.join('output', aPage.url)
+
+  file dst => aDeps.flatten + COMMON_DEPS do
+    notify aPage.class, dst
+    write_file dst, aPage.render
+  end
+
+  task aTask => dst
+  CLOBBER.include dst
+
+  dst
+end
+
+# Generates an index, which is not a fully qualified Page but behaves like one, of entries.
+# NOTE: the aName parameter will be translated later by this method, so only provide English strings here.
+def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
+  dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
+
+  file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
+    index = HTML_TEMPLATE.render_with do
+      @title = LANG[aName]
+      @content = %{<h1>#{@title}</h1>} << aEntries.map {|e| e.to_html aMode}.join
+    end
+
+    notify aName, dst
+    write_file dst, index
+  end
+
+  task :index => dst
+  CLOBBER.include dst
+end
+
+
+############################################################################
+# data structures for organizing entries
+############################################################################
+
 # Something that can be (hyper)linked to. Objects that mix-in this module must define a #to_s method, whose value is used when determining the URL for this object.
 module Linkable
   # Returns a relative URL to this page.
@@ -118,15 +179,13 @@ module Linkable
   end
 end
 
+# Interface to translations.
 class Language < OpenStruct
   # Translates the given string and then formats (see String#format) the translation with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
   def [] aString, *aArgs
     (self.send(aString) || aString) % aArgs
   end
 end
-
-
-## data structures for organizing entries
 
 # A single blog entry.
 class Entry < OpenStruct
@@ -273,60 +332,9 @@ class Chapter
 end
 
 
-# Notify the user about some action being performed.
-def notify *args
-  printf "%12s  %s\n", *args
-end
-
-# Loads the given YAML file into the given wrapper.
-def load_yaml_file aFile, aWrapper = OpenStruct
-  aWrapper.new(YAML.load_file(aFile))
-end
-
-# Writes the given content to the given file.
-def write_file aPath, aContent
-  File.open aPath, 'w' do |f|
-    # lstrip because XML declaration must be at start of file
-    f << aContent.lstrip
-  end
-end
-
-# Returns the path of the output file.
-def generate_html_task aTask, aPage, *aDeps #:nodoc:
-  dst = File.join('output', aPage.url)
-
-  file dst => aDeps.flatten + COMMON_DEPS do
-    notify aPage.class, dst
-    write_file dst, aPage.render
-  end
-
-  task aTask => dst
-  CLOBBER.include dst
-
-  dst
-end
-
-# Generates an index, which is not a fully qualified Page but behaves like one, of entries.
-# NOTE: the aName parameter will be translated later by this method, so only provide English strings here.
-def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
-  dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
-
-  file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
-    index = HTML_TEMPLATE.render_with do
-      @title = LANG[aName]
-      @content = %{<h1>#{@title}</h1>} << aEntries.map {|e| e.to_html aMode}.join
-    end
-
-    notify aName, dst
-    write_file dst, index
-  end
-
-  task :index => dst
-  CLOBBER.include dst
-end
-
-
-## input processing stage
+############################################################################
+# input processing stage
+############################################################################
 
 # load blog configuration
   BLOG = load_yaml_file('config/blog.yaml')
@@ -428,7 +436,9 @@ end
   CHAPTERS = [TAGS, ARCHIVES]
 
 
-## output generation stage
+############################################################################
+# output generation stage
+############################################################################
 
 desc "Generate the blog."
 task :default => [:copy, :entry, :page, :chapter, :index]
@@ -489,6 +499,7 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
     generate_html_task :chapter, chapter, chapterDeps
   end
 
+# generate entry list and search page
   generate_special_index "Entries", ENTRIES, true
   generate_special_index "Search", ENTRIES, false
 
@@ -519,7 +530,9 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
   CLOBBER.include 'output/rss.xml'
 
 
-## output publishing stage
+############################################################################
+# output publishing stage
+############################################################################
 
 desc "Upload the blog to your website."
 task :upload => [:default, 'output'] do

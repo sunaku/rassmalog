@@ -10,10 +10,9 @@
 
   text = @entry.text
 
-  # generate table of contents if possible
-    if text.respond_to? :table_of_contents
-      index, text = text.table_of_contents
-    end
+  if text.respond_to? :table_of_contents
+    index, text = text.table_of_contents
+  end
 %>
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
