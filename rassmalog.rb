@@ -43,7 +43,7 @@ class << GENERATOR
   end
 
   def to_link
-    %{<a href="#{u url}">#{self}</a>}
+    %{<a href="#{url}">#{self}</a>}
   end
 end
 
