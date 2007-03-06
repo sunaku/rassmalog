@@ -114,6 +114,16 @@ end
 class Entry < OpenStruct
   include Linkable
 
+  def initialize aHash = nil
+    @rawText = aHash['text']
+    super
+  end
+
+  def text
+    # evaluate ERB directives within the entry
+    @text ||= ERB.new(@rawText).result
+  end
+
   def url
     stamp = date.strftime "%F"
     "#{stamp}-#{name}.html".to_file_name
@@ -130,20 +140,20 @@ class Entry < OpenStruct
 
   # Transforms this entry into HTML. If summarize is enabled, then only the first paragraph of this entry's content will be included in the result.
   def to_html aSummarize = false
-    old = text
+    old = self.text
 
     # summarize the entry body
-      paras = text.split(/(?:\r?\n){2,}/m)
+      paras = old.split(/(?:\r?\n){2,}/m)
 
       if aSummarize && paras.length > 1
-        self.text = "#{paras.first}\n\n#{to_link LANG["Read more..."]}"
+        @text = "#{paras.first}\n\n#{to_link LANG["Read more..."]}"
       end
 
     # transform the entry into HTML
       entry = self
       html = ENTRY_TEMPLATE.render_with {@entry = entry}
 
-    self.text = old
+    @text = old
     html
   end
 

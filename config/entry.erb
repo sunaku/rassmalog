@@ -14,9 +14,6 @@
     if text.respond_to? :table_of_contents
       index, text = text.table_of_contents
     end
-
-  # evaluate ERB directives within the entry
-    text = ERB.new(text).result
 %>
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
