@@ -108,7 +108,7 @@ class String
 
 
   Heading = Struct.new :anchor, :title, :depth, :index
-  @@anchorNum = 0
+  @@anchors = []
 
   # Builds a table of contents from text formatted in Textile.
   # Returns an array containing [toc, text] where:
@@ -154,9 +154,13 @@ class String
           if atts =~ /#(.*?)\)/
             anchor = $1
           else
-            anchor = "anchor#{@@anchorNum += 1}"
+            anchor = CGI.escape(title).gsub(/\+|%../, '-').squeeze('-').gsub(/^-|-$/, '')
+            anchor << "-#{rand anchor.sum}" while @@anchors.include? anchor
+
             rest.insert 0, "(##{anchor})"
           end
+
+          @@anchors << anchor
 
         headings << Heading.new(anchor, title, depth, index)
 
