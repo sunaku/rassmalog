@@ -74,6 +74,24 @@ class String
 end
 
 class ERB
+  alias old_initialize initialize
+
+  # A version of ERB whose embedding tags behave like those of PHP. That is, only <%= ... %> tags produce output, whereas <% ... %> tags do *not* produce any output.
+  def initialize aInput, *aArgs
+    # ensure that only <%= ... %> tags generate output
+      input = aInput.gsub %r{<%=.*?%>}m do |s|
+        if ($' =~ /\r?\n/) == 0
+          s << $&
+        else
+          s
+        end
+      end
+
+      aArgs[1] = '>'
+
+    old_initialize input, *aArgs
+  end
+
   # Renders this template within a fresh object configured by the given block.
   def render_with &aBlock
     dummy = Object.new
