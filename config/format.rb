@@ -108,7 +108,6 @@ class String
 
 
   Heading = Struct.new :anchor, :title, :depth, :index
-  @@anchors = []
 
   # Builds a table of contents from text formatted in Textile.
   # Returns an array containing [toc, text] where:
@@ -121,6 +120,7 @@ class String
   #
   def table_of_contents
     headings = []
+    anchors = []
 
     # parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary
       text = gsub %r{^(\s*h(\d))(.*)$} do
@@ -148,28 +148,23 @@ class String
               prevIndex.next
             end
 
-          rest = %{#{atts}. "#{index}":#index &nbsp; #{title}}
-
-        # parse and insert anchor if necessary
+        # parse or generate unique anchor
           if atts =~ /#(.*?)\)/
             anchor = $1
           else
-            anchor = CGI.escape(title).gsub(/\+|%../, '-').squeeze('-').gsub(/^-|-$/, '')
-            anchor << "-#{rand anchor.sum}" while @@anchors.include? anchor
-
-            rest.insert 0, "(##{anchor})"
+            anchor = title
+            anchor += anchor.object_id.to_s while anchors.include? anchor
           end
-
-          @@anchors << anchor
+          anchors << anchor
 
         headings << Heading.new(anchor, title, depth, index)
 
-        head + rest
+        %{\n\n<h#{depth} id="#{CGI.escapeHTML anchor}"><a href="#index">#{index}</a> &nbsp; #{title}</h#{depth}>}
       end
 
     # generate table of contents
       toc = headings.map do |h|
-        %{#{'*' * h.depth} "#{h.title}":##{h.anchor}}
+        %{#{'*' * h.depth} "#{CGI.escapeHTML h.title}":##{ERB::Util.url_encode h.anchor}}
       end.join("\n").redcloth
 
     [toc, text]
