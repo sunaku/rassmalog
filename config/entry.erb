@@ -6,12 +6,23 @@
   * BLOG        => data from the blog configuration file
   * LANG        => interface to translation file
   * @entry      => the Entry for which we are generating HTML
+  * @summarize  => indicates whether the entry should be summarized
 =end
 
   text = @entry.text.to_html
 
-  if text.respond_to? :table_of_contents
-    toc, text = text.table_of_contents
+  # summarize the entry
+  if @summarize
+    paragraphs = text.split(/(?:\r?\n){2,}/m)
+
+    if paragraphs.length > 1
+      text = paragraphs.first
+      text << @entry.to_link(LANG["Read more..."])
+    end
+
+  # generate the table of contents
+  elsif text.respond_to? :table_of_contents
+    toc, text = text.table_of_contents(@entry.object_id)
   end
 %>
 <div class="entry">
@@ -23,13 +34,15 @@
 
   <div class="text"><%= text %></div>
 
+<% unless @summarize %>
   <div class="info">
     Written on <%= @entry.archive.to_link @entry.date.strftime("%c") %>.
     <br/>
     Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.
-<% if BLOG.email %>
+  <% if BLOG.email %>
     <br/>
     You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.
-<% end %>
+  <% end %>
   </div>
+<% end %>
 </div>

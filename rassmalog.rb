@@ -217,21 +217,12 @@ class Entry < OpenStruct
 
   # Transforms this entry into HTML. If summarize is enabled, then only the first paragraph of this entry's content will be included in the result.
   def to_html aSummarize = false
-    old = self.text
+    entry = self
 
-    # summarize the entry body
-      paras = old.split(/(?:\r?\n){2,}/m)
-
-      if aSummarize && paras.length > 1
-        @text = "#{paras.first}\n\n#{to_link LANG["Read more..."]}"
-      end
-
-    # transform the entry into HTML
-      entry = self
-      html = ENTRY_TEMPLATE.render_with {@entry = entry}
-
-    @text = old
-    html
+    ENTRY_TEMPLATE.render_with do
+      @entry = entry
+      @summarize = aSummarize
+    end
   end
 
   # Renders a HTML page for this Entry.
