@@ -11,14 +11,14 @@
   text = @entry.text.to_html
 
   if text.respond_to? :table_of_contents
-    index, text = text.table_of_contents
+    toc, text = text.table_of_contents
   end
 %>
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
 
-<% if index and !index.empty? %>
-  <div class="index">Contents <%= index %></div>
+<% if toc and !toc.empty? %>
+  <div class="toc">Contents <%= toc %></div>
 <% end %>
 
   <div class="text"><%= text %></div>

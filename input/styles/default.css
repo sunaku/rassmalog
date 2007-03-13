@@ -64,7 +64,7 @@ body {
   text-decoration: none;
 }
 
-.entry .index { /* table of contents */
+.entry .toc { /* table of contents */
   float: right;
   overflow: auto;
   border-left: thin dashed silver;
@@ -75,7 +75,7 @@ body {
   background-color: white;
 }
 
-.entry .index ul {
+.entry .toc ul {
   margin-top: 0px;
   padding-right: 0px;
 }
@@ -179,6 +179,6 @@ a img {
   border: none;
 }
 
-#menu li, .entry .index li {
+#menu li, .entry .toc li {
   margin-left: -1.5em;
 }
