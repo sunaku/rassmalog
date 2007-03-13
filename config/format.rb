@@ -107,6 +107,13 @@ class String
   end
 
 
+  @@anchors = []
+
+  # Resets the list of anchors encountered thus far.
+  def self.reset_anchors
+    @@anchors.clear
+  end
+
   # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
   # in this string and returns an array containing [toc, text] where:
   #
@@ -122,7 +129,6 @@ class String
     toc = %{<a id="#{aTocId}"/><ul>}
     prevDepth = 0
     prevIndex = ''
-    prevAnchors = []
 
     # build TOC whilst dropping anchors on headings
     text = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
@@ -139,11 +145,11 @@ class String
         )
 
         # ensure that anchor is unique
-          while prevAnchors.include? anchor
+          while @@anchors.include? anchor
             anchor << anchor.object_id.to_s
           end
 
-          prevAnchors << anchor
+          @@anchors << anchor
 
         anchor = CGI.escapeHTML(anchor)
         atts << %{ id="#{anchor}"}

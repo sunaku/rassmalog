@@ -371,6 +371,19 @@ end
     Kernel.const_set var.to_sym, ERB.new(File.read(f))
   end
 
+  if String.respond_to? :reset_anchors
+    class << HTML_TEMPLATE
+      alias old_result result
+
+      def result *a
+        # give this page a fresh set of anchors, so that each entry's table of contents does not link to other entry's contents
+        String.reset_anchors
+
+        old_result(*a)
+      end
+    end
+  end
+
 # load translations
   langFile = "config/lang/#{BLOG.language}.yaml"
   LANG = load_yaml_file(langFile, Language) rescue Language.new
