@@ -14,9 +14,9 @@
 %>
 <h1><%= @page.name %></h1>
 
-<%= @page.prev.to_link %> &larr; <%= @page.chapter.to_link %> &rarr; <%= @page.next.to_link %>
+<p><%= @page.prev.to_link %> &larr; <%= @page.chapter.to_link %> &rarr; <%= @page.next.to_link %></p>
 
-<br/><br/>
+<br/>
 
 <% @page.entries.each do |entry| %>
   <%= entry.to_html(BLOG.summarize_entries && :summary) %>

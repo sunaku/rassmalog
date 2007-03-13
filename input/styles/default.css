@@ -39,10 +39,6 @@ body {
 #content {
 }
 
-#content > h1 { /* heading that comes just before everything in #content */
-  margin-bottom: 1.5em;
-}
-
 #footer {
   margin-top: 5em;
   text-align: center;
