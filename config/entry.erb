@@ -8,7 +8,7 @@
   * @entry      => the Entry for which we are generating HTML
 =end
 
-  text = @entry.text
+  text = @entry.text.to_html
 
   if text.respond_to? :table_of_contents
     index, text = text.table_of_contents
@@ -18,10 +18,10 @@
   <h1 class="name"><%= @entry.to_link %></h1>
 
 <% if index and !index.empty? %>
-  <div id="index" class="index">Contents <%= index.to_html %></div>
+  <div class="index">Contents <%= index %></div>
 <% end %>
 
-  <div class="text"><%= text.to_html %></div>
+  <div class="text"><%= text %></div>
 
   <div class="info">
     Written on <%= @entry.archive.to_link @entry.date.strftime("%c") %>.

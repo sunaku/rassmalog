@@ -107,65 +107,91 @@ class String
   end
 
 
-  Heading = Struct.new :anchor, :title, :depth, :index
-
-  # Builds a table of contents from text formatted in Textile.
-  # Returns an array containing [toc, text] where:
+  # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
+  # in this string and returns an array containing [toc, text] where:
   #
-  # toc::   the generated table of contents (formatted in Textile)
+  # toc::   the generated table of contents, whose ID is set to aTocId
   #
   # text::  a modified version of this string which contains anchors for the
   #         hyperlinks in the table of contents (so that the TOC can link to
   #         the content in this string)
   #
-  def table_of_contents
-    headings = []
-    anchors = []
+  def table_of_contents aTocId = 'index'
+    aTocId = CGI.escapeHTML(aTocId.to_s)
 
-    # parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary
-      text = gsub %r{^(\s*h(\d))(.*)$} do
-        head, depth, rest = $1, $2.to_i, $3
+    toc = %{<a id="#{aTocId}"/><ul>}
+    prevDepth = 0
+    prevIndex = ''
+    prevAnchors = []
 
-        # parse title and class attributes
-          rest =~ /^([\{\(\[].*?[\]\)\}])?\.(.*)$/
-          atts, title = $1, $2.strip
+    # build TOC whilst dropping anchors on headings
+    text = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
+      depth, atts, title = $1.to_i, $2, $3.strip
 
-        # put heading index in title
-          prevDepth = headings.last.depth rescue 0
-          prevIndex = headings.last.index rescue ""
-          depthDiff = (depth - prevDepth).abs
-
-          index =
-            if depth > prevDepth
-              s = prevIndex + ('.1' * depthDiff)
-              s.sub(/^\./, '')
-
-            elsif depth < prevDepth
-              s = prevIndex.sub(/(\.\d+){#{depthDiff}}$/, '')
-              s.next
-
-            else
-              prevIndex.next
-            end
-
-        # parse or generate unique anchor
-          if atts =~ /#(.*?)\)/
-            anchor = $1
+      # drop anchor on heading
+        anchor = CGI.unescape(
+          if atts =~ /id=('|")(.*?)\1/
+            atts = $` + $'
+            $2
           else
-            anchor = title
-            anchor += anchor.object_id.to_s while anchors.include? anchor
+            title
           end
-          anchors << anchor
+        )
 
-        headings << Heading.new(anchor, title, depth, index)
+        # ensure that anchor is unique
+          while prevAnchors.include? anchor
+            anchor << anchor.object_id.to_s
+          end
 
-        %{\n\n<h#{depth} id="#{CGI.escapeHTML anchor}"><a href="#index">#{index}</a> &nbsp; #{title}</h#{depth}>}
+          prevAnchors << anchor
+
+        anchor = CGI.escapeHTML(anchor)
+        atts << %{ id="#{anchor}"}
+        tocLink = %{<a href="##{anchor}">#{title}</a>}
+
+      # determine index of heading
+        depthDiff = (depth - prevDepth).abs
+
+        index =
+          if depth > prevDepth
+            toc << '<li><ul>' * depthDiff
+
+            s = prevIndex + ('.1' * depthDiff)
+            s.sub(/^\./, '')
+
+          elsif depth < prevDepth
+            toc << '</ul></li>' * depthDiff
+
+            s = prevIndex.sub(/(\.\d+){#{depthDiff}}$/, '')
+            s.next
+
+          else
+            prevIndex.next
+          end
+
+          toc << "<li>#{tocLink}</li>"
+
+        prevDepth = depth
+        prevIndex = index
+
+      %{<h#{depth}#{atts}><a href="##{aTocId}">#{index}</a> &nbsp; #{title}</h#{depth}>}
+    end
+
+    # finalize TOC construction
+    if prevIndex.empty?
+      toc = nil # there were no headings
+    else
+      toc << '</ul></li>' * prevDepth
+      toc << '</ul>'
+
+      # join redundant list elements
+      while toc.gsub! %r{(<li>.*?)</li><li>(<ul>)}, '\1\2'
       end
 
-    # generate table of contents
-      toc = headings.map do |h|
-        %{#{'*' * h.depth} "#{CGI.escapeHTML h.title}":##{ERB::Util.url_encode h.anchor}}
-      end.join("\n").redcloth
+      # collapse unnecessary levels
+      while toc.gsub! %r{(<ul>)<li><ul>(.*)</ul></li>(</ul>)}, '\1\2\3'
+      end
+    end
 
     [toc, text]
   end
