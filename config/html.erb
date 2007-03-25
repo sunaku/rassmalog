@@ -29,8 +29,15 @@
     <title><%= @title %> &mdash; <%= BLOG.name %></title>
   </head>
   <body>
-    <!-- makes website more usable for text-mode browsers -->
-    <a href="#content" style="display: none">Jump to page content</a>
+    <!-- improves usability in text-mode browsers -->
+    <div style="display: none">
+      <a href="#content">Jump to content</a>
+      <br/>
+      <a href="#navigation">Jump to navigation</a>
+      <br/>
+      <a href="#menu">Jump to links</a>
+      <hr/>
+    </div>
 
     <div id="header">
       <h1 class="name"><%= BLOG.name %></h1>
@@ -55,7 +62,13 @@
       <ul><%= BLOG.menu.to_html %></ul>
     </div>
 
+    <!-- improves usability in text-mode browsers -->
+    <hr style="display: none"/>
+
     <div id="content"><%= @content %></div>
+
+    <!-- improves usability in text-mode browsers -->
+    <hr style="display: none"/>
 
     <div id="footer">
       Authored by <%= BLOG.author %>.
