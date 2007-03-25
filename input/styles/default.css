@@ -3,26 +3,35 @@
 body {
   margin-left: auto;
   margin-right: auto;
-  max-width: 950px;
+  max-width: 800px;
+
+  color: black;
+  background-color: white;
 }
 
 #menu {
-  float: left;
-  padding-left: 1em;
-  max-width: 200px;
-}
+  float: right;
 
-#content {
-  margin-left: 225px;
-  max-width: 600px;
   padding-right: 1em;
+  margin-left: 2.5em;
+  max-width: 200px;
+
+  background-color: inherit;
+}
+
+#header, #navigation, #content {
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 
-/* layout elements */
+/* page structure */
 
 #header, #navigation {
   text-align: center;
+}
+
+#header {
 }
 
 #header .name {
@@ -33,7 +42,7 @@ body {
 }
 
 #navigation {
-  padding-bottom: 2em; /* puts #menu and #content at same height */
+  padding-bottom: 2em;
 }
 
 #content {
@@ -42,7 +51,7 @@ body {
 #footer {
   margin-top: 5em;
   text-align: center;
-  font-size: small;
+  font-size: smaller;
   clear: both;
 }
 
@@ -50,7 +59,7 @@ body {
 /* blog entry */
 
 .entry {
-  margin-bottom: 5em;
+  margin-bottom: 7em;
 }
 
 .entry .name {
@@ -61,22 +70,15 @@ body {
 }
 
 .entry .toc { /* table of contents */
-  float: right;
-  overflow: auto;
-  border-left: thin dashed silver;
-  border-bottom: thin dashed silver;
-  padding-left: 1em;
-  margin: 1em;
-  max-width: 50%;
-  background-color: white;
+  margin-bottom: 3em;
 }
 
 .entry .toc ul {
   margin-top: 0px;
-  padding-right: 0px;
 }
 
 .entry .text {
+  max-width: 600px;
 }
 
 .entry .text img {
@@ -84,9 +86,9 @@ body {
 }
 
 .entry .info {
-  text-align: right;
-  border-top: thin dashed silver;
-  font-size: small;
+  border-top: thin dashed gray;
+  padding-top: 0.5em;
+  font-size: smaller;
 }
 
 
@@ -149,7 +151,7 @@ body {
   font-family: sans-serif;
 }
 
-em, strong, blockquote {
+em, blockquote {
   font-family: serif;
 }
 
@@ -165,7 +167,7 @@ hr {
 }
 
 big {
-  font-size: x-large;
+  font-size: larger;
 }
 
 
