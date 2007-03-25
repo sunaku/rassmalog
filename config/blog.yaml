@@ -211,7 +211,7 @@ summarize_entries: true
 #
 #   ri Time.strftime
 #
-archive_frequency: %Y-%m
+archive_frequency: %B %Y
 
 
 
@@ -225,7 +225,7 @@ archive_frequency: %Y-%m
 #
 menu:
   - Rassmalog:
-    - What's new?: history.html
+    - What's new?: index_entries.html
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
     - Facilities:
