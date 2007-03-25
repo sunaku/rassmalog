@@ -171,6 +171,25 @@ big {
 }
 
 
+/* tag cloud */
+
+.cloud {
+  line-height: 3em;
+}
+
+.cloud li {
+  display: inline;
+}
+
+.cloud a {
+  text-decoration: none;
+}
+
+.cloud a:hover {
+  text-decoration: underline;
+}
+
+
 /* fix annoyances */
 
 a img {

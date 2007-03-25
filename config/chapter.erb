@@ -14,8 +14,19 @@
 %>
 <h1><%= LANG[@chapter.name] %></h1>
 
-<ul>
-  <% @chapter.pages.each do |page| %>
-    <li><%= page.to_link %> (<%= page.entries.length %>)</li>
-  <% end %>
+<ul class="cloud">
+<%
+  # these variables define how
+  # big the largest item appears
+  scale, units = 300, '%'
+
+
+  largest = @chapter.pages.map {|p| p.entries.length}.max
+
+  @chapter.pages.each do |page|
+    size = page.entries.length
+    mass = ((size.to_f / largest) * scale).round
+%>
+  <li style="font-size: <%= mass %><%= units %>;" title="<%= size %>"><%= page.to_link %><span style="display: none">&nbsp;(<%= size %>)</span></li>
+<% end %>
 </ul>
