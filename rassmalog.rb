@@ -143,13 +143,21 @@ def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
   dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
   file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
-    index = HTML_TEMPLATE.render_with do
-      @title = LANG[aName]
-      @content = %{<h1>#{@title}</h1><br/>} << aEntries.map {|e| e.to_html aMode}.join
+    title = LANG[aName]
+
+    index = INDEX_TEMPLATE.render_with do
+      @name = aName
+      @title = title
+      @content = aEntries.map {|e| e.to_html aMode}.join
+    end
+
+    html = HTML_TEMPLATE.render_with do
+      @title = title
+      @content = index
     end
 
     notify aName, dst
-    write_file dst, index
+    write_file dst, html
   end
 
   task :index => dst

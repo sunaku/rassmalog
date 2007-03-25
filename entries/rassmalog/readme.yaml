@@ -60,7 +60,7 @@ text: |
   ** You can use ERB directives within the *text* of your blog entries.
 
   * Templates are easily changable to suit your tastes:
-  ** Only four templates involved in generating HTML output.
+  ** Only five templates involved in generating HTML output.
   ** Only one template involved in generating an RSS feed.
 
   * If you don't like Textile, you can easily "use _any_ text formatting system":#config you want for blog entries.
@@ -94,11 +94,14 @@ text: |
   * <tt>config/blog.yaml</tt>
     - the primary configuration file for your blog
 
+  * <tt>config/rss.erb</tt>
+    - template used to generate the RSS 2.0 feed
+
   * <tt>config/html.erb</tt>
     - template used to generate all HTML files
 
-  * <tt>config/rss.erb</tt>
-    - template used to generate the RSS 2.0 feed
+  * <tt>config/index.erb</tt>
+    - template used to generate all <tt>index*.html</tt> files
 
   * <tt>config/entry.erb</tt>
     - template used to generate HTML for an entry

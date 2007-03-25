@@ -1,0 +1,25 @@
+<%
+=begin
+  This is a template for generating a top-level index.html file.
+
+  The following variables are available for use in this template:
+  * BLOG        => data from the blog configuration file
+  * LANG        => interface to translation file
+  * ENTRIES     => an array of all available blog entries
+  * TAGS        => a Chapter containing one Page per tag
+  * ARCHIVES    => a Chapter containing one Page per archive
+  * CHAPTERS    => an array of Chapter objects
+  * @name       => the raw name of this page
+  * @title      => the title of this page
+  * @content    => the content of this page
+=end
+%>
+<h1><%= @title %></h1>
+
+<% if @name == 'Search' %>
+<p>This page displays, in full length, all entries available on this blog. Please search <em>within</em> this page using your web browser's internal search mechanism.</p>
+<% end %>
+
+<br/>
+
+<%= @content %>
