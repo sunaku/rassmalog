@@ -229,7 +229,7 @@ menu:
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
     - Facilities:
-      - Source code (browse online or <em>get</em> with Darcs): http://rassmalog.rubyforge.org/src/rassmalog/
+      - Source code (browse online or obtain with Darcs): http://rassmalog.rubyforge.org/src/rassmalog/
       - Downloads: http://rubyforge.org/frs/?group_id=2737
       - Bugs: http://rubyforge.org/tracker/?group_id=2737
       - Patches: http://rubyforge.org/tracker/?group_id=2737

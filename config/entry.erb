@@ -11,7 +11,6 @@
 
   text = @entry.text.to_html
 
-  # summarize the entry
   if @summarize
     paragraphs = text.split(/(?:\r?\n){2,}/m)
 
@@ -28,7 +27,7 @@
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
 
-<% if toc and !toc.empty? %>
+<% if toc %>
   <div class="toc">Contents <%= toc %></div>
 <% end %>
 
@@ -36,7 +35,7 @@
 
 <% unless @summarize %>
   <div class="info">
-    Written on <%= @entry.archive.to_link @entry.date.strftime("%c") %>.
+    Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.
     <br/>
     Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.
   <% if BLOG.email %>

@@ -17,47 +17,46 @@ text: |
 
   h1. Motivation
 
-  p=. <big>Your blog. Your content!</big>
+  Rassmalog gives you _full control_ over your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
 
-  With Rassmalog, you have _complete_ control over your blog and your content. Your entries, images, stylesheets, and so on, are all stored on _your_ computer.
+  * You can easily _make backups_ and share them with a good friend.
 
-  * You can easily make backups and share them with a good friend.
+  * You are _safe from data loss_ when your web host accidentally crashes or erases your data.
 
-  * You are safe if your web server accidentally crashes or loses all of your data.
+  * If you decide to use another blog engine, your blog _entries are easily converted_ into the other blog's format because they are plain-text.
 
-  * If you decide to use another blog engine, your blog entries are readily transformed into the other blog's format because they are plain-text.
+  * You won't be rummaging through towering piles of "blog spam":http://en.wikipedia.org/wiki/Blog_spam in clunky web interfaces because Rassmalog provides _e-mail based comments_ (which can be disabled if you want).
 
-  * You won't be rummaging through towering piles of "blog spam":http://en.wikipedia.org/wiki/Blog_spam via a clunky web interface because Rassmalog provides an _e-mail based_ commenting mechanism (which can be disabled if you want).
+    This may sound inconvenient, and perhaps old-fashioned at first, but when you think about it, sending e-mail is _really_ simple -- as "demonstrated daily":http://en.wikipedia.org/wiki/E-mail_spam by spammers across the world. But fear not: Rassmalog will obfuscate your e-mail address in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.
 
-    This may sound inconvenient, and perhaps old-fashioned at first, but sending e-mail is _extremely_ simple -- as "demonstrated daily":http://en.wikipedia.org/wiki/E-mail_spam by spammers across the world. @;-)@ But fear not, because your e-mail address will be obfuscated in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.
+  In contrast, a dynamic blog engine stores your content in some _obscure binary format_ within a database on a web server.
 
-  In contrast, with a dynamic blog engine, your content is stored in some obscure binary format within a database on a web server.
-
-  * If you want to make a backup, you might not even have access (depends on your blog host) to download the raw content from the database.
+  * Depending on the blog host, you _might not have access_ to download the raw content from the database and make backups.
 
   * If you decide to use another blog engine and if your blog host lets you download your content, then you can transform your content into the other blog's format.
 
-    However, you are now tasked with importing your content into the other blog. If you're lucky, the new blog will have some kind of import feature. Otherwise, you're sentenced to manual labor: copying and pasting your content into the new blog engine. @:-(@
+    However, you are now tasked with importing your content into the other blog. If you're lucky, the new blog will have some kind of import feature. Otherwise, you're sentenced to manual labor: copying and pasting your content into the new blog engine. :-(
 
   * You will be rummaging through towering piles of "blog spam":http://en.wikipedia.org/wiki/Blog_spam eventually.
 
 
   h1. Features
 
-  Rassmalog is designed for ease of use and configuration. These goals are achieved through simplicity: Rassmalog's code base is tiny, containing less than 500 lines of code! As a result,
+  Rassmalog is designed for _ease of use_ and configuration. These goals are achieved through simplicity: Rassmalog's code base is tiny--containing _less than 500 lines_ of code! As a result,
 
   * Nearly everything is automated:
-  ** Automatic table of contents for blog entries.
-  ** Automatic syntax coloring and smart sizing (line vs. paragraph) for source code.
-  ** Automatic tag and month archives.
+  ** Automatic _table of contents_ for blog entries.
+  ** Automatic _syntax coloring_ and smart sizing (line vs. paragraph) for source code.
+  ** Automatic _archiving_ of blog entries.
   ** Automatic "RSS 2.0 feed":http://en.wikipedia.org/wiki/RSS for your entire blog.
 
-  * Blog entries are plain-text files with easy syntax. (See this "sample entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/rassmalog/example.yaml and "its output":2006-12-08-put-the-name-of-your-entry-here..html.)
-  ** Only four parameters in a blog entry: *name*, *date*, *tags*, and *text*.
-  *** You can define your own parameters in a blog entry and use them in the templates _without_ additional programming (thanks to Ruby's @OpenStruct@ class).
-  ** _No_ obscure rules for naming blog entry files. The file name can be whatever you want!
-  ** _No_ obscure restrictions on how blog entry files are organized -- just keep them _somewhere_ beneath the <tt>entries/</tt> directory.
-  ** You can use ERB directives within the *text* of your blog entries.
+  * Blog entries are _plain text files_ with easy syntax. (See this "sample blog entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/rassmalog/example.yaml and "its HTML output":2006-12-08-put-the-name-of-your-entry-here..html.)
+  ** Only four parameters in a blog entry: @name@, @date@, @tags@, and @text@.
+
+    You can _define your own parameters_ in a blog entry and use them in the templates _without_ additional programming, thanks to Ruby's @OpenStruct@ class.
+  ** No obscure rules for naming blog entry files. The file name can be whatever you want!
+  ** No obscure restrictions on how blog entry files are organized -- just keep them somewhere beneath the <tt>entries/</tt> directory.
+  ** Use the power of _ERB directives_ within the @text@ of your blog entries.
 
   * Templates are easily changable to suit your tastes:
   ** Only five templates involved in generating HTML output.
@@ -65,7 +64,7 @@ text: |
 
   * If you don't like Textile, you can easily "use _any_ text formatting system":#config you want for blog entries.
 
-  * "Easy L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization)":#config.lang of the central application.
+  * "Easy translation (L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization))":#config.lang of the central application.
 
 
   h1. Organization
@@ -78,7 +77,10 @@ text: |
   ** Page
   *** Entry
 
-  For example, a chapter shows a list of all available tags, a page shows a list of entries which have a particular tag, and an entry just shows its content.
+  For example,
+  * a chapter shows all available tags
+  * a page shows all entries for a particular tag
+  * an entry just shows its content
 
 
   h2(#manifest). Package manifest
@@ -148,13 +150,13 @@ text: |
 
   h2. Version numbering system
 
-  I strictly follow the RubyGems project's "rational versioning policy":http://www.rubygems.org/read/chapter/7. This @major.minor.build@ numbering policy "can be summarized":http://ablog.apress.com/?p=738 as follows:
+  Rassmalog uses the "RubyGems rational versioning policy":http://www.rubygems.org/read/chapter/7 to number its releases. This "major.minor.build" numbering policy "is summarized":http://ablog.apress.com/?p=738 as follows.
 
-  * an increase in the *major* number indicates that _functionally incompatible_ changes have occurred. Thus, what may have worked in the previous version may not work in the new one.
+  * When the *major* number increases, functionally _incompatible changes_ have occurred. Thus, what may have worked in the previous version may not work in the new one.
 
-  * an increase in the *minor* number indicates that _functionally compatible_ changes have occurred. Thus, what worked in the previous version will work in the new one.
+  * When the *minor* number increases, functionally _compatible changes_ have occurred. Thus, what worked in the previous version will work in the new one.
 
-  * an increase in the *build* number indicates that the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
+  * When the *build* number increases, the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
 
 
 
@@ -250,7 +252,7 @@ text: |
 
       language: foobar
 
-  In this manner, you can add or edit translation files for your own languages and use them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can also enjoy your translations! @:-)@
+  In this manner, you can add or edit translation files for your own languages and use them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can also enjoy your translations! :-)
 
 
   h3(#config.format). Using another text formatting system

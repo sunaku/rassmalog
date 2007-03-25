@@ -122,7 +122,7 @@ def write_file aPath, aContent
   end
 end
 
-# Returns the path of the output file.
+# Registers a new Rake task for generating a HTML file and returns the path of the output file.
 def generate_html_task aTask, aPage, *aDeps #:nodoc:
   dst = File.join('output', aPage.url)
 
@@ -404,6 +404,9 @@ end
     entry.src_file = src
     entry.date = DateTime.parse(entry.date.to_s)
     entry.tags = entry.tags.to_a rescue [entry.tags]
+    entry.tags.flatten!
+    entry.tags.compact!
+    entry.tags.uniq!
 
     entry
   end.sort.reverse!
@@ -534,8 +537,8 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
 
 # generate RSS feed
   file 'output/rss.xml' => ENTRY_FILES + COMMON_DEPS do |t|
-    write_file t.name, RSS_TEMPLATE.result(binding)
     notify 'RSS feed', t.name
+    write_file t.name, RSS_TEMPLATE.result(binding)
   end
 
   task :index => 'output/rss.xml'
