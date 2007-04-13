@@ -16,7 +16,9 @@
 
     if paragraphs.length > 1
       text = paragraphs.first
-      text << @entry.to_link(LANG["Read more..."])
+
+      hook = '<p>' + @entry.to_link(LANG["Read more..."]) + '</p>'
+      text << hook
     end
 
   # generate the table of contents

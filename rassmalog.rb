@@ -359,7 +359,7 @@ end
           link = if url.respond_to? :to_ary
             "#{name} <ul>#{render_menu url}</ul>"
           else
-            %{<a href="#{url}">#{name}</a>}
+            %{<a href="#{url}">#{name.to_html}</a>}
           end
 
           result << "<li>#{link}</li>"
