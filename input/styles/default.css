@@ -60,6 +60,7 @@ body {
 
 .entry {
   margin-bottom: 7em;
+  max-width: 600px;
 }
 
 .entry .name {
@@ -78,7 +79,6 @@ body {
 }
 
 .entry .text {
-  max-width: 600px;
 }
 
 .entry .text img {
@@ -86,9 +86,11 @@ body {
 }
 
 .entry .info {
-  border-top: thin dashed gray;
-  padding-top: 0.5em;
   font-size: smaller;
+  text-align: center;
+  margin-top: 2em;
+  padding: 1em;
+  border-top: solid black;
 }
 
 
