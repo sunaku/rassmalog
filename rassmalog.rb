@@ -473,7 +473,7 @@ COMMON_DEPS = ['output'] + CONFIG_FILES
     dst = src.sub('input', 'output')
 
     file dst => [src, 'output'] do
-      cp_r src, dst, :preserve => true
+      cp_r src + '/.', dst, :preserve => true
     end
 
     task :copy => dst
