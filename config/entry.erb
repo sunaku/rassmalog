@@ -22,7 +22,7 @@
     end
 
   # generate the table of contents
-  elsif text.respond_to? :table_of_contents
+  else
     toc, text = text.table_of_contents
   end
 %>
