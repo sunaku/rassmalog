@@ -60,6 +60,28 @@ class String
   def to_html_entities
     unpack('U*').map! {|c| "&##{c};"}.join
   end
+
+  # Transforms this string into a valid XHTML anchor (ID attribute).
+  # See http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html
+  def to_html_anchor
+    # The first or only character must be a letter.
+      buf =
+        if self[0,1] =~ /[[:alpha:]]/
+          self
+        else
+          'a' + self
+        end
+
+    # The remaining characters must be letters, digits, hyphens (-),
+    # underscores (_), colons (:), or periods (.) [or Unicode characters]
+      buf.unpack('U*').map! do |code|
+        if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
+          code
+        else
+          ?_
+        end
+      end.pack('U*')
+  end
 end
 
 class ERB
