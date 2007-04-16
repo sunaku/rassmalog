@@ -113,45 +113,21 @@ class String
   # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
   # in this string and returns an array containing [toc, text] where:
   #
-  # toc::   the generated table of contents, whose ID is set to aTocId
+  # toc::   the generated table of contents
   #
   # text::  a modified version of this string which contains anchors for the
   #         hyperlinks in the table of contents (so that the TOC can link to
   #         the content in this string)
   #
-  def table_of_contents aTocId = 'index'
-    aTocId = CGI.escapeHTML(aTocId.to_s)
-
-    toc = %{<a id="#{aTocId}"/><ul>}
+  def table_of_contents
+    toc = '<ul>'
     prevDepth = 0
     prevIndex = ''
 
-    # build TOC whilst dropping anchors on headings
     text = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
       depth, atts, title = $1.to_i, $2, $3.strip
 
-      # drop anchor on heading
-        anchor = CGI.unescape(
-          if atts =~ /id=('|")(.*?)\1/
-            atts = $` + $'
-            $2
-          else
-            title
-          end
-        )
-
-        # ensure that anchor is unique
-          while @@anchors.include? anchor
-            anchor << anchor.object_id.to_s
-          end
-
-          @@anchors << anchor
-
-        anchor = CGI.escapeHTML(anchor)
-        atts << %{ id="#{anchor}"}
-        tocLink = %{<a href="##{anchor}">#{title}</a>}
-
-      # determine index of heading
+      # generate a LaTeX-style index (section number) for the heading
         depthDiff = (depth - prevDepth).abs
 
         index =
@@ -169,24 +145,43 @@ class String
 
           else
             prevIndex.next
-          end
 
-          toc << "<li>#{tocLink}</li>"
+          end
 
         prevDepth = depth
         prevIndex = index
 
-      %{<h#{depth}#{atts}><a href="##{aTocId}">#{index}</a> &nbsp; #{title}</h#{depth}>}
+      # generate a unique HTML anchor for the heading
+        anchor = CGI.unescape(
+          if atts =~ /id=('|")(.*?)\1/
+            atts = $` + $'
+            $2
+          else
+            title
+          end
+        )
+
+        anchor << anchor.object_id.to_s while @@anchors.include? anchor
+        @@anchors << anchor
+
+      # provide hyperlinks for traveling between TOC and heading
+        forwardAnchor = anchor.to_html_anchor
+        reverseAnchor = forwardAnchor.object_id.to_s.to_html_anchor
+
+        # forward link from TOC to heading
+        toc << %{<li><a id="#{reverseAnchor}" href="##{forwardAnchor}">#{title}</a></li>}
+
+        # reverse link from heading to TOC
+        %{<h#{depth}#{atts}><a id="#{forwardAnchor}" href="##{reverseAnchor}">#{index}</a> &nbsp; #{title}</h#{depth}>}
     end
 
-    # finalize TOC construction
     if prevIndex.empty?
       toc = nil # there were no headings
     else
       toc << '</ul></li>' * prevDepth
       toc << '</ul>'
 
-      # join redundant list elements
+      # collapse redundant list elements
       while toc.gsub! %r{(<li>.*?)</li><li>(<ul>)}, '\1\2'
       end
 
