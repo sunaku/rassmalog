@@ -18,7 +18,7 @@ name: Put the name of your blog here
 # Description of your blog.
 #
 info: |
-  Describe your blog here.
+  Describe your blog here. <br/>
   Fill as many lines as you need!
 
 
@@ -34,8 +34,7 @@ author: Put your name here
 
 
 #
-# The e-mail address of the author or the e-mail address for receiving
-# comments about your blog entries.
+# The e-mail address that will receive comments about your blog entries.
 #
 # This address will be obfuscated into HTML entities so that e-mail address
 # harvesters won't bother to figure out what it is. For example, the address
@@ -137,11 +136,13 @@ encoding: utf-8
 # The ISO-639 code and (optionally) the ISO-3166 country code for the
 # primary language used in your entries.
 #
-# See http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes for a list of
-# ISO-639 language codes.
+# For a list of ISO-639 language codes, see:
 #
-# See http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Current_codes for a
-# list of ISO-3166 country codes.
+#   http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
+#
+# For a list of ISO-3166 country codes, see:
+#
+#   http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Current_codes
 #
 # Examples:
 #
@@ -158,11 +159,11 @@ language: en-us
 
 
 #
-# The name of a file in the output/ directory that should be the front page
-# of your blog. This allows you to display an entry as your front page.
+# Name of a file in the output/ directory that is displayed when somebody
+# visits your blog. This is called the "front page" of your blog.
 #
-# If you want your front page to be an automatic listing of the most recent
-# entries, then simply make the value of this parameter blank:
+# To have an automatic listing of the most recent entries on the front page,
+# simply leave this parameter blank:
 #
 #   front_page:   # nothing here!
 #
@@ -178,7 +179,11 @@ recent_entries: 3
 #
 # Specifies whether entries are summarized in tag and archive pages.
 #
-# To disable this option, set the value to "false" like this:
+# The config/entry.erb template controls how an entry is summarized. By
+# default, only the first paragraph of an entry is shown when summarization
+# is enabled.
+#
+# To disable this parameter, set its value to "false" like this:
 #
 #   summarize_entries: false
 #
@@ -186,8 +191,7 @@ summarize_entries: true
 
 
 #
-# This parameter controls how frequently archives are created. Its value is
-# evaluated by the Time.strftime method.
+# Controls how frequently archives are created.
 #
 # To have one archive per year, specify:
 #
@@ -205,11 +209,9 @@ summarize_entries: true
 #
 #   archive_frequency: put your own value here
 #
-# In these examples, the %... symbols are "format specifiers" for the
-# Time.strftime method. You can see the documentation for this method by
-# typing the following command at your terminal:
+# For more information, see the documentation of the Time.strftime method:
 #
-#   ri Time.strftime
+#   http://www.rubycentral.com/book/ref_c_time.html#Time.strftime
 #
 archive_frequency: %B %Y
 

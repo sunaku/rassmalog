@@ -40,19 +40,20 @@ end
 ############################################################################
 
 class DateTime
-  # Returns the RFC-822 representation, which is required by RSS, of this object.
+  # Returns the RFC-822 representation, which is required by RSS, of this
+  # object.
   def rfc822
     strftime "%a, %d %b %Y %H:%M:%S %Z"
   end
 end
 
 class String
-  # Transforms this string into a vaild file name that can be safely used in a URL.
-  # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+  # Transforms this string into a vaild file name that can be safely used in a
+  # URL.  See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
   def to_file_name
+    gsub(%r{[/;?#]+}, '-'). # these are *reserved* characters in URL syntax
     downcase.               # it's hard to remember capitalization in URLs
     gsub(/\s+/, '-').       # remove the need for %20 escapes in URLs
-    gsub(%r{[/;?#]+}, '-'). # these are parts of a URL syntax
     squeeze('-')
   end
 
@@ -178,7 +179,9 @@ end
 class ERB
   alias old_initialize initialize
 
-  # A version of ERB whose embedding tags behave like those of PHP. That is, only <%= ... %> tags produce output, whereas <% ... %> tags do *not* produce any output.
+  # A version of ERB whose embedding tags behave like those of PHP. That is,
+  # only <%= ... %> tags produce output, whereas <% ... %> tags do *not*
+  # produce any output.
   def initialize aInput, *aArgs
     # ensure that only <%= ... %> tags generate output
       input = aInput.gsub %r{<%=.*?%>}m do |s|
@@ -220,7 +223,8 @@ def write_file aPath, aContent
   end
 end
 
-# Registers a new Rake task for generating a HTML file and returns the path of the output file.
+# Registers a new Rake task for generating a HTML file and returns the path of
+# the output file.
 def generate_html_task aTask, aPage, *aDeps #:nodoc:
   dst = File.join('output', aPage.url)
 
@@ -235,8 +239,11 @@ def generate_html_task aTask, aPage, *aDeps #:nodoc:
   dst
 end
 
-# Generates an index, which is not a fully qualified Page but behaves like one, of entries.
-# NOTE: the aName parameter will be translated later by this method, so only provide English strings here.
+# Generates an index, which is not a fully qualified Page but behaves like
+# one, of entries.
+#
+# NOTE: the aName parameter will be translated later by this method, so only
+# provide English strings here.
 def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
   dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
@@ -267,7 +274,9 @@ end
 # data structures for organizing entries
 ############################################################################
 
-# Something that can be (hyper)linked to. Objects that mix-in this module must define a #to_s method, whose value is used when determining the URL for this object.
+# Something that can be (hyper)linked to. Objects that mix-in this module must
+# define a #to_s method, whose value is used when determining the URL for this
+# object.
 module Linkable
   # Returns a relative URL to this page.
   def url
@@ -287,7 +296,9 @@ end
 
 # Interface to translations.
 class Language < OpenStruct
-  # Translates the given string and then formats (see String#format) the translation with the given placeholder arguments. If the translation is not available, then the given string will be used instead.
+  # Translates the given string and then formats (see String#format) the
+  # translation with the given placeholder arguments. If the translation is
+  # not available, then the given string will be used instead.
   def [] aString, *aArgs
     (self.send(aString) || aString) % aArgs
   end
@@ -321,7 +332,8 @@ class Entry < OpenStruct
     "#{addr}?subject=#{subj}&body=#{body}".to_html_entities
   end
 
-  # Transforms this entry into HTML. If summarize is enabled, then only the first paragraph of this entry's content will be included in the result.
+  # Transforms this entry into HTML. If summarize is enabled, then only the
+  # first paragraph of this entry's content will be included in the result.
   def to_html aSummarize = false
     entry = self
 

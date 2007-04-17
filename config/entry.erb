@@ -14,6 +14,7 @@
   if @summarize
     paragraphs = text.split(/(?:\r?\n){2,}/m)
 
+    # summarize the entry by retaining only the first paragraph
     if paragraphs.length > 1
       text = paragraphs.first
 

@@ -8,7 +8,7 @@ tags:
 text: |
   This release adds support for L10N(Localization)/I18N(Internationalization)/M17N(Multilingualization), adds new configuration parameters, fixes some bugs, and improves the documentation.
 
-  h2. Notice
+  h1. Caution
 
   * Generated file names no longer have spaces in them.
 
@@ -20,7 +20,7 @@ text: |
 
   * The _index_ parameter has been renamed to _recent_entries_ in the primary blog configuration file.
 
-  h2. Details
+  h1. Details
 
   * New configuration parameters have been added to the blog configuration file:
   ** The _front_page_ parameter defines the name of a file in the output/ directory that should be the front page of your blog. This allows you to display an entry as your front page.

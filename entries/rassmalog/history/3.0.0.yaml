@@ -8,7 +8,7 @@ tags:
 text: |
   This release adds the ability to use ERB directives in the text of blog entries, adds translations for various languages, refines the automatic table of contents, and improves the obfuscation of email addresses.
 
-  h1. Notice
+  h1. Caution
 
   If your blog entries contain the text @<%%@ (which marks the beginning of an ERB directive), then you must escape those markers by adding an extra percentage sign (%), like this: @<%%%@. Otherwise, you will get errors from ERB when you generate your blog.
 

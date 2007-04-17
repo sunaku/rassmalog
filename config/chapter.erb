@@ -9,19 +9,18 @@
   * TAGS        => a Chapter containing one Page per tag
   * ARCHIVES    => a Chapter containing one Page per archive
   * CHAPTERS    => an array of Chapter objects
-  * @chapter    => a Chapter for which we are generating HTML
+  * @chapter    => the Chapter for which we are generating HTML
 =end
 %>
 <h1><%= LANG[@chapter.name] %></h1>
 
 <ul class="cloud">
 <%
-  # these variables define how
-  # big the largest item appears
+  # these variables define how big the largest item appears
   scale, units = 300, '%'
 
 
-  largest = @chapter.pages.map {|p| p.entries.length}.max
+  largest = @chapter.pages.map {|page| page.entries.length}.max
 
   @chapter.pages.each do |page|
     size = page.entries.length

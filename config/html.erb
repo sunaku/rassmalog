@@ -23,7 +23,7 @@
     <meta name="author" content="<%=h BLOG.author %>" />
     <meta name="generator" content="<%= GENERATOR %>" />
 
-    <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS feed for this blog." />
+    <link rel="alternate" type="application/rss+xml" href="rss.xml" />
     <link rel="stylesheet" type="text/css" href="styles/default.css" />
 
     <title><%= @title %> &mdash; <%= BLOG.name %></title>
@@ -43,6 +43,9 @@
       <h1 class="name"><%= BLOG.name.to_html %></h1>
       <div class="info"><%= BLOG.info.to_html %></div>
     </div>
+
+    <!-- improves usability in text-mode browsers -->
+    <br style="display: none"/>
 
     <div id="navigation">
       <a href="index.html"><%= LANG['Home'] %></a>
