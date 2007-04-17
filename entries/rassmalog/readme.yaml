@@ -3,7 +3,6 @@ name: Welcome to Rassmalog
 date: Wed Dec 13 01:28:17 PST 2006 @436 /Internet Time/
 
 tags:
-  - rassmalog
 
 text: |
   Rassmalog is a static blog engine based on "RSS 2.0":http://en.wikipedia.org/wiki/RSS, "YAML":http://www.yaml.org/, and "Textile":http://whytheluckystiff.net/ruby/redcloth/. It is "Free Software":http://www.gnu.org/copyleft/gpl.html inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines.
