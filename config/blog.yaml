@@ -226,24 +226,25 @@ archive_frequency: %B %Y
 menu:
   - Rassmalog:
     - What's new?: index_entries.html
+    - Tips & tricks: tricks.html
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
-    - Facilities:
-      - Source code (browse online or obtain with Darcs): http://rassmalog.rubyforge.org/src/rassmalog/
-      - Downloads: http://rubyforge.org/frs/?group_id=2737
-      - Bugs: http://rubyforge.org/tracker/?group_id=2737
-      - Patches: http://rubyforge.org/tracker/?group_id=2737
-      - Requests: http://rubyforge.org/tracker/?group_id=2737
-      - Forums: http://rubyforge.org/forum/?group_id=2737
     - Author's blog: http://www.soe.ucsc.edu/~snk/
 
-  - Reference:
-    - Rassmalog API: ../ref/index.html
+  - Documentation:
+    - Example entry: 2006-12-08-put-the-name-of-your-entry-here..html
+    - API reference: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
-    - ERB templates: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
-    - YAML:
-      - Tutorial: http://yaml.kwiki.org/?YamlInFiveMinutes
-      - Cookbook: http://yaml4r.sourceforge.net/cookbook/
+    - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
+    - ERB syntax: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
+
+  - Facilities:
+    - Source code: http://rassmalog.rubyforge.org/src/rassmalog/
+    - Downloads: http://rubyforge.org/frs/?group_id=2737
+    - Bugs: http://rubyforge.org/tracker/?group_id=2737
+    - Patches: http://rubyforge.org/tracker/?group_id=2737
+    - Requests: http://rubyforge.org/tracker/?group_id=2737
+    - Forums: http://rubyforge.org/forum/?group_id=2737
 
   - hey! this:
     - menu is:
