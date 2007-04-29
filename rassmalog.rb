@@ -101,6 +101,9 @@ class String
   #         hyperlinks in the table of contents (so that the TOC can link to
   #         the content in this string)
   #
+  # If a block is given, it will be invoked every time a heading is found, with
+  # information about the found heading.
+  #
   def table_of_contents
     toc = '<ul>'
     prevDepth = 0
@@ -141,20 +144,22 @@ class String
           else
             title
           end
-        )
+        ).to_html_anchor
 
         anchor << anchor.object_id.to_s while @@anchors.include? anchor
         @@anchors << anchor
 
+      yield title, anchor, index, depth, atts if block_given?
+
       # provide hyperlinks for traveling between TOC and heading
-        forwardAnchor = anchor.to_html_anchor
-        reverseAnchor = forwardAnchor.object_id.to_s.to_html_anchor
+        dst = anchor
+        src = dst.object_id.to_s.to_html_anchor
 
         # forward link from TOC to heading
-        toc << %{<li><a id="#{reverseAnchor}" href="##{forwardAnchor}">#{title}</a></li>}
+        toc << %{<li><a id="#{src}" href="##{dst}">#{title}</a></li>}
 
         # reverse link from heading to TOC
-        %{<h#{depth}#{atts}><a id="#{forwardAnchor}" href="##{reverseAnchor}">#{index}</a> &nbsp; #{title}</h#{depth}>}
+        %{<h#{depth}#{atts}><a id="#{dst}" href="##{src}">#{index}</a> &nbsp; #{title}</h#{depth}>}
     end
 
     if prevIndex.empty?
