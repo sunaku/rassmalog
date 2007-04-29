@@ -13,661 +13,649 @@ require 'erb'
 include ERB::Util
 
 
-############################################################################
 # project information
-############################################################################
 
-GENERATOR = OpenStruct.new(
-  :name     => 'Rassmalog',
-  :version  => '4.0.0',
-  :date     => '2007-04-16',
-  :url      => 'http://rassmalog.rubyforge.org'
-)
+  GENERATOR = OpenStruct.new(
+    :name     => 'Rassmalog',
+    :version  => '4.0.0',
+    :date     => '2007-04-16',
+    :url      => 'http://rassmalog.rubyforge.org'
+  )
 
-class << GENERATOR
-  def to_s
-    name + ' ' + version
+  class << GENERATOR
+    def to_s
+      name + ' ' + version
+    end
+
+    def to_link
+      %{<a href="#{url}">#{self}</a>}
+    end
   end
 
-  def to_link
-    %{<a href="#{url}">#{self}</a>}
-  end
-end
 
-
-############################################################################
 # utility logic
-############################################################################
 
-class DateTime
-  # Returns the RFC-822 representation, which is required by RSS, of this
-  # object.
-  def rfc822
-    strftime "%a, %d %b %Y %H:%M:%S %Z"
-  end
-end
-
-class String
-  # Transforms this string into a vaild file name that can be safely used in a
-  # URL.  See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-  def to_file_name
-    gsub(%r{[/;?#]+}, '-'). # these are *reserved* characters in URL syntax
-    downcase.               # it's hard to remember capitalization in URLs
-    gsub(/\s+/, '-').       # remove the need for %20 escapes in URLs
-    squeeze('-')
+  class DateTime
+    # Returns the RFC-822 representation, which is required by RSS, of this
+    # object.
+    def rfc822
+      strftime "%a, %d %b %Y %H:%M:%S %Z"
+    end
   end
 
-  # Transforms this UTF-8 string into HTML entities.
-  def to_html_entities
-    unpack('U*').map! {|c| "&##{c};"}.join
-  end
+  class String
+    # Transforms this string into a vaild file name that can be safely used in a
+    # URL. See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+    def to_file_name
+      gsub(%r{[/;?#]+}, '-'). # these are *reserved* characters in URL syntax
+      downcase.               # it's hard to remember capitalization in URLs
+      gsub(/\s+/, '-').       # remove the need for %20 escapes in URLs
+      squeeze('-')
+    end
 
-  # Transforms this string into a valid XHTML anchor (ID attribute).
-  # See http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html
-  def to_html_anchor
-    # The first or only character must be a letter.
-      buf =
-        if self[0,1] =~ /[[:alpha:]]/
-          self
-        else
-          'a' + self
-        end
+    # Transforms this UTF-8 string into HTML entities.
+    def to_html_entities
+      unpack('U*').map! {|c| "&##{c};"}.join
+    end
 
-    # The remaining characters must be letters, digits, hyphens (-),
-    # underscores (_), colons (:), or periods (.) [or Unicode characters]
-      buf.unpack('U*').map! do |code|
-        if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
-          code
-        else
-          ?_
-        end
-      end.pack('U*')
-  end
-
-
-  @@anchors = []
-
-  # Resets the list of anchors encountered thus far.
-  def String.reset_anchors
-    @@anchors.clear
-  end
-
-  # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
-  # in this string and returns an array containing [toc, text] where:
-  #
-  # toc::   the generated table of contents
-  #
-  # text::  a modified version of this string which contains anchors for the
-  #         hyperlinks in the table of contents (so that the TOC can link to
-  #         the content in this string)
-  #
-  # If a block is given, it will be invoked every time a heading is found, with
-  # information about the found heading.
-  #
-  def table_of_contents
-    toc = '<ul>'
-    prevDepth = 0
-    prevIndex = ''
-
-    text = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
-      depth, atts, title = $1.to_i, $2, $3.strip
-
-      # generate a LaTeX-style index (section number) for the heading
-        depthDiff = (depth - prevDepth).abs
-
-        index =
-          if depth > prevDepth
-            toc << '<li><ul>' * depthDiff
-
-            s = prevIndex + ('.1' * depthDiff)
-            s.sub(/^\./, '')
-
-          elsif depth < prevDepth
-            toc << '</ul></li>' * depthDiff
-
-            s = prevIndex.sub(/(\.\d+){#{depthDiff}}$/, '')
-            s.next
-
+    # Transforms this string into a valid XHTML anchor (ID attribute).
+    # See http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html
+    def to_html_anchor
+      # The first or only character must be a letter.
+        buf =
+          if self[0,1] =~ /[[:alpha:]]/
+            self
           else
-            prevIndex.next
-
+            'a' + self
           end
 
-        prevDepth = depth
-        prevIndex = index
-
-      # generate a unique HTML anchor for the heading
-        anchor = CGI.unescape(
-          if atts =~ /id=('|")(.*?)\1/
-            atts = $` + $'
-            $2
+      # The remaining characters must be letters, digits, hyphens (-),
+      # underscores (_), colons (:), or periods (.) [or Unicode characters]
+        buf.unpack('U*').map! do |code|
+          if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
+            code
           else
-            title
+            ?_
           end
-        ).to_html_anchor
-
-        anchor << anchor.object_id.to_s while @@anchors.include? anchor
-        @@anchors << anchor
-
-      yield title, anchor, index, depth, atts if block_given?
-
-      # provide hyperlinks for traveling between TOC and heading
-        dst = anchor
-        src = dst.object_id.to_s.to_html_anchor
-
-        # forward link from TOC to heading
-        toc << %{<li><a id="#{src}" href="##{dst}">#{title}</a></li>}
-
-        # reverse link from heading to TOC
-        %{<h#{depth}#{atts}><a id="#{dst}" href="##{src}">#{index}</a> &nbsp; #{title}</h#{depth}>}
+        end.pack('U*')
     end
 
-    if prevIndex.empty?
-      toc = nil # there were no headings
-    else
-      toc << '</ul></li>' * prevDepth
-      toc << '</ul>'
 
-      # collapse redundant list elements
-      while toc.gsub! %r{(<li>.*?)</li><li>(<ul>)}, '\1\2'
-      end
+    @@anchors = []
 
-      # collapse unnecessary levels
-      while toc.gsub! %r{(<ul>)<li><ul>(.*)</ul></li>(</ul>)}, '\1\2\3'
-      end
+    # Resets the list of anchors encountered thus far.
+    def String.reset_anchors
+      @@anchors.clear
     end
 
-    [toc, text]
-  end
-end
+    # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
+    # in this string and returns an array containing [toc, text] where:
+    #
+    # toc::   the generated table of contents
+    #
+    # text::  a modified version of this string which contains anchors for the
+    #         hyperlinks in the table of contents (so that the TOC can link to
+    #         the content in this string)
+    #
+    # If a block is given, it will be invoked every time a heading is found,
+    # with information about the found heading.
+    #
+    def table_of_contents
+      toc = '<ul>'
+      prevDepth = 0
+      prevIndex = ''
 
-class ERB
-  alias old_initialize initialize
+      text = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
+        depth, atts, title = $1.to_i, $2, $3.strip
 
-  # A version of ERB whose embedding tags behave like those of PHP. That is,
-  # only <%= ... %> tags produce output, whereas <% ... %> tags do *not*
-  # produce any output.
-  def initialize aInput, *aArgs
-    # ensure that only <%= ... %> tags generate output
-      input = aInput.gsub %r{<%=.*?%>}m do |s|
-        if ($' =~ /\r?\n/) == 0
-          s << $&
-        else
-          s
+        # generate a LaTeX-style index (section number) for the heading
+          depthDiff = (depth - prevDepth).abs
+
+          index =
+            if depth > prevDepth
+              toc << '<li><ul>' * depthDiff
+
+              s = prevIndex + ('.1' * depthDiff)
+              s.sub(/^\./, '')
+
+            elsif depth < prevDepth
+              toc << '</ul></li>' * depthDiff
+
+              s = prevIndex.sub(/(\.\d+){#{depthDiff}}$/, '')
+              s.next
+
+            else
+              prevIndex.next
+
+            end
+
+          prevDepth = depth
+          prevIndex = index
+
+        # generate a unique HTML anchor for the heading
+          anchor = CGI.unescape(
+            if atts =~ /id=('|")(.*?)\1/
+              atts = $` + $'
+              $2
+            else
+              title
+            end
+          ).to_html_anchor
+
+          anchor << anchor.object_id.to_s while @@anchors.include? anchor
+          @@anchors << anchor
+
+        yield title, anchor, index, depth, atts if block_given?
+
+        # provide hyperlinks for traveling between TOC and heading
+          dst = anchor
+          src = dst.object_id.to_s.to_html_anchor
+
+          # forward link from TOC to heading
+          toc << %{<li><a id="#{src}" href="##{dst}">#{title}</a></li>}
+
+          # reverse link from heading to TOC
+          %{<h#{depth}#{atts}><a id="#{dst}" href="##{src}">#{index}</a> &nbsp; #{title}</h#{depth}>}
+      end
+
+      if prevIndex.empty?
+        toc = nil # there were no headings
+      else
+        toc << '</ul></li>' * prevDepth
+        toc << '</ul>'
+
+        # collapse redundant list elements
+        while toc.gsub! %r{(<li>.*?)</li><li>(<ul>)}, '\1\2'
+        end
+
+        # collapse unnecessary levels
+        while toc.gsub! %r{(<ul>)<li><ul>(.*)</ul></li>(</ul>)}, '\1\2\3'
         end
       end
 
-      aArgs[1] = '>'
-
-    old_initialize input, *aArgs
+      [toc, text]
+    end
   end
 
-  # Renders this template within a fresh object configured by the given block.
-  def render_with &aBlock
-    dummy = Object.new
-    dummy.instance_eval(&aBlock)
-    result dummy.instance_eval {binding}
-  end
-end
+  class ERB
+    alias old_initialize initialize
 
-# Notify the user about some action being performed.
-def notify *args
-  printf "%12s  %s\n", *args
-end
+    # A version of ERB whose embedding tags behave like those of PHP. That is,
+    # only <%= ... %> tags produce output, whereas <% ... %> tags do *not*
+    # produce any output.
+    def initialize aInput, *aArgs
+      # ensure that only <%= ... %> tags generate output
+        input = aInput.gsub %r{<%=.*?%>}m do |s|
+          if ($' =~ /\r?\n/) == 0
+            s << $&
+          else
+            s
+          end
+        end
 
-# Loads the given YAML file into the given wrapper.
-def load_yaml_file aFile, aWrapper = OpenStruct
-  aWrapper.new(YAML.load_file(aFile))
-end
+        aArgs[1] = '>'
 
-# Writes the given content to the given file.
-def write_file aPath, aContent
-  File.open aPath, 'w' do |f|
-    # lstrip because XML declaration must be at start of file
-    f << aContent.lstrip
-  end
-end
-
-# Registers a new Rake task for generating a HTML file and returns the path of
-# the output file.
-def generate_html_task aTask, aPage, *aDeps #:nodoc:
-  dst = File.join('output', aPage.url)
-
-  file dst => aDeps.flatten + COMMON_DEPS do
-    notify aPage.class, dst
-    write_file dst, aPage.render
-  end
-
-  task aTask => dst
-  CLOBBER.include dst
-
-  dst
-end
-
-# Generates an index, which is not a fully qualified Page but behaves like
-# one, of entries.
-#
-# NOTE: the aName parameter will be translated later by this method, so only
-# provide English strings here.
-def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
-  dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
-
-  file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
-    title = LANG[aName]
-
-    index = INDEX_TEMPLATE.render_with do
-      @name = aName
-      @title = title
-      @content = aEntries.map {|e| e.to_html aMode}.join
+      old_initialize input, *aArgs
     end
 
-    html = HTML_TEMPLATE.render_with do
-      @title = title
-      @content = index
+    # Renders this template within a fresh object configured by the given block.
+    def render_with &aBlock
+      dummy = Object.new
+      dummy.instance_eval(&aBlock)
+      result dummy.instance_eval {binding}
     end
-
-    notify aName, dst
-    write_file dst, html
   end
 
-  task :index => dst
-  CLOBBER.include dst
-end
+  # Notify the user about some action being performed.
+  def notify *args
+    printf "%12s  %s\n", *args
+  end
+
+  # Loads the given YAML file into the given wrapper.
+  def load_yaml_file aFile, aWrapper = OpenStruct
+    aWrapper.new(YAML.load_file(aFile))
+  end
+
+  # Writes the given content to the given file.
+  def write_file aPath, aContent
+    File.open aPath, 'w' do |f|
+      # lstrip because XML declaration must be at start of file
+      f << aContent.lstrip
+    end
+  end
+
+  # Registers a new Rake task for generating a HTML file and returns the path of
+  # the output file.
+  def generate_html_task aTask, aPage, *aDeps #:nodoc:
+    dst = File.join('output', aPage.url)
+
+    file dst => aDeps.flatten + COMMON_DEPS do
+      notify aPage.class, dst
+      write_file dst, aPage.render
+    end
+
+    task aTask => dst
+    CLOBBER.include dst
+
+    dst
+  end
+
+  # Generates an index, which is not a fully qualified Page but behaves like
+  # one, of entries.
+  #
+  # NOTE: the aName parameter will be translated later by this method, so only
+  # provide English strings here.
+  def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
+    dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
+
+    file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
+      title = LANG[aName]
+
+      index = INDEX_TEMPLATE.render_with do
+        @name = aName
+        @title = title
+        @content = aEntries.map {|e| e.to_html aMode}.join
+      end
+
+      html = HTML_TEMPLATE.render_with do
+        @title = title
+        @content = index
+      end
+
+      notify aName, dst
+      write_file dst, html
+    end
+
+    task :index => dst
+    CLOBBER.include dst
+  end
 
 
-############################################################################
 # data structures for organizing entries
-############################################################################
 
-# Something that can be (hyper)linked to. Objects that mix-in this module must
-# define a #to_s method, whose value is used when determining the URL for this
-# object.
-module Linkable
-  # Returns a relative URL to this page.
-  def url
-    to_s.to_file_name << '.html'
-  end
+  # Something that can be (hyper)linked to. Objects that mix-in this module must
+  # define a #to_s method, whose value is used when determining the URL for this
+  # object.
+  module Linkable
+    # Returns a relative URL to this page.
+    def url
+      to_s.to_file_name << '.html'
+    end
 
-  # Returns a relative hyperlink to this page.
-  def to_link aName = name
-    %{<a href="#{u url}">#{aName}</a>}
-  end
+    # Returns a relative hyperlink to this page.
+    def to_link aName = name
+      %{<a href="#{u url}">#{aName}</a>}
+    end
 
-  # Compares this page to the given page.
-  def <=> aOther
-    url <=> aOther.url
-  end
-end
-
-# Interface to translations.
-class Language < OpenStruct
-  # Translates the given string and then formats (see String#format) the
-  # translation with the given placeholder arguments. If the translation is
-  # not available, then the given string will be used instead.
-  def [] aString, *aArgs
-    (self.send(aString) || aString) % aArgs
-  end
-end
-
-# A single blog entry.
-class Entry < OpenStruct
-  include Linkable
-
-  def initialize aHash = nil
-    @rawText = aHash['text']
-    super
-  end
-
-  def text
-    # evaluate ERB directives within the entry
-    @text ||= ERB.new(@rawText).result
-  end
-
-  def url
-    stamp = date.strftime "%F"
-    "#{stamp}-#{name}.html".to_file_name
-  end
-
-  # Returns a URL for submiting comments about this entry.
-  def comment_url
-    addr = "mailto:#{BLOG.email}"
-    subj = "[#{GENERATOR.name}] #{name}"
-    body = File.join(BLOG.url, url)
-
-    "#{addr}?subject=#{subj}&body=#{body}".to_html_entities
-  end
-
-  # Transforms this entry into HTML. If summarize is enabled, then only the
-  # first paragraph of this entry's content will be included in the result.
-  def to_html aSummarize = false
-    entry = self
-
-    ENTRY_TEMPLATE.render_with do
-      @entry = entry
-      @summarize = aSummarize
+    # Compares this page to the given page.
+    def <=> aOther
+      url <=> aOther.url
     end
   end
 
-  # Renders a HTML page for this Entry.
-  def render
-    t, c = name, to_html
-    HTML_TEMPLATE.render_with do
-      @title, @content = t, c
+  # Interface to translations.
+  class Language < OpenStruct
+    # Translates the given string and then formats (see String#format) the
+    # translation with the given placeholder arguments. If the translation is
+    # not available, then the given string will be used instead.
+    def [] aString, *aArgs
+      (self.send(aString) || aString) % aArgs
     end
   end
 
-  # Compares this entry to the given entry.
-  # This is used to sort a list of entries by date.
-  def <=> aOther
-    date <=> aOther.date
-  end
-end
+  # A single blog entry.
+  class Entry < OpenStruct
+    include Linkable
 
-# A listing of blog entries (Entry objects).
-class Page
-  include Linkable
+    def initialize aHash = nil
+      @rawText = aHash['text']
+      super
+    end
 
-  attr_reader :name, :entries, :chapter
+    def text
+      # evaluate ERB directives within the entry
+      @text ||= ERB.new(@rawText).result
+    end
 
-  # aName:: name of this page
-  # aEntries:: Entry objects that belong in this page
-  # aChapter:: Chapter object which contains this page
-  def initialize aName, aEntries, aChapter
-    @name = aName
-    @entries = aEntries
-    @chapter = aChapter
-  end
+    def url
+      stamp = date.strftime "%F"
+      "#{stamp}-#{name}.html".to_file_name
+    end
 
-  alias to_s name
+    # Returns a URL for submiting comments about this entry.
+    def comment_url
+      addr = "mailto:#{BLOG.email}"
+      subj = "[#{GENERATOR.name}] #{name}"
+      body = File.join(BLOG.url, url)
 
-  # Renders a HTML page for this Page.
-  def render
-    page = self
+      "#{addr}?subject=#{subj}&body=#{body}".to_html_entities
+    end
 
-    HTML_TEMPLATE.render_with do
-      @title = page.name
-      @content = PAGE_TEMPLATE.render_with {@page = page}
+    # Transforms this entry into HTML. If summarize is enabled, then only the
+    # first paragraph of this entry's content will be included in the result.
+    def to_html aSummarize = false
+      entry = self
+
+      ENTRY_TEMPLATE.render_with do
+        @entry = entry
+        @summarize = aSummarize
+      end
+    end
+
+    # Renders a HTML page for this Entry.
+    def render
+      t, c = name, to_html
+      HTML_TEMPLATE.render_with do
+        @title, @content = t, c
+      end
+    end
+
+    # Compares this entry to the given entry.
+    # This is used to sort a list of entries by date.
+    def <=> aOther
+      date <=> aOther.date
     end
   end
 
-  # Returns the next page in the chapter.
-  def next
-    sibling(+1)
-  end
+  # A listing of blog entries (Entry objects).
+  class Page
+    include Linkable
 
-  # Returns the previous page in the chapter.
-  def prev
-    sibling(-1)
-  end
+    attr_reader :name, :entries, :chapter
 
-  private
-
-  def sibling aOffset
-    list = chapter.pages
-    pos = list.index(self)
-
-    list[(pos + aOffset) % list.length]
-  end
-end
-
-# A listing of pages (Page objects).
-class Chapter
-  include Linkable
-
-  attr_reader :name, :pages
-
-  # aName:: name of this Chapter
-  # aHash:: mapping from Page name to array of Entry
-  def initialize aName, aHash
-    @fileName = aName
-    @name = LANG[aName]
-    @pages = []
-
-    aHash.each_pair do |k, v|
-      @pages << Page.new(k, v, self)
+    # aName:: name of this page
+    # aEntries:: Entry objects that belong in this page
+    # aChapter:: Chapter object which contains this page
+    def initialize aName, aEntries, aChapter
+      @name = aName
+      @entries = aEntries
+      @chapter = aChapter
     end
 
-    @pages.sort!
-  end
+    alias to_s name
 
-  def to_s
-    'index_' + @fileName.downcase
-  end
+    # Renders a HTML page for this Page.
+    def render
+      page = self
 
-  # Renders a HTML page for this Chapter.
-  def render
-    chapter = self
-
-    HTML_TEMPLATE.render_with do
-      @title = chapter.name
-      @content = CHAPTER_TEMPLATE.render_with {@chapter = chapter}
+      HTML_TEMPLATE.render_with do
+        @title = page.name
+        @content = PAGE_TEMPLATE.render_with {@page = page}
+      end
     end
-  end
-end
 
+    # Returns the next page in the chapter.
+    def next
+      sibling(+1)
+    end
 
-############################################################################
-# input processing stage
-############################################################################
-
-# load blog configuration
-  BLOG = load_yaml_file('config/blog.yaml')
-
-  class << BLOG.menu
-    # Converts this hierarchical menu into HTML.
-    def to_html
-      @html ||= render_menu self
+    # Returns the previous page in the chapter.
+    def prev
+      sibling(-1)
     end
 
     private
 
-    # Expands the given hierarchical menu into an itemized list of hyperlinks.
-    def render_menu aMenu
-      result = ''
+    def sibling aOffset
+      list = chapter.pages
+      pos = list.index(self)
 
-      if aMenu.respond_to? :to_ary
-        aMenu.each do |link|
-          result << render_menu(link)
-        end
-      elsif aMenu.respond_to? :each_pair
-        aMenu.each_pair do |name, url|
-          link = if url.respond_to? :to_ary
-            "#{name} <ul>#{render_menu url}</ul>"
-          else
-            %{<a href="#{url}">#{name.to_html}</a>}
+      list[(pos + aOffset) % list.length]
+    end
+  end
+
+  # A listing of pages (Page objects).
+  class Chapter
+    include Linkable
+
+    attr_reader :name, :pages
+
+    # aName:: name of this Chapter
+    # aHash:: mapping from Page name to array of Entry
+    def initialize aName, aHash
+      @fileName = aName
+      @name = LANG[aName]
+      @pages = []
+
+      aHash.each_pair do |k, v|
+        @pages << Page.new(k, v, self)
+      end
+
+      @pages.sort!
+    end
+
+    def to_s
+      'index_' + @fileName.downcase
+    end
+
+    # Renders a HTML page for this Chapter.
+    def render
+      chapter = self
+
+      HTML_TEMPLATE.render_with do
+        @title = chapter.name
+        @content = CHAPTER_TEMPLATE.render_with {@chapter = chapter}
+      end
+    end
+  end
+
+
+# input processing stage
+
+  # load blog configuration
+    BLOG = load_yaml_file('config/blog.yaml')
+
+    class << BLOG.menu
+      # Converts this hierarchical menu into HTML.
+      def to_html
+        @html ||= render_menu self
+      end
+
+      private
+
+      # Expands the given hierarchical menu into an itemized list of hyperlinks.
+      def render_menu aMenu
+        result = ''
+
+        if aMenu.respond_to? :to_ary
+          aMenu.each do |link|
+            result << render_menu(link)
           end
+        elsif aMenu.respond_to? :each_pair
+          aMenu.each_pair do |name, url|
+            link = if url.respond_to? :to_ary
+              "#{name} <ul>#{render_menu url}</ul>"
+            else
+              %{<a href="#{url}">#{name.to_html}</a>}
+            end
 
-          result << "<li>#{link}</li>"
+            result << "<li>#{link}</li>"
+          end
+        else
+          result << "<li>#{aMenu}</li>"
         end
-      else
-        result << "<li>#{aMenu}</li>"
+
+        result
       end
-
-      result
-    end
-  end
-
-# load templates
-  FileList['config/*.erb'].each do |f|
-    name = File.basename(f, File.extname(f))
-    var = "#{name.upcase}_TEMPLATE"
-
-    Kernel.const_set var.to_sym, ERB.new(File.read(f))
-  end
-
-  class << HTML_TEMPLATE
-    alias old_result result
-
-    def result *a
-      # give this page a fresh set of anchors, so that each entry's table of
-      # contents does not link to other entry's contents
-      String.reset_anchors
-
-      old_result(*a)
-    end
-  end
-
-# load translations
-  langFile = "config/lang/#{BLOG.language}.yaml"
-  LANG = load_yaml_file(langFile, Language) rescue Language.new
-
-# load blog entries
-  ENTRY_FILES = FileList['entries/**/*.yaml']
-
-  ENTRIES = ENTRY_FILES.map do |src|
-    entry = load_yaml_file(src, Entry)
-    entry.src_file = src
-    entry.date = DateTime.parse(entry.date.to_s)
-    entry.tags = entry.tags.to_a rescue [entry.tags]
-    entry.tags.flatten!
-    entry.tags.compact!
-    entry.tags.uniq!
-
-    entry
-  end.sort.reverse!
-
-  # Returns the most recent entries
-  def ENTRIES.recent
-    self[0, BLOG.recent_entries || 0]
-  end
-
-  RECENT_ENTRY_FILES = ENTRIES.recent.map! {|e| e.src_file}
-
-# organize blog entries into chapters
-  tags = Hash.new {|h,k| h[k] = []}
-  months = Hash.new {|h,k| h[k] = []}
-
-  # parse tags and months from entries
-    ENTRIES.each do |entry|
-      entry.tags.each do |tag|
-        tags[tag] << entry
-      end.clear # will be restored later
-
-      months[entry.date.strftime(BLOG.archive_frequency)] << entry
     end
 
-  # organize entries into pages
-    TAGS = Chapter.new('Tags', tags)
-    ARCHIVES = Chapter.new('Archives', months)
+  # load templates
+    FileList['config/*.erb'].each do |f|
+      name = File.basename(f, File.extname(f))
+      var = "#{name.upcase}_TEMPLATE"
 
-    # restore tags for entry
-      TAGS.pages.each do |tag|
-        tag.entries.each do |entry|
-          entry.tags << tag
-        end
+      Kernel.const_set var.to_sym, ERB.new(File.read(f))
+    end
+
+    class << HTML_TEMPLATE
+      alias old_result result
+
+      def result *a
+        # give this page a fresh set of anchors, so that each entry's table of
+        # contents does not link to other entry's contents
+        String.reset_anchors
+
+        old_result(*a)
+      end
+    end
+
+  # load translations
+    langFile = "config/lang/#{BLOG.language}.yaml"
+    LANG = load_yaml_file(langFile, Language) rescue Language.new
+
+  # load blog entries
+    ENTRY_FILES = FileList['entries/**/*.yaml']
+
+    ENTRIES = ENTRY_FILES.map do |src|
+      entry = load_yaml_file(src, Entry)
+      entry.src_file = src
+      entry.date = DateTime.parse(entry.date.to_s)
+      entry.tags = entry.tags.to_a rescue [entry.tags]
+      entry.tags.flatten!
+      entry.tags.compact!
+      entry.tags.uniq!
+
+      entry
+    end.sort.reverse!
+
+    # Returns the most recent entries
+    def ENTRIES.recent
+      self[0, BLOG.recent_entries || 0]
+    end
+
+    RECENT_ENTRY_FILES = ENTRIES.recent.map! {|e| e.src_file}
+
+  # organize blog entries into chapters
+    tags = Hash.new {|h,k| h[k] = []}
+    months = Hash.new {|h,k| h[k] = []}
+
+    # parse tags and months from entries
+      ENTRIES.each do |entry|
+        entry.tags.each do |tag|
+          tags[tag] << entry
+        end.clear # will be restored later
+
+        months[entry.date.strftime(BLOG.archive_frequency)] << entry
       end
 
-      ARCHIVES.pages.each do |month|
-        month.entries.each do |entry|
-          entry.archive = month
+    # organize entries into pages
+      TAGS = Chapter.new('Tags', tags)
+      ARCHIVES = Chapter.new('Archives', months)
+
+      # restore tags for entry
+        TAGS.pages.each do |tag|
+          tag.entries.each do |entry|
+            entry.tags << tag
+          end
         end
-      end
 
-  CHAPTERS = [TAGS, ARCHIVES]
+        ARCHIVES.pages.each do |month|
+          month.entries.each do |entry|
+            entry.archive = month
+          end
+        end
+
+    CHAPTERS = [TAGS, ARCHIVES]
 
 
-############################################################################
 # output generation stage
-############################################################################
 
-desc "Generate the blog."
-task :default => [:copy, :entry, :page, :chapter, :index]
+  desc "Generate the blog."
+  task :default => [:copy, :entry, :page, :chapter, :index]
 
-desc "Copy files from input/ into output/"
-task :copy
+  desc "Copy files from input/ into output/"
+  task :copy
 
-desc "Generate HTML for entries."
-task :entry
+  desc "Generate HTML for entries."
+  task :entry
 
-desc "Generate HTML for pages."
-task :page
+  desc "Generate HTML for pages."
+  task :page
 
-desc "Generate HTML for chapters."
-task :chapter
+  desc "Generate HTML for chapters."
+  task :chapter
 
-desc "Generate HTML for indices."
-task :index
+  desc "Generate HTML for indices."
+  task :index
 
-desc "Regenerate the blog from scratch."
-task :regen => [:clobber, :default]
+  desc "Regenerate the blog from scratch."
+  task :regen => [:clobber, :default]
 
-CONFIG_FILES = FileList['config/**/*']
-COMMON_DEPS = ['output'] + CONFIG_FILES
+  CONFIG_FILES = FileList['config/**/*']
+  COMMON_DEPS = ['output'] + CONFIG_FILES
 
-# create output directory
-  directory 'output'
-  CLOBBER.include 'output'
+  # create output directory
+    directory 'output'
+    CLOBBER.include 'output'
 
-# copy everything from input/ into output/
-  FileList['input/**/*'].each do |src|
-    dst = src.sub('input', 'output')
+  # copy everything from input/ into output/
+    FileList['input/**/*'].each do |src|
+      dst = src.sub('input', 'output')
 
-    file dst => [src, 'output'] do
-      cp_r src + '/.', dst, :preserve => true
+      file dst => [src, 'output'] do
+        cp_r src + '/.', dst, :preserve => true
+      end
+
+      task :copy => dst
+      CLEAN.include dst
     end
 
-    task :copy => dst
-    CLEAN.include dst
-  end
-
-# generate HTML for blog entries
-  ENTRIES.each do |entry|
-    entry.dst_file = generate_html_task(:entry, entry, entry.src_file)
-  end
-
-# generate HTML for pages and chapters
-  CHAPTERS.each do |chapter|
-    chapterDeps = []
-
-    chapter.pages.each do |page|
-      pageDeps = page.entries.map {|e| e.src_file}
-      generate_html_task :page, page, pageDeps
-
-      chapterDeps.concat pageDeps
+  # generate HTML for blog entries
+    ENTRIES.each do |entry|
+      entry.dst_file = generate_html_task(:entry, entry, entry.src_file)
     end
 
-    generate_html_task :chapter, chapter, chapterDeps
-  end
+  # generate HTML for pages and chapters
+    CHAPTERS.each do |chapter|
+      chapterDeps = []
 
-# generate entry list and search page
-  generate_special_index "Entries", ENTRIES, true
-  generate_special_index "Search", ENTRIES, false
+      chapter.pages.each do |page|
+        pageDeps = page.entries.map {|e| e.src_file}
+        generate_html_task :page, page, pageDeps
 
-# generate front page
-  dst = 'output/index.html'
+        chapterDeps.concat pageDeps
+      end
 
-  if BLOG.front_page
-    src = File.join('output', BLOG.front_page)
-
-    file dst => [src] + COMMON_DEPS do
-      notify 'front page', src
-      cp src, dst, :preserve => true, :verbose => false
+      generate_html_task :chapter, chapter, chapterDeps
     end
-  else
-    generate_special_index "Recent entries", ENTRIES.recent, true, dst
-  end
 
-  task :index => dst
-  CLOBBER.include dst
+  # generate entry list and search page
+    generate_special_index "Entries", ENTRIES, true
+    generate_special_index "Search", ENTRIES, false
 
-# generate RSS feed
-  file 'output/rss.xml' => ENTRY_FILES + COMMON_DEPS do |t|
-    notify 'RSS feed', t.name
-    write_file t.name, RSS_TEMPLATE.result(binding)
-  end
+  # generate front page
+    dst = 'output/index.html'
 
-  task :index => 'output/rss.xml'
-  CLOBBER.include 'output/rss.xml'
+    if BLOG.front_page
+      src = File.join('output', BLOG.front_page)
+
+      file dst => [src] + COMMON_DEPS do
+        notify 'front page', src
+        cp src, dst, :preserve => true, :verbose => false
+      end
+    else
+      generate_special_index "Recent entries", ENTRIES.recent, true, dst
+    end
+
+    task :index => dst
+    CLOBBER.include dst
+
+  # generate RSS feed
+    file 'output/rss.xml' => ENTRY_FILES + COMMON_DEPS do |t|
+      notify 'RSS feed', t.name
+      write_file t.name, RSS_TEMPLATE.result(binding)
+    end
+
+    task :index => 'output/rss.xml'
+    CLOBBER.include 'output/rss.xml'
 
 
-############################################################################
 # output publishing stage
-############################################################################
 
-desc "Upload the blog to your website."
-task :upload => [:default, 'output'] do
-  cmd = BLOG.uploader.split
-  cmd.push 'output/', BLOG.host
+  desc "Upload the blog to your website."
+  task :upload => [:default, 'output'] do
+    cmd = BLOG.uploader.split
+    cmd.push 'output/', BLOG.host
 
-  system(*cmd)
-end
+    system(*cmd)
+  end
