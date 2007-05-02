@@ -324,11 +324,7 @@ include ERB::Util
 
     # Returns a URL for submiting comments about this entry.
     def comment_url
-      addr = "mailto:#{BLOG.email}"
-      subj = "[#{GENERATOR.name}] #{name}"
-      body = File.join(BLOG.url, url)
-
-      "#{addr}?subject=#{subj}&body=#{body}".to_html_entities
+      BLOG.email.to_url "[#{GENERATOR.name}] #{name}", File.join(BLOG.url, url)
     end
 
     # Transforms this entry into HTML. If summarize is enabled, then only the
@@ -476,6 +472,21 @@ include ERB::Util
         end
 
         result
+      end
+    end
+
+    class << BLOG.email
+      def to_url aSubject = nil, aBody = nil
+        addr = "mailto:#{self}"
+        subj = "subject=#{aSubject}" if aSubject
+        body = "body=#{aBody}" if aBody
+
+        rest = [subj, body].compact
+        unless rest.empty?
+          addr << '?' << rest.join('&')
+        end
+
+        addr.to_html_entities
       end
     end
 
