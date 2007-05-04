@@ -14,6 +14,9 @@
   if @summarize
     paragraphs = text.split(/(?:\r?\n){2,}/m)
 
+    # omit headings from summary to keep it simple and non-hierarchical
+    paragraphs.reject! {|p| p =~ /^\s*<h\d/}
+
     # summarize the entry by retaining only the first paragraph
     if paragraphs.length > 1
       text = paragraphs.first
