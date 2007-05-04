@@ -17,15 +17,10 @@
     # omit headings from summary to keep it simple and non-hierarchical
     paragraphs.reject! {|p| p =~ /^\s*<h\d/}
 
-    # summarize the entry by retaining only the first paragraph
     if paragraphs.length > 1
       text = paragraphs.first
-
-      hook = '<p>' + @entry.to_link(LANG["Read more..."]) + '</p>'
-      text << hook
+      reallySummarized = true
     end
-
-  # generate the table of contents
   else
     toc, text = text.table_of_contents
   end
@@ -33,13 +28,19 @@
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
 
+  <p class="related">&raquo; <%=
+    [@entry.archive, *@entry.tags].map {|t| t.to_link}.join(' &middot; ')
+  %></p>
+
 <% if toc %>
   <div class="toc">Contents <%= toc %></div>
 <% end %>
 
   <div class="text"><%= text %></div>
 
-<% unless @summarize %>
+<% if @summarize %>
+  <p><%= @entry.to_link(LANG["Read more..."]) if reallySummarized %></p>
+<% else %>
   <div class="info">
     Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.
     <br/>
