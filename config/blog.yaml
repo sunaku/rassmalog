@@ -3,9 +3,9 @@
 ##
 
 
-############################################################################
+################################################################################
 # Blog information
-############################################################################
+################################################################################
 
 
 #
@@ -22,9 +22,9 @@ info: |
   Fill as many lines as you need!
 
 
-############################################################################
+################################################################################
 # Author information
-############################################################################
+################################################################################
 
 
 #
@@ -39,7 +39,7 @@ author: Put your name here
 # This address will be obfuscated into HTML entities so that e-mail address
 # harvesters won't bother to figure out what it is. For example, the address
 # "xxx@yyy.zzz" will be converted into the following *before* it is written
-# to a HTML file (see the "config/entry.erb" template for details):
+# to a HTML file:
 #
 #   &#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;
 #
@@ -60,9 +60,9 @@ author: Put your name here
 email: your@email.here
 
 
-############################################################################
+################################################################################
 # Publishing information
-############################################################################
+################################################################################
 
 
 #
@@ -90,7 +90,7 @@ url: http://your.host.com/~you/path/to/your/blog/
 #
 # Syntax:
 #
-#   user@host:path/relative/to/home/directory/
+#   user@host:relative/path/to/home/directory/
 #   user@host:/absolute/path/from/root/directory/
 #
 # Examples:
@@ -115,9 +115,9 @@ host: you@your_host:path/to/your/blog/
 uploader: rsync --rsh=ssh -auvz
 
 
-############################################################################
+################################################################################
 # Language information
-############################################################################
+################################################################################
 
 
 #
@@ -153,9 +153,9 @@ encoding: utf-8
 language: en-us
 
 
-############################################################################
+################################################################################
 # Blog generation
-############################################################################
+################################################################################
 
 
 #
@@ -193,15 +193,15 @@ summarize_entries: true
 #
 # Controls how frequently archives are created.
 #
-# To have one archive per year, specify:
+# To have one archive per unique year, specify:
 #
 #   archive_frequency: %Y
 #
-# To have one archive per month, specify:
+# To have one archive per unique month, specify:
 #
 #   archive_frequency: %Y-%m
 #
-# To have one archive per day, specify:
+# To have one archive per unique day, specify:
 #
 #   archive_frequency: %Y-%m-%d
 #
@@ -217,13 +217,14 @@ archive_frequency: %B %Y
 
 
 
-############################################################################
+################################################################################
 # Other content
-############################################################################
+################################################################################
 
 
 #
-# Hierarchical menu of links that is shown in all generated HTML pages.
+# Hierarchical menu of links. By default, this menu is shown in all generated
+# HTML pages. To disable this behavior, edit the config/html.erb template.
 #
 menu:
   - Rassmalog:

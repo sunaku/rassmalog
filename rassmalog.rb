@@ -1,4 +1,4 @@
-# The main source code of Rassmalog.
+# The core of Rassmalog.
 #--
 # Copyright 2006-2007 Suraj N. Kurapati
 # See the file named LICENSE for details.
