@@ -230,6 +230,7 @@ menu:
   - Rassmalog:
     - What's new?: index_entries.html
     - Tips & tricks: tricks.html
+    - Announcements: rss.xml
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
     - Author's blog: http://www.soe.ucsc.edu/~snk/

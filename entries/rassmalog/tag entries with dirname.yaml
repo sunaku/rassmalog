@@ -11,17 +11,17 @@ text: |
   If you wish to have such functionality, simply apply the following patch to your <tt>rassmalog.rb</tt> file.
 
   <pre>
-  --- old-blog/rassmalog.rb       2007-03-25 00:37:04.000000000 -0700
-  +++ new-blog/rassmalog.rb       2007-03-25 00:37:04.000000000 -0700
-  @@ -404,6 +404,10 @@
-       entry.src_file = src
-       entry.date = DateTime.parse(entry.date.to_s)
-       entry.tags = entry.tags.to_a rescue [entry.tags]
+  --- old-blog/rassmalog.rb       2007-05-05 12:16:21.000000000 -0700
+  +++ new-blog/rassmalog.rb       2007-05-05 12:16:21.000000000 -0700
+  @@ -522,6 +522,10 @@
+         entry.src_file = src
+         entry.date = DateTime.parse(entry.date.to_s)
+         entry.tags = entry.tags.to_a rescue [entry.tags]
   +
-  +    # tag entry with the names of its parent directories
-  +    entry.tags.concat File.dirname(entry.src_file).split('/')[1..-1]
+  +      # tag entry with the names of its parent directories
+  +      entry.tags.concat File.dirname(entry.src_file).split('/')[1..-1]
   +
-       entry.tags.flatten!
-       entry.tags.compact!
-       entry.tags.uniq!
+         entry.tags.flatten!
+         entry.tags.compact!
+         entry.tags.uniq!
   </pre>
