@@ -478,8 +478,8 @@ include ERB::Util
     class << BLOG.email
       def to_url aSubject = nil, aBody = nil
         addr = "mailto:#{self}"
-        subj = "subject=#{aSubject}" if aSubject
-        body = "body=#{aBody}" if aBody
+        subj = "subject=#{u aSubject}" if aSubject
+        body = "body=#{u aBody}" if aBody
 
         rest = [subj, body].compact
         unless rest.empty?
