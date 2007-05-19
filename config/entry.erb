@@ -28,10 +28,6 @@
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
 
-  <p class="related">&raquo; <%=
-    [@entry.archive, *@entry.tags].map {|t| t.to_link}.join(' &middot; ')
-  %></p>
-
 <% if toc %>
   <div class="toc">Contents <%= toc %></div>
 <% end %>

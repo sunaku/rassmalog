@@ -71,11 +71,8 @@ body {
   text-decoration: none;
 }
 
-.entry .related {
-  margin-top: -1em;
-}
-
 .entry .toc { /* table of contents */
+  margin-bottom: 2em;
 }
 
 .entry .toc ul {
