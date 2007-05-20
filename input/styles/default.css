@@ -89,11 +89,15 @@ body {
 }
 
 .entry .info {
-  font-size: smaller;
-  text-align: center;
-  margin-top: 2em;
-  padding: 1em;
-  border-top: solid black;
+  font-size: small;
+  border-top: thin dotted black;
+  padding-top: 0.5em;
+  padding-left: 0;
+}
+
+.entry .info li {
+  list-style-type: none;
+  margin-left: 0;
 }
 
 

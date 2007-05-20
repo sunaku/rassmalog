@@ -34,18 +34,16 @@
 
   <div class="text"><%= text %></div>
 
-<% if @summarize %>
-  <p><%= @entry.to_link(LANG["Read more..."]) if reallySummarized %></p>
+<% if reallySummarized %>
+  <p><%= @entry.to_link(LANG["Read more..."]) %></p>
 <% else %>
-  <div class="info">
-    Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.
-    <br/>
-    Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.
+  <ul class="info">
+    <li>Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.</li>
+    <li>Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.</li>
   <% if BLOG.email %>
-    <br/>
-    You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.
+    <li>You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.</li>
   <% end %>
-  </div>
+  </ul>
 <% end %>
 </div>
 
