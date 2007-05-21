@@ -39,7 +39,9 @@
 <% else %>
   <ul class="info">
     <li>Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.</li>
+  <% unless @entry.tags.empty? %>
     <li>Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.</li>
+  <% end %>
   <% if BLOG.email %>
     <li>You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.</li>
   <% end %>
