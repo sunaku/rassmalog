@@ -183,11 +183,11 @@ big {
 /* tag cloud */
 
 .cloud {
-  line-height: 3em;
 }
 
 .cloud li {
   display: inline;
+  padding-right: 10px;
 }
 
 .cloud a {

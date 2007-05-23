@@ -16,16 +16,18 @@
 
 <ul class="cloud">
 <%
-  # these variables define how big the largest item appears
-  scale, units = 300, '%'
+  fonts = %w[xx-small x-small small medium large x-large xx-large]
+  scale = fonts.length - 1
 
-
-  largest = @chapter.pages.map {|page| page.entries.length}.max
+  largest = @chapter.pages.map { |page| page.entries.length }.max
 
   @chapter.pages.each do |page|
     size = page.entries.length
-    mass = ((size.to_f / largest) * scale).round
+    mass = size.to_f / largest
+    font = fonts[ (mass * scale).round ]
 %>
-  <li style="font-size: <%= mass %><%= units %>;" title="<%= size %>"><%= page.to_link %><span style="display: none">&nbsp;(<%= size %>)</span></li>
+  <li style="font-size: <%= font %>;" title="<%= size %>">
+    <%= page.to_link %> <span style="display: none">(<%= size %>)</span>
+  </li>
 <% end %>
 </ul>
