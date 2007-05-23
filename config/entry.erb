@@ -12,7 +12,7 @@
   text = @entry.text.to_html
 
   if @summarize
-    paragraphs = text.split(/(?:\r?\n){2,}/m)
+    paragraphs = text.split %r{\r?\n\s*\r?\n}
 
     # omit headings from summary to keep it simple and non-hierarchical
     paragraphs.reject! {|p| p =~ /^\s*<h\d/}
