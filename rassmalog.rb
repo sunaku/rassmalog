@@ -572,7 +572,7 @@ include ERB::Util
 # output generation stage
 
   desc "Generate the blog."
-  task :default => [:copy, :entry, :page, :chapter, :index]
+  task :default => [:copy, :entry, :page, :chapter, :index, :feed]
 
   desc "Copy files from input/ into output/"
   task :copy
@@ -588,6 +588,9 @@ include ERB::Util
 
   desc "Generate HTML for indices."
   task :index
+
+  desc "Generate RSS feed for the blog."
+  task :feed
 
   desc "Regenerate the blog from scratch."
   task :regen => [:clobber, :default]
@@ -657,7 +660,7 @@ include ERB::Util
       write_file t.name, RSS_TEMPLATE.result(binding)
     end
 
-    task :index => 'output/rss.xml'
+    task :feed => 'output/rss.xml'
     CLOBBER.include 'output/rss.xml'
 
 
