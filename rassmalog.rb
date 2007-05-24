@@ -324,7 +324,7 @@ include ERB::Util
 
     # Returns a URL for submiting comments about this entry.
     def comment_url
-      BLOG.email.to_url "[#{GENERATOR.name}] #{name}", File.join(BLOG.url, url)
+      BLOG.email.to_url name, BLOG.url + '/' + url
     end
 
     # Transforms this entry into HTML. If summarize is enabled, then only the
