@@ -603,15 +603,29 @@ include ERB::Util
     CLOBBER.include 'output'
 
   # copy everything from input/ into output/
-    FileList['input/**/*'].each do |src|
-      dst = src.sub('input', 'output')
+    srcList = Dir.glob('input/**/*', File::FNM_DOTMATCH).
+              reject {|s| File.basename(s) =~ /^\.{1,2}$/}
 
-      file dst => [src, 'output'] do
-        cp_r src + '/.', dst, :preserve => true
+    dstList = srcList.map {|s| s.sub 'input', 'output'}
+    CLEAN.include dstList
+
+    task :copy do
+      Rake::Task['output'].invoke
+
+      srcList.zip(dstList).each do |(src, dst)|
+        alreadyCopied =
+          begin
+            File.lstat(dst).mtime >= File.lstat(src).mtime
+          rescue Errno::ENOENT
+            false
+          end
+
+        unless alreadyCopied
+          remove_entry_secure dst, true
+          notify :copy, dst
+          copy_entry src, dst, !File.symlink?(src)
+        end
       end
-
-      task :copy => dst
-      CLEAN.include dst
     end
 
   # generate HTML for blog entries
