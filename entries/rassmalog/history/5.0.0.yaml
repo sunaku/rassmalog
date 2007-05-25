@@ -1,0 +1,46 @@
+name: Version 5.0.0
+
+date: Fri May 25 13:26:40 PDT 2007 @893 /Internet Time/
+
+tags: history
+
+text: |
+  This release revises the documentation, allows importing of blog entries from an RSS feed, adds support for more uploader programs, and repairs several defects.
+
+
+  h1. Caution
+
+  * In <tt>config/blog.yaml</tt>, the *host* parameter has been removed and the *uploader* parameter has been made into an eRuby template in order to support more uploader programs.
+
+  * The *feed* task now generates the RSS feed rather than the *index* task.
+
+  * "[Rassmalog]" no longer appears at the beginning of a comment e-mail's subject because "it hinders usability":http://producingoss.com/html-chunk/mailing-lists.html#header-management.
+
+
+  h1. Additions
+
+  * Added an *import* task, which lets you import blog entries from an RSS feed.
+
+  * The *upload* task now supports *lftp* as an uploader program.
+
+
+  h1. Repairs
+
+  * The *copy* task now supports copying of symbolic links and hidden files (also known as "dot files" because their names begin with a period). It also  preserves modification times and permissions of copied files correctly.
+
+  * The "Tagged as ..." message no longer appears in an entry's information if the entry does not have any tags.
+
+  * Entry summarization now allows trailing whitespace within a paragraph separator
+
+  * Restored support for *scp* as an uploader program for the *upload* task.
+
+
+  h1. Usability
+
+  * Removed the "trail of bread crumbs", which contained links to an entry's tags and appeared just below an entry's name, because it stole attention away from the blog entries themselves and cluttered the interface.
+
+  * Tag clouds now use standard CSS font-size names (xx-small x-small small medium large x-large xx-large) instead of numerical font sizes.
+
+  * Balanced the widths of the blog entry and hierarchical menu using "optimal line lengths":http://www.maxdesign.com.au/presentation/em/ for better readability.
+
+  * Revised the instructions presented atop the search page.
