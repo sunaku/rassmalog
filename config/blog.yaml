@@ -233,7 +233,6 @@ menu:
     - Announcements: rss.xml
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
-    - Author's blog: http://www.soe.ucsc.edu/~snk/
 
   - Documentation:
     - Example entry: 2006-12-08-put-the-name-of-your-entry-here..html
@@ -249,6 +248,15 @@ menu:
     - Patches: http://rubyforge.org/tracker/?group_id=2737
     - Requests: http://rubyforge.org/tracker/?group_id=2737
     - Forums: http://rubyforge.org/forum/?group_id=2737
+
+  - Users:
+    - Author's blog: http://www.soe.ucsc.edu/~snk/
+    - Mannes Weblog: http://blog.mabitoka.de
+    - PenPen Blog: http://www.mynetcologne.de/~nc-schugtjo/blog/
+    - Various Contrivances: http://matt.routleynet.org/blog/
+    - Asterisell: http://asterisell.profitoss.com
+    - Profitoss: http://profitoss.com
+    - ClothRed: http://clothred.rubyforge.org
 
   - hey! this:
     - menu is:
