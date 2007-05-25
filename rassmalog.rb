@@ -687,3 +687,31 @@ include ERB::Util
 
     system(*cmd)
   end
+
+
+# utility tasks
+
+  directory 'entries/import'
+
+  desc "Import blog entries from RSS feed on STDIN."
+  task :import => 'entries/import' do
+    require 'cgi'
+    require 'rexml/document'
+
+    REXML::Document.new(STDIN.read).each_element '//item' do |src|
+      name = CGI.unescapeHTML src.elements['title'].text
+      date = src.elements['pubDate'].text rescue Time.now
+      tags = src.get_elements('category').map {|e| e.text} rescue []
+      text = CGI.unescapeHTML src.elements['description'].text
+      from = CGI.unescape src.elements['link'].text
+
+      dst = "entries/import/#{name.to_file_name}.yaml"
+
+      entry = %w[from name date tags].
+        map {|var| {var => eval(var)}.to_yaml.sub(/^---\s*$/, '')}.
+        join << "\ntext: |\n#{text.gsub(/^/, '  ')}"
+
+      notify :import, dst
+      write_file dst, entry
+    end
+  end
