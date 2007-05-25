@@ -239,7 +239,7 @@ menu:
     - API reference: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
-    - ERB syntax: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
+    - eRuby syntax: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
 
   - Facilities:
     - Source code: http://rassmalog.rubyforge.org/src/rassmalog/
@@ -261,6 +261,6 @@ menu:
   - hey! this:
     - menu is:
       - hierarchical!:
-        - O RLY?:
-          - YA RLY!:
-            - NO WAI: http://slashdot.org
+        - 1:
+          - 2:
+            - 3...

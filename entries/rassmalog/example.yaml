@@ -21,26 +21,29 @@ name: Put the name of your entry here.
 #
 #   ri DateTime.parse
 #
-date: Dec 8 2006 11:00pm #Put today's date and time here.
+date: Dec 8 2006 11:00pm      # Put today's date and time here.
 
 #
 # The categories (tags) which classify this entry.
 #
 tags:
   - examples
+  - reference
+  - documentation
 
 #
 # The content of this entry.
 #
 text: |
   Write your thoughts here.
+
   Fill as many lines as you need!
 
 
-  h1. ERB example
+  h1. eRuby example
 
-  The text of a blog entry is treated as an ERB template. Thus, you can use
-  ERB directives (which appear within @<%%@ and @%>@ tags) in the text of
+  The text of a blog entry is treated as an eRuby template. Thus, you can use
+  eRuby directives (which appear within @<%%@ and @%>@ tags) in the text of
   your blog entries. For example,
 
   * The current time is *<%= Time.now %>*.
