@@ -2,8 +2,7 @@ name: Version 2.0.0
 
 date: Thu Dec 14 15:26:05 PST 2006 @18 /Internet Time/
 
-tags:
-  - history
+tags: history
 
 text: |
   This release adds support for L10N(Localization)/I18N(Internationalization)/M17N(Multilingualization), adds new configuration parameters, fixes some bugs, and improves the documentation.

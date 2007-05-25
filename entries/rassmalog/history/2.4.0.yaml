@@ -2,13 +2,10 @@ name: Version 2.4.0
 
 date: Sat Jan 27 17:42:41 PST 2007 @112 /Internet Time/
 
-tags:
-  - history
+tags: history
 
 text: |
   This release adds individual tasks for each part of the blog generation process, improves usability, and reintroduces some styling elements from previous releases.
-
-  h1. Details
 
   * Added individual tasks for each part of the blog generation process. For example, this allows you to quickly preview a blog entry as you write it -- without having to wait for the tag and archive indices to be generated every time.
 

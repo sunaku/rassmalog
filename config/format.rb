@@ -1,9 +1,8 @@
-# This file defines the String#to_html method which is invoked to transform
+# This file defines the String#to_html method, which is invoked to transform
 # the content of an entry (the value of the string) into HTML.
 #
-# It features, in addition to the Textile formatting system (RedCloth) and
-# syntax coloring (CodeRay), smart source code sizing (block vs. inline
-# display) and table of contents generation.
+# It features the Textile formatting system (RedCloth), syntax coloring
+# (CodeRay), and smart source code sizing (block vs. inline display).
 #--
 # Copyright 2006-2007 Suraj N. Kurapati
 # See the file named LICENSE for details.

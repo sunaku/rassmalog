@@ -78,7 +78,7 @@ body {
 }
 
 .entry .toc ul {
-  margin-top: 0px;
+  margin-top: 0;
 }
 
 .entry .text {
@@ -207,6 +207,7 @@ a img {
   border: none;
 }
 
-#menu li, .entry .toc li {
-  margin-left: -1.5em;
+#menu li,
+.entry .toc li {
+  margin-left: -25px;
 }

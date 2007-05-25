@@ -541,8 +541,6 @@ include ERB::Util
       self[0, BLOG.recent_entries || 0]
     end
 
-    RECENT_ENTRY_FILES = ENTRIES.recent.map! {|e| e.src_file}
-
   # organize blog entries into chapters
     tags = Hash.new {|h,k| h[k] = []}
     months = Hash.new {|h,k| h[k] = []}
@@ -602,7 +600,7 @@ include ERB::Util
   desc "Regenerate the blog from scratch."
   task :regen => [:clobber, :default]
 
-  CONFIG_FILES = FileList['config/**/*']
+  CONFIG_FILES = FileList['config/**/*.{yaml,*rb}']
   COMMON_DEPS = ['output'] + CONFIG_FILES
 
   # create output directory

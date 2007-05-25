@@ -10,11 +10,9 @@ text: |
 
   h1. Caution
 
-  * The @String.table_of_contents@ method no longer accepts arguments.
+  * The @String.table_of_contents@ method no longer accepts arguments and no longer appears in the <tt>config/format.rb</tt> file because it has been incorporated into the core of Rassmalog.
 
   * The <tt>input/images/mozilla/feed-icon.png</tt> file is now located at <tt>input/images/feed-icon-28x28.png</tt>.
-
-  * The @String.table_of_contents@ method no longer appears in the <tt>config/format.rb</tt> file because it has been incorporated into the core of Rassmalog.
 
   * Rassmalog is now developed under a "more permissive license":index.html#License that better reflects my ethical beliefs than "the previous license":http://www.gnu.org/copyleft/gpl.html.
 
@@ -23,7 +21,7 @@ text: |
 
   * XHTML anchors, generated for section headings and the table of contents, are now valid. They also preserve non-ASCII characters, so Unicode text is fully supported.
 
-  * The @name@ and @menu@ parameters from <tt>config/blog.yaml</tt> are now processed by @String.to_html@ when generating HTML. As a result, you can now use Textile (or whatever formatting scheme your @String.to_html@ method supports) markup in those parameters' values.
+  * The *name* and *menu* parameters from <tt>config/blog.yaml</tt> are now processed by @String.to_html@ when generating HTML. As a result, you can now use Textile (or whatever formatting scheme your @String.to_html@ method supports) markup in those parameters' values.
 
   * The *copy* task no longer creates redundant subdirectories in <tt>output/</tt> when the destination already exists.
 

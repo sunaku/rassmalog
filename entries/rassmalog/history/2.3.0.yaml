@@ -2,11 +2,10 @@ name: Version 2.3.0
 
 date: Mon Jan 22 21:56:35 PST 2007 @289 /Internet Time/
 
-tags:
-  - history
+tags: history
 
 text: |
-  This release implements a more logical blog organization, adds a @archive_frequency@ configuration parameter, adds API reference documentation, and improves the default CSS design.
+  This release implements a more logical blog organization, adds an *archive_frequency* configuration parameter, adds API reference documentation, and improves the default CSS design.
 
 
   h1. Blog organization
@@ -43,7 +42,7 @@ text: |
   As a result, the entire blog navigation can fit inside your mind -- making the blog seem very simple.
 
 
-  h1. @archive_frequency@ parameter
+  h1. *archive_frequency* parameter
 
   This parameter controls how frequently archives are created.
 

@@ -9,11 +9,11 @@ text: |
 
   h1. Introduction
 
-  Rassmalog is a static blog engine based on "YAML(Yet Another Markup Language)":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into web pages that are user friendly in both graphical and "text-only web browsers":http://en.wikipedia.org/wiki/Lynx_%28web_browser%29.
+  Rassmalog is a static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that are user friendly in both graphical and "text-only web browsers":http://en.wikipedia.org/wiki/Lynx_%28web_browser%29.
 
-  Rassmalog features "tagging":http://en.wikipedia.org/wiki/Folksonomy and _fully automatic_ archiving, table of contents, and syntax coloring for blog entries, an "RSS(Really Simple Syndication) 2.0":http://en.wikipedia.org/wiki/RSS feed for your entire blog, localization in "<%= @langFiles.length %> languages":#manifest.lang, and a tiny code base containing _less than_ 600 lines of code.
+  Rassmalog features "tagging":http://en.wikipedia.org/wiki/Folksonomy and _fully automatic_ archiving, table of contents, and syntax coloring for blog entries, an "RSS 2.0":http://en.wikipedia.org/wiki/RSS feed for your entire blog, localization in "<%= @langFiles.length %> languages":#manifest.lang, and a tiny code base containing _less than_ 600 lines of code.
 
-  Rassmalog is "open source software":#License inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines. Its name is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is a pseudo portmanteau of the words "RSS(Really Simple Syndication)", "YAML(Yet Another Markup Language)", and "blog".
+  Rassmalog is "open source software":#License inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines. Its name is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
 
 
   h1. Motivation
@@ -46,12 +46,12 @@ text: |
   h2. Spam control
 
   |_. Dynamic blog engine|You are vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs, which you will have to clean up eventually using a clunky web-based comment management interface.|
-  |_. Rassmalog|You don't have to shuffle through towering piles of comment spam because Rassmalog provides _e-mail based comments_ (which can be disabled if you want) instead. Furthermore, Rassmalog takes special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by obfuscating your e-mail address in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.|
+  |_. Rassmalog|You don't have to shuffle through towering piles of comment spam because Rassmalog provides _e-mail based comments_ (which can be disabled if you want) instead. <br/><br/> Special care is taken to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by obfuscating your e-mail address in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.|
 
 
   h1. Features
 
-  Rassmalog is designed for _ease of use_ and configuration. These goals are achieved through simplicity: Rassmalog's code base is tiny--containing _less than 500 lines_ of code! As a result,
+  Rassmalog is designed for _ease of use_ and configuration.
 
 
   h2. Table of contents
@@ -324,14 +324,14 @@ text: |
 
   Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments and documentation to help guide you through you the configuration process. Next, proceed to editing "the other files":#manifest in the <tt>config/</tt> directory to suit your taste.
 
-  You are encouraged to generate your blog at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
+  You are encouraged to "generate your blog":#usage.gen at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
 
 
   h2(#config.lang). Enabling translation files
 
-  The <tt>config/lang/</tt> directory contains translation files for English text used in the core of Rassmalog. To enable one of these files, set the value of the @language@ parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.
+  The <tt>config/lang/</tt> directory contains translation files for English text used in the core of Rassmalog. To enable one of these files, set the value of the *language* parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.
 
-  For example, if you wish to enable the <tt>config/lang/foobar.yaml</tt> translation file, then you would set the @language@ parameter as follows:
+  For example, if you wish to enable the <tt>config/lang/foobar.yaml</tt> translation file, then you would set the *language* parameter as follows:
 
       language: foobar
 
@@ -380,7 +380,7 @@ text: |
     <pre><%= `rake -T` %></pre>
 
 
-  h2. Generating your blog
+  h2(#usage.gen). Generating your blog
 
   To generate your blog, run the following command:
 

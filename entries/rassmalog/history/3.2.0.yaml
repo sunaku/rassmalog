@@ -2,8 +2,7 @@ name: Version 3.2.0
 
 date: Sun Mar 25 00:55:35 PDT 2007 @371 /Internet Time/
 
-tags:
-  - history
+tags: history
 
 text: |
   This release improves usability and simplifies the blog's appearance.

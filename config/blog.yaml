@@ -70,8 +70,8 @@ email: your@email.here
 #
 # Examples:
 #
-#   url: http://your.host.com/~you/path/to/your/blog/
-#   url: http://you.your_host.com/
+#   url: http://your_host.com/~you/path/to/your/blog/
+#   url: http://you.your_host.com/path/to/your/blog/
 #
 url: http://your.host.com/~you/path/to/your/blog/
 
