@@ -165,9 +165,11 @@ em, blockquote {
 }
 
 blockquote {
-  border-left: thick solid darkkhaki;
-  background: beige;
-  padding: 0.5em 1em 0.5em 1em; /* top right bottom left */
+  border-left: thick solid salmon;
+  background-color: snow;
+  padding-left: 1em;
+  padding-right: 0.5em;
+  margin-left: 0;
 }
 
 hr {
