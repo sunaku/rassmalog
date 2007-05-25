@@ -11,15 +11,16 @@
 #
 # The name of your blog.
 #
-name: Put the name of your blog here
+name: Rassmalog
 
 
 #
 # Description of your blog.
 #
 info: |
-  Describe your blog here. <br/>
-  Fill as many lines as you need!
+  A static blog engine based on "YAML":http://www.yaml.org/,
+  "eRuby":http://en.wikipedia.org/wiki/Eruby, and
+  "Rake":http://rake.rubyforge.org/.
 
 
 ################################################################################
@@ -30,7 +31,7 @@ info: |
 #
 # The name of the blog author.
 #
-author: Put your name here
+author: Suraj N. Kurapati
 
 
 #
@@ -57,7 +58,7 @@ author: Put your name here
 #   email: your+blog@email.here
 #   email: your@email.here
 #
-email: your@email.here
+email: snk@gna.org
 
 
 ################################################################################
@@ -73,7 +74,7 @@ email: your@email.here
 #   url: http://your_host.com/~you/path/to/your/blog/
 #   url: http://you.your_host.com/path/to/your/blog/
 #
-url: http://your.host.com/~you/path/to/your/blog/
+url: http://rassmalog.rubyforge.org/output/
 
 
 #
@@ -107,7 +108,7 @@ url: http://your.host.com/~you/path/to/your/blog/
 #
 #   uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
 #
-uploader:
+uploader: rsync -avz --delete <%= whole %> snk@rubyforge.org:/var/www/gforge-projects/rassmalog
 
 
 ################################################################################
