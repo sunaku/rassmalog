@@ -80,6 +80,13 @@ include ERB::Util
         end.pack('U*')
     end
 
+    # Transforms this string into an escaped POSIX shell argument.
+    def to_shell_arg
+      gsub %r{[[:space:][:punct:]]} do |match|
+        "\\" << match
+      end
+    end
+
 
     @@anchors = []
 
@@ -682,10 +689,11 @@ include ERB::Util
 
   desc "Upload the blog to your website."
   task :upload => [:default, 'output'] do
-    cmd = BLOG.uploader.split
-    cmd.push 'output/', BLOG.host
+    whole = 'output'
+    parts = Dir.glob('output/*', File::FNM_DOTMATCH)[2..-1].
+            map {|f| f.to_shell_arg}.join(' ')
 
-    system(*cmd)
+    sh ERB.new(BLOG.uploader.to_s).result(binding)
   end
 
 

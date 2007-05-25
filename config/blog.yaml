@@ -77,42 +77,37 @@ url: http://your.host.com/~you/path/to/your/blog/
 
 
 #
-# The rsync or SSH address of your published blog.
+# An eRuby template for the command that uploads your blog to your website.
 #
-# If you use a tool other than rsync to upload your blog,
-# then you can either:
+# The following predefined variables are available:
 #
-# 1. change the "uploader" parameter (see below) to
-#    accomodate your file uploading software.
+# <%= whole %> is a path to the directory that must be uploaded.
 #
-# 2. don't bother with this feature. Just use
-#    some other means to upload your blog.
+# <%= parts %> is a sequence of paths to files that must be uploaded.
 #
-# Syntax:
+#   For example, the result of this directive is something like:
 #
-#   user@host:relative/path/to/home/directory/
-#   user@host:/absolute/path/from/root/directory/
+#     output/foo output/bar output/baz\ qux\ moz
 #
-# Examples:
+# SSH examples:
 #
-#   host: you@your_host:path/to/your/blog/
+#   These examples assume that your website is located in a directory named
+#   "public_html" on a server named "host" that is accessible by a user named
+#   "user" via SSH or SFTP.
 #
-host: you@your_host:path/to/your/blog/
-
-
+#   uploader: scp -prC <%= parts %> user@host:public_html
+#   uploader: rsync -e ssh -auvz <%= whole %>/ user@host:public_html
+#   uploader: lftp sftp://user@host -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
 #
-# The command that uploads your blog to your website.
+# FTP examples:
 #
-# Two arguments are passed to this command:
-# 1. The directory that needs to be uploaded.
-# 2. The value of the "host" parameter (see above).
+#   These examples assume that your website is located in a directory named
+#   "public_html" on a server named "host" that is accessible by a user named
+#   "user" with a password of "password" via FTP.
 #
-# Examples:
+#   uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
 #
-#   uploader: rsync --rsh=ssh -auvz
-#   uploader: scp -Cr
-#
-uploader: rsync --rsh=ssh -auvz
+uploader:
 
 
 ################################################################################
