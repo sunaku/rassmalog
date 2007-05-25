@@ -34,6 +34,8 @@ text: |
 
   * Restored support for *scp* as an uploader program for the *upload* task.
 
+  * In the RSS feed, the blog's *info* parameter was not converted to HTML. Likewise, in the main HTML template, the blog's *name* parameter was not converted to HTML in the web page title.
+
 
   h1. Usability
 

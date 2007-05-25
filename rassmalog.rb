@@ -291,7 +291,7 @@ include ERB::Util
 
     # Returns a relative hyperlink to this page.
     def to_link aName = name
-      %{<a href="#{u url}">#{aName}</a>}
+      %{<a href="#{u url}">#{aName.to_html}</a>}
     end
 
     # Compares this page to the given page.

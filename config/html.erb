@@ -28,7 +28,7 @@
       title="RSS feed for this blog." />
     <link rel="stylesheet" type="text/css" href="styles/default.css" />
 
-    <title><%= @title %> &mdash; <%= BLOG.name %></title>
+    <title><%= @title %> &mdash; <%= BLOG.name.to_html %></title>
   </head>
   <body>
     <!-- improves usability in text-mode browsers -->
