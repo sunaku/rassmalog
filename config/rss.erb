@@ -22,7 +22,7 @@
   <generator><%= GENERATOR %></generator>
 <%
   ENTRIES.each do |entry|
-    url = BLOG.url + '/' + u(entry.url)
+    url = File.join BLOG.url, u(entry.url)
     text = entry.text.to_html
 
     # resolve relative URLs into absolute URLs
