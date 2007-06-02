@@ -19,57 +19,53 @@ require 'redcloth'
 
 class String
   # The content of these HTML tags will be preserved verbatim when they are
-  # processed by Textile.
-  PRESERVED_TAGS = [:code, :tt]
+  # processed by Textile. By doing this, we avoid unwanted Textile
+  # transformations, such as quotation marks becoming curly (&#8192;), in source
+  # code.
+  PRESERVED_TAGS = %w[tt code pre]
 
   # Transforms this string into HTML.
   def to_html
     text = dup
 
-    # prevent the content of these tags from being transformed by Textile.
-    # for example, Textile transforms quotation marks in code into curly ones
-    # (&#8192;) -- this ruins any source code in the content of the tags!
-      PRESERVED_TAGS.each do |tag|
-        text.gsub! \
-          %r{<#{tag}(.*?)>(.*?)</#{tag}>}m,
-          %{<pre tag=#{tag.inspect}\\1>\\2</pre>}
-      end
-
-    html = text.redcloth
-
-    # redcloth wraps a single item within paragraph tags, which prevents the
-    # item's HTML from being validly injected within other block-level
-    # elements, such as headings (h1, h2, etc.)
-    html.sub! %r{^<p>(.*)</p>$}m do |match|
-      payload = $1
-
-      if payload =~ /<p>/
-        match
-      else
-        payload
-      end
-    end
-
-    # restore the original tags for the preserved tags
-      # unescape content of <pre> tags because they may contain nested
-      # preserved tags (redcloth escapes the content of <pre> tags)
-        html.gsub! %r{(<pre>)(.*?)(</pre>)}m do
-          $1 + CGI.unescapeHTML($2) + $3
-        end
+    # escape preserved tags
+      preserved = {} # escaped => original
 
       PRESERVED_TAGS.each do |tag|
-        html.gsub! \
-          %r{<pre tag=#{tag.inspect}(.*?)>(.*?)</pre>}m,
-          %{<#{tag}\\1>\\2</#{tag}>}
+        text.gsub! %r{(<#{tag}.*?>)(.*?)(</#{tag}>)}m do
+          orig = $1 + CGI.escapeHTML(CGI.unescapeHTML($2)) + $3
+          esc  = orig.object_id.abs.to_s * 5
+
+          preserved[esc] = orig
+          esc
+        end
       end
 
-      # assume that indented text in Textile is NOT source code
-        html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
+    # convert Textile into HTML
+      html = text.redcloth
 
-      # escape content of <pre> tags, because we un-escaped it above
-        html.gsub! %r{(<pre>)(.*?)(</pre>)}m do
-          $1 + CGI.escapeHTML($2) + $3
+    # restore preserved tags
+      preserved.each_pair do |esc, orig|
+        html.gsub! %r{<p>#{esc}</p>|#{esc}}, orig
+      end
+
+    # fix annoyances in Textile conversion
+      # redcloth wraps indented text within <pre> tags
+      html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
+      html.gsub! %r{(<pre>)\s*<pre>(.*?)</pre>\s*(</pre>)}m, '\1\2\3'
+
+      # redcloth wraps a single item within paragraph tags, which prevents the
+      # item's HTML from being validly injected within other block-level
+      # elements, such as headings (h1, h2, etc.)
+      html.sub! %r{^<p>(.*)</p>$}m do |match|
+        payload = $1
+
+        if payload =~ /<p>/
+          match
+        else
+          payload
         end
+      end
 
     html.coderay
   end
