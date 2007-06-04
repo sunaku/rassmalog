@@ -81,10 +81,8 @@ include ERB::Util
     end
 
     # Transforms this string into an escaped POSIX shell argument.
-    def to_shell_arg
-      gsub %r{[[:space:][:punct:]]} do |match|
-        "\\" << match
-      end
+    def shell_escape
+      inspect.gsub(/\\(\d{3})/) {$1.to_i(8).chr}
     end
 
 
@@ -689,7 +687,7 @@ include ERB::Util
   task :upload => [:default, 'output'] do
     whole = 'output'
     parts = Dir.glob('output/*', File::FNM_DOTMATCH)[2..-1].
-            map {|f| f.to_shell_arg}.join(' ')
+            map {|f| f.shell_escape}.join(' ')
 
     sh ERB.new(BLOG.uploader.to_s).result(binding)
   end
