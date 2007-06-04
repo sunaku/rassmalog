@@ -36,7 +36,7 @@
 
 <% if reallySummarized %>
   <p><%= @entry.to_link(LANG["Read more..."]) %></p>
-<% else %>
+<% end %>
   <ul class="info">
     <li>Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.</li>
   <% unless @entry.tags.empty? %>
@@ -46,7 +46,6 @@
     <li>You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.</li>
   <% end %>
   </ul>
-<% end %>
 </div>
 
 <!-- improves usability in text-mode browsers -->
