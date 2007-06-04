@@ -5,8 +5,8 @@ body {
   margin-right: auto;
   max-width: 46em;
 
-  color: black;
-  background-color: white;
+  color: #000000;
+  background-color: #FFFFFF;
 }
 
 #menu {
@@ -90,7 +90,7 @@ body {
 
 .entry .info {
   font-size: small;
-  border-top: thin dotted black;
+  border-top: thin dotted #000000;
   padding-top: 0.5em;
   padding-left: 0;
 }
@@ -115,7 +115,7 @@ th, h1, h2, h3, h4, h5, h6 {
 .entry .text h5,
 .entry .text h6 {
   margin-top: 2.5em;
-  border-bottom: thin solid silver;
+  border-bottom: thin solid #C0C0C0;
 }
 
 
@@ -123,8 +123,8 @@ th, h1, h2, h3, h4, h5, h6 {
 
 tt {
   font-weight: bold;
-  color: brown;
-  background-color: floralwhite;
+  color: #A52A2A;
+  background-color: #FFFAF0;
 }
 
 pre {
@@ -132,13 +132,13 @@ pre {
   line-height: normal;
   overflow: auto;
 
-  border: thin solid darkgray;
-  background-color: whitesmoke;
+  border: thin solid #A9A9A9;
+  background-color: #F5F5F5;
 }
 
 .code {
-  border: thin solid darkkhaki;
-  background-color: ivory;
+  border: thin solid #BDB76B;
+  background-color: #FFFFF0;
 }
 
 
@@ -146,11 +146,11 @@ pre {
 
 th, td {
   padding: 1em;
-  border: thin solid silver;
+  border: thin solid #C0C0C0;
 }
 
 th {
-  background-color: whitesmoke;
+  background-color: #F5F5F5;
 }
 
 
@@ -165,15 +165,15 @@ em, blockquote {
 }
 
 blockquote {
-  border-left: thick solid salmon;
-  background-color: snow;
+  border-left: thick solid #FA8072;
+  background-color: #FFFAFA;
   padding-left: 1em;
   padding-right: 0.5em;
   margin-left: 0;
 }
 
 hr {
-  background-color: red;
+  background-color: #FF0000;
   border: none;
 }
 
