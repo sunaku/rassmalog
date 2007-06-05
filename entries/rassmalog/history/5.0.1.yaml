@@ -1,0 +1,28 @@
+name: Version 5.0.1
+
+date: 5 June 2007 09:49:40
+
+tags: history
+
+text: |
+  This release fixes several defects.
+
+  h1. Thanks
+
+  "Josef 'Jupp' Schugt":http://www.mynetcologne.de/~nc-schugtjo/blog/ reported several defects.
+
+
+  h1. Repairs
+
+  * X11 color names have been replaced by their corresponding hex codes in the <tt>input/styles/default.css</tt> file because, as Josef 'Jupp' Schugt reports, "some browsers may ignore them altogether or, even worse, misinterpret them".
+
+  * The content of &lt;pre&gt; &lt;tt&gt; and &lt;code&gt; tags is now properly protected and escaped as HTML by the @String.to_html@ method in <tt>config/format.rb</tt>.
+
+  * Simplified the code that performs shell escaping.
+
+
+  h1. Usability
+
+  * An entry's information (date, tags, and comment link) is now shown in index pages by default because, as Josef 'Jupp' Schugt reports, that is what people have come to expect in a blog interface.
+
+  * Revised the instructions presented atop the search page.
