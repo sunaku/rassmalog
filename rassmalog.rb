@@ -36,16 +36,16 @@ include ERB::Util
 # utility logic
 
   class DateTime
-    # Returns the RFC-822 representation, which is required by RSS, of this
-    # object.
+    # Returns the RFC-822 representation, which
+    # is required by RSS, of this object.
     def rfc822
       strftime "%a, %d %b %Y %H:%M:%S %Z"
     end
   end
 
   class String
-    # Transforms this string into a vaild file name that can be safely used in a
-    # URL. See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+    # Transforms this string into a vaild file name that can be safely used
+    # in a URL. See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
     def to_file_name
       gsub(%r{[/;?#]+}, '-'). # these are *reserved* characters in URL syntax
       downcase.               # it's hard to remember capitalization in URLs
@@ -102,8 +102,8 @@ include ERB::Util
     #         hyperlinks in the table of contents (so that the TOC can link to
     #         the content in this string)
     #
-    # If a block is given, it will be invoked every time a heading is found,
-    # with information about the found heading.
+    # If a block is given, it will be invoked every time a heading
+    # is found, with information about the found heading.
     #
     def table_of_contents
       toc = '<ul>'
@@ -185,9 +185,9 @@ include ERB::Util
   class ERB
     alias old_initialize initialize
 
-    # A version of ERB whose embedding tags behave like those of PHP. That is,
-    # only <%= ... %> tags produce output, whereas <% ... %> tags do *not*
-    # produce any output.
+    # A version of ERB whose embedding tags behave like those
+    # of PHP. That is, only <%= ... %> tags produce output,
+    # whereas <% ... %> tags do *not* produce any output.
     def initialize aInput, *aArgs
       # ensure that only <%= ... %> tags generate output
         input = aInput.gsub %r{<%=.*?%>}m do |s|
@@ -229,8 +229,8 @@ include ERB::Util
     end
   end
 
-  # Registers a new Rake task for generating a HTML file and returns the path of
-  # the output file.
+  # Registers a new Rake task for generating a HTML
+  # file and returns the path of the output file.
   def generate_html_task aTask, aPage, *aDeps #:nodoc:
     dst = File.join('output', aPage.url)
 
@@ -245,11 +245,11 @@ include ERB::Util
     dst
   end
 
-  # Generates an index, which is not a fully qualified Page but behaves like
-  # one, of entries.
+  # Generates an index (which is not a fully
+  # qualified Page but behaves like one) of entries.
   #
-  # NOTE: the aName parameter will be translated later by this method, so only
-  # provide English strings here.
+  # NOTE: the aName parameter will be translated later by
+  # this method, so only provide English strings here.
   def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
     dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
@@ -278,9 +278,9 @@ include ERB::Util
 
 # data structures for organizing entries
 
-  # Something that can be (hyper)linked to. Objects that mix-in this module must
-  # define a #to_s method, whose value is used when determining the URL for this
-  # object.
+  # Something that can be (hyper)linked to. Objects that
+  # mix-in this module must define a #to_s method, whose
+  # value is used when determining the URL for this object.
   module Linkable
     # Returns a relative URL to this page.
     def url
@@ -301,8 +301,8 @@ include ERB::Util
   # Interface to translations.
   class Language < OpenStruct
     # Translates the given string and then formats (see String#format) the
-    # translation with the given placeholder arguments. If the translation is
-    # not available, then the given string will be used instead.
+    # translation with the given placeholder arguments. If the translation
+    # is not available, then the given string will be used instead.
     def [] aString, *aArgs
       (self.send(aString) || aString) % aArgs
     end
@@ -351,8 +351,8 @@ include ERB::Util
       end
     end
 
-    # Compares this entry to the given entry.
-    # This is used to sort a list of entries by date.
+    # Compares this entry to the given entry. This
+    # is used to sort a list of entries by date.
     def <=> aOther
       date <=> aOther.date
     end
@@ -507,8 +507,8 @@ include ERB::Util
       alias old_result result
 
       def result *a
-        # give this page a fresh set of anchors, so that each entry's table of
-        # contents does not link to other entry's contents
+        # give this page a fresh set of anchors, so that each entry's
+        # table of contents does not link to other entry's contents
         String.reset_anchors
 
         old_result(*a)
@@ -539,7 +539,7 @@ include ERB::Util
     end
 
   # organize blog entries into chapters
-    tags = Hash.new {|h,k| h[k] = []}
+    tags   = Hash.new {|h,k| h[k] = []}
     months = Hash.new {|h,k| h[k] = []}
 
     # parse tags and months from entries
@@ -598,7 +598,7 @@ include ERB::Util
   task :regen => [:clobber, :default]
 
   CONFIG_FILES = FileList['config/**/*.{yaml,*rb}']
-  COMMON_DEPS = ['output'] + CONFIG_FILES
+  COMMON_DEPS  = ['output'] + CONFIG_FILES
 
   # create output directory
     directory 'output'
@@ -702,13 +702,13 @@ include ERB::Util
     require 'rexml/document'
 
     REXML::Document.new(STDIN.read).each_element '//item' do |src|
-      name = CGI.unescapeHTML src.elements['title'].text
-      date = src.elements['pubDate'].text rescue Time.now
-      tags = src.get_elements('category').map {|e| e.text} rescue []
-      text = CGI.unescapeHTML src.elements['description'].text
-      from = CGI.unescape src.elements['link'].text
+      name  = CGI.unescapeHTML src.elements['title'].text
+      date  = src.elements['pubDate'].text rescue Time.now
+      tags  = src.get_elements('category').map {|e| e.text} rescue []
+      text  = CGI.unescapeHTML src.elements['description'].text
+      from  = CGI.unescape src.elements['link'].text
 
-      dst = "entries/import/#{name.to_file_name}.yaml"
+      dst   = "entries/import/#{name.to_file_name}.yaml"
 
       entry = %w[from name date tags].
         map {|var| {var => eval(var)}.to_yaml.sub(/^---\s*$/, '')}.

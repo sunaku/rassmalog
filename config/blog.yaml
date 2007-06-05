@@ -38,17 +38,17 @@ author: Suraj N. Kurapati
 #
 # The e-mail address that will receive comments about your blog entries.
 #
-# This address will be obfuscated into HTML entities so that e-mail address
-# harvesters won't bother to figure out what it is. For example, the address
-# "xxx@yyy.zzz" will be converted into the following *before* it is written
-# to a HTML file:
+# This address will be obfuscated into HTML entities so that
+# e-mail address harvesters won't bother to figure out what it
+# is. For example, the address "xxx@yyy.zzz" will be converted
+# into the following *before* it is written to a HTML file:
 #
-#   &#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;
+# &#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;
 #
-# If you do not wish to receive comments about your blog entries, or if you
-# absolutely *do not* want your e-mail address to be included in the output
-# (even in the obfuscated form), then you can simply leave this parameter
-# blank, as follows:
+# If you do not wish to receive comments about your blog
+# entries, or if you absolutely *do not* want your e-mail address
+# to be included in the output (even in the obfuscated form),
+# then you can simply leave this parameter blank, as follows:
 #
 #   email:   # nothing here!
 #
@@ -83,19 +83,18 @@ url: http://rassmalog.rubyforge.org/output/
 #
 # The following predefined variables are available:
 #
-# <%= whole %> is a path to the directory that must be uploaded.
+#   <%= whole %> is a path to the directory that must be uploaded.
 #
-# <%= parts %> is a sequence of paths to files that must be uploaded.
+#   <%= parts %> is a sequence of quoted paths to files that must be uploaded.
+#                For example, the result of this directive is something like:
 #
-#   For example, the result of this directive is something like:
-#
-#     output/foo output/bar output/baz\ qux\ moz
+#                "output/foo" "output/bar" "output/baz qux moz"
 #
 # SSH examples:
 #
-#   These examples assume that your website is located in a directory named
-#   "public_html" on a server named "host" that is accessible by a user named
-#   "user" via SSH or SFTP.
+#   These examples assume that your website is located in a
+#   directory named "public_html" on a server named "host"
+#   that is accessible by a user named "user" via SSH or SFTP.
 #
 #   uploader: scp -prC <%= parts %> user@host:public_html
 #   uploader: rsync -e ssh -auvz <%= whole %>/ user@host:public_html
@@ -103,9 +102,9 @@ url: http://rassmalog.rubyforge.org/output/
 #
 # FTP examples:
 #
-#   These examples assume that your website is located in a directory named
-#   "public_html" on a server named "host" that is accessible by a user named
-#   "user" with a password of "password" via FTP.
+#   These examples assume that your website is located in a directory
+#   named "public_html" on a server named "host" that is accessible
+#   by a user named "user" with a password of "password" via FTP.
 #
 #   uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
 #
@@ -130,8 +129,8 @@ encoding: utf-8
 
 
 #
-# The ISO-639 code and (optionally) the ISO-3166 country code for the
-# primary language used in your entries.
+# The ISO-639 code and (optionally) the ISO-3166 country
+# code for the primary language used in your entries.
 #
 # For a list of ISO-639 language codes, see:
 #
@@ -159,8 +158,8 @@ language: en-us
 # Name of a file in the output/ directory that is displayed when somebody
 # visits your blog. This is called the "front page" of your blog.
 #
-# To have an automatic listing of the most recent entries on the front page,
-# simply leave this parameter blank:
+# To have an automatic listing of the most recent entries
+# on the front page, simply leave this parameter blank:
 #
 #   front_page:   # nothing here!
 #
@@ -176,9 +175,9 @@ recent_entries: 3
 #
 # Specifies whether entries are summarized in tag and archive pages.
 #
-# The config/entry.erb template controls how an entry is summarized. By
-# default, only the first paragraph of an entry is shown when summarization
-# is enabled.
+# The config/entry.erb template controls how an entry
+# is summarized. By default, only the first paragraph
+# of an entry is shown when summarization is enabled.
 #
 # To disable this parameter, set its value to "false" like this:
 #

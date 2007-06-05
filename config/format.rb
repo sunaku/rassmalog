@@ -1,5 +1,5 @@
-# This file defines the String#to_html method, which is invoked to transform
-# the content of an entry (the value of the string) into HTML.
+# This file defines the String#to_html method, which is invoked to
+# transform the content of an entry (the value of the string) into HTML.
 #
 # It features the Textile formatting system (RedCloth), syntax coloring
 # (CodeRay), and smart source code sizing (block vs. inline display).
@@ -18,10 +18,10 @@ require 'coderay'
 require 'redcloth'
 
 class String
-  # The content of these HTML tags will be preserved verbatim when they are
-  # processed by Textile. By doing this, we avoid unwanted Textile
-  # transformations, such as quotation marks becoming curly (&#8192;), in source
-  # code.
+  # The content of these HTML tags will be preserved verbatim
+  # when they are processed by Textile. By doing this, we
+  # avoid unwanted Textile transformations, such as quotation
+  # marks becoming curly (&#8192;), in source code.
   PRESERVED_TAGS = %w[tt code pre]
 
   # Transforms this string into HTML.
@@ -54,9 +54,9 @@ class String
       html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
       html.gsub! %r{(<pre>)\s*<pre>(.*?)</pre>\s*(</pre>)}m, '\1\2\3'
 
-      # redcloth wraps a single item within paragraph tags, which prevents the
-      # item's HTML from being validly injected within other block-level
-      # elements, such as headings (h1, h2, etc.)
+      # redcloth wraps a single item within paragraph tags, which
+      # prevents the item's HTML from being validly injected within
+      # other block-level elements, such as headings (h1, h2, etc.)
       html.sub! %r{^<p>(.*)</p>$}m do |match|
         payload = $1
 
@@ -75,10 +75,10 @@ class String
     RedCloth.new(self).to_html
   end
 
-  # Adds syntax coloring to <code> elements in the given text. If the <code>
-  # tag has an attribute lang="...", then that is considered the programming
-  # language for which appropriate syntax coloring should be applied.
-  # Otherwise, the programming language is assumed to be ruby.
+  # Adds syntax coloring to <code> elements in the given text. If the
+  # <code> tag has an attribute lang="...", then that is considered the
+  # programming language for which appropriate syntax coloring should be
+  # applied. Otherwise, the programming language is assumed to be ruby.
   def coderay
     gsub %r{<(code)(.*?)>(.*?)</\1>}m do
       code = CGI.unescapeHTML $3
