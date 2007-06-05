@@ -523,13 +523,12 @@ include ERB::Util
     ENTRY_FILES = FileList['entries/**/*.yaml']
 
     ENTRIES = ENTRY_FILES.map do |src|
-      entry = load_yaml_file(src, Entry)
+      entry          = load_yaml_file(src, Entry)
       entry.src_file = src
-      entry.date = DateTime.parse(entry.date.to_s)
-      entry.tags = entry.tags.to_a rescue [entry.tags]
-      entry.tags.flatten!
-      entry.tags.compact!
-      entry.tags.uniq!
+      entry.date     = DateTime.parse(entry.date.to_s)
+
+      tags           = entry.tags.to_a rescue [entry.tags]
+      entry.tags     = tags.flatten.compact.uniq
 
       entry
     end.sort.reverse!
@@ -624,8 +623,8 @@ include ERB::Util
           end
 
         unless alreadyCopied
-          remove_entry_secure dst, true
           notify :copy, dst
+          remove_entry_secure dst, true
           copy_entry src, dst, !File.symlink?(src)
         end
       end

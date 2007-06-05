@@ -18,9 +18,10 @@ name: Rassmalog
 # Description of your blog.
 #
 info: |
-  A static blog engine based on "YAML":http://www.yaml.org/,
-  "eRuby":http://en.wikipedia.org/wiki/Eruby, and
-  "Rake":http://rake.rubyforge.org/.
+  A static blog engine based on
+      "YAML":http://www.yaml.org/,
+      "eRuby":http://en.wikipedia.org/wiki/Eruby,
+  and "Rake":http://rake.rubyforge.org/.
 
 
 ################################################################################
@@ -246,7 +247,7 @@ menu:
     - Forums: http://rubyforge.org/forum/?group_id=2737
 
   - Users:
-    - Author's blog: http://www.soe.ucsc.edu/~snk/
+    - Author's blog: http://rassmalog.rubyforge.org/blog/
     - Mannes Weblog: http://blog.mabitoka.de
     - PenPen Blog: http://www.mynetcologne.de/~nc-schugtjo/blog/
     - Various Contrivances: http://matt.routleynet.org/blog/
