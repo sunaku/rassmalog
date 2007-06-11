@@ -8,6 +8,7 @@
 # See the file named LICENSE for details.
 
 require 'cgi'
+require 'digest/md5'
 
 begin
   require 'rubygems'
@@ -34,7 +35,7 @@ class String
       PRESERVED_TAGS.each do |tag|
         text.gsub! %r{(<#{tag}.*?>)(.*?)(</#{tag}>)}m do
           orig = $1 + CGI.escapeHTML(CGI.unescapeHTML($2)) + $3
-          esc  = orig.object_id.abs.to_s * 5
+          esc  = Digest::MD5.hexdigest(orig)
 
           preserved[esc] = orig
           esc
