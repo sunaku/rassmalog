@@ -39,7 +39,7 @@ include ERB::Util
     # Returns the RFC-822 representation, which
     # is required by RSS, of this object.
     def rfc822
-      strftime "%a, %d %b %Y %H:%M:%S %Z"
+      strftime "%a, %d %b %Y %H:%M:%S %z"
     end
   end
 
