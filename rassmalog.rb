@@ -664,7 +664,7 @@ include ERB::Util
         cp src, dst, :preserve => true, :verbose => false
       end
     else
-      generate_special_index "Recent entries", ENTRIES.recent, true, dst
+      generate_special_index "Recent entries", ENTRIES.recent, BLOG.summarize_entries, dst
     end
 
     task :index => dst
