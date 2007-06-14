@@ -21,7 +21,7 @@
   <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
   <generator><%= GENERATOR %></generator>
 <%
-  ENTRIES.each do |entry|
+  ENTRIES.recent.each do |entry|
     url = File.join BLOG.url, u(entry.url)
     text = entry.text.to_html
 
