@@ -318,8 +318,12 @@ include ERB::Util
     end
 
     def text
+      entry = self
+
       # evaluate ERB directives within the entry
-      @text ||= ERB.new(@rawText).result
+      @text ||= ERB.new(@rawText).render_with do
+        @entry = entry
+      end
     end
 
     def url

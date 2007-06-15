@@ -34,10 +34,23 @@ tags:
 #
 # The content of this entry.
 #
+# In this content, you can use
+# eRuby directives and also
+# the following variables:
+#
+# * BLOG   => data from the blog configuration file
+# * LANG   => interface to translation file
+# * @entry => an Entry object representing *THIS* blog entry
+#
 text: |
   Write your thoughts here.
 
   Fill as many lines as you need!
+
+
+  h1. Source of this blog entry
+
+  <pre><%=h File.read(@entry.src_file) %></pre>
 
 
   h1. eRuby example
