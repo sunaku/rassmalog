@@ -88,6 +88,9 @@ body {
   margin: 1em;
 }
 
+.entry .more { /* the "Read more..." link */
+}
+
 .entry .info {
   font-size: small;
   border-top: thin dotted #000000;

@@ -35,7 +35,7 @@
   <div class="text"><%= text %></div>
 
 <% if reallySummarized %>
-  <p><%= @entry.to_link(LANG["Read more..."]) %></p>
+  <p class="more"><%= @entry.to_link(LANG["Read more..."]) %></p>
 <% end %>
   <ul class="info">
     <li>Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.</li>
