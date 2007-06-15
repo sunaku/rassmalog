@@ -68,6 +68,9 @@ class String
         end
       end
 
+      # redcloth adds <span> tags around acronyms
+      html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
+
     html.coderay
   end
 
