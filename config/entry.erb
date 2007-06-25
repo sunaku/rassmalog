@@ -20,6 +20,11 @@
     if paragraphs.length > 1
       text = paragraphs.first
       reallySummarized = true
+
+      # anchored links should take you inside the full entry
+      text.gsub! %r{(href=.)(#)} do
+        $1 + @entry.url + $2
+      end
     end
   else
     toc, text = text.table_of_contents
