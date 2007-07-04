@@ -1,0 +1,28 @@
+name: Creating static HTML pages
+
+date: 06/28/2007 05:44 PM
+
+tags: tricks
+
+text: |
+  Josef 'Jupp' Schugt asked "Is there or do you intend to implement a way that allows one to add such static files *without* cumbersome HTML editing?"
+
+  I did not plan for such a feature because I because I simply write my articles / static pages as blog entries. However, if the date at the beginning of the output file name bothers you (e.g. you prefer <tt>foo.html</tt> instead of <tt>2007-06-28-foo.html</tt>), then you could try this solution:
+
+  # Add a flag to a blog entry that you want as a static page:
+  <pre>static: true</pre>
+  # Modify the @Entry.url@ method to omit the date for static entries:
+  <code>
+       def url
+         stamp = date.strftime "%F"
+  -      "#{stamp}-#{name}.html".to_file_name
+  +
+  +      if static
+  +        "#{name}.html".to_file_name
+  +      else
+  +        "#{stamp}-#{name}.html".to_file_name
+  +      end
+       end
+  </code>
+
+  One potential problem is that if an entry's name is the same as a tag name, then there they will both have the same output file name (entries have a different name-space because their output file names are preceded by a date).
