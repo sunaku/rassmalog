@@ -17,8 +17,8 @@ include ERB::Util
 
   GENERATOR = OpenStruct.new(
     :name     => 'Rassmalog',
-    :version  => '5.0.1',
-    :date     => '2007-06-05',
+    :version  => '5.1.0',
+    :date     => '2007-07-04',
     :url      => 'http://rassmalog.rubyforge.org'
   )
 

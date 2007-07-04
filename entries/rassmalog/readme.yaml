@@ -11,14 +11,14 @@ text: |
 
   Rassmalog is a static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that are user friendly in both graphical and "text-only web browsers":http://en.wikipedia.org/wiki/Lynx_%28web_browser%29.
 
-  Rassmalog features "tagging":http://en.wikipedia.org/wiki/Folksonomy and _fully automatic_ archiving, table of contents, and syntax coloring for blog entries, an "RSS 2.0":http://en.wikipedia.org/wiki/RSS feed for your entire blog, localization in "<%= @langFiles.length %> languages":#manifest.lang, and a tiny code base containing _less than_ 600 lines of code.
+  Rassmalog features "tagging":http://en.wikipedia.org/wiki/Folksonomy and _fully automatic_ archiving, "table of contents":#Table_of_contents, and "syntax coloring":#Syntax_coloring for blog entries, an "RSS 2.0":http://en.wikipedia.org/wiki/RSS feed for your entire blog, localization in "<%= @langFiles.length %> languages":#manifest.lang, and a tiny code base containing _less than_ 600 lines of code.
 
   Rassmalog is "open source software":#License inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines. Its name is derived from the word "Rasmalai":http://en.wikipedia.org/wiki/Rasmalai and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
 
 
   h1. Motivation
 
-  Although "dynamic blog engines":http://en.wikipedia.org/wiki/Dynamic_web_page are popular nowadays, I feel that "static blog engines":http://en.wikipedia.org/wiki/Static_Web_page like Rassmalog are still relevant today. The following sections explain why.
+  Although "dynamic blog engines":http://en.wikipedia.org/wiki/Dynamic_web_page are popular nowadays, "static blog engines":http://en.wikipedia.org/wiki/Static_Web_page like Rassmalog are still relevant. The following sections explain why.
 
 
   h2. Server requirements
@@ -67,7 +67,16 @@ text: |
 
   h2. Syntax coloring
 
-  Syntax coloring is _automatically added_ to source code.
+  Syntax coloring is _automatically added_ to source code, which is defined as any content enclosed within the *&lt;code&gt;* and *&lt;/code&gt;* HTML tags. Note that in Textile, any text enclosed within a pair of at-signs (&#64; and &#64;) is also considered to be source code.
+
+  * The following programming languages are supported:
+  ** Ruby
+  ** C
+  ** Delphi
+  ** HTML
+  ** RHTML (Rails)
+  ** Nitro-XHTML
+  ** "and more...":http://coderay.rubychan.de
 
   * This feature can be disabled or altered by editing the <tt>config/format.rb</tt> file accordingly.
 
@@ -75,8 +84,6 @@ text: |
   h3. Specifying the programming language
 
   Because different programming languages have different syntax coloring schemes, you can specify the language of your source code using the @lang@ attribute to ensure that only the appropriate coloring scheme is used. Note that unless the @lang@ attribute is specified, _Ruby_ is assumed to be the programming language of all source code by default.
-
-  * List of "supported programming languages":http://coderay.rubychan.de/.
 
   <% sampleCode = %q{
   # Ruby ###########################
@@ -148,7 +155,7 @@ text: |
 
   h2. Blog entry format
 
-  Blog entries are _plain text files_ with easy syntax. For example, see this "blog entry":http://rassmalog.rubyforge.org/src/rassmalog/entries/rassmalog/example.yaml and its corresponding "HTML output":2006-12-08-put-the-name-of-your-entry-here..html.
+  Blog entries are _plain text files_ with easy syntax. For example, see this "example blog entry":2006-12-08-put-the-name-of-your-entry-here..html.
 
   * Only _four parameters_ in a blog entry:
   ** name
@@ -342,7 +349,7 @@ text: |
 
   To use another text formatting system, simply replace the @String.to_html@ method, which is defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
 
-  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all entries will appear within yellow-colored &lt;pre&gt; elements in the generated HTML files.
+  For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all entries will appear within yellow-colored *&lt;pre&gt;* and *&lt;/pre&gt;* HTML tags in the output.
 
   <code>
   class String

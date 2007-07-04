@@ -56,9 +56,9 @@ text: |
 
   h1. eRuby example
 
-  The text of a blog entry is treated as an eRuby template. Thus, you can use
-  eRuby directives (which appear within @<%%@ and @%>@ tags) in the text of
-  your blog entries. For example,
+  The text of a blog entry is treated as an eRuby template.  Thus,
+  you can use eRuby directives (which appear within @<%%@ and @%>@
+  tags) in the text of your blog entries.  For example,
 
   * The current time is *<%= Time.now %>*.
 
@@ -79,8 +79,6 @@ text: |
   sample":http://www.textism.com/tools/textile/?sample=2 from the "Textile
   website":http://www.textism.com/tools/textile/. It will show you how to
   format your text with Textile.
-
-  ---
 
 
   h2{color:green}. This is a title
