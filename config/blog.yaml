@@ -40,15 +40,16 @@ author: Suraj N. Kurapati
 #
 # This address will be obfuscated into HTML entities so that
 # e-mail address harvesters won't bother to figure out what it
-# is. For example, the address "xxx@yyy.zzz" will be converted
+# is.  For example, the address "xxx@yyy.zzz" will be converted
 # into the following *before* it is written to a HTML file:
 #
 # &#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;
 #
-# If you do not wish to receive comments about your blog
-# entries, or if you absolutely *do not* want your e-mail address
-# to be included in the output (even in the obfuscated form),
-# then you can simply leave this parameter blank, as follows:
+# If you do not wish to receive comments about your
+# blog entries, or if you absolutely *do not* want
+# your e-mail address to be included in the output
+# (even in the obfuscated form), then you can
+# simply leave this parameter blank, as follows:
 #
 #   email:   # nothing here!
 #
@@ -155,8 +156,9 @@ language: en-us
 
 
 #
-# Name of a file in the output/ directory that is displayed when somebody
-# visits your blog. This is called the "front page" of your blog.
+# Name of a file in the output/ directory that
+# is displayed when somebody visits your blog.
+# This is called the "front page" of your blog.
 #
 # To have an automatic listing of the most recent entries
 # on the front page, simply leave this parameter blank:
@@ -173,10 +175,11 @@ recent_entries: 3
 
 
 #
-# Specifies whether entries are summarized in tag and archive pages.
+# Specifies whether entries are summarized in tag
+# pages, archive pages, and the recent entries page.
 #
 # The config/entry.erb template controls how an entry
-# is summarized. By default, only the first paragraph
+# is summarized.  By default, only the first paragraph
 # of an entry is shown when summarization is enabled.
 #
 # To disable this parameter, set its value to "false" like this:
@@ -219,8 +222,10 @@ archive_frequency: %B %Y
 
 
 #
-# Hierarchical menu of links. By default, this menu is shown in all generated
-# HTML pages. To disable this behavior, edit the config/html.erb template.
+# Hierarchical menu of links.
+#
+# By default, this menu is shown in all generated HTML pages.
+# To disable this behavior, edit the config/html.erb template.
 #
 menu:
   - Rassmalog:
@@ -231,7 +236,7 @@ menu:
     - Project portal: http://rubyforge.org/projects/rassmalog/
 
   - Documentation:
-    - Example entry: 2006-12-08-put-the-name-of-your-entry-here..html
+    - Example blog entry: 2006-12-08-put-the-name-of-your-entry-here..html
     - API reference: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/

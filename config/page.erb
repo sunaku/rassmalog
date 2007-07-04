@@ -14,9 +14,7 @@
 %>
 <h1><%= @page.name %></h1>
 
-<p><%= @page.prev.to_link %>
-  &larr; <%= @page.chapter.to_link %> &rarr;
-<%= @page.next.to_link %></p>
+<p><%= @page.prev.to_link %> &larr; <%= @page.chapter.to_link %> &rarr; <%= @page.next.to_link %></p>
 
 <br/>
 

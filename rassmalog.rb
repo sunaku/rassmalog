@@ -1,4 +1,4 @@
-# The core of Rassmalog.
+# This file contains the core of Rassmalog.
 #--
 # Copyright 2006-2007 Suraj N. Kurapati
 # See the file named LICENSE for details.
@@ -45,7 +45,7 @@ include ERB::Util
 
   class String
     # Transforms this string into a vaild file name that can be safely used
-    # in a URL. See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+    # in a URL.  See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
     def to_file_name
       gsub(%r{[/;?#]+}, '-'). # these are *reserved* characters in URL syntax
       downcase.               # it's hard to remember capitalization in URLs
@@ -69,8 +69,9 @@ include ERB::Util
             'a' + self
           end
 
-      # The remaining characters must be letters, digits, hyphens (-),
-      # underscores (_), colons (:), or periods (.) [or Unicode characters]
+      # The remaining characters must be letters,
+      # digits, hyphens (-), underscores (_), colons
+      # (:), or periods (.) [or Unicode characters]
         buf.unpack('U*').map! do |code|
           if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
             code
@@ -93,18 +94,20 @@ include ERB::Util
       @@anchors.clear
     end
 
-    # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
-    # in this string and returns an array containing [toc, text] where:
+    # Builds a table of contents from XHTML headings
+    # (<h1>, <h2>, etc.) found in this string and
+    # returns an array containing [toc, text] where:
     #
     # toc::   the generated table of contents
     #
-    # text::  a modified version of this string which contains anchors for the
-    #         hyperlinks in the table of contents (so that the TOC can link to
-    #         the content in this string)
+    # text::  a modified version of this string which
+    #         contains anchors for the hyperlinks in
+    #         the table of contents (so that the TOC
+    #         can link to the content in this string)
     #
-    # If a block is given, it will be invoked every time a heading
-    # is found, with information about the found heading.
-    #
+    # If a block is given, it will be invoked
+    # every time a heading is found, with
+    # information about the found heading.
     def table_of_contents
       toc = '<ul>'
       prevDepth = 0
@@ -186,8 +189,8 @@ include ERB::Util
     alias old_initialize initialize
 
     # A version of ERB whose embedding tags behave like those
-    # of PHP. That is, only <%= ... %> tags produce output,
-    # whereas <% ... %> tags do *not* produce any output.
+    # of PHP.  That is, only <%= ...  %> tags produce output,
+    # whereas <% ...  %> tags do *not* produce any output.
     def initialize aInput, *aArgs
       # ensure that only <%= ... %> tags generate output
         input = aInput.gsub %r{<%=.*?%>}m do |s|
@@ -249,7 +252,7 @@ include ERB::Util
   # qualified Page but behaves like one) of entries.
   #
   # NOTE: the aName parameter will be translated later by
-  # this method, so only provide English strings here.
+  #       this method, so only provide English strings here.
   def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
     dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
 
@@ -257,13 +260,13 @@ include ERB::Util
       title = LANG[aName]
 
       index = INDEX_TEMPLATE.render_with do
-        @name = aName
-        @title = title
+        @name    = aName
+        @title   = title
         @content = aEntries.map {|e| e.to_html aMode}.join
       end
 
       html = HTML_TEMPLATE.render_with do
-        @title = title
+        @title   = title
         @content = index
       end
 
@@ -278,7 +281,7 @@ include ERB::Util
 
 # data structures for organizing entries
 
-  # Something that can be (hyper)linked to. Objects that
+  # Something that can be (hyper)linked to.  Objects that
   # mix-in this module must define a #to_s method, whose
   # value is used when determining the URL for this object.
   module Linkable
@@ -301,7 +304,7 @@ include ERB::Util
   # Interface to translations.
   class Language < OpenStruct
     # Translates the given string and then formats (see String#format) the
-    # translation with the given placeholder arguments. If the translation
+    # translation with the given placeholder arguments.  If the translation
     # is not available, then the given string will be used instead.
     def [] aString, *aArgs
       (self.send(aString) || aString) % aArgs
@@ -336,13 +339,14 @@ include ERB::Util
       BLOG.email.to_url name, File.join(BLOG.url, url)
     end
 
-    # Transforms this entry into HTML. If summarize is enabled, then only the
-    # first paragraph of this entry's content will be included in the result.
+    # Transforms this entry into HTML.  If summarization
+    # is enabled, then only the first paragraph of this
+    # entry's content will be included in the result.
     def to_html aSummarize = false
       entry = self
 
       ENTRY_TEMPLATE.render_with do
-        @entry = entry
+        @entry     = entry
         @summarize = aSummarize
       end
     end
@@ -355,7 +359,7 @@ include ERB::Util
       end
     end
 
-    # Compares this entry to the given entry. This
+    # Compares this entry to the given entry.  This
     # is used to sort a list of entries by date.
     def <=> aOther
       date <=> aOther.date
@@ -663,6 +667,7 @@ include ERB::Util
     if BLOG.front_page
       src = File.join('output', BLOG.front_page)
 
+      # overwrite index.html with the user-defined front page file
       file dst => [src] + COMMON_DEPS do
         notify 'front page', src
         cp src, dst, :preserve => true, :verbose => false
