@@ -61,24 +61,22 @@ include ERB::Util
     # Transforms this string into a valid XHTML anchor (ID attribute).
     # See http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html
     def to_html_anchor
+      # remove HTML tags from the input
+      buf = self.gsub(/<.*?>/, '')
+
       # The first or only character must be a letter.
-        buf =
-          if self[0,1] =~ /[[:alpha:]]/
-            self
-          else
-            'a' + self
-          end
+      buf.insert(0, 'a') unless buf[0,1] =~ /[[:alpha:]]/
 
       # The remaining characters must be letters,
       # digits, hyphens (-), underscores (_), colons
       # (:), or periods (.) [or Unicode characters]
-        buf.unpack('U*').map! do |code|
-          if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
-            code
-          else
-            ?_
-          end
-        end.pack('U*')
+      buf.unpack('U*').map! do |code|
+        if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
+          code
+        else
+          ?_
+        end
+      end.pack('U*')
     end
 
     # Transforms this string into an escaped POSIX shell argument.
