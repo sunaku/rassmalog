@@ -488,7 +488,7 @@ include ERB::Util
 
     class << BLOG.email
       def to_url aSubject = nil, aBody = nil
-        addr = "mailto:#{self}"
+        addr = "mailto:#{self.to_html_entities}"
         subj = "subject=#{u aSubject}" if aSubject
         body = "body=#{u aBody}" if aBody
 
@@ -497,7 +497,7 @@ include ERB::Util
           addr << '?' << rest.join('&')
         end
 
-        addr.to_html_entities
+        addr
       end
     end
 
