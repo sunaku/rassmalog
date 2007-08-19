@@ -156,6 +156,11 @@ th {
   background-color: #F5F5F5;
 }
 
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 /* emphasis */
 

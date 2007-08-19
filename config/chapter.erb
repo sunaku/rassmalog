@@ -31,3 +31,30 @@
   </li>
 <% end %>
 </ul>
+
+<br/>
+
+<%
+  byName = @chapter.pages.sort_by { |page| page.name }
+  bySize = @chapter.pages.sort_by { |page| page.entries.length }
+%>
+<table>
+  <tr>
+    <th colspan="2">Sorted by name</th>
+    <th colspan="2">Sorted by size</th>
+  </tr>
+  <tr>
+    <th>&darr;Name</th>
+    <th>Size</th>
+    <th>Name</th>
+    <th>&darr;Size</th>
+  </tr>
+  <% @chapter.pages.each_index do |i| %>
+  <tr>
+    <td><%= byName[i].to_link %></td>
+    <td><%= byName[i].entries.length %></td>
+    <td><%= bySize[i].to_link %></td>
+    <td><%= bySize[i].entries.length %></td>
+  </tr>
+  <% end %>
+</table>
