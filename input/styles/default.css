@@ -48,6 +48,7 @@ body {
 }
 
 #content {
+  max-width: 33em;
 }
 
 #footer {
@@ -58,39 +59,48 @@ body {
 }
 
 
-/* blog entry */
+/* blog entry and static web page */
 
+.page,
 .entry {
   margin-bottom: 7em;
-  max-width: 33em;
 }
 
+.page .name,
 .entry .name {
   font-size: x-large;
 }
 
+.page .name a,
 .entry .name a {
   text-decoration: none;
 }
 
+.page .toc,
 .entry .toc { /* table of contents */
   margin-bottom: 2em;
 }
 
+.page .toc ul,
 .entry .toc ul {
   margin-top: 0;
 }
 
+.page .text,
 .entry .text {
 }
 
+.page .text img,
 .entry .text img {
   margin: 1em;
 }
 
+
+.page .more,
 .entry .more { /* the "Read more..." link */
 }
 
+.page .info,
 .entry .info {
   font-size: small;
   border-top: thin dotted #000000;
@@ -98,6 +108,7 @@ body {
   padding-left: 0;
 }
 
+.page .info li,
 .entry .info li {
   list-style-type: none;
   margin-left: 0;
@@ -187,6 +198,11 @@ hr {
 
 big {
   font-size: larger;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 

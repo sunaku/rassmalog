@@ -40,7 +40,7 @@ file 'output' do
 end
 
 Rake::RDocTask.new do |rd|
-  rd.rdoc_files.exclude('_darcs').include('**/*.rb')
+  rd.rdoc_files.exclude('_darcs', 'pkg').include('**/*.rb')
   rd.rdoc_dir = 'ref'
 end
 

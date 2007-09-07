@@ -156,16 +156,15 @@ language: en-us
 
 
 #
-# Name of a file in the output/ directory that
-# is displayed when somebody visits your blog.
-# This is called the "front page" of your blog.
+# Name of a file in the output/ directory that is displayed when somebody
+# visits your blog.  This is called the "front page" of your blog.
 #
 # To have an automatic listing of the most recent entries
 # on the front page, simply leave this parameter blank:
 #
 #   front_page:   # nothing here!
 #
-front_page: 2006-12-13-welcome-to-rassmalog.html
+front_page: pages/welcome-to-rassmalog.html
 
 
 #
@@ -229,14 +228,14 @@ archive_frequency: %B %Y
 #
 menu:
   - Rassmalog:
-    - What's new?: index_entries.html
-    - Tips & tricks: tricks.html
+    - What's new?: entries/index.html
+    - Tips & tricks: tags/tricks.html
     - Announcements: rss.xml
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
 
   - Documentation:
-    - Example blog entry: 2006-12-08-put-the-name-of-your-entry-here..html
+    - Example blog entry: entries/2006-12-08-put-the-name-of-your-entry-here..html
     - API reference: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
@@ -259,10 +258,12 @@ menu:
     - Asterisell project: http://asterisell.profitoss.com
     - Profitoss project: http://profitoss.com
     - ClothRed project: http://clothred.rubyforge.org
-    - David Karapetyan: http://www-scf.usc.edu/~dkarapet/
+    - David Karapetyan: http://www-scf.usc.edu/~dkarapet/blog/
+    - Fox Chao: http://blog.netinfox.com/
+    - Shane Sveller: http://shanesveller.com/
 
-  - hey! this:
-    - menu is:
+  - hey!:
+    - this menu is:
       - hierarchical!:
         - 1:
           - 2:

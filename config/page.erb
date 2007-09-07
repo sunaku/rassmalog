@@ -1,23 +1,61 @@
 <%
 =begin
-  This is a template for generating a listing of Entry objects.
+  This is a template for generating HTML for a static web page.
 
   The following variables are available for use in this template:
-  * BLOG        => data from the blog configuration file
-  * LANG        => interface to translation file
-  * ENTRIES     => an array of all available blog entries
-  * TAGS        => a Chapter containing one Page per tag
-  * ARCHIVES    => a Chapter containing one Page per archive
-  * CHAPTERS    => an array of Chapter objects
-  * @page       => a Page for which we are generating HTML
+  * BLOG         => data from the blog configuration file
+  * LANG         => interface to translation file
+  * PAGES        => an array of all available static web pages
+  * ENTRIES      => an array of all available blog entries
+  * TAGS         => a Chapter containing one Section per tag
+  * ARCHIVES     => a Chapter containing one Section per archive
+  * CHAPTERS     => an array of Chapter objects
+  * PAGE_INDEX   => a PageIndex object
+  * ENTRY_INDEX  => a EntryIndex object
+  * SEARCH_INDEX => a SearchIndex object
+  * @page        => the Page for which we are generating HTML
 =end
+
+  text = @page.text.to_html
+
+  if @summarize
+    paragraphs = text.split %r{\r?\n\s*\r?\n}
+
+    # omit headings from summary to keep it simple and non-hierarchical
+    paragraphs.reject! {|p| p =~ /^\s*<h\d/}
+
+    if paragraphs.length > 1
+      text = paragraphs.first
+      reallySummarized = true
+
+      # anchored links should take you inside the full entry
+      text.gsub! %r{(href=.)(#)} do
+        $1 + @page.url + $2
+      end
+    end
+  else
+    toc, text = text.table_of_contents
+  end
 %>
-<h1><%= @page.name %></h1>
+<div class="page">
+  <h1 class="name"><%= @page.to_link %></h1>
 
-<p><%= @page.prev.to_link %> &larr; <%= @page.chapter.to_link %> &rarr; <%= @page.next.to_link %></p>
-
-<br/>
-
-<% @page.entries.each do |entry| %>
-  <%= entry.to_html(BLOG.summarize_entries && :summary) %>
+<% if toc %>
+  <div class="toc">Contents <%= toc %></div>
 <% end %>
+
+  <div class="text"><%= text %></div>
+
+<% if reallySummarized %>
+  <p class="more"><%= @page.to_link(LANG["Read more..."]) %></p>
+<% end %>
+  <ul class="info">
+    <li>Updated on <%= File.stat(@page.src_file).mtime %>.</li>
+  <% if BLOG.email %>
+    <li>You may <a href="<%= @page.comment_url %>">comment on this page</a>.</li>
+  <% end %>
+  </ul>
+</div>
+
+<!-- improves usability in text-mode browsers -->
+<hr style="display: none"/>

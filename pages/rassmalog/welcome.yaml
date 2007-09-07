@@ -438,10 +438,10 @@ text: |
 
   You can create a link from one blog entry to another by simply putting the name of the target blog entry's web page file as the link address.
 
-  For example, suppose that you had a blog entry whose generated web page file was <tt>output/2006-12-13-welcome-to-rassmalog.html</tt>. To make a link to the blog entry, you would write:
+  For example, suppose that you had a blog entry whose generated web page file was <tt>output/entries/2006-12-13-welcome-to-rassmalog.html</tt>. To make a link to the blog entry, you would write:
 
   * In HTML:
-    <pre><a href="2006-12-13-welcome-to-rassmalog.html">link</a></pre>
+    <pre><a href="entries/2006-12-13-welcome-to-rassmalog.html">link</a></pre>
 
   * In Textile:
     <pre>"link":2006-12-13-welcome-to-rassmalog.html</pre>

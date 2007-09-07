@@ -3,14 +3,19 @@
   This is a template for generating HTML files for the blog.
 
   The following variables are available for use in this template:
-  * BLOG        => data from the blog configuration file
-  * LANG        => interface to translation file
-  * ENTRIES     => an array of all available blog entries
-  * TAGS        => a Chapter containing one Page per tag
-  * ARCHIVES    => a Chapter containing one Page per archive
-  * CHAPTERS    => an array of Chapter objects
-  * @title      => title for the HTML page we are generating
-  * @content    => body for the HTML page we are generating
+  * BLOG         => data from the blog configuration file
+  * LANG         => interface to translation file
+  * PAGES        => an array of all available static web pages
+  * ENTRIES      => an array of all available blog entries
+  * TAGS         => a Chapter containing one Section per tag
+  * ARCHIVES     => a Chapter containing one Section per archive
+  * CHAPTERS     => an array of Chapter objects
+  * PAGE_INDEX   => a PageIndex object
+  * ENTRY_INDEX  => a EntryIndex object
+  * SEARCH_INDEX => a SearchIndex object
+  * @target      => object that represents the HTML page we are generating
+  * @title       => title for the HTML page we are generating
+  * @content     => body for the HTML page we are generating
 =end
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -52,13 +57,15 @@
     <div id="navigation">
       <a href="index.html"><%= LANG['Home'] %></a>
       &middot;
-      <a href="index_entries.html"><%= LANG['Entries'] %></a>
+      <%= PAGE_INDEX.to_link %>
       &middot;
-      <a href="index_tags.html"><%= LANG['Tags'] %></a>
+      <%= ENTRY_INDEX.to_link %>
       &middot;
-      <a href="index_archives.html"><%= LANG['Archives'] %></a>
+      <%= TAGS.to_link %>
       &middot;
-      <a href="index_search.html"><%= LANG['Search'] %></a>
+      <%= ARCHIVES.to_link %>
+      &middot;
+      <%= SEARCH_INDEX.to_link %>
       &middot;
       <a type="application/rss+xml" href="rss.xml"><img
         src="images/feed-icon-28x28.png" alt="RSS feed" /></a>

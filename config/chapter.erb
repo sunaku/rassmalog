@@ -1,13 +1,13 @@
 <%
 =begin
-  This is a template for generating a listing of Page objects.
+  This is a template for generating a listing of Section objects.
 
   The following variables are available for use in this template:
   * BLOG        => data from the blog configuration file
   * LANG        => interface to translation file
   * ENTRIES     => an array of all available blog entries
-  * TAGS        => a Chapter containing one Page per tag
-  * ARCHIVES    => a Chapter containing one Page per archive
+  * TAGS        => a Chapter containing one Section per tag
+  * ARCHIVES    => a Chapter containing one Section per archive
   * CHAPTERS    => an array of Chapter objects
   * @chapter    => the Chapter for which we are generating HTML
 =end
@@ -19,15 +19,15 @@
   fonts = %w[xx-small x-small small medium large x-large xx-large]
   scale = fonts.length - 1
 
-  largest = @chapter.pages.map { |page| page.entries.length }.max
+  largest = @chapter.sections.map { |section| section.entries.length }.max
 
-  @chapter.pages.each do |page|
-    size = page.entries.length
+  @chapter.sections.each do |section|
+    size = section.entries.length
     mass = size.to_f / largest
     font = fonts[ (mass * scale).round ]
 %>
   <li style="font-size: <%= font %>;" title="<%= size %>">
-    <%= page.to_link %> <span style="display: none">(<%= size %>)</span>
+    <%= section.to_link %> <span style="display: none">(<%= size %>)</span>
   </li>
 <% end %>
 </ul>
@@ -35,8 +35,8 @@
 <br/>
 
 <%
-  byName = @chapter.pages.sort_by { |page| page.name }
-  bySize = @chapter.pages.sort_by { |page| page.entries.length }
+  byName = @chapter.sections.sort_by { |section| section.name }
+  bySize = @chapter.sections.sort_by { |section| section.entries.length }
 %>
 <table>
   <tr>
@@ -49,7 +49,7 @@
     <th>Name</th>
     <th>&darr;Size</th>
   </tr>
-  <% @chapter.pages.each_index do |i| %>
+  <% @chapter.sections.each_index do |i| %>
   <tr>
     <td><%= byName[i].to_link %></td>
     <td><%= byName[i].entries.length %></td>

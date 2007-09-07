@@ -1,0 +1,19 @@
+#
+# The name of this static web page.
+#
+name: Put the name of your static web page here.
+
+#
+# The content of this static web page.
+#
+# In this content, you can use eRuby
+# directives and also the following variables:
+#
+# * BLOG   => data from the blog configuration file
+# * LANG   => interface to translation file
+# * @page  => a Page object representing *THIS* static web page
+#
+text: |
+  Use the same content as the blog entry example:
+
+  <%= YAML.load_file('entries/rassmalog/example.yaml')['text'] %>

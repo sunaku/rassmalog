@@ -79,7 +79,8 @@ include ERB::Util
       end.pack('U*')
     end
 
-    # Transforms this string into an escaped POSIX shell argument.
+    # Transforms this string into an escaped POSIX shell
+    # argument whilst preserving Unicode characters.
     def shell_escape
       inspect.gsub(/\\(\d{3})/) {$1.to_i(8).chr}
     end
@@ -92,9 +93,8 @@ include ERB::Util
       @@anchors.clear
     end
 
-    # Builds a table of contents from XHTML headings
-    # (<h1>, <h2>, etc.) found in this string and
-    # returns an array containing [toc, text] where:
+    # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
+    # in this string and returns an array containing [toc, text] where:
     #
     # toc::   the generated table of contents
     #
@@ -103,9 +103,8 @@ include ERB::Util
     #         the table of contents (so that the TOC
     #         can link to the content in this string)
     #
-    # If a block is given, it will be invoked
-    # every time a heading is found, with
-    # information about the found heading.
+    # If a block is given, it will be invoked every time a
+    # heading is found, with information about the found heading.
     def table_of_contents
       toc = '<ul>'
       prevDepth = 0
@@ -204,11 +203,19 @@ include ERB::Util
       old_initialize input, *aArgs
     end
 
-    # Renders this template within a fresh object configured by the given block.
-    def render_with &aBlock
+    # Renders this template within a fresh object initialized with the given
+    # instance variables and configured by the given block (if given).
+    def render_with aInstVars = {}, &aConfigBlock
       dummy = Object.new
-      dummy.instance_eval(&aBlock)
-      result dummy.instance_eval {binding}
+
+      aInstVars.each_pair do |var, val|
+        dummy.instance_variable_set var, val
+      end
+
+      dummy.instance_eval(&aConfigBlock) if block_given?
+
+      context = dummy.instance_eval {binding}
+      result(context) # eval the ERB template
     end
   end
 
@@ -235,6 +242,14 @@ include ERB::Util
   def generate_html_task aTask, aPage, *aDeps #:nodoc:
     dst = File.join('output', aPage.url)
 
+    # register subdirs as task deps
+    dst.split('/').inject do |base, ext|
+      directory base
+      aDeps << base
+
+      File.join(base, ext)
+    end
+
     file dst => aDeps.flatten + COMMON_DEPS do
       notify aPage.class, dst
       write_file dst, aPage.render
@@ -246,116 +261,144 @@ include ERB::Util
     dst
   end
 
-  # Generates an index (which is not a fully
-  # qualified Page but behaves like one) of entries.
-  #
-  # NOTE: the aName parameter will be translated later by
-  #       this method, so only provide English strings here.
-  def generate_special_index aName, aEntries, aMode, aFileName = nil #:nodoc:
-    dst = aFileName || File.join('output', "index_#{aName.downcase}.html".to_file_name)
-
-    file dst => aEntries.map {|e| e.src_file} + COMMON_DEPS do
-      title = LANG[aName]
-
-      index = INDEX_TEMPLATE.render_with do
-        @name    = aName
-        @title   = title
-        @content = aEntries.map {|e| e.to_html aMode}.join
-      end
-
-      html = HTML_TEMPLATE.render_with do
-        @title   = title
-        @content = index
-      end
-
-      notify aName, dst
-      write_file dst, html
-    end
-
-    task :index => dst
-    CLOBBER.include dst
-  end
-
-
-# data structures for organizing entries
-
-  # Something that can be (hyper)linked to.  Objects that
-  # mix-in this module must define a #to_s method, whose
-  # value is used when determining the URL for this object.
-  module Linkable
-    # Returns a relative URL to this page.
-    def url
-      to_s.to_file_name << '.html'
-    end
-
-    # Returns a relative hyperlink to this page.
-    def to_link aName = name
-      %{<a href="#{u url}">#{aName.to_html}</a>}
-    end
-
-    # Compares this page to the given page.
-    def <=> aOther
-      url <=> aOther.url
-    end
-  end
-
-  # Interface to translations.
+  # Interface to translations of English strings used in the core of Rassmalog.
   class Language < OpenStruct
     # Translates the given string and then formats (see String#format) the
     # translation with the given placeholder arguments.  If the translation
     # is not available, then the given string will be used instead.
     def [] aString, *aArgs
-      (self.send(aString) || aString) % aArgs
+      (self.send(aString) || aString).to_s % aArgs
     end
   end
 
-  # A single blog entry.
-  class Entry < OpenStruct
-    include Linkable
 
-    def initialize aHash = nil
-      @rawText = aHash['text']
-      super
-    end
+# data structures for organizing entries
 
-    def text
-      entry = self
-
-      # evaluate ERB directives within the entry
-      @text ||= ERB.new(@rawText).render_with do
-        @entry = entry
+  # Something that can be (hyper)linked to.
+  # Objects that mix-in this module must define
+  # a #name or #to_s method, whose value is used
+  # when determining the URL for this object.
+  module Linkable
+    def to_s
+      if respond_to? :name
+        name
+      else
+        super
       end
     end
 
+    # Returns a relative URL to this object.
     def url
-      stamp = date.strftime "%F"
-      "#{stamp}-#{name}.html".to_file_name
+      if is_a? Chapter or is_a? DataIndex
+        File.join LANG[self.name].to_file_name, 'index.html'
+      else
+        prefix =
+          if is_a? Section
+            chapter.name
+          elsif is_a? Entry
+            "Entries"
+          elsif is_a? Page
+            "Pages"
+          else
+            self.class.to_s
+          end
+
+        File.join LANG[prefix].to_file_name, to_s.to_file_name << '.html'
+      end
+    end
+
+    # Returns a relative hyperlink to this object.
+    def to_link aName = self.name
+      %{<a href="#{h url}">#{aName.to_html}</a>}
+    end
+
+    # Compares this object to the given one.
+    def <=> other
+      url <=> other.url
+    end
+  end
+
+  # The class which includes this module must have an
+  # associated ERB template in the config/ directory.
+  module Renderable
+    # Basename of the ERB template in the config/ directory.
+    def template_name
+      self.class.to_s
+    end
+
+    # Returns the ERB template inside this wrapper.
+    def template
+      Kernel.const_get(template_name.to_s.upcase << '_TEMPLATE')
+    end
+
+    def template_ivar
+      :"@#{self.class.to_s.downcase}"
+    end
+
+    # Transforms this object into HTML.
+    def to_html aOpts = {}
+      aOpts[template_ivar] = self
+      template.render_with aOpts
+    end
+
+    # Renders a HTML page for this object.
+    def render aOpts = {}
+      aOpts[:@content] = self.to_html#(aOpts)
+      aOpts[:@target] = self
+      aOpts[:@title]  = self.name
+
+
+      html = HTML_TEMPLATE.render_with(aOpts)
+
+      # make implicit relative paths into explicit ones
+        pathPrefix = "../" * self.url.scan(%r{/+}).length
+
+        html.gsub! %r{((?:href|src)\s*=\s*("|'))(.*?)(\2)} do
+          head, body, tail = $1, $3.strip, $4
+
+          if body !~ %r{^\w+:|^[/#?]|^\.+/}
+            body.insert 0, pathPrefix
+          end
+
+          head << body << tail
+        end
+
+      html
+    end
+  end
+
+
+  class UserData < OpenStruct
+    include Renderable
+    include Linkable
+  end
+
+  # A static web page.
+  class Page < UserData
+    # Returns the text of this object with ERB directives evaluated.
+    def text
+      unless defined? @expandedText
+        # evaluate ERB directives within the entry
+        @expandedText = ERB.new(super).render_with(template_ivar => self)
+      end
+
+      @expandedText
     end
 
     # Returns a URL for submiting comments about this entry.
     def comment_url
       BLOG.email.to_url name, File.join(BLOG.url, url)
     end
+  end
 
-    # Transforms this entry into HTML.  If summarization
-    # is enabled, then only the first paragraph of this
-    # entry's content will be included in the result.
-    def to_html aSummarize = false
-      entry = self
-
-      ENTRY_TEMPLATE.render_with do
-        @entry     = entry
-        @summarize = aSummarize
+  # A single blog entry.
+  class Entry < Page
+    include Renderable
+    include Linkable
+      def to_s
+        stamp = date.strftime "%F"
+        "#{stamp}-#{name}"
       end
-    end
-
-    # Renders a HTML page for this Entry.
-    def render
-      t, c = name, to_html
-      HTML_TEMPLATE.render_with do
-        @title, @content = t, c
-      end
-    end
 
     # Compares this entry to the given entry.  This
     # is used to sort a list of entries by date.
@@ -364,39 +407,33 @@ include ERB::Util
     end
   end
 
-  # A listing of blog entries (Entry objects).
-  class Page
+
+  class MetaData
+    include Renderable
     include Linkable
 
-    attr_reader :name, :entries, :chapter
+    attr_reader :name
+  end
 
-    # aName:: name of this page
-    # aEntries:: Entry objects that belong in this page
-    # aChapter:: Chapter object which contains this page
+  # A listing of blog entries (Entry objects).
+  class Section < MetaData
+    attr_reader :entries, :chapter
+
+    # aName:: name of this section
+    # aEntries:: Entry objects that belong in this section
+    # aChapter:: Chapter object which contains this section
     def initialize aName, aEntries, aChapter
       @name = aName
       @entries = aEntries
       @chapter = aChapter
     end
 
-    alias to_s name
-
-    # Renders a HTML page for this Page.
-    def render
-      page = self
-
-      HTML_TEMPLATE.render_with do
-        @title = page.name
-        @content = PAGE_TEMPLATE.render_with {@page = page}
-      end
-    end
-
-    # Returns the next page in the chapter.
+    # Returns the next section in the chapter.
     def next
       sibling(+1)
     end
 
-    # Returns the previous page in the chapter.
+    # Returns the previous section in the chapter.
     def prev
       sibling(-1)
     end
@@ -404,45 +441,86 @@ include ERB::Util
     private
 
     def sibling aOffset
-      list = chapter.pages
+      list = chapter.sections
       pos = list.index(self)
 
       list[(pos + aOffset) % list.length]
     end
   end
 
-  # A listing of pages (Page objects).
-  class Chapter
-    include Linkable
-
-    attr_reader :name, :pages
+  # A listing of sections (Section objects).
+  class Chapter < MetaData
+    attr_reader :sections
 
     # aName:: name of this Chapter
-    # aHash:: mapping from Page name to array of Entry
+    # aHash:: mapping from Section name to array of Entry
     def initialize aName, aHash
-      @fileName = aName
       @name = LANG[aName]
-      @pages = []
+      @fileName = aName
+      @sections = []
 
       aHash.each_pair do |k, v|
-        @pages << Page.new(k, v, self)
+        @sections << Section.new(k, v, self)
       end
 
-      @pages.sort!
+      @sections.sort!
     end
+  end
 
-    def to_s
-      'index_' + @fileName.downcase
-    end
 
-    # Renders a HTML page for this Chapter.
-    def render
-      chapter = self
+  class DataIndex
+    include Linkable
 
-      HTML_TEMPLATE.render_with do
-        @title = chapter.name
-        @content = CHAPTER_TEMPLATE.render_with {@chapter = chapter}
+    include Renderable
+      def template_name
+        :index
       end
+
+      def to_html aOpts = {}
+        aOpts[:@title] = self.name
+        super aOpts
+      end
+
+    def initialize aSources
+      @sources = aSources
+    end
+
+    def to_html aOpts = {}
+      unless aOpts.key? :@summarize
+        aOpts[:@summarize] = BLOG.summarize_entries
+      end
+
+      content = @sources.map do |k|
+        k.to_html aOpts
+      end.join
+
+      super :@content => content
+    end
+  end
+
+  class PageIndex < DataIndex
+    def name
+      LANG[:Pages]
+    end
+  end
+
+  class EntryIndex < DataIndex
+    def name
+      LANG[:Entries]
+    end
+  end
+
+  class SearchIndex < EntryIndex
+    def template_name
+      :search
+    end
+
+    def name
+      LANG[:Search]
+    end
+
+    def to_html
+      super :@summarize => false
     end
   end
 
@@ -494,12 +572,16 @@ include ERB::Util
 
         rest = [subj, body].compact
         unless rest.empty?
-          addr << '?' << rest.join('&')
+          addr << '?' << rest.join('&amp;')
         end
 
         addr
       end
     end
+
+  # load translations
+    langFile = "config/lang/#{BLOG.language}.yaml"
+    LANG = load_yaml_file(langFile, Language) rescue Language.new
 
   # load templates
     FileList['config/*.erb'].each do |f|
@@ -512,18 +594,23 @@ include ERB::Util
     class << HTML_TEMPLATE
       alias old_result result
 
-      def result *a
+      def result *args
         # give this page a fresh set of anchors, so that each entry's
         # table of contents does not link to other entry's contents
         String.reset_anchors
 
-        old_result(*a)
+        old_result(*args)
       end
     end
 
-  # load translations
-    langFile = "config/lang/#{BLOG.language}.yaml"
-    LANG = load_yaml_file(langFile, Language) rescue Language.new
+  # load static web pages
+    PAGE_FILES = FileList['pages/**/*.yaml']
+
+    PAGES = PAGE_FILES.map do |src|
+      page = load_yaml_file(src, Page)
+      page.src_file = src
+      page
+    end
 
   # load blog entries
     ENTRY_FILES = FileList['entries/**/*.yaml']
@@ -557,18 +644,18 @@ include ERB::Util
         months[entry.date.strftime(BLOG.archive_frequency)] << entry
       end
 
-    # organize entries into pages
+    # organize entries into sections
       TAGS = Chapter.new('Tags', tags)
       ARCHIVES = Chapter.new('Archives', months)
 
       # restore tags for entry
-        TAGS.pages.each do |tag|
+        TAGS.sections.each do |tag|
           tag.entries.each do |entry|
             entry.tags << tag
           end
         end
 
-        ARCHIVES.pages.each do |month|
+        ARCHIVES.sections.each do |month|
           month.entries.each do |entry|
             entry.archive = month
           end
@@ -576,20 +663,27 @@ include ERB::Util
 
     CHAPTERS = [TAGS, ARCHIVES]
 
+    ENTRY_INDEX = EntryIndex.new(ENTRIES)
+    PAGE_INDEX = PageIndex.new(PAGES)
+    SEARCH_INDEX = SearchIndex.new(ENTRIES + PAGES)
+
 
 # output generation stage
 
   desc "Generate the blog."
-  task :default => [:copy, :entry, :page, :chapter, :index, :feed]
+  task :default => [:copy, :page, :entry, :section, :chapter, :index, :feed]
 
   desc "Copy files from input/ into output/"
   task :copy
 
+  desc "Generate HTML for static web pages."
+  task :page
+
   desc "Generate HTML for entries."
   task :entry
 
-  desc "Generate HTML for pages."
-  task :page
+  desc "Generate HTML for sections."
+  task :section
 
   desc "Generate HTML for chapters."
   task :chapter
@@ -636,42 +730,56 @@ include ERB::Util
       end
     end
 
+  # generate HTML for static web pages
+    PAGES.each do |page|
+      page.dst_file = generate_html_task(:page, page, page.src_file)
+    end
+
   # generate HTML for blog entries
     ENTRIES.each do |entry|
       entry.dst_file = generate_html_task(:entry, entry, entry.src_file)
     end
 
-  # generate HTML for pages and chapters
+  # generate HTML for sections and chapters
     CHAPTERS.each do |chapter|
       chapterDeps = []
 
-      chapter.pages.each do |page|
-        pageDeps = page.entries.map {|e| e.src_file}
-        generate_html_task :page, page, pageDeps
+      chapter.sections.each do |section|
+        sectionDeps = section.entries.map {|e| e.src_file}
+        generate_html_task :section, section, sectionDeps
 
-        chapterDeps.concat pageDeps
+        chapterDeps.concat sectionDeps
       end
 
       generate_html_task :chapter, chapter, chapterDeps
     end
 
-  # generate entry list and search page
-    generate_special_index "Entries", ENTRIES, true
-    generate_special_index "Search", ENTRIES, false
+  # generate entry list and search section
+    generate_html_task :index, ENTRY_INDEX, ENTRY_FILES
+    generate_html_task :index, PAGE_INDEX, PAGE_FILES
+    generate_html_task :index, SEARCH_INDEX, ENTRY_FILES, PAGE_FILES
 
-  # generate front page
+  # generate front section
     dst = 'output/index.html'
 
     if BLOG.front_page
-      src = File.join('output', BLOG.front_page)
+      src = BLOG.front_page
 
-      # overwrite index.html with the user-defined front page file
-      file dst => [src] + COMMON_DEPS do
-        notify 'front page', src
-        cp src, dst, :preserve => true, :verbose => false
+      file dst => COMMON_DEPS do
+        notify 'front page', File.join('output', src)
+        write_file dst, %{<META HTTP-EQUIV="Refresh" CONTENT="0; URL=#{h src}">}
       end
     else
-      generate_special_index "Recent entries", ENTRIES.recent, BLOG.summarize_entries, dst
+      file dst => COMMON_DEPS + ENTRIES.recent.map {|e| e.src_file} do
+        list = EntryIndex.new(ENTRIES.recent)
+        class << list
+          def url
+            'index.html'
+          end
+        end
+
+        write_file dst, list.render
+      end
     end
 
     task :index => dst
@@ -709,13 +817,13 @@ include ERB::Util
     require 'rexml/document'
 
     REXML::Document.new(STDIN.read).each_element '//item' do |src|
-      name  = CGI.unescapeHTML src.elements['title'].text
-      date  = src.elements['pubDate'].text rescue Time.now
-      tags  = src.get_elements('category').map {|e| e.text} rescue []
-      text  = CGI.unescapeHTML src.elements['description'].text
-      from  = CGI.unescape src.elements['link'].text
+      name = CGI.unescapeHTML src.elements['title'].text
+      date = src.elements['pubDate'].text rescue Time.now
+      tags = src.get_elements('category').map {|e| e.text} rescue []
+      text = CGI.unescapeHTML src.elements['description'].text
+      from = CGI.unescape src.elements['link'].text
 
-      dst   = "entries/import/#{name.to_file_name}.yaml"
+      dst = "entries/import/#{name.to_file_name}.yaml"
 
       entry = %w[from name date tags].
         map {|var| {var => eval(var)}.to_yaml.sub(/^---\s*$/, '')}.

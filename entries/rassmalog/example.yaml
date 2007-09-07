@@ -1,10 +1,10 @@
 #
-# The name of this entry.
+# The name of this blog entry.
 #
-name: Put the name of your entry here.
+name: Put the name of your blog entry here.
 
 #
-# The date and time (optional) when this entry was started.
+# The date and time (optional) when this blog entry was started.
 #
 # Here are some examples:
 #
@@ -25,7 +25,7 @@ name: Put the name of your entry here.
 date: Dec 8 2006 11:00pm      # Put today's date and time here.
 
 #
-# The categories (tags) which classify this entry.
+# The categories (tags) which classify this blog entry.
 #
 tags:
   - examples
@@ -33,11 +33,10 @@ tags:
   - documentation
 
 #
-# The content of this entry.
+# The content of this blog entry.
 #
-# In this content, you can use
-# eRuby directives and also
-# the following variables:
+# In this content, you can use eRuby
+# directives and also the following variables:
 #
 # * BLOG   => data from the blog configuration file
 # * LANG   => interface to translation file
