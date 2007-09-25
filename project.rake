@@ -54,3 +54,48 @@ desc 'Generate release announcement.'
 task :ann => 'output' do |t|
   system "w3m -T text/html -dump -cols 60 output/*#{PROJECT_VERSION}.html"
 end
+
+
+TRANSLATE_DIR = 'translate-output'
+directory TRANSLATE_DIR
+
+def translate_string aString, aLang
+  IO.popen("translate-bin -f en -t #{aLang}", 'r+') do |pipe|
+    pipe.write aString
+    pipe.close_write
+    pipe.read
+  end
+end
+
+desc 'Generate translation files.'
+task :translate => TRANSLATE_DIR do
+  # get list of strings to translate
+    inputStrings = []
+
+    FileList['*.rb', 'config/*.*'].each do |file|
+      strings = File.read(file).scan(/LANG\[(.*?)\]/).flatten.map! {|s| eval(s)}
+      inputStrings.concat(strings)
+    end
+
+    inputStrings.uniq!
+    inputStrings.sort!
+
+  `translate-bin -l | grep '^en.*text'`.split(/$/).each do |line|
+    if line =~ /->\s+(\S+)\s+([^:]+):/
+      lang, desc = $1, $2
+      p lang => desc
+
+      File.open(File.join(TRANSLATE_DIR, lang + '.yaml'), 'w') do |f|
+        f.puts "# #{lang} #{desc}"
+
+        inputStrings.each do |query|
+          result = translate_string(query, lang)
+          break if result.empty?
+
+          p query => result
+          f.puts "#{query}: #{result}"
+        end
+      end
+    end
+  end
+end
