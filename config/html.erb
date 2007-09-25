@@ -1,21 +1,17 @@
 <%
 =begin
-  This is a template for generating HTML files for the blog.
+  This is a template for generating a complete HTML web page.
 
   The following variables are available for use in this template:
-  * BLOG         => data from the blog configuration file
-  * LANG         => interface to translation file
-  * PAGES        => an array of all available static web pages
-  * ENTRIES      => an array of all available blog entries
-  * TAGS         => a Chapter containing one Section per tag
-  * ARCHIVES     => a Chapter containing one Section per archive
-  * CHAPTERS     => an array of Chapter objects
-  * PAGE_INDEX   => a PageIndex object
-  * ENTRY_INDEX  => a EntryIndex object
-  * SEARCH_INDEX => a SearchIndex object
-  * @target      => object that represents the HTML page we are generating
-  * @title       => title for the HTML page we are generating
-  * @content     => body for the HTML page we are generating
+  * BLOG           => data from the blog configuration file
+  * LANG           => data from the translation file
+  * ENTRIES        => array of all blog entries (Entry objects)
+  * RECENT_ENTRIES => array of recent blog entries (Entry objects)
+  * TAGS           => array of all tags (Section objects)
+  * ARCHIVES       => array of all archives (Section objects)
+  * @target        => object for which we are generating HTML
+  * @title         => title for the HTML page we are generating
+  * @content       => body for the HTML page we are generating
 =end
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -29,20 +25,19 @@
     <meta name="author" content="<%=h BLOG.author %>" />
     <meta name="generator" content="<%= GENERATOR %>" />
 
-    <link rel="alternate" type="application/rss+xml" href="rss.xml"
-      title="RSS feed for this blog." />
-    <link rel="stylesheet" type="text/css" href="styles/default.css" />
+    <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS feed for this blog." />
+    <link rel="stylesheet" type="text/css" href="styles/screen.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="styles/print.css" media="print" />
+    <link rel="alternate stylesheet" type="text/css" href="styles/print.css" title="Print Preview" />
 
     <title><%= @title %> &mdash; <%= BLOG.name.to_html %></title>
   </head>
   <body>
-    <!-- improves usability in text-mode browsers -->
+    <%# improves usability in text-mode browsers %>
     <div style="display: none">
-      <a href="#content">Jump to content</a>
+      <a href="#menu">Jump to navigation menu</a>
       <br/>
-      <a href="#navigation">Jump to navigation</a>
-      <br/>
-      <a href="#menu">Jump to links</a>
+      <a href="#content">Jump to page content</a>
       <hr/>
     </div>
 
@@ -51,44 +46,60 @@
       <div class="info"><%= BLOG.info.to_html %></div>
     </div>
 
-    <!-- improves usability in text-mode browsers -->
     <br style="display: none"/>
-
-    <div id="navigation">
-      <a href="index.html"><%= LANG['Home'] %></a>
-      &middot;
-      <%= PAGE_INDEX.to_link %>
-      &middot;
-      <%= ENTRY_INDEX.to_link %>
-      &middot;
-      <%= TAGS.to_link %>
-      &middot;
-      <%= ARCHIVES.to_link %>
-      &middot;
-      <%= SEARCH_INDEX.to_link %>
-      &middot;
-      <a type="application/rss+xml" href="rss.xml"><img
-        src="images/feed-icon-28x28.png" alt="RSS feed" /></a>
-    </div>
-
-    <div id="menu">
-      <ul><%= BLOG.menu.to_html %></ul>
-    </div>
-
-    <!-- improves usability in text-mode browsers -->
     <hr style="display: none"/>
 
     <div id="content"><%= @content %></div>
 
-    <!-- improves usability in text-mode browsers -->
+    <hr style="display: none"/>
+
+    <div id="menu">
+      <div id="menu-blog">
+        <%= link('index.html', LANG['Home']) %> &middot;
+        <%= RECENT_ENTRIES.to_link %> &middot;
+        <%= ENTRIES.to_link %> &middot;
+        <%= TAGS.to_link %> &middot;
+        <%= ARCHIVES.to_link %> &middot;
+        <a type="application/rss+xml" href="rss.xml">
+          <%= LANG['Subscribe'] %>
+          <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
+        </a>
+      </div>
+
+      <br style="display: none"/>
+      <br style="display: none"/>
+
+      <form id="search" method="get" <%=
+        if @title == LANG['Search']
+          # avoid having to reload the entire search page (which can get very
+          # large in file size) each time the user submits the search form
+          %{onsubmit="search_handler(); return false;"}
+        else
+          %{action="#{LANG['Search'].to_file_name}.html"}
+        end
+      %>>
+        <input type="text" name="q" id="search-query"/>
+        <input type="submit" value="<%= LANG['Search'] %>"/>
+      </form>
+
+      <br style="display: none"/>
+      <br style="display: none"/>
+
+      <% if BLOG.menu %>
+      <ul id="menu-user"><%= BLOG.menu.to_html %></ul>
+      <% end %>
+    </div>
+
     <hr style="display: none"/>
 
     <div id="footer">
-      <% if BLOG.email %>
-        Authored by <a href="<%= BLOG.email.to_url %>"><%= BLOG.author %></a>.
-      <% else %>
-        Authored by <%= BLOG.author %>.
-      <% end %>
+      Authored by <%=
+        if BLOG.email
+          link(BLOG.email.to_url, BLOG.author)
+        else
+          BLOG.author
+        end
+      %>.
       <br/>
       Generated by <%= GENERATOR.to_link %>.
     </div>

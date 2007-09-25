@@ -1,0 +1,279 @@
+#
+# This is an example blog entry.  Blog entries are _plain text_
+# files marked up in YAML syntax.  They are composed of several
+# parameters (see below), whose values are defined by you, the user.
+#
+# Of all the parameters listed below, only 'name' and 'text'
+# are required.  The other parameters are completely optional.
+#
+# For your convenience, the description of each parameter
+# is marked with one or more of the following emblems:
+#
+# * (Required) This parameter is required.  If it is not present,
+#              then Rassmalog will ignore this blog entry file.
+#
+# * (Optional) This parameter is completely optional.
+#
+# * (eRuby) You can use eRuby directives in the value of this parameter.
+#
+# * (Example) This parameter is bogus; it exists
+#             purely for illustrative purposes.
+#
+
+
+#
+# (Required) (eRuby)
+#
+# The title of this blog entry.
+#
+name: This is an example blog entry
+
+
+#
+# (Optional) (eRuby)
+#
+# The date when this blog entry written.
+#
+# Here are some examples:
+#
+#   date: Thu, 01 Jan 1970 08:00:00 GMT
+#   date: 1970-01-01 8:00am
+#   date: 1/1/1970 8:00am
+#   date: jan 1st 1970 16:00 -08:00
+#   date: 1 january 1970
+#   date: Wed Dec 13 21:31:04 PST 2006
+#
+# For more information about the format of
+# this parameter, see the documentation
+# for the DateTime.parse method by typing
+# the following command at your terminal:
+#
+#   ri DateTime.parse
+#
+# If you do not specify this parameter, then Rassmalog will
+# use the modification time of this source file instead.
+#
+date: Dec 8 2006 11:00pm  # put today's date and time here
+
+
+#
+# (Optional)
+#
+# The categories/labels which classify this blog entry.
+#
+tags:
+  - examples
+  - reference
+  - documentation
+
+
+#
+# (Optional) (eRuby)
+#
+# A relative path (with respect to the <tt>output/</tt>
+# directory) to the output HTML file for this blog entry.
+#
+# If you do not specify this parameter, then the name and
+# relative location of this source file will be used instead.
+# For example, <tt>input/foo/bar/moz.yaml</tt> will have a
+# default output_file value of <tt>foo/bar/moz.html</tt>.
+#
+output_file: rassmalog/example.html
+
+
+#
+# (Optional)
+#
+# Controls whether this entry is displayed in the
+# lists of tags, archives, and recent/all entries.
+#
+hide: false
+
+
+#
+# (Optional)
+#
+# Overrides the *table_of_contents* parameter that is defined in the main
+# blog configuration file <tt>config/blog.yaml</tt>.  This parameter
+# controls whether a table of contents is generated for this blog entry.
+#
+table_of_contents: true
+
+
+#
+# (Optional) (eRuby)
+#
+# Overrides the automatic summarization mechanism found in
+# the <tt>config/entry.erb</tt> template by allowing you
+# to specify a predefined summary for this blog entry.
+#
+summary: |
+  This is a summary for the example blog entry.
+
+
+#
+# (Example)
+#
+# This is an example of how you can specify your own custom
+# parameters and use them in the content of this blog entry.
+#
+your_own_parameter1: hello world
+your_own_parameter2: ruby rocks!
+
+
+#
+# (Required) (eRuby)
+#
+# The content of this blog entry.
+#
+# In this parameter, you can use the following
+# predefined variables inside eRuby directives:
+#
+# * BLOG           => data from the blog configuration file
+# * LANG           => data from the translation file
+# * ENTRIES        => array of all blog entries (Entry objects)
+# * RECENT_ENTRIES => array of recent blog entries (Entry objects)
+# * TAGS           => array of all tags (Section objects)
+# * ARCHIVES       => array of all archives (Section objects)
+# * @entry         => an Entry object representing *THIS* blog entry
+#
+text: |
+  This is an example blog entry whose "source file":../<%= @entry.input_file %> is located at <tt><%= @entry.input_file %></tt>.
+
+  <%= @entry['summary'] %>
+
+
+  h1. eRuby example
+
+  The text of a blog entry is treated as an eRuby template.  Thus,
+  you can use eRuby directives (which appear within @<%%@ and @%>@
+  tags) in the text of your blog entries.  For example,
+
+  * The current time is *<%= Time.now %>*.
+
+  * Say "Hello World!" three times:
+  <% 3.times do %>
+  ** Hello World!
+  <% end %>
+
+  * The contents of the current directory are:
+  <% Dir['*'].each do |f| %>
+  ** <tt><%= f %></tt>
+  <% end %>
+
+
+  h2. Adding your own parameters
+
+  You can add arbitrary parameters to a blog entry source file (which is really
+  a YAML file) and use them in the blog entry's content (the *text* parameter).
+
+  For example, in the source of this blog entry, you will find two custom
+  parameters whose names begin with "your_own_parameter". To insert the values
+  of these parameters into the blog entry's content, we use the following eRuby
+  directive:
+
+    <pre><%%= @entry[ 'name_of_the_parameter' ] %></pre>
+
+  Here, we access a parameter's value by passing the parameter's name into the
+  [] operator of the @@entry@ object.
+
+  |_. Expression|_. Result|
+  |@<%%= @entry['your_own_parameter1'] %>@|<%= @entry['your_own_parameter1'] %>|
+  |@<%%= @entry['your_own_parameter2'] %>@|<%= @entry['your_own_parameter2'] %>|
+
+
+  h1. Textile example
+
+  The following text is "a
+  sample":http://www.textism.com/tools/textile/?sample=2 from the "Textile
+  website":http://www.textism.com/tools/textile/. It will show you how to
+  format your text with Textile.
+
+
+  h2{color:green}. This is a title
+
+  h3. This is a subhead
+
+  p{color:red}. This is some text of dubious character. Isn't the use of
+  "quotes" just lazy writing -- and theft of 'intellectual property'
+  besides? I think the time has come to see a block quote.
+
+  bq[fr]. This is a block quote. I'll admit it's not the most exciting block
+  quote ever devised.
+
+  Simple list:
+
+  #{color:blue} one
+  # two
+  # three
+
+  Multi-level list:
+
+  # one
+  ## aye
+  ## bee
+  ## see
+  # two
+  ## x
+  ## y
+  # three
+
+  Mixed list:
+
+  * Point one
+  * Point two
+  ## Step 1
+  ## Step 2
+  ## Step 3
+  * Point three
+  ** Sub point 1
+  ** Sub point 2
+
+
+  Well, that went well. How about we insert an <a href="/" title="watch
+  out">old-fashioned hypertext link</a>? Will the quote marks in the tags
+  get messed up? No!
+
+  "This is a link (optional title)":http://www.textism.com
+
+  table{border:1px solid black}.
+  |_. this|_. is|_. a|_. header|
+  <{background:gray}. |\2. this is|{background:red;width:200px}. a|^<>{height:200px}. row|
+  |this|<>{padding:10px}. is|^. another|(bob#bob). row|
+
+  An image:
+
+  !http://www.textism.com/common/textist.gif(optional alt text)!
+
+  # Librarians rule
+  # Yes they do
+  # But you knew that
+
+  Some more text of dubious character. Here is a noisome string of CAPITAL
+  letters. Here is something we want to _emphasize_. That was a linebreak.
+  And something to indicate *strength*. Of course I could use <em>my own
+  HTML tags</em> if I <strong>felt</strong> like it.
+
+  h3. Coding
+
+  This <code>is some code, "isn't it"</code>. Watch those quote marks! Now
+  for some preformatted text:
+
+  <pre>
+  <code>
+    $text = str_replace("<p>%::%</p>","",$text);
+    $text = str_replace("%::%</p>","",$text);
+    $text = str_replace("%::%","",$text);
+
+  </code>
+  </pre>
+
+  This isn't code.
+
+
+  So you see, my friends:
+
+  * The time is now
+  * The time is not later
+  * The time is not yesterday
+  * We must act

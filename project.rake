@@ -11,7 +11,7 @@ require 'rake/packagetask'
 PROJECT_ID = :rassmalog
 PROJECT_SSH_URL = "snk@rubyforge.org:/var/www/gforge-projects/#{PROJECT_ID}"
 
-if Dir['entries/rassmalog/history/*'].sort.last =~ /\d+\.\d+\.\d+/
+if Dir['input/rassmalog/history/*'].sort.last =~ /\d+\.\d+\.\d+/
   PROJECT_VERSION = $&
 else
   raise "could not parse project version"
@@ -26,8 +26,8 @@ task :release => [:clobber, :rdoc, 'output'] do
 end
 
 desc "Upload the project homepage."
-task :web => [:rdoc, 'output'] do |t|
-  sh 'rsync', '-avz', '--delete', 'ref', 'output', PROJECT_SSH_URL
+task :web => [:rdoc, 'input', 'output'] do |t|
+  sh 'rsync', '-avz', '--delete', 'ref', 'input', 'output', PROJECT_SSH_URL
 end
 
 desc 'Connect to website FTP.'

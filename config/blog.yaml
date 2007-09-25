@@ -1,6 +1,6 @@
-##
-## This is the primary configuration file for your blog.
-##
+#
+# This is the primary configuration file for your blog.
+#
 
 
 ################################################################################
@@ -55,10 +55,9 @@ author: Suraj N. Kurapati
 #
 # Examples:
 #
-#   email: your+rassmalog@email.here
-#   email: your+comments@email.here
-#   email: your+blog@email.here
 #   email: your@email.here
+#   email: your+blog@email.here
+#   email: your+comments@email.here
 #
 email: snk@gna.org
 
@@ -156,25 +155,30 @@ language: en-us
 
 
 #
-# Name of a file in the output/ directory that is displayed when somebody
-# visits your blog.  This is called the "front page" of your blog.
+# Path to a file in the output/ directory that should be displayed when
+# somebody visits your blog. This is called the "front page" of your blog.
 #
 # To have an automatic listing of the most recent entries
 # on the front page, simply leave this parameter blank:
 #
 #   front_page:   # nothing here!
 #
-front_page: pages/welcome-to-rassmalog.html
+front_page: rassmalog/welcome.html
 
 
 #
 # Maximum number of recent entries to display on the front page.
 #
-recent_entries: 3
+# If you want all entries to be displayed on the front page (without
+# a maximum limit), then simply leave this parameter blank:
+#
+#   recent_entries:   # nothing here!
+#
+recent_entries: 5
 
 
 #
-# Specifies whether entries are summarized in tag
+# Controls whether entries are summarized in tag
 # pages, archive pages, and the recent entries page.
 #
 # The config/entry.erb template controls how an entry
@@ -186,6 +190,16 @@ recent_entries: 3
 #   summarize_entries: false
 #
 summarize_entries: true
+
+
+#
+# Controls whether a table of contents is
+# generated, by default, for all blog entries.
+#
+# A blog entry can override this parameter by specifying
+# its own "table_of_contents" parameter in its source file.
+#
+table_of_contents: true
 
 
 #
@@ -209,7 +223,7 @@ summarize_entries: true
 #
 # For more information, see the documentation of the Time.strftime method:
 #
-#   http://www.rubycentral.com/book/ref_c_time.html#Time.strftime
+#   http://www.rubycentral.com/pickaxe/ref_c_time.html#Time.strftime
 #
 archive_frequency: %B %Y
 
@@ -224,18 +238,24 @@ archive_frequency: %B %Y
 # Hierarchical menu of links.
 #
 # By default, this menu is shown in all generated HTML pages.
-# To disable this behavior, edit the config/html.erb template.
+# To change this behavior, edit the config/html.erb template.
+#
+# You can use eRuby directives in both the NAME and URL
+# portions (left- and right-hand sides of the equation).
+#
+# In addition, the NAME portion will be converted into HTML using
+# the standard mechanism defined in the config/format.rb file.
 #
 menu:
   - Rassmalog:
-    - What's new?: entries/index.html
-    - Tips & tricks: tags/tricks.html
+    - What's new?: <%= TAGS['history'].first.url %>
+    - Tips & tricks: <%= TAGS['tricks'].url %>
     - Announcements: rss.xml
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
 
   - Documentation:
-    - Example blog entry: entries/2006-12-08-put-the-name-of-your-entry-here..html
+    - Example entry: rassmalog/example.html
     - API reference: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
@@ -250,17 +270,24 @@ menu:
     - Forums: http://rubyforge.org/forum/?group_id=2737
 
   - Users:
-    - Suraj N. Kurapati: http://rassmalog.rubyforge.org/blog/
-    - Manfred Schreiweis: http://blog.mabitoka.de
-    - Rasmus Arnling Bååth: http://www.sumsar.net
-    - Josef 'Jupp' Schugt: http://www.mynetcologne.de/~nc-schugtjo/blog/
-    - Matthew Routley: http://matt.routleynet.org/blog/
-    - Asterisell project: http://asterisell.profitoss.com
-    - Profitoss project: http://profitoss.com
-    - ClothRed project: http://clothred.rubyforge.org
-    - David Karapetyan: http://www-scf.usc.edu/~dkarapet/blog/
-    - Fox Chao: http://blog.netinfox.com/
-    - Shane Sveller: http://shanesveller.com/
+    - Future:
+      - Add your blog here!: <%= BLOG.email.to_url('add Rassmalog user blog', 'Hi, my blog URL is ________') %>
+
+    - Present:
+      - Suraj N. Kurapati: http://rassmalog.rubyforge.org/blog/
+      - Josef 'Jupp' Schugt: http://www.mynetcologne.de/~nc-schugtjo/blog/
+      - Asterisell: http://asterisell.profitoss.com
+      - Profitoss: http://profitoss.com
+      - ClothRed: http://clothred.rubyforge.org
+      - David Karapetyan: http://www-scf.usc.edu/~dkarapet/blog/
+      - Fox Chao: http://blog.netinfox.com
+      - Shane Sveller: http://shanesveller.com
+      - Hemant Kumar: http://gnufied.org
+
+    - Past:
+      - Manfred Schreiweis: http://blog.mabitoka.de
+      - Rasmus Arnling Bååth: http://www.sumsar.net
+      - Matthew Routley: http://matt.routleynet.org/blog/
 
   - hey!:
     - this menu is:

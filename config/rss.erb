@@ -3,16 +3,12 @@
   This is a template for generating the RSS feed for the blog.
 
   The following variables are available for use in this template:
-  * BLOG         => data from the blog configuration file
-  * LANG         => interface to translation file
-  * PAGES        => an array of all available static web pages
-  * ENTRIES      => an array of all available blog entries
-  * TAGS         => a Chapter containing one Section per tag
-  * ARCHIVES     => a Chapter containing one Section per archive
-  * CHAPTERS     => an array of Chapter objects
-  * PAGE_INDEX   => a PageIndex object
-  * ENTRY_INDEX  => a EntryIndex object
-  * SEARCH_INDEX => a SearchIndex object
+  * BLOG           => data from the blog configuration file
+  * LANG           => data from the translation file
+  * ENTRIES        => array of all blog entries (Entry objects)
+  * RECENT_ENTRIES => array of recent blog entries (Entry objects)
+  * TAGS           => array of all tags (Section objects)
+  * ARCHIVES       => array of all archives (Section objects)
 =end
 %>
 <?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
@@ -25,42 +21,43 @@
   <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
   <generator><%= GENERATOR %></generator>
 <%
-  ENTRIES.recent.each do |entry|
-    url = File.join BLOG.url, u(entry.url)
-    text = entry.text.to_html
+  RECENT_ENTRIES.each do |entry|
+    url = File.join(BLOG.url, u(entry.url))
 
     # resolve relative URLs into absolute URLs
     # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-      text.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
-        a, b = "#{$1}#{$2}", "#{$3}#{$4}"
+    text = entry.html.gsub %r{(href=|src=)(.)(.*?)(\2)} do |match|
+      a, b = $1 + $2, $3.to_s << $4
 
-        case $3
-          # already absolute
-          when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://}
-            match
+      case $3
+      # already absolute
+      when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://}
+        match
 
-          # relative to this entry
-          when /^#/
-            a + url + b
+      # relative to this entry
+      when /^#/
+        a + url + b
 
-          # relative to this blog
-          else
-            a + BLOG.url + b
-        end
-      end
+      # relative to this blog
+      else
+        a + BLOG.url + b
+    end
+  end
 %>
   <item>
     <title><%=h entry.name.to_html %></title>
     <link><%= url %></link>
-    <description><%=h text %></description>
-    <pubDate><%= entry.date.rfc822 %></pubDate>
-  <% entry.tags.each do |tag| %>
-    <category><%=h tag %></category>
-  <% end %>
     <guid><%= url %></guid>
-  <% if BLOG.email %>
+    <pubDate><%= entry.date.rfc822 %></pubDate>
+    <description><%=h text %></description>
+
+    <% entry.tags.each do |tag| %>
+    <category><%=h tag.name %></category>
+    <% end %>
+
+    <% if BLOG.email %>
     <comments><%= entry.comment_url %></comments>
-  <% end %>
+    <% end %>
   </item>
 <% end %>
 </channel>

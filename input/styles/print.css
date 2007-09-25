@@ -1,0 +1,89 @@
+@import 'screen.css';
+
+/* page layout */
+
+  body {
+    border: none;
+    max-width: none;
+    width: auto;
+  }
+
+  #menu {
+    display: none;
+  }
+
+
+/* blog entry */
+
+  .entry .toc {
+    display: none;
+  }
+
+
+/* hyperlinks */
+
+  a:link, a:visited, a:active {
+    color: #0000FF;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  a:after {
+    content: " (" attr(href) ")";
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 90%;
+  }
+
+  a.perma-link {
+    display: none;
+  }
+
+  a.toc-link {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+  }
+
+  a.toc-link:after,
+  .entry .name a:after {
+    content: "";
+  }
+
+  .entry .name a {
+    color: #000000;
+    font-weight: lighter;
+    text-decoration: none;
+    font-style: italic;
+  }
+
+
+/* source code */
+
+  tt {
+    font-weight: normal;
+  }
+
+  pre, .code {
+    border: none;
+  }
+
+
+/* emphasis */
+
+  body {
+    font-family: serif;
+  }
+
+  h1, h2, h3, h4, h5, h6, th, .title {
+    font-family: sans-serif;
+    font-weight: normal;
+  }
+
+
+/* firefox quirks */
+
+  li {
+    padding-left: 0.5em;
+    margin-left: 2em;
+  }

@@ -1,6 +1,6 @@
 <%
 =begin
-  This is a template for generating HTML for individual tags and archives.
+  This is a template for generating the recent/all lists of blog entries.
 
   The following variables are available for use in this template:
   * BLOG           => data from the blog configuration file
@@ -9,15 +9,13 @@
   * RECENT_ENTRIES => array of recent blog entries (Entry objects)
   * TAGS           => array of all tags (Section objects)
   * ARCHIVES       => array of all archives (Section objects)
-  * @section       => the Section object for which we are generating HTML
+  * @list          => the EntryList object for which we are generating HTML
 =end
 %>
-<h1><%= @section.name %></h1>
-
-<p><%= @section.prev.to_link %> &larr; <%= @section.chapter.to_link %> &rarr; <%= @section.next.to_link %></p>
+<h1><%= @list.name %></h1>
 
 <br/>
 
-<% @section.each do |entry| %>
+<% @list.each do |entry| %>
   <%= entry.to_html %>
 <% end %>

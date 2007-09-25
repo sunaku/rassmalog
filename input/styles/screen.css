@@ -1,0 +1,291 @@
+/* page layout */
+
+  body {
+    color: #000000;
+    background-color: #FFFFFF;
+    line-height: 1.5em;
+
+    margin-left: 1em;
+    max-width: 33em;
+    _width: 33em; /* for IE */
+  }
+
+  #menu {
+    position: absolute;
+    top: 1em;
+    left: 36em;
+    _width: 100%; /* for IE */
+  }
+
+  /* navigation links to the various parts of the blog */
+  #menu-blog {
+    line-height: 2em;
+    _width: 50%; /* for IE */
+  }
+
+  /* hierarchical menu of links (see 'menu' parameter in config/blog.yaml) */
+  #menu-user {
+    margin-top: 2em;
+  }
+
+
+/* page structure */
+
+  #search {
+    margin-top: 0.5em;
+  }
+
+  #search-query {
+  }
+
+  #header {
+    border-bottom: 1px dashed #C0C0C0;
+    padding-bottom: 1em;
+  }
+
+  #header .name {
+  }
+
+  #header .info {
+    font-style: italic;
+  }
+
+  #content {
+  }
+
+  /* the '@title' variable in config/chapter.erb and config/section.erb */
+  #content > h1:first-child {
+    font-size: x-large;
+    font-style: italic;
+    color: gray;
+  }
+
+  #footer {
+    margin-top: 5em;
+    text-align: center;
+    clear: both;
+  }
+
+
+/* blog entry */
+
+  .entry {
+    margin-bottom: 7em;
+  }
+
+  .entry .name {
+  }
+
+  .entry .name a {
+  }
+
+  /* table of contents */
+  .entry .toc {
+    margin-bottom: 2em;
+    background-color: #F8F8FF;
+    padding: 1em;
+  }
+
+  .entry .toc ul {
+    margin-top: 0;
+  }
+
+  .entry .text {
+  }
+
+  .entry .text a {
+    text-decoration: underline;
+  }
+
+  .entry .text img {
+    margin: 1em;
+  }
+
+  /* the "Read more..." link */
+  .entry .more a {
+    float: right;
+    padding-top: 0.5em;
+  }
+
+  .entry .info {
+    border-top: 1px dotted #696969;
+    padding-top: 0.5em;
+
+    font-size: small;
+    padding-left: 0;
+    _margin-left: 0; /* for IE */
+  }
+
+  .entry .info li {
+    list-style-type: none;
+    margin-left: 0;
+  }
+
+
+/* tag cloud */
+
+  .cloud {
+  }
+
+  .cloud li {
+    display: inline;
+    padding-right: 10px;
+  }
+
+
+/* headings */
+
+  th, h1, h2, h3, h4, h5, h6 {
+    font-family: serif;
+    font-weight: lighter;
+  }
+
+  .entry .text h1,
+  .entry .text h2,
+  .entry .text h3,
+  .entry .text h4,
+  .entry .text h5,
+  .entry .text h6 {
+    margin-top: 2.5em;
+    border-bottom: 1px solid #D3D3D3;
+  }
+
+  .entry h1 {
+    font-size: 1.65em;
+  }
+
+
+/* hyperlinks */
+
+  a {
+    color: #0000FF;
+    text-decoration: none;
+  }
+
+  a:visited {
+    color: #4B0082;
+  }
+
+  a:hover {
+    color: #FF0000;
+  }
+
+  a:target {
+    color: #FF0000;
+  }
+
+  /* the LaTeX-style heading number that links back to the TOC */
+  a.toc-link:link,
+  a.toc-link:visited {
+    text-decoration: none;
+  }
+
+  /* the '#' link at the end of the LaTeX-style heading */
+  a.perma-link:link,
+  a.perma-link:visited {
+    color: #D3D3D3;
+    text-decoration: none;
+  }
+
+  a.perma-link:hover {
+    color: #FF0000;
+  }
+
+
+/* source code */
+
+  tt {
+    font-weight: bold;
+    color: #A52A2A;
+    background-color: #FFFAF0;
+  }
+
+  /* the syntax colorizer's output */
+  .code {
+    background-color: #FFFFF0;
+  }
+
+  pre {
+    line-height: normal;
+    border: 1px dashed #A9A9A9;
+    background-color: #F5FFDF;
+    padding: 1em;
+    overflow: hidden;
+    _overflow: auto; /* for IE */
+  }
+
+  pre:hover {
+    width: 1000%;
+    position: relative;
+    z-index: 1;
+  }
+
+
+/* tables */
+
+  th, td {
+    padding: 1em;
+    border: 1px solid #C0C0C0;
+  }
+
+  th {
+    background-color: #F5F5F5;
+  }
+
+  table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+/* emphasis */
+
+  body {
+    font-family: sans-serif;
+  }
+
+  em, blockquote {
+    font-family: serif;
+  }
+
+  blockquote {
+    border-left: thick dotted #C0C0C0;
+    padding-left: 1em;
+    margin-left: 0;
+  }
+
+  hr {
+    color: #FF0000; /* for IE */
+    background-color: #FF0000; /* for Firefox */
+  }
+
+  big {
+    font-size: larger;
+  }
+
+  table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+/* fix annoyances */
+
+  a img {
+    border: none;
+  }
+
+  #menu-user li,
+  .entry .toc li {
+    margin-left: -25px;
+  }
+
+  /* improves readability of nested lists */
+  .entry .toc li > ul,
+  .entry .toc ul:first-child > li {
+    margin-bottom: 0.5em;
+  }
+
+  #menu-user ul:first-child {
+    padding-bottom: 1em;
+  }

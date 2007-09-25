@@ -50,7 +50,7 @@ text: |
         # workaround for nested block scope
         a, b = t.prerequisites[0], t.name
 
-        Magick::ImageList.new(a).resize(*size).write b
+        Magick::ImageList.new(a).resize(*size).write(b)
         notify :resize, b
       end
 

@@ -4,7 +4,7 @@
 # It features the Textile formatting system (RedCloth), syntax coloring
 # (CodeRay), and smart source code sizing (block versus inline display).
 #--
-# Copyright 2006-2007 Suraj N. Kurapati
+# Copyright 2006 Suraj N. Kurapati
 # See the file named LICENSE for details.
 
 require 'cgi'
@@ -23,32 +23,66 @@ class String
   # when they are processed by Textile.  By doing this, we
   # avoid unwanted Textile transformations, such as quotation
   # marks becoming curly (&#8192;), in source code.
-  PRESERVED_TAGS = %w[tt code pre]
+  PROTECTED_TAGS = %w[tt code pre]
+
+  # The content of these HTML tags will be preserved verbatim
+  # all throughout the text-to-HTML conversion process.
+  VERBATIM_TAGS = %w[format:verbatim]
 
   # Transforms this string into HTML.
   def to_html
     text = dup
 
-    # escape preserved tags
-      preserved = {} # escaped => original
+    # escape protected and verbatim tags
+      def protect_tags aText, aTags, aStore, aVerbatim #:nodoc:
+        aTags.each do |tag|
+          aText.gsub! %r{(<#{tag}.*?>)(.*?)(</#{tag}>)}m do
+            head, body, tail = $1, $2, $3
 
-      PRESERVED_TAGS.each do |tag|
-        text.gsub! %r{(<#{tag}.*?>)(.*?)(</#{tag}>)}m do
-          orig = $1 + CGI.escapeHTML(CGI.unescapeHTML($2)) + $3
-          esc  = Digest::MD5.hexdigest(orig)
+            # XXX: when we restore protected tags later on, String.gsub! is
+            #      removing all single backslashes for some reason... so we
+            #      protect against this by doubling all single backslashes first
+            body.gsub! /\\/, '\&\&'
 
-          preserved[esc] = orig
-          esc
+
+            original =
+              if aVerbatim
+                body
+              else
+                head << CGI.escapeHTML(CGI.unescapeHTML(body)) << tail
+              end
+
+            escape = Digest::MD5.hexdigest(original)
+
+
+            aStore[escape] = original
+            escape
+          end
         end
       end
 
-    # convert Textile into HTML
-      html = text.redcloth
-
-    # restore preserved tags
-      preserved.each_pair do |esc, orig|
-        html.gsub! %r{<p>#{esc}</p>|#{esc}}, orig
+      def restore_tags aText, aStore #:nodoc:
+        until aStore.empty?
+          aStore.each_pair do |escape, original|
+            if aText.gsub! %r{<p>#{escape}</p>|#{escape}}, original
+              aStore.delete escape
+            end
+          end
+        end
       end
+
+      verbatimStore = {}
+      protectedStore = {}
+
+      protect_tags text, VERBATIM_TAGS, verbatimStore, true
+      protect_tags text, PROTECTED_TAGS, protectedStore, false
+
+    # convert Textile into HTML
+    html = text.redcloth
+
+    # restore protected tags
+    restore_tags html, protectedStore
+
 
     # fix annoyances in Textile conversion
       # redcloth wraps indented text within <pre> tags
@@ -71,7 +105,13 @@ class String
       # redcloth adds <span> tags around acronyms
       html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
 
-    html.coderay
+    # syntax coloring for source code
+    html = html.coderay
+
+    # restore verbatim tags
+    restore_tags html, verbatimStore
+
+    html
   end
 
   # Returns the result of running this string through RedCloth.
@@ -85,7 +125,7 @@ class String
   # applied.  Otherwise, the programming language is assumed to be ruby.
   def coderay
     gsub %r{<(code)(.*?)>(.*?)</\1>}m do
-      code = CGI.unescapeHTML $3
+      code = CGI.unescapeHTML($3)
       atts = $2
 
       lang =

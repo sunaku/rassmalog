@@ -3,60 +3,83 @@
   This is a template for generating HTML for a blog entry.
 
   The following variables are available for use in this template:
-  * BLOG        => data from the blog configuration file
-  * LANG        => interface to translation file
-  * PAGES       => an array of all available static web pages
-  * ENTRIES     => an array of all available blog entries
-  * TAGS        => a Chapter containing one Section per tag
-  * ARCHIVES    => a Chapter containing one Section per archive
-  * CHAPTERS    => an array of Chapter objects
-  * @entry      => the Entry for which we are generating HTML
-  * @summarize  => indicates whether the entry should be summarized
+  * BLOG           => data from the blog configuration file
+  * LANG           => data from the translation file
+  * ENTRIES        => array of all blog entries (Entry objects)
+  * RECENT_ENTRIES => array of recent blog entries (Entry objects)
+  * TAGS           => array of all tags (Section objects)
+  * ARCHIVES       => array of all archives (Section objects)
+  * @entry         => the Entry object for which we are generating HTML
+  * @summarize     => indicates whether the entry should be summarized
 =end
 
-  text = @entry.text.to_html
+  text = @entry.html
 
   if @summarize
-    paragraphs = text.split %r{\r?\n\s*\r?\n}
-
-    # omit headings from summary to keep it simple and non-hierarchical
-    paragraphs.reject! {|p| p =~ /^\s*<h\d/}
-
-    if paragraphs.length > 1
-      text = paragraphs.first
+    # use user-specified summary if possible
+    if @entry.key? 'summary'
+      text = @entry['summary'].to_s.thru_erb.to_html
       reallySummarized = true
 
-      # anchored links should take you inside the full entry
+    # perform automatic summarization
+    else
+      paragraphs = text.split %r{\s*\r?\n\s*\r?\n\s*}
+
+      # omit headings from summary to keep it simple and non-hierarchical
+      paragraphs.reject! {|p| p =~ /^<h\d/}
+
+      if paragraphs.length > 1
+        text = paragraphs.first
+        reallySummarized = true
+      end
+    end
+
+    if reallySummarized
+      # anchored links should take you inside the full (non-summarized) entry
       text.gsub! %r{(href=.)(#)} do
         $1 + @entry.url + $2
       end
     end
+
   else
-    toc, text = text.table_of_contents
+    # check whether we want to generate the table of contents
+    generateTOC =
+      if @entry.key? 'table_of_contents'
+        @entry['table_of_contents']
+      else
+        BLOG.table_of_contents
+      end
+
+    if generateTOC
+      toc, text = text.table_of_contents
+    end
   end
 %>
 <div class="entry">
   <h1 class="name"><%= @entry.to_link %></h1>
 
-<% if toc %>
+  <% if toc %>
   <div class="toc">Contents <%= toc %></div>
-<% end %>
+  <% end %>
 
   <div class="text"><%= text %></div>
 
-<% if reallySummarized %>
+  <% if reallySummarized %>
   <p class="more"><%= @entry.to_link(LANG["Read more..."]) %></p>
-<% end %>
+  <% end %>
+
   <ul class="info">
     <li>Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.</li>
-  <% unless @entry.tags.empty? %>
+
+    <% unless @entry.tags.empty? %>
     <li>Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.</li>
-  <% end %>
-  <% if BLOG.email %>
+    <% end %>
+
+    <% if BLOG.email %>
     <li>You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.</li>
-  <% end %>
+    <% end %>
   </ul>
 </div>
 
-<!-- improves usability in text-mode browsers -->
+<%# improves usability in text-mode browsers %>
 <hr style="display: none"/>
