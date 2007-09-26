@@ -654,11 +654,7 @@ include ERB::Util
           entryProp[:archive] = nil
         else
           entryProp[:tags] =
-            if data.key? 'tags'
-              [data['tags']].flatten.compact.uniq.sort
-            else
-              []
-            end.map do |name|
+            [data['tags']].flatten.compact.uniq.sort.map do |name|
               hookup(entry, tagStore, name, TAGS)
             end
 
