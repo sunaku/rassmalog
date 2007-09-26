@@ -57,7 +57,7 @@ text: |
   h3. Spam control
 
   |_. Dynamic blog engine|_. Rassmalog|
-  |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* which can be disabled if you want. <br/><br/> Special care is taken to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.|
+  |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* which can be disabled if you want. Note that "dynamic JavaScript-based comments":rassmalog/tricks/dynamic-comments.html are also available. <br/><br/> Special care is taken to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.|
 
 
   h2. Version numbering system
