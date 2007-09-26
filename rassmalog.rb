@@ -793,7 +793,7 @@ include ERB::Util
     parts = Dir.glob('output/*', File::FNM_DOTMATCH)[2..-1].
             map {|f| f.shell_escape}.join(' ')
 
-    sh BLOG.uploader.to_s.thru_erb
+    sh BLOG.uploader.to_s.thru_erb(binding)
   end
 
 
