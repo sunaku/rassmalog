@@ -36,7 +36,7 @@
 
 <%
   byName = @chapter.sort_by { |section| section.name }
-  bySize = @chapter.sort_by { |section| section.length }
+  bySize = @chapter.sort_by { |section| section.length }.reverse
 %>
 <table>
   <tr>
@@ -47,7 +47,7 @@
     <th>&darr;Name</th>
     <th>Size</th>
     <th>Name</th>
-    <th>&darr;Size</th>
+    <th>&uarr;Size</th>
   </tr>
   <% @chapter.each_index do |i| %>
   <tr>
