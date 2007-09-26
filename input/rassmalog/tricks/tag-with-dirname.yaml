@@ -1,0 +1,25 @@
+name: Automatic tagging of directory names
+
+date: Sun Mar 25 00:11:48 PDT 2007 @341 /Internet Time/
+
+tags: tricks
+
+text: |
+  You can configure Rassmalog to automatically tag entries, while _preserving_ existing tags, with the names of the directories that contain it. For example, the <tt>entries/foo/bar/qux.yaml</tt> entry file would gain the "foo" and "bar" tags automatically.
+
+  If you wish to have such functionality, simply apply the following patch to your <tt>rassmalog.rb</tt> file.
+
+  <pre>
+  diff -rN -u -w old-rassmalog/rassmalog.rb new-rassmalog/rassmalog.rb
+  --- old-rassmalog/rassmalog.rb  2007-09-25 21:45:31.000000000 -0700
+  +++ new-rassmalog/rassmalog.rb  2007-09-25 21:45:31.000000000 -0700
+  @@ -654,7 +654,7 @@
+             entryProp[:archive] = nil
+           else
+             entryProp[:tags] =
+  -            [data['tags']].flatten.compact.uniq.sort.map do |name|
+  +            [data['tags'], File.dirname(srcUrl).split('/')].flatten.compact.uniq.sort.map do
+  |name|
+                 hookup(entry, tagStore, name, TAGS)
+               end
+  </pre>
