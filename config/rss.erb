@@ -22,7 +22,7 @@
   <generator><%= GENERATOR %></generator>
 <%
   RECENT_ENTRIES.each do |entry|
-    url = File.join(BLOG.url, u(entry.url))
+    url = entry.absolute_url
 
     # resolve relative URLs into absolute URLs
     # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax

@@ -69,7 +69,16 @@
   <% end %>
 
   <ul class="info">
-    <li>Written on <%= @entry.archive.to_link(@entry.date.strftime("%c")) %>.</li>
+    <li>Written on <%=
+      date = @entry.date.strftime("%c")
+
+      # there won't be any tags or archives if 'hide' parameter is enabled
+      if @entry.archive
+        @entry.archive.to_link(date)
+      else
+        date
+      end
+    %>.</li>
 
     <% unless @entry.tags.empty? %>
     <li>Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.</li>

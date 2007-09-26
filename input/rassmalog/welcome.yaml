@@ -1,6 +1,6 @@
 name: Welcome to Rassmalog
 
-tags: documentation
+tags: reference
 
 text: |
   <% langFiles = Dir['config/lang/*.yaml'].sort %>
@@ -122,6 +122,8 @@ text: |
   * <tt>rassmalog.rb</tt>
     - the core of Rassmalog.
 
+  h3(#manifest.config). config/
+
   * <tt>config/</tt>
     - directory that contains all configuration files.
 
@@ -157,15 +159,19 @@ text: |
   ** <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/\(.*\)/)[0] %>
   <% end %>
 
+  h3(#manifest.output). output/
+
   * <tt>output/</tt>
     - directory that contains your generated blog.
+
+  h3(#manifest.input). input/
 
   * <tt>input/</tt>
     - directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.
 
     A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, a source file's corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.
 
-    For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding an "output_file" parameter to your blog entry (see the "example blog entry's source file":../input/rassmalog/entry.yaml for details).
+    For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding the "*output_file* parameter":#param.output_file to your blog entry.
 
   * <tt>input/styles/screen.css</tt>
     - the default CSS stylesheet provided with Rassmalog.
@@ -173,8 +179,21 @@ text: |
   * <tt>input/styles/print.css</tt>
     - the default CSS stylesheet provided with Rassmalog.
 
-  * <tt>input/rassmalog/example.yaml</tt>
-    - an example blog entry file. Read this file to learn the blog entry format.
+  * <tt>input/rassmalog/entry.yaml</tt>
+    - reference of the blog entry file format.
+
+  h3(#manifest.entries). entries/
+
+  * <tt>entries/</tt>
+    - directory that contains blog entry source files whose output files are *automatically calculated* by Rassmalog.
+
+    A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, all source files in this directory will have a corresponding output file with a name in the form: "_date_-_name_.html".
+
+    For example, the <tt>entries/foo/bar/moz.yaml</tt> source file, which was written on 19 July 2006 and has a name of "hello world", will have a corresponding output file at <tt>output/2006-07-19-hello-world.html</tt>. You can override this default behavior by adding the "*output_file* parameter":#param.output_file to your blog entry.
+
+    As you can see, _unlike_ the blog entries in the <tt>input/</tt> directory, blog entries in the <tt>entries/</tt> directory do not have to worry about their original file name influencing the output file name. As a result, you can organize your blog entry files however you want.
+
+    For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.
 
   <%##########################################################################%>
 
@@ -194,7 +213,7 @@ text: |
   Here, English phrases are written on the left and their corresponding Spanish phrases are written on the right.
 
 
-  h3(#config.lang). Enabling translation files
+  h3(#config.lang). Enabling a translation file
 
   The <tt>config/lang/</tt> directory contains translation files ("there are <%= langFiles.length %> of them":#manifest.lang, at present) for English text used in the core of Rassmalog. To enable one of these files, set the value of the *language* parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.
 
@@ -303,12 +322,8 @@ text: |
 
   h2. Parameters
 
-  The following information was extracted from the "example blog entry's source file":../input/rassmalog/example.yaml so please refer to that file for further details.
-
-  ---
-
   <%=
-    File.read('input/rassmalog/example.yaml').
+    File.read('input/rassmalog/entry.yaml').
     scan(/(?:\n#.*)+(?:\n\w+:)?/).map do |s|
       info, param = s.split /\n(?!#)/
       info.gsub! /^# ?/, ''

@@ -249,13 +249,13 @@ archive_frequency: %B %Y
 menu:
   - Rassmalog:
     - What's new?: <%= TAGS['history'].first.url %>
-    - Tips & tricks: <%= TAGS['tricks'].url %>
-    - Announcements: rss.xml
     - Project home: http://rassmalog.rubyforge.org
     - Project portal: http://rubyforge.org/projects/rassmalog/
 
   - Documentation:
-    - Example entry: rassmalog/example.html
+    - Examples: <%= TAGS['examples'].url %>
+    - Tips & tricks: <%= TAGS['tricks'].url %>
+    - Blog entry file format: rassmalog/blog-entry-file-format.html
     - API reference: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/

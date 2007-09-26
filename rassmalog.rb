@@ -371,7 +371,12 @@ include ERB::Util
       merge! aData
     end
 
-    # This is used to sort a list of entries chronologically.
+    # Returns the absolute URL to this entry.
+    def absolute_url
+      File.join(BLOG.url, url)
+    end
+
+    # Sort chronologically.
     def <=> aOther
       aOther.date <=> @date
     end
@@ -410,6 +415,11 @@ include ERB::Util
     # Returns the previous section in the chapter.
     def prev
       sibling(-1)
+    end
+
+    # Sort alphabetically.
+    def <=> aOther
+      @name <=> aOther.name
     end
 
     private
@@ -590,67 +600,75 @@ include ERB::Util
     ENTRY_FILES = []
     ENTRY_FILES_EXCLUDED = [] # excluded from processing, so just copy them over
 
-    Dir['input/**/*.yaml'].each do |src|
+    FileList['{input,entries}/**/*.yaml'].each do |src|
       data = YAML.load_file(src)
 
       if data.is_a? Hash and
          data.key? 'name' and
          data.key? 'text'
       then
-        srcUrl = src.sub('input/', '')
-
-        dstUrl =
-          if data.key? 'output_file'
-            data['output_file'].to_s.thru_erb
-          else
-            srcUrl.sub(/yaml$/, 'html')
-          end
-
-        dst = File.join('output', dstUrl)
+        src =~ %r{^.*?/}
+        srcDir, srcUrl = $&, $'
 
 
         entry = Entry.new(data)
 
         # populate the entry's methods (see Entry class definition)
-        props = {
-          :input_url => srcUrl,
-          :output_url => dstUrl,
-          :input_file => src,
-          :output_file => dst,
-
+        entryProp = {
           :name => data['name'].to_s.thru_erb,
 
-          :date => DateTime.parse(
-            if data.key? 'date'
-              data['date'].to_s.thru_erb
-            else
-              File.mtime(src)
-            end.to_s
+          :date => entryDate = (
+            DateTime.parse(
+              if data.key? 'date'
+                data['date'].to_s.thru_erb
+              else
+                File.mtime(src)
+              end.to_s
+            )
           ),
 
           :text => data['text'].to_s,
+
+          :input_url => srcUrl,
+          :input_file => src,
+
+          :output_url => dstUrl = (
+            if data.key? 'output_file'
+              data['output_file'].to_s.thru_erb
+
+            # for entries in entries/, calculate output file name
+            elsif srcDir == 'entries/'
+              "#{ entryDate.strftime "%F" }-#{data['name']}.html".to_file_name
+
+            # for entries in input/, use the original file name
+            else
+              srcUrl.sub(/yaml$/, 'html')
+            end
+          ),
+
+          :output_file => File.join('output', dstUrl),
         }
 
         if data['hide']
-          props[:tags] = []
-          props[:archive] = entry
+          entryProp[:tags] = []
+          entryProp[:archive] = nil
         else
-          props[:tags] =
+          entryProp[:tags] =
             if data.key? 'tags'
-              data['tags'].to_a.flatten.compact.uniq rescue [data['tags']]
+              [data['tags']].flatten.compact.uniq.sort
             else
               []
             end.map do |name|
               hookup(entry, tagStore, name, TAGS)
             end
 
-          name = props[:date].strftime(BLOG.archive_frequency)
-          props[:archive] = hookup(entry, archiveStore, name, ARCHIVES)
+          name = entryProp[:date].strftime(BLOG.archive_frequency)
+          entryProp[:archive] = hookup(entry, archiveStore, name, ARCHIVES)
 
           ENTRIES << entry
         end
 
-        props.each_pair do |prop, value|
+        entryProp.each_pair do |prop, value|
           entry.instance_variable_set("@#{prop}", value)
         end
 
@@ -785,7 +803,7 @@ include ERB::Util
 
 # utility tasks
 
-  IMPORT_DIR = 'input/import'
+  IMPORT_DIR = 'import'
   directory IMPORT_DIR
 
   desc "Import blog entries from RSS feed on STDIN."
@@ -809,26 +827,5 @@ include ERB::Util
 
       notify :import, dst
       write_file dst, entry
-    end
-  end
-
-
-  MIGRATE_DIR = 'input/migrate'
-  directory MIGRATE_DIR
-
-  desc "Migrate blog entries from version 5.1.0 to #{GENERATOR[:version]}"
-  task :migrate => MIGRATE_DIR do
-    if File.directory? 'entries'
-      FileList['entries/**/*.yaml'].each do |src|
-        data = YAML.load_file(src)
-        name = data['name'].to_s
-        date = DateTime.parse(data['date'].to_s) rescue Time.now
-
-        dstFile = "#{ date.strftime "%F" }-#{ name }.yaml".to_file_name
-        dst = File.join(MIGRATE_DIR, dstFile)
-
-        notify :entry, dst
-        cp src, dst, :preserve => true
-      end
     end
   end
