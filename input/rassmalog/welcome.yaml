@@ -9,34 +9,24 @@ text: |
 
   Rassmalog is a static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that you can view on your computer or upload to your website.
 
-  Rassmalog is "open source software":#License inspired by the "Rog":http://rog.rubyforge.org, "hobix":http://hobix.com, and "nanoc":http://nanoc.stoneship.org blog engines. Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
+  Rassmalog is "open source software":#License inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines and by the "nanoc":http://nanoc.stoneship.org CMS(Content Management System). Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
 
 
   h2. Features
 
-  _Extraordinary_ features:
-
-  * contains *less than 600 lines of code*
-
-  * "supports":#config.format *any text formatting system* imaginable!
-
-  * *automatic "table of contents":#entry.toc* for blog entries
-
-  * *automatic "syntax coloring":#entry.code* for source code
-
-  * *user-friendly web pages* for "text-only web browsers":http://en.wikipedia.org/wiki/W3m
-
-  * *"foreign language support":#lang* for *"<%= langFiles.length %> languages":#manifest.lang*
+  Noteworthy features:
+  * composed of _less than_ 600 lines of code!
+  * supports "any text formatting system":#config.format imaginable!
+  * automatic "table of contents":#entry.toc for blog entries
+  * automatic "syntax coloring":#entry.code for source code
+  * user-friendly output for "text-only web browsers":http://en.wikipedia.org/wiki/W3m
+  * "foreign language support":#lang for "<%= langFiles.length %> languages":#manifest.lang
 
   Standard features:
-
-  * categorization by *tagging* or labels ("folksonomy":http://en.wikipedia.org/wiki/Folksonomy)
-
-  * *automatic archives* by date, month, year, etc.
-
-  * *automatic "RSS feed":http://en.wikipedia.org/wiki/RSS* for your entire blog
-
-  * *automated "blog import":#usage.import* from any RSS feed
+  * categorization by tagging or labels ("folksonomy":http://en.wikipedia.org/wiki/Folksonomy)
+  * automatic archives by date, month, year, etc.
+  * automatic "RSS feed":http://en.wikipedia.org/wiki/RSS for your entire blog
+  * automated "blog import":#usage.import from any RSS feed
 
 
   h2. Motivation
@@ -72,13 +62,13 @@ text: |
 
   h2. Version numbering system
 
-  Rassmalog uses the "RubyGems rational versioning policy":http://www.rubygems.org/read/chapter/7 to number its releases. This "major.minor.build" numbering policy "is summarized":http://ablog.apress.com/?p=738 as follows.
+  Rassmalog uses the "RubyGems rational versioning policy":http://www.rubygems.org/read/chapter/7 to number its releases. This *major.minor.patch* numbering policy "is summarized":http://ablog.apress.com/?p=738 as follows.
 
-  * When the *major* number increases, functionally _incompatible changes_ have occurred. Thus, what may have worked in the previous version may not work in the new one.
+  * When the *major* number increases, functionally *incompatible changes* have occurred. Thus, what may have worked in the previous version may not work in the new one.
 
-  * When the *minor* number increases, functionally _compatible changes_ have occurred. Thus, what worked in the previous version will work in the new one.
+  * When the *minor* number increases, functionally *compatible changes* have occurred. Thus, what worked in the previous version will work in the new one.
 
-  * When the *build* number increases, the _underlying implementation_ has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
+  * When the *patch* number increases, the *underlying implementation* has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
 
 
   h2. License
@@ -102,7 +92,7 @@ text: |
 
   If you have "RubyGems":http://rubygems.org/ on your system, then you can install the above requirements by running the following command:
 
-    gem install rake redcloth coderay
+    gem install rake redcloth coderay --include-dependencies
 
 
   h3. Bypassing some requirements
@@ -175,7 +165,7 @@ text: |
 
     A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, a source file's corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.
 
-    For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding an "output_file" parameter to your blog entry (see the "example blog entry's source file":../input/rassmalog/example.yaml for details).
+    For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding an "output_file" parameter to your blog entry (see the "example blog entry's source file":../input/rassmalog/entry.yaml for details).
 
   * <tt>input/styles/screen.css</tt>
     - the default CSS stylesheet provided with Rassmalog.

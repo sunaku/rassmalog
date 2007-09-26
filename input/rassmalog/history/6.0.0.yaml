@@ -1,0 +1,58 @@
+name: Version 6.0.0
+
+date: Mon Sep 24 2007 23:24:01
+
+tags: history
+
+text: |
+  This release gives you more control over where blog entries go in the <tt>output/</tt> directory and adds support for truly static web pages so you can build a complete website around your blog.
+
+  It also adds a simple JavaScript search engine, fixes a show-stopper bug on Microsoft Windows, refreshes the default CSS theme, and includes "a migration script to ease upgrading":#upgrade and numerous other improvements.
+
+
+  h1. Caution
+
+  * The <tt>entries/</tt> directory is now ignored. Your blog entries should now be kept in the <tt>input/</tt> directory instead.
+
+  * The default output file path for blog entries is now a mirror of its relative path in the the <tt>input/</tt> directory. For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt> by default.
+
+  * The underlying data structures used in Rassmalog have been dramatically simplified. As a result, the available predefined variables in templates have changed. Refer to the API documentation and the template source files for details.
+
+  * The <tt>config/index.erb</tt> template has been renamed to <tt>config/list.erb</tt>.
+
+  * The <tt>config/page.erb</tt> template has been renamed to <tt>config/section.erb</tt>. Likewise, the @Page@ class has been renamed to @Section@.
+
+  * The <tt>config/index.erb</tt> template has been renamed to <tt>config/list.erb</tt>.
+
+  * The <tt>config/search.erb</tt> template has been converted into a blog entry, as <tt>input/search.yaml</tt>.
+
+
+  h2(#upgrade). How to upgrade
+
+  # Download and extract the new 6.0.0 release package
+  # Go inside the newly extracted directory
+  # Copy the <tt>entries/</tt> directory from your old blog into the current directory
+  # Run the following command: <pre>rake migrate</pre>
+  # Your old blog entries have now been migrated into the <tt>input/migrate/</tt> directory
+
+
+  h1. Repairs
+
+  * Fixed a show-stopper bug in Microsoft Windows: the *rake* command must be written with a <ins>.bat</ins> suffix, as *rake<ins>.bat</ins>*!
+
+
+  h1. Additions
+
+  * Ability enable/disable generation of the table of contents either globally or per blog entry.
+
+  * Ability to "hide" a blog entry from the lists of entries, tags, and archives.
+
+  * Ability to use eRuby directives in more blog entry parameters. See the documentation for details.
+
+  * Support for *&lt;format:verbatim&gt;* tags in <tt>config/format.rb</tt>. These tags protect text from being interpreted by the text-to-HTML conversion process.
+
+  * Added a simple JavaScript search engine that was tested on IE6, Firefox 2, and Opera 9. Note that there is *no loss of functionality* for users of text-only web browsers.
+
+  * Permalinks are now added to each heading when the table of contents generation is enabled.
+
+  * Added a printer-friendly CSS style at <tt>input/styles/print.css</tt>.
