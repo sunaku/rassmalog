@@ -1,14 +1,15 @@
 #
-# Blog entries are _plain text_ files marked up in YAML
-# syntax. They are composed of key-value pairs, known as
-# _parameters_, whose values are defined by the user.
+# This is a blog entry which demonstrates the file
+# format for all blog entries.  Blog entries are
+# _plain text_ files marked up in YAML syntax.
+# They are composed of key-value pairs, known as
+# _parameters_, whose values are defined by you.
 #
-# The default set of parameters are shown below. Of these, only the 'name' and
+# The default set of parameters are shown below.  Of these, only the 'name' and
 # 'text' parameters are required; the other parameters are completely optional.
 #
-# For your convenience, the description
-# of each parameter below is marked with
-# one or more of the following emblems:
+# For your convenience, the description of each parameter
+# below is marked with one or more of the following emblems:
 #
 # * (Required) This parameter is required.  If it is not present,
 #              then Rassmalog will ignore this blog entry file.
@@ -17,16 +18,19 @@
 #
 # * (eRuby) You can use eRuby directives in the value of this parameter.
 #
+# * (HTML) The value of this parameter will be transformed into HTML using the
+#          standard mechanism defined in the <tt>config/format.rb</tt> file.
+#
 # * (Example) This parameter is bogus; it exists
 #             purely for illustrative purposes.
 #
-# In addition to the default set of parameters, you can define and use your
-# own custom parameters in this blog entry. An example of this is shown below.
+# In addition to the default set of parameters, you can define and use your own
+# custom parameters in this blog entry.  An example of this is shown below.
 #
 
 
 #
-# (Required) (eRuby)
+# (Required) (eRuby) (HTML)
 #
 # The title of this blog entry.
 #
@@ -99,11 +103,11 @@ table_of_contents: true
 
 
 #
-# (Optional) (eRuby)
+# (Optional) (eRuby) (HTML)
 #
-# Overrides the automatic summarization mechanism found in
-# the <tt>config/entry.erb</tt> template by allowing you
-# to specify a predefined summary for this blog entry.
+# Overrides the automatic summarization mechanism, which is
+# defined in the <tt>config/entry.erb</tt> template, by allowing
+# you to specify a predefined summary for this blog entry.
 #
 summary: |
   This is a summary for this blog entry.
@@ -120,7 +124,7 @@ your_own_parameter2: ruby rocks!
 
 
 #
-# (Required) (eRuby)
+# (Required) (eRuby) (HTML)
 #
 # The content of this blog entry.
 #

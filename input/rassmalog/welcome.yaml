@@ -3,7 +3,36 @@ name: Welcome to Rassmalog
 tags: reference
 
 text: |
-  <% langFiles = Dir['config/lang/*.yaml'].sort %>
+  <%
+    langFiles = Dir['config/lang/*.yaml'].sort
+
+    def dump_param_info aInputFile, aHeadingDepth
+      File.read(aInputFile).scan(/(?:\n#.*)+(?:\n\w+:)?/).map do |s|
+        info, param = s.split /\n(?!#)/
+        info.gsub! /^# ?/, ''
+        info.strip!
+
+        out = "\n\n\n"
+
+        if param
+          param.sub! /:$/, ''
+          emblems, info = info.split(/$/, 2)
+
+          unless emblems =~ /\(.*?\)/
+            info.insert(0, emblems)
+            emblems = ''
+          end
+
+          out << "h#{aHeadingDepth}(#param.#{param}). #{param} #{emblems}\n\n\n"
+        elsif info =~ /^#+$/
+          next
+        end
+
+        out << info
+      end.join
+    end
+  %>
+
 
   h1. Introduction
 
@@ -204,6 +233,13 @@ text: |
   You are encouraged to "generate your blog":#usage.gen at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
 
 
+  h2. Parameters
+
+  The <tt>config/blog.yaml</tt> file says:
+
+  <%= dump_param_info('config/blog.yaml', 3) %>
+
+
   h2(#lang). Localization for foreign languages
 
   The core of Rassmalog is easily localized (L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization)) through "translation files":#config.lang, which consist of simple key-value pairs. For instance, the translation file for Spanish appears like this:
@@ -322,24 +358,9 @@ text: |
 
   h2. Parameters
 
-  <%=
-    File.read('input/rassmalog/entry.yaml').
-    scan(/(?:\n#.*)+(?:\n\w+:)?/).map do |s|
-      info, param = s.split /\n(?!#)/
-      info.gsub! /^# ?/, ''
-      info.strip!
+  The <tt>input/rassmalog/entry.yaml</tt> file says:
 
-      out = "\n\n\n"
-
-      if param
-        param.sub! /:$/, ''
-        emblems, info = info.split(/$/, 2)
-        out << "h3(#param.#{param}). #{param} #{emblems}\n"
-      end
-
-      out << info
-    end.join
-  %>
+  <%= dump_param_info('input/rassmalog/entry.yaml', 3) %>
 
 
   h2. eRuby directives

@@ -13,6 +13,10 @@
   * @title         => title for the HTML page we are generating
   * @content       => body for the HTML page we are generating
 =end
+
+  name_html   = BLOG.name.to_html
+  info_html   = BLOG.info.to_html
+  author_html = BLOG.author.to_html
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -20,9 +24,9 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=<%= BLOG.encoding %>" />
     <meta http-equiv="content-language" content="<%= BLOG.language %>" />
-    <meta name="description" content="<%=h BLOG.info %>" />
-    <meta name="date" content="<%= DateTime.now %>" />
-    <meta name="author" content="<%=h BLOG.author %>" />
+    <meta name="description" content="<%=h info_html %>" />
+    <meta name="date" content="<%= DateTime.now.rfc822 %>" />
+    <meta name="author" content="<%=h author_html %>" />
     <meta name="generator" content="<%= GENERATOR %>" />
 
     <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS feed for this blog." />
@@ -30,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="styles/print.css" media="print" />
     <link rel="alternate stylesheet" type="text/css" href="styles/print.css" title="Print Preview" />
 
-    <title><%= @title %> &mdash; <%= BLOG.name.to_html %></title>
+    <title><%= @title %> &mdash; <%= name_html %></title>
   </head>
   <body>
     <%# improves usability in text-mode browsers %>
@@ -42,8 +46,8 @@
     </div>
 
     <div id="header">
-      <h1 class="name"><%= BLOG.name.to_html %></h1>
-      <div class="info"><%= BLOG.info.to_html %></div>
+      <h1 class="name"><%= name_html %></h1>
+      <div class="info"><%= info_html %></div>
     </div>
 
     <br style="display: none"/>
@@ -94,9 +98,9 @@
     <div id="footer">
       Authored by <%=
         if BLOG.email
-          link BLOG.email.to_url, BLOG.author
+          link BLOG.email.to_url, author_html
         else
-          BLOG.author
+          author_html
         end
       %>.
       <br/>

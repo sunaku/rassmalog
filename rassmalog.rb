@@ -481,7 +481,16 @@ include ERB::Util
 # configuration stage
 
   # load blog configuration
-    BLOG = OpenStruct.new(YAML.load_file('config/blog.yaml'))
+    data = YAML.load_file('config/blog.yaml')
+
+    %w[name info author email url encoding language front_page].
+    each do |param|
+      if data.key? param
+        data[param] = data[param].to_s.thru_erb
+      end
+    end
+
+    BLOG = OpenStruct.new(data)
 
     class << BLOG.menu
       # Converts this hierarchical menu into HTML.

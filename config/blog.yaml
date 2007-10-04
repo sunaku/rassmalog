@@ -1,6 +1,19 @@
 #
 # This is the primary configuration file for your blog.
 #
+# It is a _plain text_ file that is marked up in YAML syntax and composed of
+# key-value pairs, known as _parameters_, whose values are defined by the user.
+#
+# The default set of parameters are shown below.
+#
+# For your convenience, the description of each parameter
+# below is marked with one or more of the following emblems:
+#
+# * (eRuby) You can use eRuby directives in the value of this parameter.
+#
+# * (HTML) The value of this parameter will be transformed into HTML using
+#   the standard mechanism defined in the <tt>config/format.rb</tt> file.
+#
 
 
 ################################################################################
@@ -9,11 +22,15 @@
 
 
 #
+# (eRuby) (HTML)
+#
 # The name of your blog.
 #
 name: Rassmalog
 
 
+#
+# (eRuby) (HTML)
 #
 # Description of your blog.
 #
@@ -30,11 +47,15 @@ info: |
 
 
 #
+# (eRuby) (HTML)
+#
 # The name of the blog author.
 #
 author: Suraj N. Kurapati
 
 
+#
+# (eRuby)
 #
 # The e-mail address that will receive comments about your blog entries.
 #
@@ -68,6 +89,8 @@ email: snk@gna.org
 
 
 #
+# (eRuby)
+#
 # The URL of your published blog.
 #
 # Examples:
@@ -79,6 +102,8 @@ url: http://rassmalog.rubyforge.org/output/
 
 
 #
+# (eRuby)
+#
 # An eRuby template for the command that uploads your blog to your website.
 #
 # The following predefined variables are available:
@@ -87,14 +112,13 @@ url: http://rassmalog.rubyforge.org/output/
 #
 #   <%= parts %> is a sequence of quoted paths to files that must be uploaded.
 #                For example, the result of this directive is something like:
-#
 #                "output/foo" "output/bar" "output/baz qux moz"
 #
 # SSH examples:
 #
-#   These examples assume that your website is located in a
-#   directory named "public_html" on a server named "host"
-#   that is accessible by a user named "user" via SSH or SFTP.
+# These examples assume that your website is located in a
+# directory named "public_html" on a server named "host"
+# that is accessible by a user named "user" via SSH or SFTP.
 #
 #   uploader: scp -prC <%= parts %> user@host:public_html
 #   uploader: rsync -e ssh -auvz <%= whole %>/ user@host:public_html
@@ -102,9 +126,9 @@ url: http://rassmalog.rubyforge.org/output/
 #
 # FTP examples:
 #
-#   These examples assume that your website is located in a directory
-#   named "public_html" on a server named "host" that is accessible
-#   by a user named "user" with a password of "password" via FTP.
+# These examples assume that your website is located in a directory
+# named "public_html" on a server named "host" that is accessible
+# by a user named "user" with a password of "password" via FTP.
 #
 #   uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
 #
@@ -117,6 +141,8 @@ uploader: rsync -avz --delete <%= whole %> snk@rubyforge.org:/var/www/gforge-pro
 
 
 #
+# (eRuby)
+#
 # The character set used in your entries.
 #
 # Examples:
@@ -128,6 +154,8 @@ uploader: rsync -avz --delete <%= whole %> snk@rubyforge.org:/var/www/gforge-pro
 encoding: utf-8
 
 
+#
+# (eRuby)
 #
 # The ISO-639 code and (optionally) the ISO-3166 country
 # code for the primary language used in your entries.
@@ -154,6 +182,8 @@ language: en-us
 ################################################################################
 
 
+#
+# (eRuby)
 #
 # Path to a file in the output/ directory that should be displayed when
 # somebody visits your blog. This is called the "front page" of your blog.
@@ -235,6 +265,8 @@ archive_frequency: %B %Y
 
 
 #
+# (eRuby) (HTML)
+#
 # Hierarchical menu of links.
 #
 # By default, this menu is shown in all generated HTML pages.
@@ -243,8 +275,8 @@ archive_frequency: %B %Y
 # You can use eRuby directives in both the NAME and URL
 # portions (left- and right-hand sides of the equation).
 #
-# In addition, the NAME portion will be converted into HTML using
-# the standard mechanism defined in the config/format.rb file.
+# In addition, the NAME portion will be converted into HTML using the
+# standard mechanism defined in the <tt>config/format.rb</tt> file.
 #
 menu:
   - Rassmalog:
