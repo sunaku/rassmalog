@@ -76,7 +76,7 @@
         if @title == LANG['Search']
           # avoid having to reload the entire search page (which can get very
           # large in file size) each time the user submits the search form
-          %{onsubmit="search_handler(); return false;"}
+          %{action="#" onsubmit="search_handler(); return false;"}
         else
           %{action="#{LANG['Search'].to_file_name}.html"}
         end
