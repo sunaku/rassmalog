@@ -167,14 +167,14 @@ front_page: rassmalog/welcome.html
 
 
 #
-# Maximum number of recent entries to display on the front page.
+# Maximum number of entries to display on the "recent entries" page.
 #
-# If you want all entries to be displayed on the front page (without
-# a maximum limit), then simply leave this parameter blank:
+# If you want all entries to be displayed (no maximum
+# limit), then simply leave this parameter blank:
 #
-#   recent_entries:   # nothing here!
+#   num_recent_entries:   # nothing here!
 #
-recent_entries: 5
+num_recent_entries: 5
 
 
 #
