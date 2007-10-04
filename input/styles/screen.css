@@ -6,44 +6,49 @@
     line-height: 1.5em;
 
     margin: 0;
-    padding: 1em;
-    padding-top: 0;
+    padding: 0;
+    padding-left: 0.5em;
+    padding-right: 1em;
+    margin-right: 16.5em;
+  }
 
-    margin-right: 17.5em;
-    border-right: 1px dashed #C0C0C0;
+  #body {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 36em;
+    _padding-top: 1px; /* for IE6 */
   }
 
   #menu {
     position: absolute;
-    top: 1em;
+    top: 0;
+    bottom: 0;
     right: 0.5em;
+    width: 15em;
 
-    width: 16em;
-    _width: 16em; /* for IE */
+    padding-top: 1em;
   }
 
-  /* navigation links to the various parts of the blog */
-  #menu-blog {
+  #menu-blog { /* navigation menu for parts of the blog */
   }
 
-  /* hierarchical menu of links (see 'menu' parameter in config/blog.yaml) */
-  #menu-user {
+  #menu-user { /* the 'menu' parameter in config/blog.yaml */
     margin-top: 2em;
   }
 
 
 /* page structure */
 
-  #search {
+  #search { /* the search form */
     margin-top: 0.5em;
   }
 
-  #search-query {
-    width: 9em;
+  #search-query { /* the search box */
+    max-width: 60%;
   }
 
   #header {
-    border-bottom: 1px dashed #C0C0C0;
+    border-bottom: thin dashed #C0C0C0;
     padding-bottom: 1em;
   }
 
@@ -55,10 +60,6 @@
   }
 
   #content {
-    max-width: 33em;
-    _width: 33em; /* for IE */
-    margin-left: auto;
-    margin-right: auto;
   }
 
   /* the '@title' variable in config/chapter.erb and config/section.erb */
@@ -83,8 +84,7 @@
   .entry .name {
   }
 
-  /* table of contents */
-  .entry .toc {
+  .entry .toc { /* table of contents */
     margin-bottom: 2em;
     background-color: #F8F8FF;
     padding: 1em;
@@ -105,19 +105,20 @@
     margin: 1em;
   }
 
-  /* the "Read more..." link */
-  .entry .more a {
+  .entry .more a { /* the "Read more..." link */
     float: right;
     padding-top: 0.5em;
+    margin-left: 2em;
+    margin-bottom: 2em;
   }
 
   .entry .info {
-    border-top: 1px dotted #696969;
+    border-top: thin dotted #696969;
     padding-top: 0.5em;
 
     font-size: small;
     padding-left: 0;
-    _margin-left: 0; /* for IE */
+    _margin-left: 0; /* for IE6 */
   }
 
   .entry .info li {
@@ -151,7 +152,7 @@
   .entry .text h5,
   .entry .text h6 {
     margin-top: 2.5em;
-    border-bottom: 1px solid #D3D3D3;
+    border-bottom: thin solid #D3D3D3;
   }
 
   .entry h1 {
@@ -180,7 +181,7 @@
     text-decoration: underline;
   }
 
-  /* the LaTeX-style heading number that links back to the TOC */
+  /* the LaTeX-style heading number that links back to the table of contents */
   a.toc-link:link,
   a.toc-link:visited {
     text-decoration: none;
@@ -206,18 +207,17 @@
     background-color: #FFFAF0;
   }
 
-  /* the syntax colorizer's output */
-  .code {
+  .code { /* output of syntax colorizer */
     background-color: #FFFFF0;
   }
 
   pre {
     line-height: normal;
-    border: 1px dashed #A9A9A9;
+    border: thin dashed #A9A9A9;
     background-color: #F5FFDF;
     padding: 1em;
     overflow: hidden;
-    _overflow: auto; /* for IE */
+    _overflow: auto; /* for IE6 */
   }
 
   pre:hover {
@@ -231,7 +231,7 @@
 
   th, td {
     padding: 1em;
-    border: 1px solid #C0C0C0;
+    border: thin solid #C0C0C0;
   }
 
   th {
@@ -255,13 +255,15 @@
   }
 
   blockquote {
-    border-left: thick dotted #C0C0C0;
+    margin: 1em;
+    border: thick dotted #C0C0C0;
     padding-left: 1em;
-    margin-left: 0;
+    padding-right: 1em;
+    color: #444;
   }
 
   hr {
-    color: #FF0000; /* for IE */
+    color: #FF0000; /* for IE6 */
     background-color: #FF0000; /* for Firefox */
   }
 
@@ -284,6 +286,7 @@
   #menu ul,
   .entry .toc ul {
     padding-left: 1em;
+    _margin-left: 0.25em; /* for IE6 */
   }
 
   /* improves readability of nested lists */

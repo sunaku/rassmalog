@@ -3,9 +3,11 @@
 /* page layout */
 
   body {
-    border: none;
+    margin: 0;
+  }
+
+  #body {
     max-width: none;
-    width: auto;
   }
 
   #menu {
@@ -46,12 +48,16 @@
   }
 
   a.toc-link:after,
-  .entry .name a:after {
+  .entry .name a:after,
+  .entry .info a:after,
+  a[href^="#"]:after {
     content: "";
   }
 
-  .entry .name a {
-    color: #000000;
+  .entry .name a,
+  .entry .info a,
+  a[href^="#"] {
+    color: #A52A2A;
     font-weight: lighter;
     text-decoration: none;
     font-style: italic;
@@ -61,11 +67,15 @@
 /* source code */
 
   tt {
+    color: inherit;
+    background-color: inherit;
     font-weight: normal;
   }
 
   pre, .code {
     border: none;
+    overflow: visible;
+    background-color: inherit;
   }
 
 
@@ -78,12 +88,4 @@
   h1, h2, h3, h4, h5, h6, th, .title {
     font-family: sans-serif;
     font-weight: normal;
-  }
-
-
-/* firefox quirks */
-
-  li {
-    padding-left: 0.5em;
-    margin-left: 2em;
   }
