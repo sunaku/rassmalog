@@ -596,6 +596,7 @@ include ERB::Util
   # generate HTML for entry files
     ENTRY_FILES = []
     ENTRY_FILES_EXCLUDED = [] # excluded from processing, so just copy them over
+    entry_by_input_url = {}
 
     FileList['{input,entries}/**/*.yaml'].each do |src|
       data = YAML.load_file(src)
@@ -609,6 +610,7 @@ include ERB::Util
 
 
         entry = Entry.new(data)
+        entry_by_input_url[srcUrl] = entry
 
         # populate the entry's methods (see Entry class definition)
         entryProp = {
@@ -674,6 +676,11 @@ include ERB::Util
     end
 
     ENTRIES.sort! # chronological sort
+
+  # XXX: search page depends on all entries
+    if search = entry_by_input_url['search.yaml']
+      file search.output_file => ENTRY_FILES
+    end
 
   # generate list of all entries
     generate_html_task :entry_list, ENTRIES, ENTRY_FILES
