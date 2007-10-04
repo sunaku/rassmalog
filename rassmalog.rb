@@ -241,10 +241,7 @@ include ERB::Util
 
   # Writes the given content to the given file.
   def write_file aPath, aContent
-    File.open aPath, 'w' do |f|
-      # lstrip because XML declaration must be at start of file
-      f << aContent.lstrip
-    end
+    File.open(aPath, 'w') {|f| f << aContent}
   end
 
   COMMON_DEPS = FileList[__FILE__, 'output', 'config/**/*.{yaml,*rb}']

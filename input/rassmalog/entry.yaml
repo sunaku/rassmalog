@@ -76,11 +76,6 @@ tags:
 # A relative path (with respect to the <tt>output/</tt>
 # directory) to the output HTML file for this blog entry.
 #
-# If you do not specify this parameter, then the name and
-# relative location of this source file will be used instead.
-# For example, <tt>input/foo/bar/moz.yaml</tt> will have a
-# default output_file value of <tt>foo/bar/moz.html</tt>.
-#
 output_file: rassmalog/blog-entry-file-format.html
 
 
@@ -144,26 +139,12 @@ text: |
   <%= @entry['summary'] %>
 
 
-  h1. eRuby example
+  h1. Source of this blog entry
 
-  The text of a blog entry is treated as an eRuby template.  Thus,
-  you can use eRuby directives (which appear within @<%%@ and @%>@
-  tags) in the text of your blog entries.  For example,
-
-  * The current time is *<%= Time.now %>*.
-
-  * Say "Hello World!" three times:
-  <% 3.times do %>
-  ** Hello World!
-  <% end %>
-
-  * The contents of the current directory are:
-  <% Dir['*'].each do |f| %>
-  ** <tt><%= f %></tt>
-  <% end %>
+  <pre><%=h File.read(@entry.input_file) %></pre>
 
 
-  h2. Adding your own parameters
+  h1. Adding your own parameters
 
   You can add arbitrary parameters to a blog entry source file (which is really
   a YAML file) and use them in the blog entry's content (the *text* parameter).
@@ -182,7 +163,3 @@ text: |
   |@<%%= @entry['your_own_parameter1'] %>@|<%= @entry['your_own_parameter1'] %>|
   |@<%%= @entry['your_own_parameter2'] %>@|<%= @entry['your_own_parameter2'] %>|
 
-
-  h1. Source of this blog entry
-
-  <pre><%=h File.read(@entry.input_file) %></pre>

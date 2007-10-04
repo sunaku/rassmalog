@@ -5,22 +5,25 @@
     background-color: #FFFFFF;
     line-height: 1.5em;
 
-    margin-left: 1em;
-    max-width: 33em;
-    _width: 33em; /* for IE */
+    margin: 0;
+    padding: 1em;
+    padding-top: 0;
+
+    margin-right: 17.5em;
+    border-right: 1px dashed #C0C0C0;
   }
 
   #menu {
     position: absolute;
     top: 1em;
-    left: 36em;
-    _width: 100%; /* for IE */
+    right: 0.5em;
+
+    width: 16em;
+    _width: 16em; /* for IE */
   }
 
   /* navigation links to the various parts of the blog */
   #menu-blog {
-    line-height: 2em;
-    _width: 50%; /* for IE */
   }
 
   /* hierarchical menu of links (see 'menu' parameter in config/blog.yaml) */
@@ -36,6 +39,7 @@
   }
 
   #search-query {
+    width: 9em;
   }
 
   #header {
@@ -51,19 +55,22 @@
   }
 
   #content {
+    max-width: 33em;
+    _width: 33em; /* for IE */
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* the '@title' variable in config/chapter.erb and config/section.erb */
   #content > h1:first-child {
     font-size: x-large;
     font-style: italic;
-    color: gray;
+    color: #696969;
   }
 
   #footer {
     margin-top: 5em;
     text-align: center;
-    clear: both;
   }
 
 
@@ -74,9 +81,6 @@
   }
 
   .entry .name {
-  }
-
-  .entry .name a {
   }
 
   /* table of contents */
@@ -168,10 +172,12 @@
 
   a:hover {
     color: #FF0000;
+    text-decoration: underline;
   }
 
   a:target {
     color: #FF0000;
+    text-decoration: underline;
   }
 
   /* the LaTeX-style heading number that links back to the TOC */
@@ -275,9 +281,9 @@
     border: none;
   }
 
-  #menu-user li,
-  .entry .toc li {
-    margin-left: -25px;
+  #menu ul,
+  .entry .toc ul {
+    padding-left: 1em;
   }
 
   /* improves readability of nested lists */
