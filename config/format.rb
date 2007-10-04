@@ -19,15 +19,16 @@ require 'coderay'
 require 'redcloth'
 
 class String
-  # The content of these HTML tags will be preserved verbatim
-  # when they are processed by Textile.  By doing this, we
+  # The content of these HTML tags will be preserved while
+  # they are being processed by Textile. By doing this, we
   # avoid unwanted Textile transformations, such as quotation
   # marks becoming curly (&#8192;), in source code.
   PROTECTED_TAGS = %w[tt code pre]
 
-  # The content of these HTML tags will be preserved verbatim
-  # all throughout the text-to-HTML conversion process.
-  VERBATIM_TAGS = %w[format:verbatim]
+  # The content of these HTML tags will
+  # be preserved *verbatim* throughout
+  # the text-to-HTML conversion process.
+  VERBATIM_TAGS = %w[noformat]
 
   # Transforms this string into HTML.
   def to_html

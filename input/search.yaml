@@ -17,7 +17,7 @@ summary: |
 # the user to this search page. We then parse the GET query
 # string from the browser URL and try to perform the search.
 text: |
-  <format:verbatim>
+  <noformat>
     <div id="search-output"></div>
 
     <noscript>
@@ -126,14 +126,14 @@ text: |
       }
     -->
     </script>
-  </format:verbatim>
+  </noformat>
 
   <%= @entry['summary'] %>
 
   <br/>
 
-  <format:verbatim>
+  <noformat>
     <% (ENTRIES - [@entry]).each do |entry| %>
       <%= entry.to_html :@summarize => false %>
     <% end %>
-  </format:verbatim>
+  </noformat>

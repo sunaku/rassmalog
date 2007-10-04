@@ -494,7 +494,7 @@ text: |
 
   h2(#entry.verbatim). Protecting verbatim text
 
-  Sometimes you just need to protect some text from being mangled by the text-to-HTML conversion process (which is governed by <tt>config/format.rb</tt>). In such cases, you can wrap the text you want to proctect within *&lt;format:verbatim&gt;* and *&lt;/format:verbatim&gt;* tags.
+  Sometimes you just need to protect some text from being mangled by the text-to-HTML conversion process (which is governed by <tt>config/format.rb</tt>). In such cases, you can wrap the text you want to proctect within *&lt;noformat&gt;* and *&lt;/noformat&gt;* tags.
 
   Note that this is a feature of the default <tt>config/format.rb</tt> file provided with Rassmalog.  If you defined your own text-to-HTML conversion scheme, then this feature might not work.
 
