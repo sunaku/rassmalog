@@ -95,11 +95,11 @@ hide: false
 #
 # (Optional)
 #
-# Overrides the *table_of_contents* parameter that is defined in the main
-# blog configuration file <tt>config/blog.yaml</tt>.  This parameter
+# Overrides the *generate_toc* parameter that is defined in the main
+# blog configuration file (<tt>config/blog.yaml</tt>).  This parameter
 # controls whether a table of contents is generated for this blog entry.
 #
-table_of_contents: true
+generate_toc: true
 
 
 #

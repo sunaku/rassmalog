@@ -416,9 +416,9 @@ text: |
 
   Headings are numbered in the style of LaTeX; these numbers contain a hyperlink back to the table of contents for easier navigation.
 
-  If you want to disable the table of contents for a particular blog entry, then see the "*table_of_contents* parameter":#param.table_of_contents in the list of parameters above.
+  If you want to disable the table of contents for a particular blog entry, then see the "*generate_toc* parameter":#param.generate_toc in the list of parameters above.
 
-  If you want to disable the table of contents _globally_, for all blog entries, then see the *table_of_contents* parameter in your <tt>config/blog.yaml</tt> configuration file.
+  If you want to disable the table of contents _globally_, for all blog entries, then see the *generate_toc* parameter in your <tt>config/blog.yaml</tt> configuration file.
 
 
   h2(#entry.code). Syntax coloring for source code

@@ -44,10 +44,10 @@
   else
     # check whether we want to generate the table of contents
     generateTOC =
-      if @entry.key? 'table_of_contents'
-        @entry['table_of_contents']
+      if @entry.key? 'generate_toc'
+        @entry['generate_toc']
       else
-        BLOG.table_of_contents
+        BLOG.generate_toc
       end
 
     if generateTOC

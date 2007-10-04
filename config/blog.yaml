@@ -227,9 +227,9 @@ summarize_entries: true
 # generated, by default, for all blog entries.
 #
 # A blog entry can override this parameter by specifying
-# its own "table_of_contents" parameter in its source file.
+# its own "generate_toc" parameter in its source file.
 #
-table_of_contents: true
+generate_toc: true
 
 
 #

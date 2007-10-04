@@ -1,11 +1,10 @@
 hide: true
 
-name: <%= LANG['Search'] %>
+generate_toc: false
 
 output_file: <%= LANG['Search'].to_file_name %>.html
 
-# prevent corruption of entries' internal TOC
-table_of_contents: false
+name: <%= LANG['Search'] %>
 
 summary: |
   This page lists all available blog entries in full length. Please
