@@ -480,7 +480,7 @@ include ERB::Util
 
     %w[name info author email url encoding language front_page].
     each do |param|
-      if data.key? param
+      if data.key? param and not data[param].nil?
         data[param] = data[param].to_s.thru_erb
       end
     end
@@ -536,7 +536,7 @@ include ERB::Util
     class << BLOG.email
       # Converts this e-mail address into an obfuscated 'mailto:' URL.
       def to_url aSubject = nil, aBody = nil
-        addr = "mailto:#{self.to_html_entities}"
+        addr = "mailto:#{self.to_s.to_html_entities}"
         subj = "subject=#{u aSubject}" if aSubject
         body = "body=#{u aBody}" if aBody
 
