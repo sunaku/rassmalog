@@ -442,11 +442,8 @@ include ERB::Util
 
     # Allows you to access a section using its name.
     def [] aName, *args
-      if aName.is_a? String
-        find {|s| s.name == aName}
-      else
-        super(aName, *args)
-      end
+      @cache ||= Hash.new {|h,k| h[k] = find {|s| s.name == k}}
+      @cache[aName] || super(aName, *args)
     end
   end
 
