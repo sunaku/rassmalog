@@ -174,7 +174,7 @@ include ERB::Util
           toc << %{<li><a id="#{src}" href="#{dstUrl}">#{title}</a></li>}
 
           # reverse link from heading to TOC
-          '<span style="display:none"><br/><br/><br/></span>' << %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link" title="#{h LANG['return to table of contents']}">#{index}</a>&nbsp;&nbsp;&nbsp;#{title}&nbsp;<a href="#{dstUrl}" class="perma-link" rel="bookmark" title="#{LANG['permanent link to this spot']}">#</a></h#{depth}>}
+          '<br style="display: none"/><br style="display: none"/>' << %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link" title="#{h LANG['return to table of contents']}">#{index}</a>&nbsp;&nbsp;&nbsp;#{title}&nbsp;<a href="#{dstUrl}" class="perma-link" rel="bookmark" title="#{LANG['permanent link to this spot']}">#</a></h#{depth}>}
       end
 
       if prevIndex.empty?
@@ -493,7 +493,7 @@ include ERB::Util
         begin
           @html ||= render_menu(self)
         rescue
-          warn "An error occurred while converting BLOG.menu into HTML."
+          warn "Error when converting BLOG.menu into HTML:"
           raise $!
         end
       end
@@ -636,6 +636,7 @@ include ERB::Util
           :input_file => src,
 
           :output_url => dstUrl = (
+            # for entries that override the output file name
             if data.key? 'output_file'
               data['output_file'].to_s.thru_erb
 

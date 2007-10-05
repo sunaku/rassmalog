@@ -12,7 +12,8 @@ text: |
   * Output file path    : <tt><%= @entry.output_file %></tt>
   * Output relative URL : <tt><%= @entry.output_url  %></tt>
 
-  Notice that this blog entry's output file name was automatically calculated by Rassmalog to contain its *date* and *name* parameters.
+  Notice that this blog entry's output file name was automatically calculated by
+  Rassmalog to contain its *date* and *name* parameters.
 
 
   h1. Source of this blog entry

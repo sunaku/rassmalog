@@ -48,7 +48,7 @@
   }
 
   #header {
-    border-bottom: thin dashed #C0C0C0;
+    border-bottom: 1px dashed #C0C0C0;
     padding-bottom: 1em;
   }
 
@@ -113,7 +113,7 @@
   }
 
   .entry .info {
-    border-top: thin dotted #696969;
+    border-top: 1px dotted #696969;
     padding-top: 0.5em;
 
     font-size: small;
@@ -152,7 +152,7 @@
   .entry .text h5,
   .entry .text h6 {
     margin-top: 2.5em;
-    border-bottom: thin solid #D3D3D3;
+    border-bottom: 1px solid #D3D3D3;
   }
 
   .entry h1 {
@@ -213,7 +213,7 @@
 
   pre {
     line-height: normal;
-    border: thin dashed #A9A9A9;
+    border: 1px dashed #A9A9A9;
     background-color: #F5FFDF;
     padding: 1em;
     overflow: hidden;
@@ -231,7 +231,7 @@
 
   th, td {
     padding: 1em;
-    border: thin solid #C0C0C0;
+    border: 1px solid #C0C0C0;
   }
 
   th {
@@ -256,7 +256,7 @@
 
   blockquote {
     margin: 1em;
-    border: thick dotted #C0C0C0;
+    border: 5px dotted #C0C0C0;
     padding-left: 1em;
     padding-right: 1em;
     color: #444;

@@ -26,7 +26,7 @@
 #
 # The name of your blog.
 #
-name: Rassmalog
+name: <%= GENERATOR %>
 
 
 #
@@ -279,16 +279,19 @@ archive_frequency: %B %Y
 # standard mechanism defined in the <tt>config/format.rb</tt> file.
 #
 menu:
-  - Rassmalog:
+  - <%= GENERATOR %>:
     - What's new?: <%= TAGS['history'].first.url %>
-    - Project home: http://rassmalog.rubyforge.org
-    - Project portal: http://rubyforge.org/projects/rassmalog/
+    - Previous releases: <%= TAGS['history'].url %>
+    - Project home page: http://rassmalog.rubyforge.org
+    - RubyForge portal: http://rubyforge.org/projects/rassmalog/
 
   - Documentation:
     - Examples: <%= TAGS['examples'].url %>
     - Tips & tricks: <%= TAGS['tricks'].url %>
     - Blog entry file format: rassmalog/blog-entry-file-format.html
-    - API reference: ../ref/index.html
+
+  - Reference:
+    - Rassmalog API: ../ref/index.html
     - Textile syntax: http://hobix.com/textile/
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
     - eRuby syntax: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
@@ -311,16 +314,18 @@ menu:
       - Asterisell: http://asterisell.profitoss.com
       - Profitoss: http://profitoss.com
       - ClothRed: http://clothred.rubyforge.org
-      - Fox Chao: http://blog.netinfox.com
       - Shane Sveller: http://shanesveller.com
       - Hemant Kumar: http://gnufied.org
       - Dave Scotto: http://www.yasgursfarm.us/d/
+      - Spooky Fox: http://blog.iworkroom.com
+      - листп еоод: http://blog.listp.com
 
     - Past:
       - Manfred Schreiweis: http://blog.mabitoka.de
       - Rasmus Arnling Bååth: http://www.sumsar.net
       - Matthew Routley: http://matt.routleynet.org/blog/
       - David Karapetyan: http://www-scf.usc.edu/~dkarapet/blog/
+      - Fox Chao: http://blog.netinfox.com
 
   - hey!:
     - this menu is:
