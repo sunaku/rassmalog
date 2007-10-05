@@ -26,8 +26,8 @@ task :release => [:clobber, :rdoc, 'output'] do
 end
 
 desc "Upload the project homepage."
-task :web => [:rdoc, 'input', 'output'] do |t|
-  sh 'rsync', '-avz', '--delete', 'ref', 'input', 'output', PROJECT_SSH_URL
+task :web => [:rdoc, 'output'] do |t|
+  sh 'rsync', '-avz', '--delete', 'ref', 'output', PROJECT_SSH_URL
 end
 
 desc 'Connect to website FTP.'
