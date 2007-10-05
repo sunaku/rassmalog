@@ -35,7 +35,7 @@
     end
 
     if reallySummarized
-      # anchored links should take you inside the full (non-summarized) entry
+      # fragment links should take you inside the full (non-summarized) entry
       text.gsub! %r{(href=.)(#)} do
         $1 + @entry.url + $2
       end

@@ -69,23 +69,22 @@ include ERB::Util
       unpack('U*').map! {|c| "&##{c};"}.join
     end
 
-    # Transforms this string into a valid XHTML anchor (ID attribute).
+    # Transforms this string into a valid URI fragment.
     # See http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html
-    def to_html_anchor
+    def to_uri_fragment
       # remove HTML tags from the input
       buf = self.gsub(/<.*?>/, '')
 
       # The first or only character must be a letter.
       buf.insert(0, 'a') unless buf[0,1] =~ /[[:alpha:]]/
 
-      # The remaining characters must be letters,
-      # digits, hyphens (-), underscores (_), colons
-      # (:), or periods (.) [or Unicode characters]
+      # The remaining characters must be letters, digits, hyphens (-),
+      # underscores (_), colons (:), or periods (.) or Unicode characters
       buf.unpack('U*').map! do |code|
         if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
           code
         else
-          ?_
+          ?-
         end
       end.pack('U*')
     end
@@ -102,11 +101,11 @@ include ERB::Util
     end
 
 
-    @@anchors = []
+    @@uriFrags = []
 
-    # Resets the list of anchors encountered thus far.
-    def String.reset_anchors #:nodoc:
-      @@anchors.clear
+    # Resets the list of uri_fragments encountered thus far.
+    def String.reset_uri_fragments #:nodoc:
+      @@uriFrags.clear
     end
 
     # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
@@ -119,8 +118,6 @@ include ERB::Util
     #         the table of contents (so that the TOC
     #         can link to the content in this string)
     #
-    # If a block is given, it will be invoked every time a
-    # heading is found, with information about the found heading.
     def table_of_contents
       toc = '<ul>'
       prevDepth = 0
@@ -153,24 +150,22 @@ include ERB::Util
           prevDepth = depth
           prevIndex = index
 
-        # generate a unique HTML anchor for the heading
-          anchor = CGI.unescape(
+        # generate a unique anchor for the heading
+          frag = CGI.unescape(
             if atts =~ /id=('|")(.*?)\1/
               atts = $` + $'
               $2
             else
               title
             end
-          ).to_html_anchor
+          ).to_uri_fragment
 
-          anchor << anchor.object_id.to_s while @@anchors.include? anchor
-          @@anchors << anchor
-
-        yield title, anchor, index, depth, atts if block_given?
+          frag << frag.object_id.to_s while @@uriFrags.include? frag
+          @@uriFrags << frag
 
         # provide hyperlinks for traveling between TOC and heading
-          dst = anchor
-          src = dst.object_id.to_s.to_html_anchor
+          dst = frag
+          src = dst.object_id.to_s.to_uri_fragment
 
           dstUrl = '#' + dst
           srcUrl = '#' + src
@@ -575,7 +570,7 @@ include ERB::Util
       def result *args
         # give this page a fresh set of anchors, so that each entry's
         # table of contents does not link to other entry's contents
-        String.reset_anchors
+        String.reset_uri_fragments
 
         old_result(*args)
       end
