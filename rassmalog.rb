@@ -18,8 +18,8 @@ include ERB::Util
 
   GENERATOR = {
     :name     => 'Rassmalog',
-    :version  => '6.0.0',
-    :date     => '2007-09-25',
+    :version  => '7.0.0',
+    :date     => '2007-10-04',
     :url      => 'http://rassmalog.rubyforge.org'
   }
 

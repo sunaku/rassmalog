@@ -52,7 +52,7 @@ end
 
 desc 'Generate release announcement.'
 task :ann => 'output' do |t|
-  system "w3m -T text/html -dump -cols 60 output/*#{PROJECT_VERSION}.html"
+  system "w3m -T text/html -dump -cols 60 output/rassmalog/history/#{PROJECT_VERSION}.html"
 end
 
 
