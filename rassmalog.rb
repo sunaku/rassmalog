@@ -43,6 +43,12 @@ include ERB::Util
     %{<a href="#{h aUrl}"#{ %{title="#{aTitle}"} if aTitle }>#{aName}</a>}
   end
 
+  # Returns a safe file name that is composed of the
+  # given words and has the given file extension.
+  def make_file_name aExtension, *aWords #:nodoc:
+    aWords.join(' ').to_file_name << aExtension
+  end
+
   class DateTime
     # Returns the RFC-822 representation, which
     # is required by RSS, of this object.
@@ -55,10 +61,7 @@ include ERB::Util
     # Transforms this string into a vaild file name that can be safely used
     # in a URL.  See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
     def to_file_name
-      downcase.               # it's hard to remember capitalization in URLs
-      gsub(%r{[/;?#]+}, '-'). # these are *reserved* characters in URL syntax
-      strip.gsub(/\s+/, '-'). # remove the need for %20 escapes in URLs
-      squeeze('-')
+      downcase.strip.gsub(%r{[/;?#[:space:][:punct:]]+}, '-')
     end
 
     # Transforms this UTF-8 string into HTML entities.
@@ -396,7 +399,7 @@ include ERB::Util
     attr_reader :name, :chapter
 
     def url
-      "#{@chapter.name}-#{name}.html".to_file_name
+      make_file_name('.html', @chapter.name, name)
     end
 
     def initialize aName, aChapter
@@ -433,7 +436,7 @@ include ERB::Util
   class Chapter < Array
     include TemplateMixin
       def url
-        @name.to_file_name << '.html'
+        make_file_name('.html', @name)
       end
 
     attr_reader :name
@@ -458,7 +461,7 @@ include ERB::Util
   class EntryList < Array #:nodoc:
     include TemplateMixin
       def url
-        name.to_file_name << '.html'
+        make_file_name('.html', name)
       end
 
       def template_name
@@ -646,7 +649,7 @@ include ERB::Util
 
             # for entries in entries/, calculate output file name
             elsif srcDir == 'entries/'
-              "#{ entryDate.strftime "%F" }-#{data['name']}.html".to_file_name
+              make_file_name('.html', entryDate.strftime('%F'), data['name'])
 
             # for entries in input/, use the original file name
             else
@@ -827,7 +830,7 @@ include ERB::Util
       text = CGI.unescapeHTML src.elements['description'].text
       from = CGI.unescape src.elements['link'].text
 
-      dstFile = "#{ date.strftime "%F" }-#{ name }.yaml".to_file_name
+      dstFile = make_file_name('.yaml', date.strftime('%F'), name)
       dst = File.join(IMPORT_DIR, dstFile)
 
       entry = %w[from name date tags].
