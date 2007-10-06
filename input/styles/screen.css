@@ -257,8 +257,7 @@
   blockquote {
     margin: 1em;
     border: 5px dotted #C0C0C0;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding: 1em;
     color: #444;
   }
 
