@@ -84,9 +84,9 @@ include ERB::Util
         if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
           code
         else
-          ?-
+          ?\s
         end
-      end.pack('U*')
+      end.pack('U*').strip.gsub(/[[:space:]-]+/, '-')
     end
 
     # Passes this string through ERB and returns the result.
