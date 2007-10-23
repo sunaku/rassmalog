@@ -359,8 +359,34 @@ include ERB::Util
         output_url
       end
 
-    attr_reader :name, :date, :text, :tags, :archive,
-                :input_file, :output_file, :input_url, :output_url
+    # Title of this blog entry.
+    attr_reader :name
+
+    # Date when this blog entry was written.
+    attr_reader :date
+
+    # Content of this blog entry.
+    attr_reader :text
+
+    # Categories which this blog entry belongs to.
+    attr_reader :tags
+
+    # Section object associated with the date of this blog entry.
+    attr_reader :archive
+
+    # Path to the YAML input file of this blog entry.
+    attr_reader :input_file
+
+    # Path to the HTML output file of this blog entry.
+    attr_reader :output_file
+
+    # Path (relative to the input/ directory) to
+    # the YAML input file of this blog entry.
+    attr_reader :input_url
+
+    # Path (relative to the output/ directory) to
+    # the HTML output file of this blog entry.
+    attr_reader :output_url
 
     def initialize aData = {}
       merge! aData
