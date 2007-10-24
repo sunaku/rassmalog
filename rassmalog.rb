@@ -387,11 +387,6 @@ include ERB::Util
 
   # A single blog entry.
   class Entry < Hash
-    include TemplateMixin
-      def url
-        output_url
-      end
-
     # Title of this blog entry.
     attr_reader :name
 
@@ -425,6 +420,9 @@ include ERB::Util
       merge! aData
     end
 
+    include TemplateMixin
+      alias url output_url
+
     # Returns the absolute URL to this entry.
     def absolute_url
       File.join(BLOG.url, url)
@@ -450,8 +448,14 @@ include ERB::Util
   class Section < Array
     include TemplateMixin
 
-    attr_reader :name, :chapter
+    # The title of this section.
+    attr_reader :name
 
+    # The Chapter object to which this section belongs.
+    attr_reader :chapter
+
+    # Path (relative to the output/ directory)
+    # to the HTML output file of this object.
     def url
       make_file_name('.html', @chapter.name, name)
     end
@@ -489,10 +493,13 @@ include ERB::Util
   # A list of Section objects.
   class Chapter < Array
     include TemplateMixin
+      # Path (relative to the output/ directory)
+      # to the HTML output file of this object.
       def url
         make_file_name('.html', @name)
       end
 
+    # The title of this chapter.
     attr_reader :name
 
     def initialize aName
@@ -511,6 +518,8 @@ include ERB::Util
   # but without resorting to the full capability of the Section class.
   class EntryList < Array #:nodoc:
     include TemplateMixin
+      # Path (relative to the output/ directory)
+      # to the HTML output file of this object.
       def url
         make_file_name('.html', name)
       end
@@ -519,6 +528,7 @@ include ERB::Util
         :list
       end
 
+    # The title of this object.
     attr_reader :name
 
     def initialize aName

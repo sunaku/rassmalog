@@ -32,7 +32,7 @@
     padding-top      : 1em;
   }
 
-  /* navigation menu for parts of the blog */
+  /* the blog navigation menu */
   #menu-blog
   {
   }
@@ -52,8 +52,9 @@
     margin-top       : 0.5em;
   }
 
+  /* the search box */
   #search-query
-  { /* the search box */
+  {
     max-width        : 60%;
   }
 
@@ -107,6 +108,7 @@
     margin-bottom    : 7em;
   }
 
+  /* title of the blog entry */
   .entry .name
   {
   }
@@ -124,6 +126,7 @@
     margin-top       : 0;
   }
 
+  /* content of the blog entry */
   .entry .text
   {
   }
@@ -147,6 +150,7 @@
     margin-bottom    : 2em;
   }
 
+  /* date and tags of the blog entry */
   .entry .info
   {
     border-top       : 1px dotted #696969;
@@ -239,6 +243,7 @@
   {
     text-decoration  : none;
   }
+
 
   /* the '#' link at the end of the LaTeX-style heading */
   a.perma-link:link,
@@ -361,14 +366,16 @@
     _margin-left     : 0.25em; /* for IE6 */
   }
 
-  /* improves readability of nested lists */
-  .entry .toc li > ul,
-  .entry .toc ul:first-child > li
-  {
-    margin-bottom    : 0.5em;
-  }
 
-  #menu-user ul:first-child
-  {
-    padding-bottom   : 1em;
-  }
+  /* improves readability of nested lists */
+
+    .entry .toc li > ul,
+    .entry .toc ul:first-child > li
+    {
+      margin-bottom  : 0.5em;
+    }
+
+    #menu-user ul:first-child
+    {
+      padding-bottom : 1em;
+    }
