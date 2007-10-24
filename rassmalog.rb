@@ -7,7 +7,7 @@ require 'rake/clean'
 
 require 'config/format'
 require 'yaml'
-require 'date'
+require 'time'
 require 'ostruct'
 
 require 'erb'
@@ -47,14 +47,6 @@ include ERB::Util
   # given words and has the given file extension.
   def make_file_name aExtension, *aWords #:nodoc:
     aWords.join(' ').to_file_name << aExtension
-  end
-
-  class DateTime
-    # Returns the RFC-822 representation, which
-    # is required by RSS, of this object.
-    def rfc822
-      strftime "%a, %d %b %Y %H:%M:%S %z"
-    end
   end
 
   class String
@@ -504,7 +496,7 @@ include ERB::Util
   # load blog configuration
     data = YAML.load_file('config/blog.yaml')
 
-    %w[name info author email url encoding language front_page].
+    %w[name info author email url encoding language locale front_page].
     each do |param|
       if data.key? param and not data[param].nil?
         data[param] = data[param].to_s.thru_erb
@@ -512,6 +504,20 @@ include ERB::Util
     end
 
     BLOG = OpenStruct.new(data)
+
+    # localize Time formats into user's language
+    if locale = BLOG.locale
+      begin
+        require 'locale'
+        Locale.setlocale(Locale::LC_ALL, locale)
+
+      rescue SystemCallError
+        raise "Your system does not support the #{locale.inspect} locale (which is specified by the 'locale' parameter in your blog configuration file)."
+
+      rescue LoadError
+        raise "Cannot activate the #{locale.inspect} locale (which is specified by the 'locale' parameter in your blog configuration file) because your system does not have the ruby-locale library."
+      end
+    end
 
     class << BLOG.menu
       # Converts this hierarchical menu into HTML.
@@ -647,13 +653,11 @@ include ERB::Util
           :name => data['name'].to_s.thru_erb,
 
           :date => entryDate = (
-            DateTime.parse(
-              if data.key? 'date'
-                data['date'].to_s.thru_erb
-              else
-                File.mtime(src)
-              end.to_s
-            )
+            if data.key? 'date'
+              Time.parse(data['date'].to_s.thru_erb)
+            else
+              File.mtime(src)
+            end
           ),
 
           :text => data['text'].to_s,

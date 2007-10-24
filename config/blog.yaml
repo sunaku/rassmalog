@@ -177,6 +177,45 @@ encoding: utf-8
 language: en-us
 
 
+#
+# (eRuby)
+#
+# This parameter specifies the locale corresponding to the language
+# in which dates, times, and currency will be formatted by Ruby.
+# See http://en.wikipedia.org/wiki/Locale for more information.
+#
+# Here are some examples of how the choice of
+# locale affects the formatting of dates and times:
+#
+# <pre>
+# $ irb -r locale
+# >> Time.now
+# => Tue Oct 23 13:12:20 -0700 2007
+#
+# # in German:
+# >> Locale.setlocale(Locale::LC_TIME, "de_DE"); Time.now
+# => Di Okt 23 13:12:32 -0700 2007
+#
+# # in Spanish:
+# >> Locale.setlocale(Locale::LC_TIME, "es_ES"); Time.now
+# => mar oct 23 13:15:19 -0700 2007
+#
+# # in Italian:
+# >> Locale.setlocale(Locale::LC_TIME, "it_IT"); Time.now
+# => mar ott 23 13:15:27 -0700 2007
+# </pre>
+#
+# To use the default POSIX (U.S. English) locale, leave this parameter blank:
+#
+#   locale:   # nothing here!
+#
+# To see a list of available locales on your system, run the following command:
+#
+#   locale -a
+#
+locale:
+
+
 ################################################################################
 # Blog generation
 ################################################################################
