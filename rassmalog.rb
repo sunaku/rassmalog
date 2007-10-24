@@ -499,7 +499,11 @@ include ERB::Util
     %w[name info author email url encoding language locale front_page].
     each do |param|
       if data.key? param and not data[param].nil?
-        data[param] = data[param].to_s.thru_erb
+        begin
+          data[param] = data[param].to_s.thru_erb
+        rescue Exception => e
+          raise "unable to parse the #{param.inspect} parameter (which is specified in the main blog configuration file): #{e}"
+        end
       end
     end
 
@@ -635,78 +639,87 @@ include ERB::Util
     entry_by_input_url = {}
 
     FileList['{input,entries}/**/*.yaml'].each do |src|
-      data = YAML.load_file(src)
+      begin
+        data = YAML.load_file(src)
 
-      if data.is_a? Hash and
-         data.key? 'name' and
-         data.key? 'text'
-      then
-        src =~ %r{^.*?/}
-        srcDir, srcUrl = $&, $'
+        if data.is_a? Hash and
+           data.key? 'name' and
+           data.key? 'text'
+        then
+          src =~ %r{^.*?/}
+          srcDir, srcUrl = $&, $'
 
 
-        entry = Entry.new(data)
-        entry_by_input_url[srcUrl] = entry
+          entry = Entry.new(data)
+          entry_by_input_url[srcUrl] = entry
 
-        # populate the entry's methods (see Entry class definition)
-        entryProp = {
-          :name => data['name'].to_s.thru_erb,
+          # populate the entry's methods (see Entry class definition)
+          entryProp = {
+            :name => data['name'].to_s.thru_erb,
 
-          :date => entryDate = (
-            if data.key? 'date'
-              Time.parse(data['date'].to_s.thru_erb)
-            else
-              File.mtime(src)
-            end
-          ),
+            :date => entryDate = (
+              if data.key? 'date'
+                begin
+                  Time.parse(data['date'].to_s.thru_erb)
+                rescue ArgumentError => e
+                  raise "unable to parse the 'date' parameter: #{e}"
+                end
+              else
+                File.mtime(src)
+              end
+            ),
 
-          :text => data['text'].to_s,
+            :text => data['text'].to_s,
 
-          :input_url => srcUrl,
-          :input_file => src,
+            :input_url => srcUrl,
+            :input_file => src,
 
-          :output_url => dstUrl = (
-            # for entries that override the output file name
-            if data.key? 'output_file'
-              data['output_file'].to_s.thru_erb
+            :output_url => dstUrl = (
+              # for entries that override the output file name
+              if data.key? 'output_file'
+                data['output_file'].to_s.thru_erb
 
-            # for entries in entries/, calculate output file name
-            elsif srcDir == 'entries/'
-              make_file_name('.html', entryDate.strftime('%F'), data['name'])
+              # for entries in entries/, calculate output file name
+              elsif srcDir == 'entries/'
+                make_file_name('.html', entryDate.strftime('%F'), data['name'])
 
-            # for entries in input/, use the original file name
-            else
-              srcUrl.sub(/yaml$/, 'html')
-            end
-          ),
+              # for entries in input/, use the original file name
+              else
+                srcUrl.sub(/yaml$/, 'html')
+              end
+            ),
 
-          :output_file => File.join('output', dstUrl),
-        }
+            :output_file => File.join('output', dstUrl),
+          }
 
-        if data['hide']
-          entryProp[:tags] = []
-          entryProp[:archive] = nil
+          if data['hide']
+            entryProp[:tags] = []
+            entryProp[:archive] = nil
+          else
+            entryProp[:tags] =
+              [data['tags']].flatten.compact.uniq.sort.map do |name|
+                hookup(entry, tagStore, name, TAGS)
+              end
+
+            name = entryProp[:date].strftime(BLOG.archive_frequency)
+            entryProp[:archive] = hookup(entry, archiveStore, name, ARCHIVES)
+
+            ENTRIES << entry
+          end
+
+          entryProp.each_pair do |prop, value|
+            entry.instance_variable_set("@#{prop}", value)
+          end
+
+          ENTRY_FILES << src
+          generate_html_task :entry, entry, [src], :@summarize => false
         else
-          entryProp[:tags] =
-            [data['tags']].flatten.compact.uniq.sort.map do |name|
-              hookup(entry, tagStore, name, TAGS)
-            end
-
-          name = entryProp[:date].strftime(BLOG.archive_frequency)
-          entryProp[:archive] = hookup(entry, archiveStore, name, ARCHIVES)
-
-          ENTRIES << entry
+          notify :skip, src
+          ENTRY_FILES_EXCLUDED << src
         end
 
-        entryProp.each_pair do |prop, value|
-          entry.instance_variable_set("@#{prop}", value)
-        end
-
-        ENTRY_FILES << src
-        generate_html_task :entry, entry, [src], :@summarize => false
-      else
-        notify :skip, src
-        ENTRY_FILES_EXCLUDED << src
+      rescue Exception => e
+        raise "An error occurred when loading the #{src.inspect} file:\n#{e.inspect}"
       end
     end
 
