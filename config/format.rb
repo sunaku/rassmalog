@@ -79,7 +79,7 @@ class String
       protect_tags text, PROTECTED_TAGS, protectedStore, false
 
     # convert Textile into HTML
-    html = text.redcloth
+    html = text.thru_redcloth
 
     # restore protected tags
     restore_tags html, protectedStore
@@ -107,7 +107,7 @@ class String
       html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
 
     # syntax coloring for source code
-    html = html.coderay
+    html = html.thru_coderay
 
     # restore verbatim tags
     restore_tags html, verbatimStore
@@ -116,7 +116,7 @@ class String
   end
 
   # Returns the result of running this string through RedCloth.
-  def redcloth
+  def thru_redcloth
     RedCloth.new(self).to_html
   end
 
@@ -124,7 +124,7 @@ class String
   # <code> tag has an attribute lang="...", then that is considered the
   # programming language for which appropriate syntax coloring should be
   # applied.  Otherwise, the programming language is assumed to be ruby.
-  def coderay
+  def thru_coderay
     gsub %r{<(code)(.*?)>(.*?)</\1>}m do
       code = CGI.unescapeHTML($3)
       atts = $2
