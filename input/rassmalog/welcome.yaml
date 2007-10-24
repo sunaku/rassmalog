@@ -108,25 +108,25 @@ text: |
 
   h1. Installation
 
-  Simply extract the release package anywhere you want.
+  # Extract the Rassmalog release package.
+  # Go inside the extracted package directory.
+  # Have a look around. Explore!
+  # When you are ready, remove the documentation and examples by deleting the <tt>input/rassmalog/</tt> and <tt>entries/rassmalog/</tt> directories.
 
 
   h2. Requirements
 
-  To use Rassmalog, you need the following software (however, you can "bypass some of them":#Bypassing_some_requirements):
-
-  * "Rake":http://docs.rubyrake.org/
-  * "RedCloth":http://whytheluckystiff.net/ruby/redcloth/
-  * "CodeRay":http://coderay.rubychan.de/
+  |_. Dependency |_. Notes |
+  | "Ruby":http://ruby-lang.org | version 1.8 or newer is required |
+  | "Rake":http://docs.rubyrake.org | version 0.7 or newer is required |
+  | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/ | not required if you want to "use a different formatting system":#config.format |
+  | "CodeRay":http://coderay.rubychan.de/ | not required if you want to "use a different formatting system":#config.format |
+  | "ruby-locale":http://raa.ruby-lang.org/project/ruby-locale/ | required if you want to use the "locale parameter":#param.locale.  This library is also available in "Debian":http://debian.org and "Ubuntu":http://ubuntu.com under the name "liblocale-ruby". |
 
   If you have "RubyGems":http://rubygems.org/ on your system, then you can install the above requirements by running the following command:
 
     gem install rake redcloth coderay --include-dependencies
 
-
-  h3. Bypassing some requirements
-
-  If you do not wish to install RedCloth and CodeRay, please see the section named "using another formatting system":#config.format below.
 
   <%##########################################################################%>
 

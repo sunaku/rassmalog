@@ -51,12 +51,23 @@ name: File format of a blog entry
 #   date: 1 january 1970
 #   date: Wed Dec 13 21:31:04 PST 2006
 #
-# For more information about the format of
-# this parameter, see the documentation
-# for the DateTime.parse method by typing
-# the following command at your terminal:
+# You can also specify dates in other languages.  For
+# example, the following date
 #
-#   ri DateTime.parse
+#   date: Thursday, 01 January 1970 03:15:00 PM
+#
+# can be written in German as:
+#
+#   date: Donnerstag, 01 Januar 1970 15:15:00
+#
+# For more information about the format of this parameter, see the documentation
+# for the Time.parse method by typing the following command at your terminal:
+#
+#   ri Time.parse
+#
+# or by visiting the following URL:
+#
+#   http://www.ruby-doc.org/core/classes/Time.html#M000297
 #
 # If you do not specify this parameter, then Rassmalog will
 # use the modification time of this source file instead.

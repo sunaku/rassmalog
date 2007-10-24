@@ -70,13 +70,13 @@
 
   <ul class="info">
     <li>Written on <%=
-      date = @entry.date.strftime("%c")
+      stamp = @entry.date.strftime("%c")
 
-      # there won't be any tags or archives if 'hide' parameter is enabled
+      # there won't be any tags or archives when 'hide' parameter is enabled
       if @entry.archive
-        @entry.archive.to_link(date)
+        @entry.archive.to_link(stamp)
       else
-        date
+        stamp
       end
     %>.</li>
 
