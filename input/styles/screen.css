@@ -1,148 +1,185 @@
 /* page layout */
 
-  body {
-    color: #000000;
-    background-color: #FFFFFF;
-    line-height: 1.5em;
+  body
+  {
+    color            : #000000;
+    background-color : #FFFFFF;
+    line-height      : 1.5em;
 
-    margin: 0;
-    padding: 0;
-    padding-left: 0.5em;
-    padding-right: 1em;
-    margin-right: 16.5em;
+    margin           : 0;
+    padding          : 0;
+    padding-left     : 0.5em;
+    padding-right    : 1em;
+    margin-right     : 16.5em;
   }
 
-  #body {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 36em;
-    _padding-top: 1px; /* for IE6 */
+  #body
+  {
+    margin-left      : auto;
+    margin-right     : auto;
+    max-width        : 36em;
+    _padding-top     : 1px; /* for IE6 */
   }
 
-  #menu {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0.5em;
-    width: 15em;
+  #menu
+  {
+    position         : absolute;
+    top              : 0;
+    bottom           : 0;
+    right            : 0.5em;
+    width            : 15em;
 
-    padding-top: 1em;
+    padding-top      : 1em;
   }
 
-  #menu-blog { /* navigation menu for parts of the blog */
+  /* navigation menu for parts of the blog */
+  #menu-blog
+  {
   }
 
-  #menu-user { /* the 'menu' parameter in config/blog.yaml */
-    margin-top: 2em;
+  /* the 'menu' parameter in config/blog.yaml */
+  #menu-user
+  {
+    margin-top       : 2em;
   }
 
 
 /* page structure */
 
-  #search { /* the search form */
-    margin-top: 0.5em;
+  /* the search form */
+  #search
+  {
+    margin-top       : 0.5em;
   }
 
-  #search-query { /* the search box */
-    max-width: 60%;
+  #search-query
+  { /* the search box */
+    max-width        : 60%;
   }
 
-  #header {
-    border-bottom: 1px dashed #C0C0C0;
-    padding-bottom: 1em;
+  #header
+  {
+    border-bottom    : 1px dashed #C0C0C0;
+    padding-bottom   : 1em;
   }
 
-  #header .name {
+  #header .name
+  {
   }
 
-  #header .info {
-    font-style: italic;
+  #header .info
+  {
+    font-style       : italic;
   }
 
-  #content {
+  #content
+  {
   }
 
   /* the '@title' variable in config/chapter.erb and config/section.erb */
-  #content > h1:first-child {
-    font-size: x-large;
-    font-style: italic;
-    color: #696969;
+  #content > h1:first-child
+  {
+    font-size        : x-large;
+    font-style       : italic;
+    color            : #696969;
   }
 
-  #footer {
-    margin-top: 5em;
-    text-align: center;
+  #footer
+  {
+    margin-top       : 5em;
+    text-align       : center;
   }
 
 
 /* blog entry */
 
-  .entry {
-    margin-bottom: 7em;
+  .entry
+  {
+    margin-bottom    : 7em;
   }
 
-  .entry .name {
+  .entry .name
+  {
   }
 
-  .entry .toc { /* table of contents */
-    margin-bottom: 2em;
-    background-color: #F8F8FF;
-    padding: 1em;
+  /* table of contents */
+  .entry .toc
+  {
+    margin-bottom    : 2em;
+    background-color : #F8F8FF;
+    padding          : 1em;
   }
 
-  .entry .toc ul {
-    margin-top: 0;
+  .entry .toc ul
+  {
+    margin-top       : 0;
   }
 
-  .entry .text {
+  .entry .text
+  {
   }
 
-  .entry .text a {
-    text-decoration: underline;
+  .entry .text a
+  {
+    text-decoration  : underline;
   }
 
-  .entry .text img {
-    margin: 1em;
+  .entry .text img
+  {
+    margin           : 1em;
   }
 
-  .entry .more a { /* the "Read more..." link */
-    float: right;
-    padding-top: 0.5em;
-    margin-left: 2em;
-    margin-bottom: 2em;
+  /* the "Read more..." link */
+  .entry .more a
+  {
+    float            : right;
+    padding-top      : 0.5em;
+    margin-left      : 2em;
+    margin-bottom    : 2em;
   }
 
-  .entry .info {
-    border-top: 1px dotted #696969;
-    padding-top: 0.5em;
+  .entry .info
+  {
+    border-top       : 1px dotted #696969;
+    padding-top      : 0.5em;
 
-    font-size: small;
-    padding-left: 0;
-    _margin-left: 0; /* for IE6 */
+    font-size        : small;
+    padding-left     : 0;
+    _margin-left     : 0; /* for IE6 */
   }
 
-  .entry .info li {
-    list-style-type: none;
-    margin-left: 0;
+  .entry .info li
+  {
+    list-style-type  : none;
+    margin-left      : 0;
   }
 
 
 /* tag cloud */
 
-  .cloud {
+  .cloud
+  {
   }
 
-  .cloud li {
-    display: inline;
-    padding-right: 10px;
+  .cloud li
+  {
+    display          : inline;
+    padding-right    : 10px;
   }
 
 
 /* headings */
 
-  th, h1, h2, h3, h4, h5, h6 {
-    font-family: serif;
-    font-weight: lighter;
+  th,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6
+  {
+    font-family      : serif;
+    font-weight      : lighter;
   }
 
   .entry .text h1,
@@ -150,150 +187,179 @@
   .entry .text h3,
   .entry .text h4,
   .entry .text h5,
-  .entry .text h6 {
-    margin-top: 2.5em;
-    border-bottom: 1px solid #D3D3D3;
+  .entry .text h6
+  {
+    margin-top       : 2.5em;
+    border-bottom    : 1px solid #D3D3D3;
   }
 
-  .entry h1 {
-    font-size: 1.65em;
+  .entry h1
+  {
+    font-size        : 1.65em;
   }
 
 
 /* hyperlinks */
 
-  a {
-    color: #0000FF;
-    text-decoration: none;
+  a
+  {
+    color            : #0000FF;
+    text-decoration  : none;
   }
 
-  a:visited {
-    color: #4B0082;
+  a:visited
+  {
+    color            : #4B0082;
   }
 
-  a:hover {
-    color: #FF0000;
-    text-decoration: underline;
+  a:hover
+  {
+    color            : #FF0000;
+    text-decoration  : underline;
   }
 
-  a:target {
-    color: #FF0000;
-    text-decoration: underline;
+  a:target
+  {
+    color            : #FF0000;
+    text-decoration  : underline;
   }
 
   /* the LaTeX-style heading number that links back to the table of contents */
   a.toc-link:link,
-  a.toc-link:visited {
-    text-decoration: none;
+  a.toc-link:visited
+  {
+    text-decoration  : none;
   }
 
   /* the '#' link at the end of the LaTeX-style heading */
   a.perma-link:link,
-  a.perma-link:visited {
-    color: #D3D3D3;
-    text-decoration: none;
+  a.perma-link:visited
+  {
+    color            : #D3D3D3;
+    text-decoration  : none;
   }
 
-  a.perma-link:hover {
-    color: #FF0000;
+  a.perma-link:hover
+  {
+    color            : #FF0000;
   }
 
 
 /* source code */
 
-  tt {
-    font-weight: bold;
-    color: #A52A2A;
-    background-color: #FFFAF0;
+  tt
+  {
+    font-weight      : bold;
+    color            : #A52A2A;
+    background-color : #FFFAF0;
   }
 
-  .code { /* output of syntax colorizer */
-    background-color: #FFFFF0;
+  /* output of syntax colorizer */
+  .code
+  {
+    background-color : #FFFFF0;
   }
 
-  pre {
-    line-height: normal;
-    border: 1px dashed #A9A9A9;
-    background-color: #F5FFDF;
-    padding: 1em;
-    overflow: hidden;
-    _overflow: auto; /* for IE6 */
+  pre
+  {
+    line-height      : normal;
+    border           : 1px dashed #A9A9A9;
+    background-color : #F5FFDF;
+    padding          : 1em;
+    overflow         : hidden;
+    _overflow        : auto; /* for IE6 */
   }
 
-  pre:hover {
-    width: 1000%;
-    position: relative;
-    z-index: 1;
+  pre:hover
+  {
+    width            : 1000%;
+    position         : relative;
+    z-index          : 1;
   }
 
 
 /* tables */
 
-  th, td {
-    padding: 1em;
-    border: 1px solid #C0C0C0;
+  th,
+  td
+  {
+    padding          : 1em;
+    border           : 1px solid #C0C0C0;
   }
 
-  th {
-    background-color: #F5F5F5;
+  th
+  {
+    background-color : #F5F5F5;
   }
 
-  table {
-    margin-left: auto;
-    margin-right: auto;
+  table
+  {
+    margin-left      : auto;
+    margin-right     : auto;
   }
 
 
 /* emphasis */
 
-  body {
-    font-family: sans-serif;
+  body
+  {
+    font-family      : sans-serif;
   }
 
-  em, blockquote {
-    font-family: serif;
+  em,
+  blockquote
+  {
+    font-family      : serif;
   }
 
-  blockquote {
-    margin: 1em;
-    border: 5px dotted #C0C0C0;
-    padding: 1em;
-    color: #444;
+  blockquote
+  {
+    margin           : 1em;
+    border           : 5px dotted #C0C0C0;
+    padding          : 1em;
+    color            : #444;
   }
 
-  hr {
-    color: #FF0000; /* for IE6 */
-    background-color: #FF0000; /* for Firefox */
+  hr
+  {
+    color            : #FF0000; /* for IE6 */
+    background-color : #FF0000; /* for Firefox */
   }
 
-  big {
-    font-size: larger;
+  big
+  {
+    font-size        : larger;
   }
 
-  table {
-    margin-left: auto;
-    margin-right: auto;
+  table
+  {
+    margin-left      : auto;
+    margin-right     : auto;
   }
 
 
 /* fix annoyances */
 
-  a img {
-    border: none;
+  a img
+  {
+    border           : none;
   }
 
   #menu ul,
-  .entry .toc ul {
-    padding-left: 1em;
-    _margin-left: 0.25em; /* for IE6 */
+  .entry .toc ul
+  {
+    padding-left     : 1em;
+    _margin-left     : 0.25em; /* for IE6 */
   }
 
   /* improves readability of nested lists */
   .entry .toc li > ul,
-  .entry .toc ul:first-child > li {
-    margin-bottom: 0.5em;
+  .entry .toc ul:first-child > li
+  {
+    margin-bottom    : 0.5em;
   }
 
-  #menu-user ul:first-child {
-    padding-bottom: 1em;
+  #menu-user ul:first-child
+  {
+    padding-bottom   : 1em;
   }

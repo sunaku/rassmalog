@@ -2,90 +2,114 @@
 
 /* page layout */
 
-  body {
-    margin: 0;
+  body
+  {
+    margin           : 0;
   }
 
-  #body {
-    max-width: none;
+  #body
+  {
+    max-width        : none;
   }
 
-  #menu {
-    display: none;
+  #menu
+  {
+    display          : none;
   }
 
 
 /* blog entry */
 
-  .entry .toc {
-    display: none;
+  .entry .toc
+  {
+    display          : none;
   }
 
 
 /* hyperlinks */
 
-  a:link, a:visited, a:active {
-    color: #0000FF;
-    font-weight: bold;
-    text-decoration: underline;
+  a:link,
+  a:visited,
+  a:active
+  {
+    color            : #0000FF;
+    font-weight      : bold;
+    text-decoration  : underline;
   }
 
-  a:after {
-    content: " (" attr(href) ")";
-    font-family: sans-serif;
-    font-weight: normal;
-    font-size: 90%;
+  a:after
+  {
+    content          : " (" attr(href) ")";
+    font-family      : sans-serif;
+    font-weight      : normal;
+    font-size        : 90%;
   }
 
-  a.perma-link {
-    display: none;
+  a.perma-link
+  {
+    display          : none;
   }
 
-  a.toc-link {
-    color: inherit;
-    font-weight: inherit;
-    text-decoration: none;
+  a.toc-link
+  {
+    color            : inherit;
+    font-weight      : inherit;
+    text-decoration  : none;
   }
 
   a.toc-link:after,
   .entry .name a:after,
   .entry .info a:after,
-  a[href^="#"]:after {
-    content: "";
+  a[href^="#"]:after
+  {
+    content          : "";
   }
 
   .entry .name a,
   .entry .info a,
-  a[href^="#"] {
-    color: #A52A2A;
-    font-weight: lighter;
-    text-decoration: none;
-    font-style: italic;
+  a[href^="#"]
+  {
+    color            : #A52A2A;
+    font-weight      : lighter;
+    text-decoration  : none;
+    font-style       : italic;
   }
 
 
 /* source code */
 
-  tt {
-    color: inherit;
-    background-color: inherit;
-    font-weight: normal;
+  tt
+  {
+    color            : inherit;
+    background-color : inherit;
+    font-weight      : normal;
   }
 
-  pre, .code {
-    border: none;
-    overflow: visible;
-    background-color: inherit;
+  pre,
+  .code
+  {
+    border           : none;
+    overflow         : visible;
+    background-color : inherit;
   }
 
 
 /* emphasis */
 
-  body {
-    font-family: serif;
+  body
+  {
+    font-family      : serif;
   }
 
-  h1, h2, h3, h4, h5, h6, th, .title {
-    font-family: sans-serif;
-    font-weight: normal;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  th,
+  .title
+  {
+    font-family      : sans-serif;
+    font-weight      : normal;
   }
