@@ -57,6 +57,15 @@
     max-width        : 60%;
   }
 
+  /* the search results */
+  #search-output,
+  #search-error
+  {
+    border           : thin solid red;
+    background-color : snow;
+    padding          : 1em;
+  }
+
   #header
   {
     border-bottom    : 1px dashed #C0C0C0;

@@ -17,31 +17,17 @@ summary: |
 # string from the browser URL and try to perform the search.
 text: |
   <noformat>
-    <div id="search-output"></div>
+    <div id="search-output" style="display: none"></div>
 
     <noscript>
-      <p id="javascript-disabled"><%=
+      <div id="search-error"><%=
         disabled_message = %{
           The <strong>search cannot be performed</strong> because your web
           browser lacks the <code>window.find()</code> JavaScript function. To
           work around this limitation, follow the instructions shown below.
         }
-      %></p>
+      %></div>
     </noscript>
-
-    <style type="text/css">
-    <!--
-      #javascript-disabled, #search-output {
-        border: thin solid red;
-        background-color: snow;
-        padding: 1em;
-      }
-
-      #search-output {
-        display: none;
-      }
-    -->
-    </style>
 
     <script defer type="text/javascript">
     <!--
