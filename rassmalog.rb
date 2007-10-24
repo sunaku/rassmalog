@@ -36,6 +36,12 @@ include ERB::Util
 
 # utility logic
 
+  # Wraps the given error inside the given message, while
+  # preserving its original stack trace, and raises it.
+  def raise_error aMessage, aError = $!
+    raise aError.class, "#{aMessage}:\n#{aError}", aError.backtrace
+  end
+
   # Returns a hyperlink to the given URL of
   # the given name and mouse-hover title.
   def link aUrl, aName = nil, aTitle = nil
@@ -211,15 +217,39 @@ include ERB::Util
 
     # Renders this template within a fresh object that
     # is populated with the given instance variables.
-    def render_with aInstVars = {}
+    #
+    # The given template name replaces the ambiguous
+    # '(erb)' identifier in stack traces, so that the
+    # user can better determine the source of an error.
+    def render_with aTemplateName, aInstVars = {}
       dummy = Object.new
 
       aInstVars.each_pair do |var, val|
         dummy.instance_variable_set var, val
       end
 
-      context = dummy.instance_eval {binding}
-      result(context) # eval the ERB template
+      begin
+        context = dummy.instance_eval {binding}
+        result(context) # eval the ERB template
+
+      rescue Exception => e
+        trace = []
+
+        e.backtrace.each do |line|
+          line.sub! '(erb)', aTemplateName
+
+          if line =~ /:in `render_with'$/
+            line = $`
+            trace << line
+            break
+          end
+
+          trace << line
+        end
+
+        e.set_backtrace(trace)
+        raise
+      end
     end
   end
 
@@ -251,7 +281,12 @@ include ERB::Util
 
     file dst => aDeps + COMMON_DEPS do
       notify aPage.class, dst
-      write_file dst, aPage.render(aRenderOpts)
+
+      begin
+        write_file dst, aPage.render(aRenderOpts)
+      rescue Exception => e
+        raise_error "An error occurred when generating the #{dst.inspect} file"
+      end
     end
 
     task aTask => dst
@@ -296,6 +331,12 @@ include ERB::Util
       self.class.to_s
     end
 
+    # Path to the ERB template file that is
+    # used to render objects of this class.
+    def template_file
+      template.input_file
+    end
+
     # Returns the ERB template used to render objects of this class.
     def template
       Kernel.const_get(template_name.to_s.upcase << '_TEMPLATE')
@@ -311,7 +352,7 @@ include ERB::Util
     def to_html aOpts = {}
       aOpts[:@summarize] = BLOG.summarize_entries unless aOpts.key? :@summarize
       aOpts[template_ivar] = self
-      template.render_with aOpts
+      template.render_with(template_file, aOpts)
     end
 
     # Renders a complete HTML page for this object.
@@ -320,7 +361,7 @@ include ERB::Util
       aOpts[:@target] = self
       aOpts[:@title]  = self.name
 
-      html = HTML_TEMPLATE.render_with(aOpts)
+      html = HTML_TEMPLATE.render_with(HTML_TEMPLATE.input_file, aOpts)
 
       # make implicit relative paths into explicit ones
         pathPrefix = "../" * self.url.scan(%r{/+}).length
@@ -396,7 +437,7 @@ include ERB::Util
 
     # Transforms the text of this entry into HTML and returns it.
     def html
-      @html ||= ERB.new(@text).render_with(template_ivar => self).to_html
+      @html ||= ERB.new(@text).render_with(@input_file + ":in `text' parameter", template_ivar => self).to_html
     end
 
     # Returns a URL for submiting comments about this entry.
@@ -502,7 +543,7 @@ include ERB::Util
         begin
           data[param] = data[param].to_s.thru_erb
         rescue Exception => e
-          raise "unable to parse the #{param.inspect} parameter (which is specified in the main blog configuration file): #{e}"
+          raise_error "Unable to parse the #{param.inspect} parameter (which is defined in config/blog.yaml)"
         end
       end
     end
@@ -516,10 +557,10 @@ include ERB::Util
         Locale.setlocale(Locale::LC_ALL, locale)
 
       rescue SystemCallError
-        raise "Your system does not support the #{locale.inspect} locale (which is specified by the 'locale' parameter in your blog configuration file)."
+        raise "Your system does not support the #{locale.inspect} locale (which is defined by the 'locale' parameter in config/blog.yaml)."
 
       rescue LoadError
-        raise "Cannot activate the #{locale.inspect} locale (which is specified by the 'locale' parameter in your blog configuration file) because your system does not have the ruby-locale library."
+        raise "Cannot activate the #{locale.inspect} locale (which is defined by the 'locale' parameter in config/blog.yaml) because your system does not have the ruby-locale library."
       end
     end
 
@@ -529,8 +570,7 @@ include ERB::Util
         begin
           @html ||= render_menu(self)
         rescue
-          warn "Error when converting BLOG.menu into HTML:"
-          raise $!
+          raise_error "Error when converting BLOG.menu into HTML"
         end
       end
 
@@ -590,11 +630,16 @@ include ERB::Util
     LANG = Language.new(data)
 
   # load templates
-    FileList['config/*.erb'].each do |f|
-      name = File.basename(f, File.extname(f))
-      var = "#{name.upcase}_TEMPLATE"
+    FileList['config/*.erb'].each do |src|
+      var = "#{File.basename(src, File.extname(src)).upcase}_TEMPLATE"
+      val = ERB.new(File.read(src))
 
-      Kernel.const_set var.to_sym, ERB.new(File.read(f))
+      class << val
+        attr_reader :input_file
+      end
+      val.instance_variable_set(:@input_file, src)
+
+      Kernel.const_set var.to_sym, val
     end
 
     class << HTML_TEMPLATE
@@ -661,8 +706,8 @@ include ERB::Util
               if data.key? 'date'
                 begin
                   Time.parse(data['date'].to_s.thru_erb)
-                rescue ArgumentError => e
-                  raise "unable to parse the 'date' parameter: #{e}"
+                rescue ArgumentError
+                  raise_error "Unable to parse the 'date' parameter"
                 end
               else
                 File.mtime(src)
@@ -719,7 +764,7 @@ include ERB::Util
         end
 
       rescue Exception => e
-        raise "An error occurred when loading the #{src.inspect} file:\n#{e.inspect}"
+        raise_error "An error occurred when loading the #{src.inspect} file"
       end
     end
 
