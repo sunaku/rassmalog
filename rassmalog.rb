@@ -284,7 +284,7 @@ include ERB::Util
 
       begin
         write_file dst, aPage.render(aRenderOpts)
-      rescue Exception => e
+      rescue Exception
         raise_error "An error occurred when generating the #{dst.inspect} file"
       end
     end
@@ -545,14 +545,18 @@ include ERB::Util
 # configuration stage
 
   # load blog configuration
-    data = YAML.load_file('config/blog.yaml')
+    begin
+      data = YAML.load_file('config/blog.yaml')
+    rescue Exception
+      raise_error "An error occurred when loading the blog configuration file (config/blog.yaml)"
+    end
 
     %w[name info author email url encoding language locale front_page].
     each do |param|
       if data.key? param and not data[param].nil?
         begin
           data[param] = data[param].to_s.thru_erb
-        rescue Exception => e
+        rescue Exception
           raise_error "Unable to parse the #{param.inspect} parameter (which is defined in config/blog.yaml)"
         end
       end
@@ -773,7 +777,7 @@ include ERB::Util
           ENTRY_FILES_EXCLUDED << src
         end
 
-      rescue Exception => e
+      rescue Exception
         raise_error "An error occurred when loading the #{src.inspect} file"
       end
     end
