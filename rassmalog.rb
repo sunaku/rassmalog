@@ -594,14 +594,10 @@ include ERB::Util
       end
     end
 
-    class << BLOG.menu
-      # Converts this hierarchical menu into HTML.
+    class << BLOG.links
+      # Converts this hierarchical menu of links into HTML.
       def to_html
-        begin
-          @html ||= render_menu(self)
-        rescue
-          raise_error "Error when converting BLOG.menu into HTML"
-        end
+        @html ||= render_menu(self)
       end
 
       private

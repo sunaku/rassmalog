@@ -12,7 +12,8 @@
     max-width        : none;
   }
 
-  #menu
+  #menu,
+  #links
   {
     display          : none;
   }

@@ -317,7 +317,7 @@ archive_frequency: %B %Y
 # In addition, the NAME portion will be converted into HTML using the
 # standard mechanism defined in the <tt>config/format.rb</tt> file.
 #
-menu:
+links:
   - <%= GENERATOR %>:
     - What's new?: <%= TAGS['history'].first.url %>
     - Previous releases: <%= TAGS['history'].url %>

@@ -359,7 +359,9 @@
     border           : none;
   }
 
-  #menu ul,
+
+  /* reduce the excessive default indentation for list items */
+  #links ul,
   .entry .toc ul
   {
     padding-left     : 1em;
@@ -369,13 +371,15 @@
 
   /* improves readability of nested lists */
 
-    .entry .toc li > ul,
-    .entry .toc ul:first-child > li
-    {
-      margin-bottom  : 0.5em;
-    }
 
-    #menu-user ul:first-child
-    {
-      padding-bottom : 1em;
-    }
+  /* improve readability of nested lists by adding extra space */
+  .entry .toc li > ul,
+  .entry .toc ul:first-child > li
+  {
+    margin-bottom    : 0.5em;
+  }
+
+  #links ul:first-child
+  {
+    padding-bottom   : 1em;
+  }
