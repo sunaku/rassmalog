@@ -423,6 +423,22 @@ include ERB::Util
     include TemplateMixin
       alias url output_url
 
+    # Returns the summarized HTML content of this blog entry.
+    def summary
+      if key? 'summary'
+        self['summary'].to_s.thru_erb.to_html
+      else
+        paragraphs = html.split %r{\s*\r?\n\s*\r?\n\s*}
+
+        # omit headings from summary to keep it simple and non-hierarchical
+        paragraphs.reject! {|p| p =~ /^<h\d/}
+
+        if paragraphs.length > 1
+          paragraphs.first
+        end
+      end
+    end
+
     # Returns the absolute URL to this entry.
     def absolute_url
       File.join(BLOG.url, url)

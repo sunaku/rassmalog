@@ -13,34 +13,13 @@
   * @summarize     => indicates whether the entry should be summarized
 =end
 
-  text = @entry.html
+  content = @entry.html
 
-  if @summarize
-    # use user-specified summary if possible
-    if @entry.key? 'summary'
-      text = @entry['summary'].to_s.thru_erb.to_html
-      reallySummarized = true
-
-    # perform automatic summarization
-    else
-      paragraphs = text.split %r{\s*\r?\n\s*\r?\n\s*}
-
-      # omit headings from summary to keep it simple and non-hierarchical
-      paragraphs.reject! {|p| p =~ /^<h\d/}
-
-      if paragraphs.length > 1
-        text = paragraphs.first
-        reallySummarized = true
-      end
+  if @summarize and summary = @entry.summary
+    # fragment links should take you inside the full (non-summarized) entry
+    content = summary.gsub %r{(href=.)(#)} do
+      $1 + @entry.url + $2
     end
-
-    if reallySummarized
-      # fragment links should take you inside the full (non-summarized) entry
-      text.gsub! %r{(href=.)(#)} do
-        $1 + @entry.url + $2
-      end
-    end
-
   else
     # check whether we want to generate the table of contents
     generateTOC =
@@ -51,7 +30,7 @@
       end
 
     if generateTOC
-      toc, text = text.table_of_contents
+      toc, content = content.table_of_contents
     end
   end
 %>
@@ -62,9 +41,9 @@
   <div class="toc">Contents <%= toc %></div>
   <% end %>
 
-  <div class="text"><%= text %></div>
+  <div class="text"><%= content %></div>
 
-  <% if reallySummarized %>
+  <% if summary %>
   <p class="more"><%= @entry.to_link(LANG["Read more..."]) %></p>
   <% end %>
 

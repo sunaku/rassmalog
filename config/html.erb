@@ -24,7 +24,16 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=<%= BLOG.encoding %>" />
     <meta http-equiv="content-language" content="<%= BLOG.language %>" />
-    <meta name="description" content="<%=h info_html %>" />
+    <meta name="description" content="<%= h(
+      if @target.is_a? Entry and summary = @target.summary
+        summary
+      else
+        info_html
+      end
+    ) %>" />
+    <% if @target.is_a? Entry and not @target.tags.empty? %>
+    <meta name="keywords" content="<%= @target.tags.map {|t| t.name}.join(', ') %>" />
+    <% end %>
     <meta name="date" content="<%= Time.now.rfc822 %>" />
     <meta name="author" content="<%=h author_html %>" />
     <meta name="generator" content="<%= GENERATOR %>" />
