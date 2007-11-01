@@ -3,58 +3,63 @@
   This is a template for generating HTML for lists of tags and archives.
 
   The following variables are available for use in this template:
-  * BLOG           => data from the blog configuration file
-  * LANG           => data from the translation file
-  * ENTRIES        => array of all blog entries (Entry objects)
-  * RECENT_ENTRIES => array of recent blog entries (Entry objects)
-  * TAGS           => array of all tags (Section objects)
-  * ARCHIVES       => array of all archives (Section objects)
-  * @chapter       => the Chapter object for which we are generating HTML
+  * BLOG           - data from the blog configuration file
+  * LANG           - data from the translation file
+  * ENTRIES        - array of all blog entries (Entry objects)
+  * RECENT_ENTRIES - array of recent blog entries (Entry objects)
+  * TAGS           - array of all tags (Section objects)
+  * ARCHIVES       - array of all archives (Section objects)
+  * @chapter       - the Chapter object for which we are generating HTML
 =end
 %>
-<h1><%= @chapter.name %></h1>
+<div class="chapter">
+  <h1 class="name"><%= @chapter.name %></h1>
 
-<ul class="cloud">
-<%
-  fonts = %w[xx-small x-small small medium large x-large xx-large]
-  scale = fonts.length - 1
+  <ul class="cloud">
+  <%
+    fonts = %w[xx-small x-small small medium large x-large xx-large]
+    scale = fonts.length - 1
 
-  largest = @chapter.map { |section| section.length }.max
+    largest = @chapter.map { |section| section.length }.max
 
-  @chapter.each do |section|
-    size = section.length
-    mass = size.to_f / largest
-    font = fonts[ (mass * scale).round ]
-%>
-  <li style="font-size: <%= font %>;" title="<%= size %>">
-    <%= section.to_link %> <span style="display: none">(<%= size %>)</span>
-  </li>
-<% end %>
-</ul>
-
-<br/>
-
-<%
-  byName = @chapter.sort_by { |section| section.name }
-  bySize = @chapter.sort_by { |section| section.length }.reverse
-%>
-<table>
-  <tr>
-    <th colspan="2">Sorted by name</th>
-    <th colspan="2">Sorted by size</th>
-  </tr>
-  <tr>
-    <th>&darr;Name</th>
-    <th>Size</th>
-    <th>Name</th>
-    <th>&uarr;Size</th>
-  </tr>
-  <% @chapter.each_index do |i| %>
-  <tr>
-    <td><%= byName[i].to_link %></td>
-    <td><%= byName[i].length %></td>
-    <td><%= bySize[i].to_link %></td>
-    <td><%= bySize[i].length %></td>
-  </tr>
+    @chapter.each do |section|
+      size = section.length
+      mass = size.to_f / largest
+      font = fonts[ (mass * scale).round ]
+  %>
+    <li style="font-size: <%= font %>;" title="<%= size %>">
+      <%= section.to_link %> <span style="display: none">(<%= size %>)</span>
+    </li>
   <% end %>
-</table>
+  </ul>
+
+  <br/>
+
+  <%
+    byName = @chapter.sort_by { |section| section.name }
+    bySize = @chapter.sort_by { |section| section.length }.reverse
+  %>
+  <table>
+    <tr>
+      <th colspan="2">Sorted by name</th>
+      <td style="border: none"/>
+      <th colspan="2">Sorted by size</th>
+    </tr>
+    <tr>
+      <th>Name &darr;</th>
+      <th>Size</th>
+      <td style="border: none"/>
+      <th>Name</th>
+      <th>Size &uarr;</th>
+    </tr>
+    <% @chapter.each_index do |i| %>
+    <tr>
+      <td><%= byName[i].to_link %></td>
+      <td><%= byName[i].length %></td>
+      <td style="border: none"/>
+      <td><%= bySize[i].to_link %></td>
+      <td><%= bySize[i].length %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

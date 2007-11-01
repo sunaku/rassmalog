@@ -2,16 +2,16 @@
 
 /* page layout */
 
-  body
+  body,
+  #content,
+  #links
   {
+    max-width        : none;
     margin           : 0;
   }
 
-  #body
-  {
-    max-width        : none;
-  }
-
+  #search,
+  #header,
   #menu,
   #links
   {
@@ -19,11 +19,22 @@
   }
 
 
-/* blog entry */
+/* styles for config/entry.erb */
 
+  .entry .menu,
   .entry .toc
   {
     display          : none;
+  }
+
+  .entry .name
+  {
+    font-size        : 2em;
+  }
+
+  .entry .text
+  {
+    max-width        : none;
   }
 
 
@@ -95,11 +106,35 @@
   }
 
 
+/* headings */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  th
+  {
+    font-weight      : normal;
+  }
+
+  .entry .text h1,
+  .entry .text h2,
+  .entry .text h3,
+  .entry .text h4,
+  .entry .text h5,
+  .entry .text h6
+  {
+    border-bottom    : none;
+  }
+
+
 /* emphasis */
 
   body
   {
-    font-family      : serif;
+    font-family      : Cambria, "Palatino Linotype", serif;
   }
 
   h1,
@@ -109,8 +144,8 @@
   h5,
   h6,
   th,
-  .title
+  em,
+  blockquote
   {
-    font-family      : sans-serif;
-    font-weight      : normal;
+    font-family      : Corbel, Verdana, sans-serif;
   }

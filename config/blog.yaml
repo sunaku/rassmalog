@@ -312,7 +312,7 @@ archive_frequency: %B %Y
 # To change this behavior, edit the config/html.erb template.
 #
 # You can use eRuby directives in both the NAME and URL
-# portions (left- and right-hand sides of the equation).
+# portions (the left and right-hand sides of the equation).
 #
 # In addition, the NAME portion will be converted into HTML using the
 # standard mechanism defined in the <tt>config/format.rb</tt> file.
@@ -327,7 +327,7 @@ links:
   - Documentation:
     - Examples: <%= TAGS['examples'].url %>
     - Tips & tricks: <%= TAGS['tricks'].url %>
-    - Blog entry file format: rassmalog/blog-entry-file-format.html
+    - Entry file format: rassmalog/blog-entry-file-format.html
 
   - Reference:
     - Rassmalog API: ../ref/index.html
@@ -345,16 +345,15 @@ links:
 
   - Users:
     - Future:
-      - Add your blog here!: <%= BLOG.email.to_url('add Rassmalog user blog', 'Hi, my blog URL is ________') %>
+      - Add your blog here!: <%= BLOG.email.to_url('add Rassmalog user blog', 'Hi. My blog URL is ________') %>
 
     - Present:
       - Suraj N. Kurapati: http://rassmalog.rubyforge.org/blog/
-      - Josef 'Jupp' Schugt: http://www.mynetcologne.de/~nc-schugtjo/blog/
+      - Josef 'Jupp' Schugt: http://cip.physik.uni-bonn.de/~jupp/
       - Asterisell: http://asterisell.profitoss.com
       - Profitoss: http://profitoss.com
       - ClothRed: http://clothred.rubyforge.org
       - Shane Sveller: http://shanesveller.com
-      - Hemant Kumar: http://gnufied.org
       - Dave Scotto: http://www.yasgursfarm.us/d/
       - Spooky Fox: http://blog.iworkroom.com
       - листп еоод: http://blog.listp.com
@@ -365,6 +364,7 @@ links:
       - Matthew Routley: http://matt.routleynet.org/blog/
       - David Karapetyan: http://www-scf.usc.edu/~dkarapet/blog/
       - Fox Chao: http://blog.netinfox.com
+      - Hemant Kumar: http://gnufied.org
 
   - hey!:
     - this menu is:

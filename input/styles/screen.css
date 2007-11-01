@@ -1,97 +1,88 @@
 /* page layout */
 
+  /* the web page itself */
   body
   {
-    color            : #000000;
-    background-color : #FFFFFF;
-    line-height      : 1.5em;
-
     margin           : 0;
-    padding          : 0;
-    padding-left     : 0.5em;
-    padding-right    : 1em;
-    margin-right     : 16.5em;
-  }
-
-  #body
-  {
     margin-left      : auto;
     margin-right     : auto;
+    padding          : 0.5em;
+    max-width        : 51em; /* 36em + 15em (see #content dimensions below) */
+  }
+
+  /* the main content of the web page */
+  #content
+  {
     max-width        : 36em;
-    _padding-top     : 1px; /* for IE6 */
+    margin-right     : 15em;
   }
 
-  #menu
+  /* the 'links' parameter in config/blog.yaml */
+  #links
   {
-    position         : absolute;
-    top              : 0;
-    bottom           : 0;
-    right            : 0.5em;
-    width            : 15em;
-
-    padding-top      : 1em;
-  }
-
-  /* the blog navigation menu */
-  #menu-blog
-  {
-  }
-
-  /* the 'menu' parameter in config/blog.yaml */
-  #menu-user
-  {
-    margin-top       : 2em;
+    float            : right;
+    max-width        : 12em;
+    margin           : 0;
   }
 
 
-/* page structure */
+/* styles for config/html.erb */
 
-  /* the search form */
-  #search
-  {
-    margin-top       : 0.5em;
-  }
-
-  /* the search box */
-  #search-query
-  {
-    max-width        : 60%;
-  }
-
-  /* the search results */
-  #search-output,
-  #search-error
-  {
-    border           : thin solid red;
-    background-color : snow;
-    padding          : 1em;
-  }
-
+  /* the banner containing blog name and description */
   #header
   {
-    border-bottom    : 1px dashed #C0C0C0;
-    padding-bottom   : 1em;
   }
 
-  #header .name
+  /* the name of your blog */
+  #header .name a
   {
+    color            : inherit;
   }
 
+  /* the description of your blog */
   #header .info
   {
     font-style       : italic;
   }
 
-  #content
+  /* the main navigation menu for the entire blog */
+  #menu
+  {
+    margin-top       : 1em;
+    margin-bottom    : 3em;
+  }
+
+  /* the menu item corresponding to the current web page */
+  #menu .current a
+  {
+    color            : inherit;
+    font-weight      : bold;
+  }
+
+  /* the search form */
+  #search
+  {
+    float            : right;
+    margin-top       : 1em;
+  }
+
+  /* the search box in which the user types their query */
+  #search-query
   {
   }
 
-  /* the '@title' variable in config/chapter.erb and config/section.erb */
-  #content > h1:first-child
+  /* an area for search results */
+  #search-output,
+  #search-error
   {
-    font-size        : x-large;
-    font-style       : italic;
-    color            : #696969;
+    border           : thin solid #FF0000;
+    background-color : #FFFAFA;
+    padding          : 1em;
+  }
+
+  /* the main content of the web page */
+  #content
+  {
   }
 
   #footer
@@ -101,16 +92,25 @@
   }
 
 
-/* blog entry */
+/* styles for config/entry.erb */
 
   .entry
   {
-    margin-bottom    : 7em;
+    margin-bottom    : 5em;
   }
 
   /* title of the blog entry */
   .entry .name
   {
+    border-bottom    : 1px solid #DCDCDC;
+    padding-bottom   : 0.25em;
+    font-size        : x-large;
+  }
+
+  /* contains links to the next/previous blog entry */
+  .entry .menu
+  {
+    float            : right;
   }
 
   /* table of contents */
@@ -129,6 +129,7 @@
   /* content of the blog entry */
   .entry .text
   {
+    margin-left      : 1em;
   }
 
   .entry .text a
@@ -145,17 +146,15 @@
   .entry .more a
   {
     float            : right;
-    padding-top      : 0.5em;
-    margin-left      : 2em;
+    margin-top       : 0.5em;
+    margin-left      : 50%;
     margin-bottom    : 2em;
   }
 
-  /* date and tags of the blog entry */
+  /* information about the blog entry */
   .entry .info
   {
-    border-top       : 1px dotted #696969;
     padding-top      : 0.5em;
-
     font-size        : small;
     padding-left     : 0;
     _margin-left     : 0; /* for IE6 */
@@ -168,13 +167,74 @@
   }
 
 
-/* tag cloud */
+/* additional styles for config/entry.erb when @solo is true
+  (i.e.  when the entry is displayed alone, on its own page) */
 
-  .cloud
+  .entry-solo
   {
   }
 
-  .cloud li
+  .entry-solo .text
+  {
+    margin-left      : 0;
+  }
+
+  .entry-solo .info
+  {
+    margin-top       : 2em;
+    border-top       : 1px solid #808080;
+  }
+
+
+/* styles for config/listing.erb */
+
+  .listing
+  {
+  }
+
+  .listing > .name
+  {
+    font-size        : x-large;
+  }
+
+
+/* styles for config/section.erb */
+
+  .section
+  {
+  }
+
+  .section > .name
+  {
+    font-size        : x-large;
+  }
+
+  /* contains links to the next/previous section */
+  .section > .menu
+  {
+    float            : right;
+  }
+
+
+/* styles for config/chapter.erb */
+
+  .chapter
+  {
+  }
+
+  .chapter > .name
+  {
+    font-size        : x-large;
+  }
+
+  /* tag cloud */
+  .chapter .cloud
+  {
+    padding          : 0;
+    text-align       : center;
+  }
+
+  .chapter .cloud li
   {
     display          : inline;
     padding-right    : 10px;
@@ -183,15 +243,14 @@
 
 /* headings */
 
-  th,
   h1,
   h2,
   h3,
   h4,
   h5,
-  h6
+  h6,
+  th
   {
-    font-family      : serif;
     font-weight      : lighter;
   }
 
@@ -204,11 +263,37 @@
   {
     margin-top       : 2.5em;
     border-bottom    : 1px solid #D3D3D3;
+    padding-bottom   : 0.25em;
   }
 
-  .entry h1
+  .entry .text h1
   {
-    font-size        : 1.65em;
+    font-size        : 1.6em;
+  }
+
+  .entry .text h2
+  {
+    font-size        : 1.5em;
+  }
+
+  .entry .text h3
+  {
+    font-size        : 1.4em;
+  }
+
+  .entry .text h4
+  {
+    font-size        : 1.3em;
+  }
+
+  .entry .text h5
+  {
+    font-size        : 1.2em;
+  }
+
+  .entry .text h6
+  {
+    font-size        : 1.1em;
   }
 
 
@@ -245,20 +330,6 @@
   }
 
 
-  /* the '#' link at the end of the LaTeX-style heading */
-  a.perma-link:link,
-  a.perma-link:visited
-  {
-    color            : #D3D3D3;
-    text-decoration  : none;
-  }
-
-  a.perma-link:hover
-  {
-    color            : #FF0000;
-  }
-
-
 /* source code */
 
   tt
@@ -286,6 +357,8 @@
 
   pre:hover
   {
+    border           : 1px solid #000000;
+    cursor           : text;
     width            : 1000%;
     position         : relative;
     z-index          : 1;
@@ -317,13 +390,16 @@
 
   body
   {
-    font-family      : sans-serif;
+    color            : #000000;
+    background-color : #FFFFFF;
+    line-height      : 1.5em;
+    font-family      : Corbel, Verdana, sans-serif;
   }
 
   em,
   blockquote
   {
-    font-family      : serif;
+    font-family      : Cambria, "Palatino Linotype", serif;
   }
 
   blockquote
@@ -359,8 +435,7 @@
     border           : none;
   }
 
-
-  /* reduce the excessive default indentation for list items */
+  /* reduce indentation of list items */
   #links ul,
   .entry .toc ul
   {
@@ -368,9 +443,12 @@
     _margin-left     : 0.25em; /* for IE6 */
   }
 
-
-  /* improves readability of nested lists */
-
+  /* hide redundant @title because it is indicated by #menu .current */
+  .listing > .name,
+  .chapter > .name
+  {
+    display          : none;
+  }
 
   /* improve readability of nested lists by adding extra space */
   .entry .toc li > ul,

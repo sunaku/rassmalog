@@ -24,10 +24,12 @@ include ERB::Util
   }
 
   class << GENERATOR
+    # Returns the name and version of Rassmalog.
     def to_s
       self[:name] + ' ' + self[:version]
     end
 
+    # Returns a hyperlink containing the name and version of Rassmalog.
     def to_link
       link self[:url], to_s
     end
@@ -46,7 +48,7 @@ include ERB::Util
   # the given name and mouse-hover title.
   def link aUrl, aName = nil, aTitle = nil
     aName ||= aUrl
-    %{<a href="#{h aUrl}"#{ %{title="#{aTitle}"} if aTitle }>#{aName}</a>}
+    %{<a href="#{h aUrl}"#{%{ title="#{aTitle}"} if aTitle}>#{aName}</a>}
   end
 
   # Returns a safe file name that is composed of the
@@ -71,7 +73,7 @@ include ERB::Util
     # See http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html
     def to_uri_fragment
       # remove HTML tags from the input
-      buf = self.gsub(/<.*?>/, '')
+      buf = gsub(/<.*?>/, '')
 
       # The first or only character must be a letter.
       buf.insert(0, 'a') unless buf[0,1] =~ /[[:alpha:]]/
@@ -172,7 +174,7 @@ include ERB::Util
           toc << %{<li><a id="#{src}" href="#{dstUrl}">#{title}</a></li>}
 
           # reverse link from heading to TOC
-          '<br style="display: none"/><br style="display: none"/>' << %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link" title="#{h LANG['return to table of contents']}">#{index}</a>&nbsp;&nbsp;&nbsp;#{title}&nbsp;<a href="#{dstUrl}" class="perma-link" rel="bookmark" title="#{LANG['permanent link to this spot']}">#</a></h#{depth}>}
+          '<br style="display: none"/><br style="display: none"/>' << %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link" title="#{h LANG['return to table of contents']}">#{index}</a>&nbsp;&nbsp;&nbsp;#{title}</h#{depth}>}
       end
 
       if prevIndex.empty?
@@ -357,14 +359,14 @@ include ERB::Util
 
     # Renders a complete HTML page for this object.
     def render aOpts = {}
+      aOpts[:@target]  = self
+      aOpts[:@title]   = self.name
       aOpts[:@content] = self.to_html(aOpts)
-      aOpts[:@target] = self
-      aOpts[:@title]  = self.name
 
       html = HTML_TEMPLATE.render_with(HTML_TEMPLATE.input_file, aOpts)
 
       # make implicit relative paths into explicit ones
-        pathPrefix = "../" * self.url.scan(%r{/+}).length
+        pathPrefix = '../' * self.url.scan(%r{/+}).length
 
         html.gsub! %r{((?:href|src|action)\s*=\s*("|'))(.*?)(\2)} do
           head, body, tail = $1, $3.strip, $4
@@ -380,48 +382,97 @@ include ERB::Util
     end
 
     # Returns a relative hyperlink to this object.
-    def to_link aName = self.name
-      link(url, aName.to_html)
+    def to_link aName = nil
+      title = name.to_html
+      link(url, aName || title, aName && title)
+    end
+  end
+
+  # In order to mix-in this module, an object must:
+  #
+  # 1. define a #parent method which returns
+  #    the array that contains this object.
+  #
+  module CycleMixin
+    # Returns the next section in the chapter.
+    def next
+      sibling(+1)
+    end
+
+    # Returns the previous section in the chapter.
+    def prev
+      sibling(-1)
+    end
+
+    private
+
+    def sibling aOffset
+      list = parent
+
+      if pos = list.index(self)
+        list[(pos + aOffset) % list.length]
+      else
+        self
+      end
     end
   end
 
   # A single blog entry.
   class Entry < Hash
+    # {String object}
     # Title of this blog entry.
     attr_reader :name
 
+    # {Time object}
     # Date when this blog entry was written.
     attr_reader :date
 
+    # {String object}
     # Content of this blog entry.
     attr_reader :text
 
-    # Categories which this blog entry belongs to.
+    # {Array of Section objects}
+    # The categories in which this blog entry belongs.
     attr_reader :tags
 
+    # {Section object}
     # Section object associated with the date of this blog entry.
     attr_reader :archive
 
+    # {String object}
     # Path to the YAML input file of this blog entry.
     attr_reader :input_file
 
+    # {String object}
     # Path to the HTML output file of this blog entry.
     attr_reader :output_file
 
+    # {String object}
     # Path (relative to the input/ directory) to
     # the YAML input file of this blog entry.
     attr_reader :input_url
 
+    # {String object}
     # Path (relative to the output/ directory) to
     # the HTML output file of this blog entry.
     attr_reader :output_url
+
+    include TemplateMixin
+      alias url output_url
+
+    include CycleMixin
+      def parent
+        ENTRIES
+      end
 
     def initialize aData = {}
       merge! aData
     end
 
-    include TemplateMixin
-      alias url output_url
+    # Returns true if this entry is hidden (the 'hide' parameter is enabled).
+    def hide?
+      @hidden
+    end
 
     # Returns the summarized HTML content of this blog entry.
     def summary
@@ -470,6 +521,9 @@ include ERB::Util
     # The Chapter object to which this section belongs.
     attr_reader :chapter
 
+    include CycleMixin
+      alias parent chapter
+
     # Path (relative to the output/ directory)
     # to the HTML output file of this object.
     def url
@@ -481,28 +535,9 @@ include ERB::Util
       @chapter = aChapter
     end
 
-    # Returns the next section in the chapter.
-    def next
-      sibling(+1)
-    end
-
-    # Returns the previous section in the chapter.
-    def prev
-      sibling(-1)
-    end
-
     # Sort alphabetically.
     def <=> aOther
       @name <=> aOther.name
-    end
-
-    private
-
-    def sibling aOffset
-      list = @chapter
-      pos = list.index(self)
-
-      list[(pos + aOffset) % list.length]
     end
   end
 
@@ -532,7 +567,7 @@ include ERB::Util
   # A list of Entry objects.  This class is used to fulfill the
   # purpose of generating a HTML page with some Entry objects on it,
   # but without resorting to the full capability of the Section class.
-  class EntryList < Array #:nodoc:
+  class Listing < Array #:nodoc:
     include TemplateMixin
       # Path (relative to the output/ directory)
       # to the HTML output file of this object.
@@ -541,7 +576,7 @@ include ERB::Util
       end
 
       def template_name
-        :list
+        :listing
       end
 
     # The title of this object.
@@ -564,7 +599,7 @@ include ERB::Util
     begin
       data = YAML.load_file('config/blog.yaml')
     rescue Exception
-      raise_error "An error occurred when loading the blog configuration file (config/blog.yaml)"
+      raise_error 'An error occurred when loading the blog configuration file (config/blog.yaml)'
     end
 
     %w[name info author email url encoding language locale front_page].
@@ -638,7 +673,7 @@ include ERB::Util
     class << BLOG.email
       # Converts this e-mail address into an obfuscated 'mailto:' URL.
       def to_url aSubject = nil, aBody = nil
-        addr = "mailto:#{self.to_s.to_html_entities}"
+        addr = "mailto:#{to_s.to_html_entities}"
         subj = "subject=#{u aSubject}" if aSubject
         body = "body=#{u aBody}" if aBody
 
@@ -684,8 +719,8 @@ include ERB::Util
 
   TAGS           = Chapter.new LANG['Tags']
   ARCHIVES       = Chapter.new LANG['Archives']
-  ENTRIES        = EntryList.new LANG['Entries']
-  RECENT_ENTRIES = EntryList.new LANG['Recent entries']
+  ENTRIES        = Listing.new LANG['Entries']
+  RECENT_ENTRIES = Listing.new LANG['Recent entries']
 
 
   tagStore = {}
@@ -766,6 +801,7 @@ include ERB::Util
           if data['hide']
             entryProp[:tags] = []
             entryProp[:archive] = nil
+            entryProp[:hidden] = true
           else
             entryProp[:tags] =
               [data['tags']].flatten.compact.uniq.sort.map do |name|
@@ -783,7 +819,7 @@ include ERB::Util
           end
 
           ENTRY_FILES << src
-          generate_html_task :entry, entry, [src], :@summarize => false
+          generate_html_task :entry, entry, [src], :@summarize => false, :@solo => true
         else
           notify :skip, src
           ENTRY_FILES_EXCLUDED << src
@@ -796,7 +832,7 @@ include ERB::Util
 
     ENTRIES.sort! # chronological sort
 
-  # XXX: search page depends on all entries
+  # XXX: search page depends on ALL entries
     if search = entry_by_input_url['search.yaml']
       file search.output_file => ENTRY_FILES
     end

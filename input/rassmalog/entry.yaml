@@ -121,7 +121,7 @@ generate_toc: true
 # you to specify a predefined summary for this blog entry.
 #
 summary: |
-  This is a summary for this blog entry.
+  This is a user-defined summary for this blog entry.
 
 
 #
@@ -142,21 +142,18 @@ your_own_parameter2: ruby rocks!
 # In this parameter, you can use the following
 # predefined variables inside eRuby directives:
 #
-# * BLOG           => data from the blog configuration file
-# * LANG           => data from the translation file
-# * ENTRIES        => array of all blog entries (Entry objects)
-# * RECENT_ENTRIES => array of recent blog entries (Entry objects)
-# * TAGS           => array of all tags (Section objects)
-# * ARCHIVES       => array of all archives (Section objects)
-# * @entry         => an Entry object representing *THIS* blog entry
+# * BLOG           - data from the blog configuration file
+# * LANG           - data from the translation file
+# * ENTRIES        - array of all blog entries (Entry objects)
+# * RECENT_ENTRIES - array of recent blog entries (Entry objects)
+# * TAGS           - array of all tags (Section objects)
+# * ARCHIVES       - array of all archives (Section objects)
+# * @entry         - an Entry object representing *THIS* blog entry
 #
 text: |
-  <%= @entry['summary'] %>
+  Here is the summary of this blog entry:
 
-
-  h1. Source of this blog entry
-
-  <pre><%=h File.read(@entry.input_file) %></pre>
+  bq. <%= @entry['summary'] %>
 
 
   h1. Adding your own parameters
@@ -178,3 +175,7 @@ text: |
   |@<%%= @entry['your_own_parameter1'] %>@|<%= @entry['your_own_parameter1'] %>|
   |@<%%= @entry['your_own_parameter2'] %>@|<%= @entry['your_own_parameter2'] %>|
 
+
+  h1. Source of this blog entry
+
+  <pre><%=h File.read(@entry.input_file) %></pre>

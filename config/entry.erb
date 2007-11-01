@@ -3,14 +3,15 @@
   This is a template for generating HTML for a blog entry.
 
   The following variables are available for use in this template:
-  * BLOG           => data from the blog configuration file
-  * LANG           => data from the translation file
-  * ENTRIES        => array of all blog entries (Entry objects)
-  * RECENT_ENTRIES => array of recent blog entries (Entry objects)
-  * TAGS           => array of all tags (Section objects)
-  * ARCHIVES       => array of all archives (Section objects)
-  * @entry         => the Entry object for which we are generating HTML
-  * @summarize     => indicates whether the entry should be summarized
+  * BLOG           - data from the blog configuration file
+  * LANG           - data from the translation file
+  * ENTRIES        - array of all blog entries (Entry objects)
+  * RECENT_ENTRIES - array of recent blog entries (Entry objects)
+  * TAGS           - array of all tags (Section objects)
+  * ARCHIVES       - array of all archives (Section objects)
+  * @entry         - the Entry object for which we are generating HTML
+  * @summarize     - should this entry be summarized?
+  * @solo          - is this entry being rendered alone, on its own page?
 =end
 
   content = @entry.html
@@ -34,8 +35,21 @@
     end
   end
 %>
-<div class="entry">
-  <h1 class="name"><%= @entry.to_link %></h1>
+<div class="entry<%= %{ entry-solo} if @solo %>">
+  <% if @solo and not @entry.hide? %>
+  <div class="menu">
+    <%= @entry.next.to_link(LANG['Older']) %> |
+    <%= @entry.prev.to_link(LANG['Newer']) %>
+  </div>
+  <% end %>
+
+  <h1 class="name"><%=
+    if @solo
+      @entry.name
+    else
+      @entry.to_link
+    end
+  %></h1>
 
   <% if toc %>
   <div class="toc">Contents <%= toc %></div>
@@ -47,26 +61,27 @@
   <p class="more"><%= @entry.to_link(LANG["Read more..."]) %></p>
   <% end %>
 
-  <ul class="info">
-    <li>Written on <%=
+  <p class="info">
+    Written on <%=
       stamp = @entry.date.strftime("%c")
 
-      # there won't be any tags or archives when 'hide' parameter is enabled
-      if @entry.archive
-        @entry.archive.to_link(stamp)
-      else
+      if @entry.hide?
         stamp
+      else
+        @entry.archive.to_link(stamp)
       end
-    %>.</li>
+    %>.
 
     <% unless @entry.tags.empty? %>
-    <li>Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.</li>
+    <br/>
+    Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.
     <% end %>
 
     <% if BLOG.email %>
-    <li>You may <a href="<%= @entry.comment_url %>">comment on this entry</a>.</li>
+    <br/>
+    You may <a href="<%= @entry.comment_url %>">send comments</a>.
     <% end %>
-  </ul>
+  </p>
 </div>
 
 <%# improves usability in text-mode browsers %>
