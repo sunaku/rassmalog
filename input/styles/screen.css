@@ -37,6 +37,7 @@
   #header .name a
   {
     color            : inherit;
+    _color           : #000000; /* for IE6 */
   }
 
   /* the description of your blog */
@@ -56,6 +57,7 @@
   #menu .current a
   {
     color            : inherit;
+    _color           : #000000; /* for IE6 */
     font-weight      : bold;
   }
 
@@ -147,7 +149,7 @@
   {
     float            : right;
     margin-top       : 0.5em;
-    margin-left      : 50%;
+    margin-left      : 2em;
     margin-bottom    : 2em;
   }
 
@@ -233,6 +235,9 @@
   {
     padding          : 0;
     text-align       : center;
+    max-width        : 70%;
+    margin-left      : auto;
+    margin-right     : auto;
   }
 
   .chapter .cloud li
@@ -332,6 +337,13 @@
 
 
 /* source code */
+
+  tt,
+  code,
+  pre
+  {
+    font-family      : Consolas, "Lucida Console", monospace;
+  }
 
   tt
   {
