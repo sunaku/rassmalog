@@ -207,6 +207,7 @@
   .section > .name
   {
     font-size        : x-large;
+    margin-bottom    : 2em;
   }
 
   /* contains links to the next/previous section */
