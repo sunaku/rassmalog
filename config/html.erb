@@ -103,7 +103,10 @@
       <% end %>
     </div>
 
+    <% if @content !~ %r{<hr.*?>(</.*?>|<[^/].*?/>|.)*\z}m %>
+    <br style="display: none"/>
     <hr style="display: none"/>
+    <% end %>
 
     <div id="footer">
       Authored by <%=
