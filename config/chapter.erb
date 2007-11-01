@@ -36,17 +36,25 @@
   <br/>
 
   <%
-    byName = @chapter.sort_by { |section| section.name }
-    bySize = @chapter.sort_by { |section| section.length }.reverse
+    byDate = @chapter == ARCHIVES
+
+    items =
+      if byDate
+        @chapter.sort_by { |section| section.first.date }
+      else
+        @chapter.sort_by { |section| section.name }
+      end
+
+    sizes = @chapter.sort_by { |section| section.length }.reverse
   %>
   <table>
     <tr>
-      <th colspan="2">Sorted by name</th>
+      <th colspan="2">Sorted by <%= byDate ? 'date' : 'name' %></th>
       <td style="border: none"/>
       <th colspan="2">Sorted by size</th>
     </tr>
     <tr>
-      <th>Name &darr;</th>
+      <th><%= byDate ? 'Date' : 'Name' %> &darr;</th>
       <th>Size</th>
       <td style="border: none"/>
       <th>Name</th>
@@ -54,11 +62,11 @@
     </tr>
     <% @chapter.each_index do |i| %>
     <tr>
-      <td><%= byName[i].to_link %></td>
-      <td><%= byName[i].length %></td>
+      <td><%= items[i].to_link %></td>
+      <td><%= items[i].length %></td>
       <td style="border: none"/>
-      <td><%= bySize[i].to_link %></td>
-      <td><%= bySize[i].length %></td>
+      <td><%= sizes[i].to_link %></td>
+      <td><%= sizes[i].length %></td>
     </tr>
     <% end %>
   </table>
