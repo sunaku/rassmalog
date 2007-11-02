@@ -1,0 +1,4 @@
+name: Version 8.0.1
+date: Fri Nov  2 14:42:18 PDT 2007
+tags: history
+text: This release shortens the source code and fixes unwanted escaping of the <tt>index.html</tt> redirection message.
