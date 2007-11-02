@@ -38,7 +38,7 @@ text: |
 
   Rassmalog is a static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that you can view on your computer or upload to your website.
 
-  Rassmalog is "open source software":#License inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines and by the "nanoc":http://nanoc.stoneship.org CMS(Content Management System). Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
+  Rassmalog is open-source software (see "the license":#License below) inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines. Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
 
 
   h2. Features
@@ -83,10 +83,17 @@ text: |
   |_. How do you migrate to another blog engine?|Assuming that you have SQL access to your blog's relational database, you must first *understand the database schema* before you can extract your content.<br/><br/> Afterwards, you still need to convert the extracted content into the new blog's format.|Your *content is readily converted* into the new blog's format using standard "text processing tools":http://tldp.org/LDP/abs/html/textproc.html or languages such as "Perl":http://perl.org and "Ruby":http://ruby-lang.org.|
 
 
-  h3. Spam control
+  h3. Speed and scalability
 
   |_. Dynamic blog engine|_. Rassmalog|
-  |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* which can be disabled if you want. Note that "dynamic JavaScript-based comments":rassmalog/tricks/dynamic-comments.html are also available. <br/><br/> Special care is taken to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.|
+  |Responsiveness depends on speed of web server _and_ speed of the server-side scripting language in which the blog software is written.|Responsiveness depends _only_ on speed of web server.|
+  |*Scales poorly* because it generates web pages *on demand*.|*Scales perfectly* because all content is generated only _once_ and only _before_ it is ever uploaded to your web server!|
+
+
+  h3. Comments and spam control
+
+  |_. Dynamic blog engine|_. Rassmalog|
+  |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* (which can be disabled if you want) while taking special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.<br/><br/>If you prefer *web based comments* instead, then "JavaScript-based comments":rassmalog/tricks/dynamic-comments.html are available.|
 
 
   h2. Version numbering system

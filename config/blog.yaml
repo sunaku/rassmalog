@@ -335,17 +335,20 @@ links:
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
     - eRuby syntax: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
 
+  - Community:
+    - Mailing list: http://rassmalog.rubyforge.org/mail/
+    - Web forums: http://rubyforge.org/forum/?group_id=2737
+
   - Facilities:
     - Source code: http://rassmalog.rubyforge.org/src/rassmalog/
     - Downloads: http://rubyforge.org/frs/?group_id=2737
     - Bugs: http://rubyforge.org/tracker/?group_id=2737
     - Patches: http://rubyforge.org/tracker/?group_id=2737
     - Requests: http://rubyforge.org/tracker/?group_id=2737
-    - Forums: http://rubyforge.org/forum/?group_id=2737
 
   - Users:
     - Future:
-      - Add your blog here!: <%= BLOG.email.to_url('add Rassmalog user blog', 'Hi. My blog URL is ________') %>
+      - Add your blog here!: "<%= BLOG.email.to_url('add Rassmalog user blog', 'My blog URL is: ') %>"
 
     - Present:
       - Suraj N. Kurapati: http://rassmalog.rubyforge.org/blog/
