@@ -73,7 +73,7 @@ task :translate => TRANSLATE_DIR do
     inputStrings = []
 
     FileList['*.rb', 'config/*.*'].each do |file|
-      strings = File.read(file).scan(/LANG\[(.*?)\]/).flatten.map! {|s| eval(s)}
+      strings = File.read(file).scan(/LANG\[(\S)(.*?)(\1)/).map {|s| eval(s.join) }
       inputStrings.concat(strings)
     end
 
