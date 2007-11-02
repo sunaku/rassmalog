@@ -324,7 +324,12 @@ include ERB::Util
   # 1. have an associated ERB template file (whose basename is
   #    specified by #template_name) in the config/ directory.
   #
+  #    A default #template_name, which uses the
+  #    name of the mixer's class, is provided.
+  #
   # 2. define a #url method which returns a relative URL to it.
+  #
+  #   A default #url, which uses #name, is provided.
   #
   module TemplateMixin
     # Basename of the ERB template file, which resides in the
@@ -348,6 +353,12 @@ include ERB::Util
     # class.  This variable is used in the ERB template of this class.
     def template_ivar
       "@#{self.class.to_s.downcase}".to_sym
+    end
+
+    # Path (relative to the output/ directory)
+    # to the HTML output file of this object.
+    def url
+      make_file_name('.html', name)
     end
 
     # Transforms this object into HTML.
@@ -419,6 +430,11 @@ include ERB::Util
 
   # A single blog entry.
   class Entry < Hash
+    include CycleMixin
+      def parent
+        ENTRIES
+      end
+
     # {String object}
     # Title of this blog entry.
     attr_reader :name
@@ -459,11 +475,6 @@ include ERB::Util
 
     include TemplateMixin
       alias url output_url
-
-    include CycleMixin
-      def parent
-        ENTRIES
-      end
 
     def initialize aData = {}
       merge! aData
@@ -514,6 +525,11 @@ include ERB::Util
   # A grouping of Entry objects based on some criteria, such as tag or archive.
   class Section < Array
     include TemplateMixin
+      # Path (relative to the output/ directory)
+      # to the HTML output file of this object.
+      def url
+        make_file_name('.html', @chapter.name, name)
+      end
 
     # The title of this section.
     attr_reader :name
@@ -523,12 +539,6 @@ include ERB::Util
 
     include CycleMixin
       alias parent chapter
-
-    # Path (relative to the output/ directory)
-    # to the HTML output file of this object.
-    def url
-      make_file_name('.html', @chapter.name, name)
-    end
 
     def initialize aName, aChapter
       @name = aName
@@ -544,11 +554,6 @@ include ERB::Util
   # A list of Section objects.
   class Chapter < Array
     include TemplateMixin
-      # Path (relative to the output/ directory)
-      # to the HTML output file of this object.
-      def url
-        make_file_name('.html', @name)
-      end
 
     # The title of this chapter.
     attr_reader :name
@@ -569,26 +574,12 @@ include ERB::Util
   # but without resorting to the full capability of the Section class.
   class Listing < Array #:nodoc:
     include TemplateMixin
-      # Path (relative to the output/ directory)
-      # to the HTML output file of this object.
-      def url
-        make_file_name('.html', name)
-      end
-
-      def template_name
-        :listing
-      end
 
     # The title of this object.
     attr_reader :name
 
     def initialize aName
       @name = aName
-    end
-
-    def to_html aOpts = {}
-      aOpts[:@list] = self
-      super aOpts
     end
   end
 
