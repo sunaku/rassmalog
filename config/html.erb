@@ -70,7 +70,6 @@
     </form>
 
     <br style="display: none"/>
-    <br style="display: none"/>
 
     <div id="header">
       <h1 class="name"><%= link('index.html', name_html) %></h1>
@@ -86,7 +85,7 @@
            (@target.is_a? Entry and aItem == ENTRIES) or
            (@target.is_a? Section and aItem == @target.parent)
         then
-          %{<span class="current">#{aItem.to_link}</span>}
+          %{<strong class="current"><span style="display: none">[</span>#{aItem.to_link}<span style="display: none">]</span></strong>}
         else
           aItem.to_link
         end
