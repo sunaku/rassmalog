@@ -917,7 +917,7 @@ include ERB::Util
     file dst => COMMON_DEPS do
       target = BLOG.front_page || RECENT_ENTRIES.url
       targetUrl = target.split('/').map {|s| u(s)}.join('/')
-      targetLink = link(targetUrl)
+      targetLink = link(targetUrl, target)
 
       notify 'front page', File.join('output', target)
       write_file dst, %{<html><head><meta http-equiv="refresh" content="0; url=#{targetUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', targetLink]}</p></body></html>}
