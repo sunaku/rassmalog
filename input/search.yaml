@@ -9,7 +9,7 @@ name: <%= LANG['Search'] %>
 summary: |
   This page lists all available blog entries in full length. Please
   search _within_ this page using your web browser's internal search
-  mechanism -- which is typically activated by pressing the *forward
+  mechanism, which is typically activated by pressing the *forward
   slash* key or by pressing the *Control* and *F* keys simultaneously.
 
 # There is a HTML search form in config/html.erb that sends
