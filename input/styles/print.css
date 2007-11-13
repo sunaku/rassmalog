@@ -57,19 +57,6 @@
     font-size        : 90%;
   }
 
-  a.perma-link
-  {
-    display          : none;
-  }
-
-  a.toc-link
-  {
-    color            : inherit;
-    font-weight      : inherit;
-    text-decoration  : none;
-  }
-
-  a.toc-link:after,
   .entry .name a:after,
   .entry .info a:after,
   a[href^="#"]:after
@@ -85,6 +72,15 @@
     font-weight      : lighter;
     text-decoration  : none;
     font-style       : italic;
+  }
+
+  a.toc-link
+  {
+    color            : inherit;
+    .color           : #000000; /* for IE6 and IE7 */
+    font-weight      : inherit;
+    text-decoration  : none;
+    font-style       : normal;
   }
 
 
@@ -127,25 +123,4 @@
   .entry .text h6
   {
     border-bottom    : none;
-  }
-
-
-/* emphasis */
-
-  body
-  {
-    font-family      : Cambria, "Palatino Linotype", serif;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  th,
-  em,
-  blockquote
-  {
-    font-family      : Corbel, Verdana, sans-serif;
   }

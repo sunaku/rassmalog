@@ -37,7 +37,7 @@
   #header .name a
   {
     color            : inherit;
-    _color           : #000000; /* for IE6 */
+    .color           : #000000; /* for IE6 and IE7 */
   }
 
   /* the description of your blog */
@@ -57,7 +57,7 @@
   #menu .current a
   {
     color            : inherit;
-    _color           : #000000; /* for IE6 */
+    .color           : #000000; /* for IE6 and IE7 */
   }
 
   /* the search form */
@@ -235,6 +235,7 @@
     padding          : 0;
     text-align       : center;
     max-width        : 70%;
+    _width           : 70%; /* for IE6 */
     margin-left      : auto;
     margin-right     : auto;
   }
@@ -359,6 +360,7 @@
 
   pre
   {
+    cursor           : text;
     line-height      : normal;
     border           : 1px dashed #A9A9A9;
     background-color : #F5FFDF;
@@ -370,7 +372,6 @@
   pre:hover
   {
     border           : 1px solid #000000;
-    cursor           : text;
     width            : 1000%;
     position         : relative;
     z-index          : 1;
@@ -451,8 +452,13 @@
   #links ul,
   .entry .toc ul
   {
-    padding-left     : 1em;
-    _margin-left     : 0.25em; /* for IE6 */
+    padding-left     : 1em; /* for Firefox */
+
+    .margin-left     : 0.75em; /* for IE6 and IE7 */
+    .padding-left    : 0.25em;
+
+    _margin-left     : 0.25em; /* override for IE6 only */
+    _padding-left    : 1em;
   }
 
   /* hide redundant @title because it is indicated by #menu .current */
