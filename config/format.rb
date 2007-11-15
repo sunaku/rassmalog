@@ -34,58 +34,16 @@ class String
   def to_html
     text = dup
 
-    # escape protected and verbatim tags
-      def protect_tags aText, aTags, aStore, aVerbatim #:nodoc:
-        aTags.each do |tag|
-          aText.gsub! %r{(<#{tag}.*?>)(.*?)(</#{tag}>)}m do
-            head, body, tail = $1, $2, $3
+      protect_tags! text, VERBATIM_TAGS, verbatimStore = {}, true
+      protect_tags! text, PROTECTED_TAGS, protectedStore = {}, false
 
-            # XXX: when we restore protected tags later on, String.gsub! is
-            #      removing all single backslashes for some reason... so we
-            #      protect against this by doubling all single backslashes first
-            body.gsub! /\\/, '\&\&'
+      # redcloth converts a pair of -- into <del> tags
+      text.gsub! %r{\b--\b}, '&mdash;'
 
-
-            original =
-              if aVerbatim
-                body
-              else
-                head << CGI.escapeHTML(CGI.unescapeHTML(body)) << tail
-              end
-
-            escape = Digest::MD5.hexdigest(original)
-
-
-            aStore[escape] = original
-            escape
-          end
-        end
-      end
-
-      def restore_tags aText, aStore #:nodoc:
-        until aStore.empty?
-          aStore.each_pair do |escape, original|
-            if aText.gsub! %r{<p>#{escape}</p>|#{escape}}, original
-              aStore.delete escape
-            end
-          end
-        end
-      end
-
-      verbatimStore = {}
-      protectedStore = {}
-
-      protect_tags text, VERBATIM_TAGS, verbatimStore, true
-      protect_tags text, PROTECTED_TAGS, protectedStore, false
-
-    # convert Textile into HTML
     html = text.thru_redcloth
 
-    # restore protected tags
-    restore_tags html, protectedStore
+      restore_tags! html, protectedStore
 
-
-    # fix annoyances in Textile conversion
       # redcloth wraps indented text within <pre> tags
       html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
       html.gsub! %r{(<pre>)\s*<pre>(.*?)</pre>\s*(</pre>)}m, '\1\2\3'
@@ -106,11 +64,9 @@ class String
       # redcloth adds <span> tags around acronyms
       html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
 
-    # syntax coloring for source code
     html = html.thru_coderay
 
-    # restore verbatim tags
-    restore_tags html, verbatimStore
+      restore_tags! html, verbatimStore
 
     html
   end
@@ -146,6 +102,45 @@ class String
       html = CodeRay.scan(code, lang).html(:css => :style)
 
       %{<#{tag} class="code"#{atts}>#{html}</#{tag}>}
+    end
+  end
+
+  private
+
+  def protect_tags! aText, aTags, aStore, aVerbatim #:nodoc:
+    aTags.each do |tag|
+      aText.gsub! %r{(<#{tag}.*?>)(.*?)(</#{tag}>)}m do
+        head, body, tail = $1, $2, $3
+
+        # XXX: when we restore protected tags later on, String.gsub! is
+        #      removing all single backslashes for some reason... so we
+        #      protect against this by doubling all single backslashes first
+        body.gsub! /\\/, '\&\&'
+
+
+        original =
+          if aVerbatim
+            body
+          else
+            head << CGI.escapeHTML(CGI.unescapeHTML(body)) << tail
+          end
+
+        escape = Digest::MD5.hexdigest(original)
+
+
+        aStore[escape] = original
+        escape
+      end
+    end
+  end
+
+  def restore_tags! aText, aStore #:nodoc:
+    until aStore.empty?
+      aStore.each_pair do |escape, original|
+        if aText.gsub! %r{<p>#{escape}</p>|#{escape}}, original
+          aStore.delete escape
+        end
+      end
     end
   end
 end
