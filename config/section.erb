@@ -15,25 +15,20 @@
   if @section.parent == ARCHIVES
     nextWord = LANG['Newer']
     prevWord = LANG['Older']
-
-    # prev & next are swapped because sections
-    # are kept in _reverse_ chronological order
-    nextItem = @section.prev
-    prevItem = @section.next
   else
     nextWord = LANG['Next']
     prevWord = LANG['Previous']
-
-    nextItem = @section.next
-    prevItem = @section.prev
   end
+
+  nextItem = @section.next
+  prevItem = @section.prev
+
+  prevLink = prevItem.to_link(prevWord) unless prevItem == @section.parent.last
+  nextLink = nextItem.to_link(nextWord) unless nextItem == @section.parent.first
 %>
 
 <div class="section">
-  <div class="menu">
-    <%= prevItem.to_link(prevWord) %> |
-    <%= nextItem.to_link(nextWord) %>
-  </div>
+  <div class="menu"><%= [prevLink, nextLink].compact.join(' | ') %></div>
 
   <h1 class="name">
     <span style="display: none"><%= @section.parent.name %>:</span>

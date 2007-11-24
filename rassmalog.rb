@@ -547,7 +547,11 @@ include ERB::Util
 
     # Sort alphabetically.
     def <=> aOther
-      @name <=> aOther.name
+      if @parent == ARCHIVES
+        first.date <=> aOther.first.date
+      else
+        @name <=> aOther.name
+      end
     end
   end
 

@@ -37,14 +37,7 @@
 
   <%
     byDate = @chapter == ARCHIVES
-
-    items =
-      if byDate
-        @chapter.sort_by { |section| section.first.date }
-      else
-        @chapter.sort_by { |section| section.name }
-      end
-
+    items = @chapter.sort
     sizes = @chapter.sort_by { |section| section.length }.reverse
   %>
   <table>
