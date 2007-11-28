@@ -115,7 +115,7 @@ class String
         # XXX: when we restore protected tags later on, String.gsub! is
         #      removing all single backslashes for some reason... so we
         #      protect against this by doubling all single backslashes first
-        body.gsub! /\\/, '\&\&'
+        body.gsub! %r/\\/, '\&\&'
 
 
         original =
