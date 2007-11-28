@@ -18,7 +18,11 @@ else
 end
 
 
-task :default
+desc "Show a list of available tasks."
+task :default do
+  Rake.application.options.show_task_pattern = //
+  Rake.application.display_tasks_and_comments
+end
 
 desc "Generate release packages."
 task :release => [:clobber, :rdoc, 'output'] do
