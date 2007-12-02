@@ -889,7 +889,7 @@ include ERB::Util
 
   # copy everything from input/ into output/
     srcList = Dir.glob('input/**/*', File::FNM_DOTMATCH).
-              reject {|s| File.directory? s} \
+              reject {|s| %w[ . .. ].include? File.split(s).last } \
               - ENTRY_FILES + ENTRY_FILES_EXCLUDED
 
     dstList = srcList.map {|s| s.sub 'input', 'output'}
