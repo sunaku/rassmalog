@@ -37,32 +37,9 @@ class String
       protect_tags! text, VERBATIM_TAGS, verbatimStore = {}, true
       protect_tags! text, PROTECTED_TAGS, protectedStore = {}, false
 
-      # redcloth converts a pair of -- into <del> tags
-      text.gsub! %r{\b--\b}, '&mdash;'
-
     html = text.thru_redcloth
 
       restore_tags! html, protectedStore
-
-      # redcloth wraps indented text within <pre> tags
-      html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
-      html.gsub! %r{(<pre>)\s*<pre>(.*?)</pre>\s*(</pre>)}m, '\1\2\3'
-
-      # redcloth wraps a single item within paragraph tags, which
-      # prevents the item's HTML from being validly injected within
-      # other block-level elements, such as headings (h1, h2, etc.)
-      html.sub! %r{^<p>(.*)</p>$}m do |match|
-        payload = $1
-
-        if payload =~ /<p>/
-          match
-        else
-          payload
-        end
-      end
-
-      # redcloth adds <span> tags around acronyms
-      html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
 
     html = html.thru_coderay
 
@@ -73,7 +50,34 @@ class String
 
   # Returns the result of running this string through RedCloth.
   def thru_redcloth
-    RedCloth.new(self).to_html
+    text = self.dup
+    
+    # redcloth converts a pair of -- into <del> tags
+    text.gsub! %r{\b--\b}, '&mdash;'
+
+    html = RedCloth.new(text).to_html
+
+    # redcloth wraps indented text within <pre> tags
+    html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
+    html.gsub! %r{(<pre>)\s*<pre>(.*?)</pre>\s*(</pre>)}m, '\1\2\3'
+
+    # redcloth wraps a single item within paragraph tags, which
+    # prevents the item's HTML from being validly injected within
+    # other block-level elements, such as headings (h1, h2, etc.)
+    html.sub! %r{^<p>(.*)</p>$}m do |match|
+      payload = $1
+
+      if payload =~ /<p>/
+        match
+      else
+        payload
+      end
+    end
+
+    # redcloth adds <span> tags around acronyms
+    html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
+
+    return html
   end
 
   # Adds syntax coloring to <code> elements in the given text.  If the
