@@ -1,5 +1,5 @@
-# This file defines the String#to_html method, which is invoked to
-# transform the content of an entry (the value of the string) into HTML.
+# This file defines the String#to_html method, which is
+# invoked to transform the content of a blog entry into HTML.
 #
 # It features the Textile formatting system (RedCloth), syntax coloring
 # (CodeRay), and smart source code sizing (block versus inline display).
@@ -8,7 +8,7 @@
 # See the file named LICENSE for details.
 
 require 'cgi'
-require 'digest/md5'
+require 'digest/sha1'
 
 begin
   require 'rubygems'
@@ -33,29 +33,29 @@ class String
   # Transforms this string into HTML.
   def to_html
     text = dup
-
-      protect_tags! text, VERBATIM_TAGS, verbatimStore = {}, true
-      protect_tags! text, PROTECTED_TAGS, protectedStore = {}, false
+    protect_tags! text, VERBATIM_TAGS, verbatimStore = {}, true
+    protect_tags! text, PROTECTED_TAGS, protectedStore = {}, false
 
     html = text.thru_redcloth
-
-      restore_tags! html, protectedStore
+    restore_tags! html, protectedStore
 
     html = html.thru_coderay
-
-      restore_tags! html, verbatimStore
+    restore_tags! html, verbatimStore
 
     html
   end
 
   # Returns the result of running this string through RedCloth.
   def thru_redcloth
-    text = self.dup
-    
-    # redcloth converts a pair of -- into <del> tags
+    text = dup
+
+    # redcloth does not correctly convert -- into &mdash;
     text.gsub! %r{\b--\b}, '&mdash;'
 
     html = RedCloth.new(text).to_html
+
+    # redcloth adds <span> tags around acronyms
+    html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
 
     # redcloth wraps indented text within <pre> tags
     html.gsub! %r{(<pre>)\s*<code>(.*?)\s*</code>\s*(</pre>)}m, '\1\2\3'
@@ -74,10 +74,7 @@ class String
       end
     end
 
-    # redcloth adds <span> tags around acronyms
-    html.gsub! %r{<span class="caps">([[:upper:][:digit:]]+)</span>}, '\1'
-
-    return html
+    html
   end
 
   # Adds syntax coloring to <code> elements in the given text.  If the
@@ -86,8 +83,7 @@ class String
   # applied.  Otherwise, the programming language is assumed to be ruby.
   def thru_coderay
     gsub %r{<(code)(.*?)>(.*?)</\1>}m do
-      code = CGI.unescapeHTML($3)
-      atts = $2
+      atts, code = $2, CGI.unescapeHTML($3)
 
       lang =
         if $2 =~ /lang=('|")(.*?)\1/i
@@ -121,16 +117,13 @@ class String
         #      protect against this by doubling all single backslashes first
         body.gsub! %r/\\/, '\&\&'
 
-
         original =
           if aVerbatim
             body
           else
             head << CGI.escapeHTML(CGI.unescapeHTML(body)) << tail
           end
-
-        escape = Digest::MD5.hexdigest(original)
-
+        escape = Digest::SHA1.hexdigest(original)
 
         aStore[escape] = original
         escape
