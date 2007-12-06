@@ -52,7 +52,7 @@
     <p style="display: none">
       <a href="#content">Jump to page content</a>
       <br/>
-      <a href="#menu">Jump to navigation menu</a>
+      <a href="#links">Jump to navigation menu</a>
     </p>
 
     <form id="search" method="get" <%=
@@ -76,8 +76,6 @@
       <div class="info"><%= info_html %></div>
     </div>
 
-    <br style="display: none"/>
-
     <%
       # highlights the given item if it corresponds to the current web page
       def menu_item aItem
@@ -85,26 +83,31 @@
            (@target.is_a? Entry and aItem == ENTRIES) or
            (@target.is_a? Section and aItem == @target.parent)
         then
-          %{<strong class="current"><span style="display: none">[</span>#{aItem.to_link}<span style="display: none">]</span></strong>}
+          %{<strong class="current">#{aItem.to_link}</strong>}
         else
           aItem.to_link
         end
       end
     %>
-    <div id="menu">
-      <%= menu_item(RECENT_ENTRIES) %> |
-      <%= menu_item(TAGS) %> |
-      <%= menu_item(ARCHIVES) %> |
-      <%= menu_item(ENTRIES) %> |
-      <a type="application/rss+xml" href="rss.xml">
-        <%= LANG['Subscribe'] %>
-        <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
-      </a>
-    </div>
 
-    <% if BLOG.links %>
-    <ul id="links"><%= BLOG.links.to_html %></ul>
-    <% end %>
+    <ul id="links">
+      <li>
+        <%= LANG['Navigation'] %>
+        <ul>
+          <li><%= menu_item(RECENT_ENTRIES) %></li>
+          <li><%= menu_item(ENTRIES) %></li>
+          <li><%= menu_item(TAGS) %></li>
+          <li><%= menu_item(ARCHIVES) %></li>
+          <li>
+            <a type="application/rss+xml" href="rss.xml">
+              <%= LANG['Subscribe'] %>
+              <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
+            </a>
+          </li>
+        </ul>
+      </li>
+      <%= BLOG.links.to_html if BLOG.links %>
+    </ul>
 
     <br style="display: none"/>
     <hr style="display: none"/>

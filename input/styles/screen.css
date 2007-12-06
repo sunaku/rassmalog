@@ -25,6 +25,12 @@
     margin           : 0;
   }
 
+  /* the menu item corresponding to the current web page */
+  #links .current a
+  {
+    color            : red;
+  }
+
 
 /* styles for config/html.erb */
 
@@ -44,20 +50,6 @@
   #header .info
   {
     font-style       : italic;
-  }
-
-  /* the main navigation menu for the entire blog */
-  #menu
-  {
-    margin-top       : 1em;
-    margin-bottom    : 3em;
-  }
-
-  /* the menu item corresponding to the current web page */
-  #menu .current a
-  {
-    color            : inherit;
-    .color           : #000000; /* for IE6 and IE7 */
   }
 
   /* the search form */
@@ -461,7 +453,7 @@
     _padding-left    : 1em;
   }
 
-  /* hide redundant @title because it is indicated by #menu .current */
+  /* hide redundant @title because it is indicated by #links .current */
   .listing > .name,
   .chapter > .name
   {
