@@ -23,8 +23,8 @@
   nextItem = @section.next
   prevItem = @section.prev
 
-  prevLink = prevItem.to_link(prevWord) unless prevItem == @section.parent.last
-  nextLink = nextItem.to_link(nextWord) unless nextItem == @section.parent.first
+  prevLink = prevItem.to_link(prevWord) if prevItem
+  nextLink = nextItem.to_link(nextWord) if nextItem
 %>
 
 <div class="section">

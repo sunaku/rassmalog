@@ -36,11 +36,20 @@
   end
 %>
 <div class="entry<%= %{ entry-solo} if @solo %>">
-  <% if @solo and not @entry.hide? %>
-  <div class="menu">
-    <%= @entry.next.to_link(LANG['Older']) %> |
-    <%= @entry.prev.to_link(LANG['Newer']) %>
-  </div>
+  <%
+    if @solo and not @entry.hide?
+      nextWord = LANG['Newer']
+      prevWord = LANG['Older']
+
+      # these are inverse because ENTRIES is
+      # sorted in *reverse* chronological order
+      nextItem = @entry.prev
+      prevItem = @entry.next
+
+      prevLink = prevItem.to_link(prevWord) if prevItem
+      nextLink = nextItem.to_link(nextWord) if nextItem
+  %>
+  <div class="menu"><%= [prevLink, nextLink].compact.join(' | ') %></div>
   <% end %>
 
   <h1 class="name"><%=

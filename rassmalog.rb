@@ -404,7 +404,7 @@ include ERB::Util
   # 1. define a #parent method which returns
   #    the array that contains this object.
   #
-  module CycleMixin
+  module SequenceMixin
     # Returns the next section in the chapter.
     def next
       sibling(+1)
@@ -418,19 +418,15 @@ include ERB::Util
     private
 
     def sibling aOffset
-      list = parent
-
-      if pos = list.index(self)
-        list[(pos + aOffset) % list.length]
-      else
-        self
-      end
+      src = parent.index(self)
+      dst = src + aOffset
+      parent[dst] unless dst < 0
     end
   end
 
   # A single blog entry.
   class Entry < Hash
-    include CycleMixin
+    include SequenceMixin
       def parent
         ENTRIES
       end
@@ -537,7 +533,7 @@ include ERB::Util
     # The Chapter object to which this section belongs.
     attr_reader :chapter
 
-    include CycleMixin
+    include SequenceMixin
       alias parent chapter
 
     def initialize aName, aChapter
@@ -547,7 +543,7 @@ include ERB::Util
 
     # Sort alphabetically.
     def <=> aOther
-      if @parent == ARCHIVES
+      if parent == ARCHIVES
         first.date <=> aOther.first.date
       else
         @name <=> aOther.name
