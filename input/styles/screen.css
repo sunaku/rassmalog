@@ -37,10 +37,12 @@
   /* the banner containing blog name and description */
   #header
   {
+    margin-bottom    : 3em;
   }
 
   /* the name of your blog */
-  #header .name a
+  #header .name a:link,
+  #header .name a:visited
   {
     color            : inherit;
     .color           : #000000; /* for IE6 and IE7 */
@@ -56,12 +58,13 @@
   #search
   {
     float            : right;
-    margin-top       : 1em;
+    margin-top       : 2em;
   }
 
   /* the search box in which the user types their query */
   #search-query
   {
+    width: 10em;
   }
 
   /* an area for search results */
@@ -89,7 +92,7 @@
 
   .entry
   {
-    margin-bottom    : 5em;
+    margin-bottom    : 7em;
   }
 
   /* title of the blog entry */
@@ -97,7 +100,13 @@
   {
     border-bottom    : 1px solid #DCDCDC;
     padding-bottom   : 0.25em;
-    font-size        : x-large;
+    font-size        : 1.6em;
+  }
+
+  .entry .name a:link,
+  .entry .name a:visited
+  {
+    text-decoration: none;
   }
 
   /* contains links to the next/previous blog entry */
@@ -110,7 +119,7 @@
   .entry .toc
   {
     margin-bottom    : 2em;
-    background-color : #F8F8FF;
+    background-color : #FAFAFA;
     padding          : 1em;
   }
 
@@ -187,7 +196,7 @@
 
   .listing > .name
   {
-    font-size        : x-large;
+    font-size        : 1.6em;
   }
 
 
@@ -199,7 +208,7 @@
 
   .section > .name
   {
-    font-size        : x-large;
+    font-size        : 1.6em;
     margin-bottom    : 2em;
   }
 
@@ -218,7 +227,7 @@
 
   .chapter > .name
   {
-    font-size        : x-large;
+    font-size        : 1.6em;
   }
 
   /* tag cloud */
@@ -260,28 +269,27 @@
   .entry .text h6
   {
     margin-top       : 2.5em;
-    border-bottom    : 1px solid #D3D3D3;
-    padding-bottom   : 0.25em;
+    line-height      : 1.25em;
   }
 
   .entry .text h1
   {
-    font-size        : 1.6em;
+    font-size        : 2.0em;
   }
 
   .entry .text h2
   {
-    font-size        : 1.5em;
+    font-size        : 1.8em;
   }
 
   .entry .text h3
   {
-    font-size        : 1.4em;
+    font-size        : 1.6em;
   }
 
   .entry .text h4
   {
-    font-size        : 1.3em;
+    font-size        : 1.4em;
   }
 
   .entry .text h5
@@ -291,7 +299,7 @@
 
   .entry .text h6
   {
-    font-size        : 1.1em;
+    font-size        : 1.0em;
   }
 
 
@@ -354,7 +362,7 @@
   {
     cursor           : text;
     line-height      : normal;
-    border           : 1px dashed #A9A9A9;
+    border           : 1px dashed #C0C0C0;
     background-color : #F5FFDF;
     padding          : 1em;
     overflow         : hidden;
@@ -404,7 +412,7 @@
   em,
   blockquote
   {
-    font-family      : Cambria, "Palatino Linotype", serif;
+    font-family      : Cambria, Georgia, serif;
   }
 
   blockquote
@@ -460,14 +468,12 @@
     display          : none;
   }
 
-  /* improve readability of nested lists by adding extra space */
-  .entry .toc li > ul,
-  .entry .toc ul:first-child > li
+  .entry .toc ul
   {
-    margin-bottom    : 0.5em;
+    padding-bottom   : 0.75em;
   }
 
-  #links ul:first-child
+  #links ul
   {
-    padding-bottom   : 1em;
+    margin-bottom: 1em;
   }
