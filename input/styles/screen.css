@@ -113,6 +113,7 @@
   .entry .menu
   {
     float            : right;
+    margin-left      : 1em;
   }
 
   /* table of contents */
