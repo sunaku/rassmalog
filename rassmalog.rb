@@ -174,7 +174,7 @@ include ERB::Util
           toc << %{<li><a id="#{src}" href="#{dstUrl}">#{title}</a></li>}
 
           # reverse link from heading to TOC
-          '<br style="display: none"/><br style="display: none"/>' << %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link" title="#{h LANG['return to table of contents']}">#{index}</a>&nbsp;&nbsp;&nbsp;#{title}</h#{depth}>}
+          %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link">#{index}</a>&nbsp;&nbsp;#{title}</h#{depth}>}
       end
 
       if prevIndex.empty?
@@ -714,7 +714,7 @@ include ERB::Util
 
   TAGS           = Chapter.new LANG['Tags']
   ARCHIVES       = Chapter.new LANG['Archives']
-  ENTRIES        = Listing.new LANG['Entries']
+  ENTRIES        = Listing.new LANG['All entries']
   RECENT_ENTRIES = Listing.new LANG['Recent entries']
 
 
