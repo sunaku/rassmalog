@@ -38,7 +38,7 @@ text: |
 
   Rassmalog is a static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that you can view on your computer or upload to your website.
 
-  Rassmalog is open-source software (see "the license":#License below) inspired by the "Rog":http://rog.rubyforge.org and "hobix":http://hobix.com blog engines. Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
+  Rassmalog is open-source software (see "the license":#License below) inspired by the "Rog":http://rog.rubyforge.org, "hobix":http://hobix.com, and "nanoblogger":http://nanoblogger.sourceforge.net/ blog engines. Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and is a pseudo portmanteau of the words "RSS", "YAML", and "blog".
 
 
   h2. Features
@@ -52,10 +52,15 @@ text: |
   * "foreign language support":#lang for "<%= langFiles.length %> languages":#manifest.lang
 
   Standard features:
-  * categorization by tagging or "folksonomy":http://en.wikipedia.org/wiki/Folksonomy
+  * categorization by tags / labels / "folksonomy":http://en.wikipedia.org/wiki/Folksonomy
   * automatic archives by date, month, year, etc.
   * automatic "RSS feed":http://en.wikipedia.org/wiki/RSS for your entire blog
   * automated "blog import":#usage.import from any RSS feed
+
+
+  h2. License
+
+  <%=h File.read('LICENSE') %>
 
 
   h2. Motivation
@@ -107,32 +112,33 @@ text: |
   * When the *patch* number increases, the *underlying implementation* has changed. The functionality has not changed and no features have been added. Thus, what worked in the previous version will work in the new one.
 
 
-  h2. License
-
-  <%=h File.read('LICENSE') %>
-
   <%##########################################################################%>
 
-  h1. Installation
-
-  # Extract the Rassmalog release package.
-  # Go inside the extracted package directory.
-  # Have a look around. Explore!
-  # When you are ready, remove the documentation and examples by deleting the <tt>input/rassmalog/</tt> and <tt>entries/rassmalog/</tt> directories.
+  h1. Setup
 
 
   h2. Requirements
 
-  |_. Dependency |_. Notes |
+  Your system needs the following software in order to run Rassmalog.
+
+  |_. Software |_. Notes |
   | "Ruby":http://ruby-lang.org | version 1.8 or newer is required |
   | "Rake":http://docs.rubyrake.org | version 0.7 or newer is required |
   | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/ | not required if you want to "use a different formatting system":#config.format |
   | "CodeRay":http://coderay.rubychan.de/ | not required if you want to "use a different formatting system":#config.format |
   | "ruby-locale":http://raa.ruby-lang.org/project/ruby-locale/ | required if you want to use the "locale parameter":#param.locale.  This library is also available in "Debian":http://debian.org and "Ubuntu":http://ubuntu.com under the name "liblocale-ruby". |
 
-  If you have "RubyGems":http://rubygems.org/ on your system, then you can install the above requirements by running the following command:
+  If your system has "RubyGems":http://rubygems.org/, then you can install Rake, RedCloth, and CodeRay by running the following command:
 
-    gem install rake redcloth coderay --include-dependencies
+    gem install -y rake redcloth coderay
+
+
+  h2. Installation
+
+  # Extract the Rassmalog release package.
+  # Go inside the extracted package directory.
+  # Have a look around. Explore!
+  # When you are ready, remove the documentation and examples by deleting the <tt>input/rassmalog/</tt> and <tt>entries/rassmalog/</tt> directories.
 
 
   <%##########################################################################%>

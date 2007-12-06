@@ -1,0 +1,31 @@
+name: Version 9.0.0
+date: Wed Dec  5 22:50:29 PST 2007
+tags: history
+text: |
+  This release improves appearance, simplifies the main HTML template, and fixes several bugs.
+
+
+  h1. Caution
+
+  * Revised the project license text for clarity.
+
+  * Removed the "menu" element and dissolved its functionality into the "links" element in <tt>config/html.erb</tt>.  Updated the CSS files accordingly.
+
+  * New phrases have been added to the translation files.
+
+
+  h1. Repairs
+
+  * The "copy" task was not copying empty directories.
+
+  * ARCHIVES was not ordered by date.
+
+  * Prevented the generation of next/prev link in <tt>config/section.erb</tt> when it "wraps around" the array.
+
+  * Fixed conversion of @--@ into &mdash; before redcloth spoils it, in <tt>config/format.rb</tt>.
+
+  * Fixed a Ruby syntax warning in <tt>config/format.rb</tt>.
+
+  * Renamed the ambiguous "Entries" phrase to "All entries" for better coordination with the "Recent entries" phrase.
+
+  * Moved the main blog navigation menu into the user-defined menu of links in <tt>config/html.erb</tt>.  It was getting in the way of the main attraction of the web page: the blog entry itself!

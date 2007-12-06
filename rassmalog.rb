@@ -1,6 +1,6 @@
 # This file is the core of Rassmalog.
 #--
-# Copyright 2006-2007 Suraj N. Kurapati
+# Copyright 2006 Suraj N. Kurapati
 # See the file named LICENSE for details.
 
 require 'rake/clean'
@@ -18,8 +18,8 @@ include ERB::Util
 
   GENERATOR = {
     :name     => 'Rassmalog',
-    :version  => '8.0.2',
-    :date     => '2007-11-12',
+    :version  => '9.0.0',
+    :date     => '2007-12-05',
     :url      => 'http://rassmalog.rubyforge.org'
   }
 
