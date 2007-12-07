@@ -884,9 +884,9 @@ include ERB::Util
   CLOBBER.include 'output'
 
   # copy everything from input/ into output/
-    srcList = Dir.glob('input/**/*', File::FNM_DOTMATCH).
-              reject {|s| %w[ . .. ].include? File.split(s).last } \
-              - ENTRY_FILES + ENTRY_FILES_EXCLUDED
+    srcList = Dir.glob('input/**/*', File::FNM_DOTMATCH).reject do
+                |s| File.directory? s and Dir.entries(s) != %w[. ..]
+              end - ENTRY_FILES + ENTRY_FILES_EXCLUDED
 
     dstList = srcList.map {|s| s.sub 'input', 'output'}
 
