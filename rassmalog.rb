@@ -711,7 +711,7 @@ include ERB::Util
   TAGS           = Chapter.new LANG['Tags']
   ARCHIVES       = Chapter.new LANG['Archives']
   ENTRIES        = Listing.new LANG['All entries']
-  RECENT_ENTRIES = Listing.new LANG['Recent entries']
+  RECENT_ENTRIES = Listing.new LANG['New entries']
 
 
   tagStore = {}
