@@ -196,62 +196,37 @@ include ERB::Util
     end
   end
 
-  class ERB
-    alias old_initialize initialize
+  class Template < ERB
+    # Returns the result of template evaluation thus far.
+    attr_reader :buffer
 
-    # A version of ERB whose embedding tags behave like those
-    # of PHP.  That is, only <%= ...  %> tags produce output,
-    # whereas <% ...  %> tags do *not* produce any output.
-    def initialize aInput, *aArgs
-      # ensure that only <%= ... %> tags generate output
-        input = aInput.gsub %r{<%=.*?%>}m do |s|
-          if ($' =~ /\r?\n/) == 0
-            s << $&
-          else
-            s
-          end
-        end
+    # aName:: String that replaces the ambiguous '(erb)' identifier in stack
+    #         traces, so that the user can better determine the source of an
+    #         error.
+    #
+    # args:: Arguments for ERB::new
+    def initialize aName, *args
+      # silence the code-only <% ... %> directive, just like PHP does
+      args[0].gsub!(/^[ \t]*<%[^%=]((?!<%).)*?[^%]%>[ \t]*\r?\n/m) {|s| s.strip}
 
-        aArgs[1] = '>'
+      args[3] = '@buffer'
+      super(*args)
 
-      old_initialize input, *aArgs
+      @filename = aName
     end
 
     # Renders this template within a fresh object that
     # is populated with the given instance variables.
-    #
-    # The given template name replaces the ambiguous
-    # '(erb)' identifier in stack traces, so that the
-    # user can better determine the source of an error.
-    def render_with aTemplateName, aInstVars = {}
-      dummy = Object.new
-
-      aInstVars.each_pair do |var, val|
-        dummy.instance_variable_set var, val
-      end
-
-      begin
-        context = dummy.instance_eval {binding}
-        result(context) # eval the ERB template
-
-      rescue Exception => e
-        trace = []
-
-        e.backtrace.each do |line|
-          line.sub! '(erb)', aTemplateName
-
-          if line =~ /:in `render_with'$/
-            line = $`
-            trace << line
-            break
-          end
-
-          trace << line
+    def render_with aInstVars = {}
+      context = Object.new.instance_eval do
+        aInstVars.each_pair do |var, val|
+          instance_variable_set var, val
         end
 
-        e.set_backtrace(trace)
-        raise
+        binding
       end
+
+      result(context)
     end
   end
 
@@ -321,7 +296,7 @@ include ERB::Util
 
   # In order to mix-in this module, an object must:
   #
-  # 1. have an associated ERB template file (whose basename is
+  # 1. have an associated template file (whose basename is
   #    specified by #template_name) in the config/ directory.
   #
   #    A default #template_name, which uses the
@@ -332,27 +307,21 @@ include ERB::Util
   #   A default #url, which uses #name, is provided.
   #
   module TemplateMixin
-    # Basename of the ERB template file, which resides in the
+    # Basename of the template file, which resides in the
     # config/ directory, used to render objects of this class.
     def template_name
       self.class.to_s
     end
 
-    # Path to the ERB template file that is
-    # used to render objects of this class.
-    def template_file
-      template.input_file
-    end
-
-    # Returns the ERB template used to render objects of this class.
+    # Returns the template used to render objects of this class.
     def template
-      Kernel.const_get(template_name.to_s.upcase << '_TEMPLATE')
+      Kernel.const_get(template_name.upcase << '_TEMPLATE')
     end
 
     # Returns the name of the instance variable for objects of this
-    # class.  This variable is used in the ERB template of this class.
+    # class.  This variable is used in the template of this class.
     def template_ivar
-      "@#{self.class.to_s.downcase}".to_sym
+      "@#{template_name.downcase}".to_sym
     end
 
     # Path (relative to the output/ directory)
@@ -365,7 +334,7 @@ include ERB::Util
     def to_html aOpts = {}
       aOpts[:@summarize] = BLOG.summarize_entries unless aOpts.key? :@summarize
       aOpts[template_ivar] = self
-      template.render_with(template_file, aOpts)
+      template.render_with(aOpts)
     end
 
     # Renders a complete HTML page for this object.
@@ -374,7 +343,7 @@ include ERB::Util
       aOpts[:@title]   = self.name
       aOpts[:@content] = self.to_html(aOpts)
 
-      html = HTML_TEMPLATE.render_with(HTML_TEMPLATE.input_file, aOpts)
+      html = HTML_TEMPLATE.render_with(aOpts)
 
       # make implicit relative paths into explicit ones
         pathPrefix = '../' * self.url.scan(%r{/+}).length
@@ -509,7 +478,7 @@ include ERB::Util
 
     # Transforms the text of this entry into HTML and returns it.
     def html
-      @html ||= ERB.new(@text).render_with(@input_file + ":in `text' parameter", template_ivar => self).to_html
+      @html ||= Template.new("#{@input_file}:text", @text).render_with(template_ivar => self).to_html
     end
 
     # Returns a URL for submiting comments about this entry.
@@ -684,13 +653,7 @@ include ERB::Util
   # load templates
     FileList['config/*.erb'].each do |src|
       var = "#{File.basename(src, File.extname(src)).upcase}_TEMPLATE"
-      val = ERB.new(File.read(src))
-
-      class << val
-        attr_reader :input_file
-      end
-      val.instance_variable_set(:@input_file, src)
-
+      val = Template.new(src, File.read(src))
       Kernel.const_set var.to_sym, val
     end
 
