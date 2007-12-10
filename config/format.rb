@@ -42,6 +42,10 @@ class String
     html = html.thru_coderay
     restore_tags! html, verbatimStore
 
+    # ensure tables have a border (this GREATLY improves
+    # readability in text-mode web browsers like Lynx and w3m)
+    html.gsub! %r/<table/, '\& border="1"'
+
     html
   end
 

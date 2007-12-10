@@ -381,6 +381,11 @@
 
 /* tables */
 
+  table
+  {
+    border           : none;
+  }
+
   th,
   td
   {
