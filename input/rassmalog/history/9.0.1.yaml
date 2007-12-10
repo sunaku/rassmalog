@@ -1,0 +1,30 @@
+name: Version 9.0.1
+date: Sun Dec  9 16:55:33 PST 2007
+tags: history
+text: |
+  This release (1) fixes some bugs that were thought to have been fixed by the previous release and (2) shortens the source code down to 567 lines!
+
+
+  h1. Caution
+
+  * The @Chainable@ module has been renamed to @SequenceMixin@ and its @next@ and @prev@ methods no longer wrap around the array.  Instead, they return @nil@ when you try to access beyond the end of the array.
+
+  * The @TemplateMixin@ module no longer has a @template_file@ method.
+
+  * The @ERB#render_with@ method has been moved to @Template#render_with@. In addition, the method no longer takes a "template name" as the first argument.
+
+  * The "Recent entries" phrase has been renamed to "New entries" for brevity.
+
+
+  h1. Repairs
+
+  * ARCHIVES was not ordered by date (again!).
+
+  * The next/previous and older/newer links were forming a cycle (again!). This can cause confusion when a user is viewing the newest entry and sees a "newer" link which really takes the user back to the oldest entry!
+
+  * The *copy* task was copying all <tt>input/*.yaml</tt> files to <tt>output/</tt>.
+
+
+  h1. Usability
+
+  * The <tt>config/format.rb</tt> file now inserts a "border=1" attribute on all HTML tables. This _greatly_ improves readability in text-mode web browsers!

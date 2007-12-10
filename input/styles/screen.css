@@ -28,7 +28,7 @@
   /* the menu item corresponding to the current web page */
   #links .current a
   {
-    color            : red;
+    color            : #FF0000;
   }
 
 
@@ -64,7 +64,7 @@
   /* the search box in which the user types their query */
   #search-query
   {
-    width: 10em;
+    width            : 10em;
   }
 
   /* an area for search results */
@@ -106,7 +106,7 @@
   .entry .name a:link,
   .entry .name a:visited
   {
-    text-decoration: none;
+    text-decoration  : none;
   }
 
   /* contains links to the next/previous blog entry */
@@ -481,5 +481,5 @@
 
   #links ul
   {
-    margin-bottom: 1em;
+    margin-bottom    : 1em;
   }
