@@ -46,7 +46,7 @@
     <link rel="stylesheet" type="text/css" href="styles/print.css" media="print" />
     <link rel="alternate stylesheet" type="text/css" href="styles/print.css" title="Print Preview" />
 
-    <title><%= @title %> &mdash; <%= name_html %></title>
+    <title><%= @title.to_html %> &mdash; <%= name_html %></title>
   </head>
   <body>
     <p style="display: none">

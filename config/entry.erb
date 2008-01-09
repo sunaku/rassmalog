@@ -54,7 +54,7 @@
 
   <h1 class="name"><%=
     if @solo
-      @entry.name
+      @entry.name.to_html
     else
       @entry.to_link
     end
