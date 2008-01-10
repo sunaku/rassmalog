@@ -55,20 +55,6 @@
       <a href="#links">Jump to navigation menu</a>
     </p>
 
-    <form id="search" method="get" <%=
-      if @title == LANG['Search']
-        # avoid having to reload the entire search page (which can
-        # get very large in file size) each time the user submits
-        # the search form when he/she is already on the search page
-        %{action="#" onsubmit="search_handler(); return false;"}
-      else
-        %{action="#{LANG['Search'].to_file_name}.html"}
-      end
-    %>>
-      <input type="text" name="q" id="search-query"/>
-      <input type="submit" value="<%= LANG['Search'] %>"/>
-    </form>
-
     <br style="display: none"/>
 
     <div id="header">
@@ -103,6 +89,22 @@
               <%= LANG['Subscribe'] %>
               <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
             </a>
+          </li>
+          <li>
+            <%= LANG['Search'] %>
+            <form id="search" method="get" <%=
+              if @title == LANG['Search']
+                # avoid having to reload the entire search page (which can
+                # get very large in file size) each time the user submits
+                # the search form when the user is already on the search page
+                %{action="#" onsubmit="search_handler(); return false;"}
+              else
+                %{action="#{LANG['Search'].to_file_name}.html"}
+              end
+            %>>
+              <input type="text" name="q" id="search-query"/>
+              <input type="submit" value="&crarr;"/>
+            </form>
           </li>
         </ul>
       </li>
