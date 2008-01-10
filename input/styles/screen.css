@@ -7,23 +7,21 @@
     margin-left      : auto;
     margin-right     : auto;
     padding          : 0.5em;
-    max-width        : 51em; /* 36em + 15em (see #content dimensions below) */
+    max-width        : 51em; /* 35em (#content) + 1em (space) + 15em (#links) */
   }
 
   /* the main content of the web page */
-  #content,
-  #header
+  #content
   {
-    max-width        : 36em;
-    margin-right     : 15em;
+    float            : left;
+    margin           : 0;
+    max-width        : 35em;
   }
 
   /* the 'links' parameter in config/blog.yaml */
   #links
   {
-    float            : right;
-    max-width        : 12em;
-    margin           : 0;
+    margin-left      : 36em; /* 35em (#content) + 1em (space) */
   }
 
   /* the menu item corresponding to the current web page */
@@ -37,7 +35,7 @@
   /* the banner containing blog name and description */
   #header
   {
-    margin-bottom    : 3em;
+    padding-bottom   : 1.5em;
   }
 
   /* the name of your blog */
@@ -62,7 +60,7 @@
   /* the search box in which the user types their query */
   #search-query
   {
-    width: 60%;
+    width            : 60%;
   }
 
   /* an area for search results */
@@ -81,6 +79,7 @@
 
   #footer
   {
+    clear            : both;
     margin-top       : 5em;
     text-align       : center;
   }
@@ -208,13 +207,12 @@
   .section > .name
   {
     font-size        : 1.6em;
-    margin-bottom    : 2em;
   }
 
   /* contains links to the next/previous section */
   .section > .menu
   {
-    float            : right;
+    margin-bottom    : 4em;
   }
 
 
@@ -364,16 +362,7 @@
     border           : 1px dashed #C0C0C0;
     background-color : #F5FFDF;
     padding          : 1em;
-    overflow         : hidden;
-    _overflow        : auto; /* for IE6 */
-  }
-
-  pre:hover
-  {
-    border           : 1px solid #000000;
-    width            : 1000%;
-    position         : relative;
-    z-index          : 1;
+    overflow         : auto;
   }
 
 

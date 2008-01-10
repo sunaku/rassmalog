@@ -50,17 +50,25 @@
   </head>
   <body>
     <p style="display: none">
-      <a href="#content">Jump to page content</a>
+      <a href="#content">Skip to main content</a>
       <br/>
-      <a href="#links">Jump to navigation menu</a>
+      <a href="#links">Skip to navigation menu</a>
     </p>
-
-    <br style="display: none"/>
 
     <div id="header">
       <h1 class="name"><%= link('index.html', name_html) %></h1>
       <div class="info"><%= info_html %></div>
     </div>
+
+    <br style="display: none"/>
+    <hr style="display: none"/>
+
+    <div id="content"><%= @content %></div>
+
+    <% if @content !~ %r{<hr.*?>(</.*?>|<[^/].*?/>|.)*\z}m %>
+    <br style="display: none"/>
+    <hr style="display: none"/>
+    <% end %>
 
     <%
       # highlights the given item if it corresponds to the current web page
@@ -110,16 +118,6 @@
       </li>
       <%= BLOG.links.to_html if BLOG.links %>
     </ul>
-
-    <br style="display: none"/>
-    <hr style="display: none"/>
-
-    <div id="content"><%= @content %></div>
-
-    <% if @content !~ %r{<hr.*?>(</.*?>|<[^/].*?/>|.)*\z}m %>
-    <br style="display: none"/>
-    <hr style="display: none"/>
-    <% end %>
 
     <p id="footer">
       Authored by <%=

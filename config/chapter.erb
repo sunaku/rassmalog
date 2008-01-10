@@ -40,7 +40,7 @@
     items = @chapter.sort
     sizes = @chapter.sort_by { |section| section.length }.reverse
   %>
-  <table>
+  <table border="1">
     <tr>
       <th colspan="2">Sorted by <%= byDate ? 'date' : 'name' %></th>
       <td style="border: none"/>
