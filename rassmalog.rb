@@ -856,12 +856,18 @@ include ERB::Util
     dst = 'output/index.html'
 
     file dst => COMMON_DEPS do
-      target = BLOG.front_page || RECENT_ENTRIES.url
-      targetUrl = target.split('/').map {|s| u(s)}.join('/')
+      target     = BLOG.front_page || RECENT_ENTRIES.url
+      targetUrl  = target.split('/').map {|s| u(s)}.join('/')
       targetLink = link(targetUrl, target)
+      targetPath = File.join('output', target)
 
-      notify 'front page', File.join('output', target)
-      write_file dst, %{<html><head><meta http-equiv="refresh" content="0; url=#{targetUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', targetLink]}</p></body></html>}
+      notify :front_page, targetPath
+
+      if targetUrl =~ %r{/}
+        write_file dst, %{<html><head><meta http-equiv="refresh" content="0; url=#{targetUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', targetLink]}</p></body></html>}
+      else
+        cp targetPath, dst, :preserve => true
+      end
     end
 
     task :entry_list => dst
