@@ -844,6 +844,11 @@ include ERB::Util
 
 # output generation stage
 
+  task :default => :gen
+
+  desc "Generate the blog."
+  task :gen
+
   desc "Copy files from input/ into output/"
   task :copy
 
@@ -860,7 +865,7 @@ include ERB::Util
   task :feed
 
   desc "Regenerate the blog from scratch."
-  task :regen => [:clobber, :default]
+  task :regen => [:clobber, :gen]
 
   directory 'output'
   CLOBBER.include 'output'
@@ -918,7 +923,7 @@ include ERB::Util
 # output publishing stage
 
   desc "Upload the blog to your website."
-  task :upload => [:default, 'output'] do
+  task :upload => [:gen, 'output'] do
     whole = 'output'
     parts = Dir.glob('output/*', File::FNM_DOTMATCH)[2..-1].
             map {|f| f.shell_escape}.join(' ')
