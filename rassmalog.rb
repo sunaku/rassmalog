@@ -277,22 +277,15 @@ include ERB::Util
 
   # Registers a new Rake task for generating a feed.
   # aFile:: path of the output file relative to the output/ directory
-  # aItems:: array containing Chapter, Section, and Entry objects
+  # aItems:: array containing Chapter, Section, Listing, and Entry objects
   # aName:: title of the feed
   # aInfo:: description of the feed
   def feed aFile, aItems, aName, aInfo = nil, aSummarize = BLOG.summarize_entries
-    entries = aItems.map do |x|
-      if x.is_a? Chapter
-        x.sections
-      else
-        x
-      end
-    end.flatten
+    dst = File.join('output', aFile)
+    entries = aItems.flatten.uniq
 
     feedObj = Feed.new(aFile, entries, aName, aInfo, aSummarize)
     FEEDS << feedObj
-
-    dst = File.join('output', aFile)
 
     file dst => COMMON_DEPS + entries.map {|e| e.input_file} do |t|
       notify :feed, t.name
