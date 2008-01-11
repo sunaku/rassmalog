@@ -851,6 +851,24 @@ include ERB::Util
 
 # output generation stage
 
+  desc "Copy files from input/ into output/"
+  task :copy
+
+  desc "Generate HTML for blog entries."
+  task :entry
+
+  desc "Generate HTML for tags and archives."
+  task :entry_meta
+
+  desc "Generate HTML for recent/all entry lists."
+  task :entry_list
+
+  desc "Generate RSS feeds for the blog."
+  task :feed
+
+  desc "Regenerate the blog from scratch."
+  task :regen => [:clobber, :default]
+
   directory 'output'
   CLOBBER.include 'output'
 
