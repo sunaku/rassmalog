@@ -23,7 +23,7 @@
   <% end %>
   <language><%=h BLOG.language %></language>
   <lastBuildDate><%= Time.now.rfc822 %></lastBuildDate>
-  <generator><%= GENERATOR %></generator>
+  <generator><%= Rassmalog %></generator>
 <%
   @feed.entries.each do |entry|
     url = entry.absolute_url

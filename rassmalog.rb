@@ -16,14 +16,14 @@ include ERB::Util
 
 # project information
 
-  GENERATOR = {
+  Rassmalog = {
     :name     => 'Rassmalog',
     :version  => '9.0.1',
     :date     => '2007-12-09',
     :url      => 'http://rassmalog.rubyforge.org'
   }
 
-  class << GENERATOR
+  class << Rassmalog
     # Returns the name and version of Rassmalog.
     def to_s
       self[:name] + ' ' + self[:version]

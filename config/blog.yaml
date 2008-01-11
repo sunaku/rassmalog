@@ -26,7 +26,7 @@
 #
 # The name of your blog.
 #
-name: <%= GENERATOR %>
+name: <%= Rassmalog %>
 
 
 #
@@ -318,7 +318,7 @@ archive_frequency: %B %Y
 # standard mechanism defined in the <tt>config/format.rb</tt> file.
 #
 links:
-  - <%= GENERATOR %>:
+  - <%= Rassmalog %>:
     - What's new?: <%= TAGS['history'].first.url %>
     - Previous releases: <%= TAGS['history'].url %>
     - Project home page: http://rassmalog.rubyforge.org
