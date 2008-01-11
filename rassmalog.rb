@@ -825,7 +825,7 @@ include ERB::Util
     generate_html_task :entry_list, ENTRIES, ENTRY_FILES
 
   # generate list of recent entries
-    recent = BLOG.num_recent_entries ? ENTRIES[0, BLOG.num_recent_entries] : ENTRIES
+    recent = BLOG.new_entries ? ENTRIES[0, BLOG.new_entries] : ENTRIES
     recentFiles = recent.map {|e| e.input_file}
 
     RECENT_ENTRIES.concat recent
