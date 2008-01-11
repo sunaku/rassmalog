@@ -15,8 +15,11 @@ task :entry_meta
 desc "Generate HTML for recent/all entry lists."
 task :entry_list
 
-desc "Generate RSS feed for the blog."
+desc "Generate RSS feeds for the blog."
 task :feed
 
 desc "Regenerate the blog from scratch."
 task :regen => [:clobber, :default]
+
+feed 'rss.xml', RECENT_ENTRIES, BLOG.name, BLOG.info
+feed 'ann.xml', TAGS['history'], 'Rassmalog release announcements'

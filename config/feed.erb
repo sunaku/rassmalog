@@ -9,19 +9,23 @@
   * RECENT_ENTRIES - array of recent blog entries (Entry objects)
   * TAGS           - array of all tags (Section objects)
   * ARCHIVES       - array of all archives (Section objects)
+  * FEEDS          - array of all feeds (Feed objects)
+  * @feed          - the feed for which we are generating output
 =end
 %>
 <?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
 <rss version="2.0">
 <channel>
-  <title><%=h BLOG.name.to_html %></title>
+  <title><%=h @feed.name.to_html %></title>
   <link><%= BLOG.url %></link>
-  <description><%=h BLOG.info.to_html %></description>
+  <% if @feed.info %>
+  <description><%=h @feed.info.to_html %></description>
+  <% end %>
   <language><%=h BLOG.language %></language>
   <lastBuildDate><%= Time.now.rfc822 %></lastBuildDate>
   <generator><%= GENERATOR %></generator>
 <%
-  RECENT_ENTRIES.each do |entry|
+  @feed.entries.each do |entry|
     url = entry.absolute_url
 
     # resolve relative URLs into absolute URLs
@@ -30,19 +34,16 @@
       a, b = $1 + $2, $3.to_s << $4
 
       case $3
-      # already absolute
-      when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://}
+      when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://} # already absolute
         match
 
-      # relative to this entry
-      when /^#/
+      when /^#/ # relative to this entry
         a + url + b
 
-      # relative to this blog
-      else
+      else # relative to this blog
         a + BLOG.url + b
+      end
     end
-  end
 %>
   <item>
     <title><%=h entry.name.to_html %></title>

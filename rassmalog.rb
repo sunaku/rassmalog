@@ -272,6 +272,36 @@ include ERB::Util
     dst
   end
 
+  FEEDS = []
+  Feed = Struct.new(:file, :name, :info, :entries)
+
+  # Registers a new Rake task for generating a feed.
+  # aFile:: path of the output file relative to the output/ directory
+  # aItems:: array containing Chapter, Section, and Entry objects
+  # aName:: title of the feed
+  # aInfo:: description of the feed
+  def feed aFile, aItems, aName, aInfo = nil
+    entries = aItems.map do |x|
+      if x.is_a? Chapter
+        x.sections
+      else
+        x
+      end
+    end.flatten
+
+    feedObj = Feed.new(aFile, aName, aInfo, entries)
+    FEEDS << feedObj
+
+    dst = File.join('output', aFile)
+
+    file dst => COMMON_DEPS + entries.map {|e| e.input_file} do |t|
+      notify :feed, t.name
+      write_file t.name, FEED_TEMPLATE.render_with(:@feed => feedObj)
+    end
+
+    task :feed => dst
+    CLEAN.include dst
+  end
 
 # data structures
 
@@ -872,15 +902,6 @@ include ERB::Util
 
     task :entry_list => dst
     CLEAN.include dst
-
-  # generate the RSS feed
-    file 'output/rss.xml' => COMMON_DEPS + ENTRY_FILES do |t|
-      notify 'RSS feed', t.name
-      write_file t.name, RSS_TEMPLATE.result(binding)
-    end
-
-    task :feed => 'output/rss.xml'
-    CLEAN.include 'output/rss.xml'
 
 
 # output publishing stage

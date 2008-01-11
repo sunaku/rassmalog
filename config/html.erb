@@ -9,6 +9,7 @@
   * RECENT_ENTRIES - array of recent blog entries (Entry objects)
   * TAGS           - array of all tags (Section objects)
   * ARCHIVES       - array of all archives (Section objects)
+  * FEEDS          - array of all feeds (Feed objects)
   * @target        - object for which we are generating HTML
   * @title         - title for the HTML page we are generating
   * @content       - body for the HTML page we are generating
@@ -41,7 +42,10 @@
     <meta name="author" content="<%=h author_html %>" />
     <meta name="generator" content="<%= GENERATOR %>" />
 
-    <link rel="alternate" type="application/rss+xml" href="rss.xml" title="RSS feed for this blog." />
+    <% FEEDS.each do |feed| %>
+    <link rel="alternate" type="application/rss+xml" href="<%= feed.file %>" title="<%= feed.name %>" />
+    <% end %>
+
     <link rel="stylesheet" type="text/css" href="styles/screen.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="styles/print.css" media="print" />
     <link rel="alternate stylesheet" type="text/css" href="styles/print.css" title="Print Preview" />
