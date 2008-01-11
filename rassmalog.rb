@@ -701,10 +701,10 @@ include ERB::Util
 
 # input processing stage
 
-  TAGS           = Chapter.new LANG['Tags']
-  ARCHIVES       = Chapter.new LANG['Archives']
-  ENTRIES        = Listing.new LANG['All entries']
-  RECENT_ENTRIES = Listing.new LANG['New entries']
+  TAGS        = Chapter.new LANG['Tags']
+  ARCHIVES    = Chapter.new LANG['Archives']
+  ENTRIES     = Listing.new LANG['All entries']
+  NEW_ENTRIES = Listing.new LANG['New entries']
 
 
   tagStore = {}
@@ -828,8 +828,8 @@ include ERB::Util
     recent = BLOG.new_entries ? ENTRIES[0, BLOG.new_entries] : ENTRIES
     recentFiles = recent.map {|e| e.input_file}
 
-    RECENT_ENTRIES.concat recent
-    generate_html_task :entry_list, RECENT_ENTRIES, recentFiles
+    NEW_ENTRIES.concat recent
+    generate_html_task :entry_list, NEW_ENTRIES, recentFiles
 
   # generate HTML for tags and archives
     [TAGS, ARCHIVES].each do |chapter|
@@ -904,7 +904,7 @@ include ERB::Util
     dst = 'output/index.html'
 
     file dst => COMMON_DEPS do
-      target     = BLOG.front_page || RECENT_ENTRIES.url
+      target     = BLOG.front_page || NEW_ENTRIES.url
       targetUrl  = target.split('/').map {|s| u(s)}.join('/')
       targetLink = link(targetUrl, target)
       targetPath = File.join('output', target)

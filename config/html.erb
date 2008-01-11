@@ -3,18 +3,18 @@
   This is a template for generating a complete HTML web page.
 
   The following variables are available for use in this template:
-  * BLOG           - data from the blog configuration file
-  * LANG           - data from the translation file
-  * ENTRIES        - array of all blog entries (Entry objects)
-  * RECENT_ENTRIES - array of recent blog entries (Entry objects)
-  * TAGS           - array of all tags (Section objects)
-  * ARCHIVES       - array of all archives (Section objects)
-  * FEEDS          - array of all feeds (Feed objects)
-  * @target        - object for which we are generating HTML
-  * @title         - title for the HTML page we are generating
-  * @content       - body for the HTML page we are generating
+  * BLOG        - data from the blog configuration file
+  * LANG        - data from the translation file
+  * ENTRIES     - array of all blog entries (Entry objects)
+  * NEW_ENTRIES - array of recent blog entries (Entry objects)
+  * TAGS        - array of all tags (Section objects)
+  * ARCHIVES    - array of all archives (Section objects)
+  * FEEDS       - array of all feeds (Feed objects)
+  * @target     - object for which we are generating HTML
+  * @title      - title for the HTML page we are generating
+  * @content    - body for the HTML page we are generating
 
-  Note that the "display: none" stuff in this template is meant to improve
+  NOTE that the "display: none" stuff in this template is meant to improve
   the readability and usability of this web page in text-only web browsers.
 =end
 
@@ -92,7 +92,7 @@
       <li>
         <%= LANG['Navigation'] %>
         <ul>
-          <li><%= menu_item(RECENT_ENTRIES) %></li>
+          <li><%= menu_item(NEW_ENTRIES) %></li>
           <li><%= menu_item(ENTRIES) %></li>
           <li><%= menu_item(TAGS) %></li>
           <li><%= menu_item(ARCHIVES) %></li>
