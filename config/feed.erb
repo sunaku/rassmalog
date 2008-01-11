@@ -27,10 +27,11 @@
 <%
   @feed.entries.each do |entry|
     url = entry.absolute_url
+    text = (@feed.summarize ? entry.summary : entry.html).to_s
 
     # resolve relative URLs into absolute URLs
     # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-    text = entry.html.gsub %r{(href=|src=)(.)(.*?)(\2)} do |match|
+    text.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
       a, b = $1 + $2, $3.to_s << $4
 
       case $3

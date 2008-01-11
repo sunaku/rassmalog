@@ -273,14 +273,14 @@ include ERB::Util
   end
 
   FEEDS = []
-  Feed = Struct.new(:file, :name, :info, :entries)
+  Feed = Struct.new(:file, :entries, :name, :info, :summarize)
 
   # Registers a new Rake task for generating a feed.
   # aFile:: path of the output file relative to the output/ directory
   # aItems:: array containing Chapter, Section, and Entry objects
   # aName:: title of the feed
   # aInfo:: description of the feed
-  def feed aFile, aItems, aName, aInfo = nil
+  def feed aFile, aItems, aName, aInfo = nil, aSummarize = BLOG.summarize_entries
     entries = aItems.map do |x|
       if x.is_a? Chapter
         x.sections
@@ -289,7 +289,7 @@ include ERB::Util
       end
     end.flatten
 
-    feedObj = Feed.new(aFile, aName, aInfo, entries)
+    feedObj = Feed.new(aFile, entries, aName, aInfo, aSummarize)
     FEEDS << feedObj
 
     dst = File.join('output', aFile)
