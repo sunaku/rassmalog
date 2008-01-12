@@ -33,6 +33,7 @@ desc "Format the user guide."
 file 'doc/guide.html' => 'doc/guide.erb' do |t|
   system "~/src/gerbil/gerbil html #{t.prerequisites} > #{t.name}"
 end
+CLOBBER.include 'doc/guide.html'
 
 desc "Upload the project homepage."
 task :web => ['ref', 'output'] do |t|

@@ -39,6 +39,7 @@ info: |
       "YAML":http://www.yaml.org/,
       "eRuby":http://en.wikipedia.org/wiki/Eruby,
   and "Rake":http://rake.rubyforge.org/.
+  Please see the "comprehensive user guide":../doc/guide.html for more information about Rassmalog.
 
 
 ################################################################################
@@ -320,10 +321,10 @@ archive_frequency: %B %Y
 links:
   - <%= Rassmalog %>:
     - What's new?: <%= TAGS['history'].first.url %>
-    - Source code repository: http://rassmalog.rubyforge.org/src/
+    - Previous releases: <%= TAGS['history'].url %>
+    - Source repository: http://rassmalog.rubyforge.org/src/
     - Download packages: http://rubyforge.org/frs/?group_id=2737
     - Feedback & support: <%= BLOG.email.to_url %>
-    - Announcements: ann.xml
 
   - Documentation:
     - User guide: ../doc/guide.html

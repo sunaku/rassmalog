@@ -16,11 +16,9 @@
 <?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
 <rss version="2.0">
 <channel>
-  <title><%=h @feed.name.to_html %></title>
+  <title><%=h @feed.name.to_s.to_html %></title>
   <link><%= BLOG.url %></link>
-  <% if @feed.info %>
-  <description><%=h @feed.info.to_html %></description>
-  <% end %>
+  <description><%=h @feed.info.to_s.to_html %></description>
   <language><%=h BLOG.language %></language>
   <lastBuildDate><%= Time.now.rfc822 %></lastBuildDate>
   <generator><%= Rassmalog %></generator>

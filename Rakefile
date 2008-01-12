@@ -4,7 +4,7 @@ require 'rassmalog'
 task :gen => [ :copy, :entry, :entry_meta, :entry_list, :feed ]
 
 # feed for new blog entries
-feed 'new.xml', NEW_ENTRIES, BLOG.name, BLOG.info
+feed 'feed.xml', NEW_ENTRIES, BLOG.name, BLOG.info
 
 # feed for rassmalog announcements
 feed 'ann.xml',
