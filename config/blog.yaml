@@ -320,9 +320,10 @@ archive_frequency: %B %Y
 links:
   - <%= Rassmalog %>:
     - What's new?: <%= TAGS['history'].first.url %>
-    - Previous releases: <%= TAGS['history'].url %>
-    - Project home page: http://rassmalog.rubyforge.org
-    - RubyForge portal: http://rubyforge.org/projects/rassmalog/
+    - Source code repository: http://rassmalog.rubyforge.org/src/
+    - Download packages: http://rubyforge.org/frs/?group_id=2737
+    - Feedback & support: <%= BLOG.email.to_url %>
+    - Announcements: ann.xml
 
   - Documentation:
     - Examples: <%= TAGS['examples'].url %>
@@ -335,39 +336,16 @@ links:
     - YAML syntax: http://yaml4r.sourceforge.net/cookbook/
     - eRuby syntax: http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
 
-  - Community:
-    - Mailing list: http://rassmalog.rubyforge.org/mail/
-    - Web forums: http://rubyforge.org/forum/?group_id=2737
-
-  - Facilities:
-    - Source code: http://rassmalog.rubyforge.org/src/rassmalog/
-    - Downloads: http://rubyforge.org/frs/?group_id=2737
-    - Bugs: http://rubyforge.org/tracker/?group_id=2737
-    - Patches: http://rubyforge.org/tracker/?group_id=2737
-    - Requests: http://rubyforge.org/tracker/?group_id=2737
-
   - Users:
-    - Future:
-      - Add your blog here!: "<%= BLOG.email.to_url('add Rassmalog user blog', 'My blog URL is: ') %>"
-
-    - Present:
-      - Suraj N. Kurapati: http://rassmalog.rubyforge.org/blog/
-      - Josef 'Jupp' Schugt: http://cip.physik.uni-bonn.de/~jupp/
-      - Asterisell: http://asterisell.profitoss.com
-      - Profitoss: http://profitoss.com
-      - ClothRed: http://clothred.rubyforge.org
-      - Dave Scotto: http://www.yasgursfarm.us/d/
-      - Spooky Fox: http://blog.iworkroom.com
-      - листп еоод: http://blog.listp.com
-
-    - Past:
-      - Manfred Schreiweis: http://blog.mabitoka.de
-      - Rasmus Arnling Bååth: http://www.sumsar.net
-      - Matthew Routley: http://matt.routleynet.org/blog/
-      - David Karapetyan: http://www-scf.usc.edu/~dkarapet/blog/
-      - Fox Chao: http://blog.netinfox.com
-      - Hemant Kumar: http://gnufied.org
-      - Shane Sveller: http://shanesveller.com
+    - Suraj N. Kurapati: http://snk.tuxfamily.org/web/
+    - Josef 'Jupp' Schugt: http://cip.physik.uni-bonn.de/~jupp/
+    - Asterisell: http://asterisell.profitoss.com
+    - Profitoss: http://profitoss.com
+    - ClothRed: http://clothred.rubyforge.org
+    - Dave Scotto: http://www.yasgursfarm.us/d/
+    - Spooky Fox: http://blog.iworkroom.com
+    - листп еоод: http://blog.listp.com
+    - Add _your_ blog here!: "<%= BLOG.email.to_url('add Rassmalog blog', 'My blog URL is: ...') %>"
 
   - hey!:
     - this menu is:
