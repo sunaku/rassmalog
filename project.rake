@@ -36,8 +36,9 @@ end
 CLOBBER.include 'doc/guide.html'
 
 desc "Upload the project homepage."
-task :web => ['ref', 'output'] do |t|
-  sh 'rsync', '-avz', '--delete', 'ref', 'output', PROJECT_SSH_URL
+task :web => ['doc', 'ref', 'output'] do |t|
+  args = t.prerequisites + [PROJECT_SSH_URL]
+  sh 'rsync', '-avz', '--delete', *args
 end
 
 desc 'Connect to website FTP.'
