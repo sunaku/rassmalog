@@ -219,7 +219,7 @@ require 'config/format'
     File.open(aPath, 'w') {|f| f << aContent}
   end
 
-  COMMON_DEPS = FileList[__FILE__, 'output', 'config/**/*.{yaml,*rb}']
+  COMMON_DEPS = FileList['Rakefile', __FILE__, 'output', 'config/**/*.{yaml,*rb}']
 
   # Registers a new Rake task for generating a HTML
   # file and returns the path of the output file.
