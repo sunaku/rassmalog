@@ -25,12 +25,20 @@ task :default do
 end
 
 desc "Generate release packages."
-task :release => [:clobber, :rdoc, 'output'] do
+task :release => [:clobber, :doc, 'ref', 'output'] do
   sh 'rake', '-f', __FILE__, 'package'
 end
 
+desc "Generate documentation."
+task :doc => 'doc/guide.html'
+
+desc "Format the user guide."
+file 'doc/guide.html' => 'doc/guide.erb' do |t|
+  system "~/src/gerbil/gerbil html #{t.prerequisites} > #{t.name}"
+end
+
 desc "Upload the project homepage."
-task :web => [:rdoc, 'output'] do |t|
+task :web => ['ref', 'output'] do |t|
   sh 'rsync', '-avz', '--delete', 'ref', 'output', PROJECT_SSH_URL
 end
 
@@ -43,9 +51,9 @@ file 'output' do
   sh 'rake'
 end
 
-Rake::RDocTask.new do |rd|
-  rd.rdoc_files.exclude('_darcs', 'pkg').include('**/*.rb')
-  rd.rdoc_dir = 'ref'
+Rake::RDocTask.new 'ref' do |t|
+  t.rdoc_files.exclude('_darcs', 'pkg').include('**/*.rb')
+  t.rdoc_dir = t.name
 end
 
 Rake::PackageTask.new PROJECT_ID, PROJECT_VERSION do |p|

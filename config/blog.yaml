@@ -232,7 +232,7 @@ locale:
 #
 #   front_page:   # nothing here!
 #
-front_page: rassmalog/welcome.html
+front_page:
 
 
 #
