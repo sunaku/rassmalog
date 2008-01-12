@@ -4,36 +4,14 @@
 # See the file named LICENSE for details.
 
 require 'rake/clean'
-
-require 'config/format'
 require 'yaml'
 require 'time'
 require 'ostruct'
-
 require 'erb'
 include ERB::Util
 
-
-# project information
-
-  Rassmalog = {
-    :name     => 'Rassmalog',
-    :version  => '9.0.1',
-    :date     => '2007-12-09',
-    :url      => 'http://rassmalog.rubyforge.org'
-  }
-
-  class << Rassmalog
-    # Returns the name and version of Rassmalog.
-    def to_s
-      self[:name] + ' ' + self[:version]
-    end
-
-    # Returns a hyperlink containing the name and version of Rassmalog.
-    def to_link
-      link self[:url], to_s
-    end
-  end
+require 'version'
+require 'config/format'
 
 
 # utility logic

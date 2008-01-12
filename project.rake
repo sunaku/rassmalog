@@ -8,14 +8,11 @@ require 'rake/packagetask'
 
 ## project configuration
 
+require 'version'
+
 PROJECT_ID = :rassmalog
 PROJECT_SSH_URL = "snk@rubyforge.org:/var/www/gforge-projects/#{PROJECT_ID}"
-
-if Dir['input/rassmalog/history/*'].sort.last =~ /\d+\.\d+\.\d+/
-  PROJECT_VERSION = $&
-else
-  raise "could not parse project version"
-end
+PROJECT_VERSION = Rassmalog[:version]
 
 
 desc "Show a list of available tasks."
