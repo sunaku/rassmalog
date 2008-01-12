@@ -15,6 +15,11 @@
   {
     float            : left;
     margin           : 0;
+  }
+
+  #content,
+  #header
+  {
     max-width        : 35em;
   }
 
