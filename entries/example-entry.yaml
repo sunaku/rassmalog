@@ -91,7 +91,7 @@ tags:
 # A relative path (with respect to the <tt>output/</tt>
 # directory) to the output HTML file for this blog entry.
 #
-output_file: rassmalog/blog-entry-file-format.html
+output_file: blog-entry-file-format.html
 
 
 #

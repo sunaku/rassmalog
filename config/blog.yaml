@@ -326,9 +326,10 @@ links:
     - Announcements: ann.xml
 
   - Documentation:
-    - Examples: <%= TAGS['examples'].url %>
+    - User guide: ../doc/guide.html
     - Tips & tricks: <%= TAGS['tricks'].url %>
-    - Entry file format: rassmalog/blog-entry-file-format.html
+    - Blog entry format: blog-entry-file-format.html
+    - Blog entry examples: <%= TAGS['examples'].url %>
 
   - Reference:
     - Rassmalog API: ../ref/index.html
