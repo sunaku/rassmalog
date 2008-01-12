@@ -97,14 +97,6 @@
           <li><%= menu_item(TAGS) %></li>
           <li><%= menu_item(ARCHIVES) %></li>
           <li>
-            <%= LANG['Subscribe'] %> <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
-            <ul>
-              <% FEEDS.each do |feed| %>
-              <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_html %></a></li>
-              <% end %>
-            </ul>
-          </li>
-          <li>
             <%= LANG['Search'] %>
             <form id="search" method="get" <%=
               if @title == LANG['Search']
@@ -119,6 +111,14 @@
               <input type="text" name="q" id="search-query"/>
               <input type="submit" value="&crarr;"/>
             </form>
+          </li>
+          <li>
+            <%= LANG['Subscribe'] %> <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
+            <ul>
+              <% FEEDS.each do |feed| %>
+              <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_html %></a></li>
+              <% end %>
+            </ul>
           </li>
         </ul>
       </li>
