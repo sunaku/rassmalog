@@ -5,8 +5,8 @@
 
 Rassmalog = {
   :name     => 'Rassmalog',
-  :version  => '9.0.1',
-  :release  => '2007-12-09',
+  :version  => '10.0.0',
+  :release  => '2008-01-11',
   :website  => 'http://rassmalog.rubyforge.org'
 }
 
