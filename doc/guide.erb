@@ -129,7 +129,6 @@
   <% section "Installation" do %>
     # Download the newest release package from "the download area":<%= download_url %>.
     # Extract the release package anywhere you want on your system.
-    # Go inside the extracted package directory.
     # Go inside the extracted directory and run the following command:
       <pre>rake regen</pre>
 
@@ -249,13 +248,6 @@
     In this manner, you can make Rassmalog use any formatting system you wish!
   <% end %>
 
-  <% section "Creating RSS feeds" do %>
-    # Open the <tt>Rakefile</tt> in your text editor.
-    # You should now see a some code similar to this:
-      <code><%= File.read('Rakefile').split(/^$/).last %></code>
-    # Copy and paste this block of code at the bottom of the file and fill in your own values. (See the @feed@ method in <%= xref 'hacking.api' %> for more help).
-  <% end %>
-
   <% section "Disabling parts of a blog" do %>
     Suppose you wanted to disable the generation of the RSS feed for your blog. In order to do this,
 
@@ -330,6 +322,14 @@
 
       rake import < feed.xml
   <% end %>
+
+  <% section "Creating RSS feeds" do %>
+    # Open the <tt>Rakefile</tt> in your text editor.
+    # You should now see a some code similar to this:
+      <code><%= File.read('Rakefile').split(/^$/).last %></code>
+      This code invokes the @feed@ method to create an RSS feed.
+    # Add your own invocation of the @feed@ method to the bottom of the file (see the API documentation in <%= xref 'hacking.api' %> for help).
+  <% end %>
 <% end %>
 
 <% chapter "Writing blog entries" do %>
@@ -357,6 +357,16 @@
 
     <% 3.times do %>
     * Hello World!
+    <% end %>
+
+    <% section "Including the content of another file" do %>
+      To include the content of another file inside the text of a blog entry, you can use the following eRuby directive:
+
+        <%%= File.read('path-to-your-file') %>
+
+      If the included file contains characters that might be interpreted as HTML, then we should properly escape those characters using the @ERB::Util#h@ method:
+
+        <%%= h File.read('path-to-your-file') %>
     <% end %>
   <% end %>
 
@@ -408,60 +418,60 @@
     * Nitro-XHTML
 
     This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.
-  <% end %>
 
-  <% section "Specifying the programming language" do %>
-    Because different programming languages have different syntax coloring schemes, you can specify the language of your source code using the @lang@ attribute to ensure that only the appropriate coloring scheme is used. Note that unless the @lang@ attribute is specified, _Ruby_ is assumed to be the programming language of all source code by default.
+    <% section "Specifying the programming language" do %>
+      Because different programming languages have different syntax coloring schemes, you can specify the language of your source code using the @lang@ attribute to ensure that only the appropriate coloring scheme is used. Note that unless the @lang@ attribute is specified, _Ruby_ is assumed to be the programming language of all source code by default.
 
-    <% sampleCode = %q{
-    # Ruby ###########################
-    def hello
-      puts "Hello world!"
-    end
-
-
-    /* C ****************************/
-    #include <stdio.h>
-    int main(int argc, char **argv) {
-      printf("Hello world!\n");
-      return 0;
-    }
+      <% sampleCode = %q{
+      # Ruby ###########################
+      def hello
+        puts "Hello world!"
+      end
 
 
-    <!-- HTML ----------------------->
-    <html>
-      <body>
-        Hello world!
-      <body>
-    </html>
-    } %>
+      /* C ****************************/
+      #include <stdio.h>
+      int main(int argc, char **argv) {
+        printf("Hello world!\n");
+        return 0;
+      }
 
-    For example, here is some source code _without_ the @lang@ attribute:
 
-    <code><%= sampleCode %></code>
+      <!-- HTML ----------------------->
+      <html>
+        <body>
+          Hello world!
+        <body>
+      </html>
+      } %>
 
-    And here is the same source code with a @lang="c"@ attribute:
+      For example, here is some source code _without_ the @lang@ attribute:
 
-    <code lang="c"><%= sampleCode %></code>
+      <code><%= sampleCode %></code>
 
-    And here is the same source code with a @lang="html"@ attribute:
+      And here is the same source code with a @lang="c"@ attribute:
 
-    <code lang="html"><%= sampleCode %></code>
-  <% end %>
+      <code lang="c"><%= sampleCode %></code>
 
-  <% section "Smart sizing of source code" do %>
-    Source code is _automatically sized_ to be displayed as either a line or paragraph of text, depending on whether it contains line breaks.
+      And here is the same source code with a @lang="html"@ attribute:
 
-    For example, here is a single line of code:
+      <code lang="html"><%= sampleCode %></code>
+    <% end %>
 
-    <code>life = true or false</code>
+    <% section "Smart sizing of source code" do %>
+      Source code is _automatically sized_ to be displayed as either a line or paragraph of text, depending on whether it contains line breaks.
 
-    And here is a paragraph of code:
+      For example, here is a single line of code:
 
-    <code>life =
-    true or false</code>
+      <code>life = true or false</code>
 
-    This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.
+      And here is a paragraph of code:
+
+      <code>life =
+      true or false</code>
+
+      This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.
+    <% end %>
   <% end %>
 
   <% section "Protecting verbatim text", 'entry.verbatim' do %>
@@ -480,9 +490,9 @@
     |_. Method declaration |_. Description |
     <%
       # load library for parsing method documentation
-      require File.join(Gerbil[:home], 'format', 'rdoc.rb')
+      require 'gerbil/rdoc'
 
-      trees = Dir['*.rb'].map {|f| RDoc::gen_parse_tree File.read(f) }.flatten
+      trees = Dir['*.rb'].map {|f| RDoc::gen_parse_trees File.read(f) }.flatten
       meths = RDoc::gen_method_infos(*trees)
 
       meths.each do |m|

@@ -31,7 +31,7 @@ task :doc => 'doc/guide.html'
 
 desc "Format the user guide."
 file 'doc/guide.html' => 'doc/guide.erb' do |t|
-  system "~/src/gerbil/gerbil html #{t.prerequisites} > #{t.name}"
+  system "~/src/gerbil/bin/gerbil html #{t.prerequisites} > #{t.name}"
 end
 CLOBBER.include 'doc/guide.html'
 
