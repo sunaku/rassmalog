@@ -877,20 +877,19 @@ require 'config/format'
     end
 
   # generate the front page
-    dst = 'output/index.html'
+    dst     = 'output/index.html'
+    src     = BLOG.front_page || NEW_ENTRIES.url
+    srcUrl  = src.split('/').map {|s| u(s)}.join('/')
+    srcLink = link(srcUrl, src)
+    srcPath = File.join('output', src)
 
-    file dst => COMMON_DEPS do
-      target     = BLOG.front_page || NEW_ENTRIES.url
-      targetUrl  = target.split('/').map {|s| u(s)}.join('/')
-      targetLink = link(targetUrl, target)
-      targetPath = File.join('output', target)
+    file dst => COMMON_DEPS + [srcPath] do
+      notify :front_page, srcPath
 
-      notify :front_page, targetPath
-
-      if targetUrl =~ %r{/}
-        write_file dst, %{<html><head><meta http-equiv="refresh" content="0; url=#{targetUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', targetLink]}</p></body></html>}
+      if srcUrl =~ %r{/}
+        write_file dst, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
       else
-        cp targetPath, dst, :preserve => true
+        cp srcPath, dst, :preserve => true
       end
     end
 
