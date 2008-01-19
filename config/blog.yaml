@@ -347,6 +347,7 @@ links:
     - Dave Scotto: http://www.yasgursfarm.us/d/
     - Spooky Fox: http://blog.iworkroom.com
     - листп еоод: http://blog.listp.com
+    - Greg Weber: http://thoughtfolder.com
     - Add _your_ blog here!: "<%= BLOG.email.to_url('add Rassmalog blog', 'My blog URL is: ...') %>"
 
   - hey!:
