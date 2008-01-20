@@ -530,12 +530,20 @@ require 'config/format'
 
     def initialize aName
       @name = aName
+      @cache = Hash.new do |h,k|
+        h[k] = find {|s| s.name == k} or raise \
+        "could not find section #{k.inspect} in chapter #{aName.inspect}"
+      end
     end
 
-    # Allows you to access a section using its name.
+    # Allows you to access a section using its name
+    # or through the usual Ruby array access idioms.
     def [] aName, *args
-      @cache ||= Hash.new {|h,k| h[k] = find {|s| s.name == k}}
-      @cache[aName] || super(aName, *args)
+      if aName.is_a? Integer or aName.is_a? Range
+        super(aName, *args)
+      else
+        @cache[aName.to_s]
+      end
     end
   end
 
