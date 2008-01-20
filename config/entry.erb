@@ -87,9 +87,16 @@
     Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.
     <% end %>
 
-    <% if BLOG.email %>
-    <br/>
-    You may <a href="<%= @entry.comment_url %>">send comments</a>.
+    <% unless @summarize %>
+      <% if BLOG.email %>
+      <br/>
+      You may <a href="<%= @entry.comment_url %>">send comments by e-mail</a>.
+      <% end %>
+      <%#
+        If you wish to use a JavaScript-based commenting system such as
+        disqus, instense debate, js-kit, and so on, then simply replace
+        this eRuby comment with the appropriate JavaScript code.
+      %>
     <% end %>
   </p>
 </div>
