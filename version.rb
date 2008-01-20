@@ -18,6 +18,9 @@ class << Rassmalog
 
   # Returns a hyperlink containing the name and version of Rassmalog.
   def to_link
-    link self[:url], to_s
+    link self[:website], to_s
   end
+
+  # throw an exception instead of returning nil
+  alias [] fetch
 end
