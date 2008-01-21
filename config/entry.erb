@@ -72,25 +72,33 @@
   <% end %>
 
   <p class="info">
-    Written on <%=
+    <%=
       stamp = @entry.date.strftime("%c")
+      stampLink =
+        if @entry.hide?
+          stamp
+        else
+          @entry.archive.to_link(stamp)
+        end
 
-      if @entry.hide?
-        stamp
-      else
-        @entry.archive.to_link(stamp)
-      end
-    %>.
+      LANG["Written on %s.", stampLink]
+    %>
 
     <% unless @entry.tags.empty? %>
     <br/>
-    Tagged as <%= @entry.tags.map {|t| t.to_link}.join(', ') %>.
+    <%=
+      tagList = @entry.tags.map {|t| t.to_link}.join(', ')
+      LANG["Tagged as %s.", tagList]
+    %>
     <% end %>
 
     <% unless @summarize %>
       <% if BLOG.email %>
       <br/>
-      You may <a href="<%= @entry.comment_url %>">send comments by e-mail</a>.
+      <%=
+        LANG['You may {send comments by e-mail}.'].
+        sub(/\{(.*?)\}/) { link @entry.comment_url, $1 }
+      %>
       <% end %>
       <%#
         If you wish to use a JavaScript-based commenting system such as
