@@ -451,18 +451,22 @@ require 'config/format'
       @hidden
     end
 
-    # Returns the summarized HTML content of this blog entry.
+    # Returns the summarized HTML content of this blog entry.  If there
+    # is no summary or summarization is not possible, then returns nil.
     def summary
       if key? 'summary'
         self['summary'].to_s.thru_erb.to_html
       else
-        paragraphs = html.split %r{\s*\r?\n\s*\r?\n\s*}
+        case html.gsub(%r{<(h\d).*?>.*?</\1>}m, '') # omit headings from summary
 
-        # omit headings from summary to keep it simple and non-hierarchical
-        paragraphs.reject! {|p| p =~ /^<h\d/}
+        # the first HTML block-level element
+        when %r{\A\s*<(\w+).*?>.*?</\1>}m
+          $&
 
-        if paragraphs.length > 1
-          paragraphs.first
+        # the first paragraph (a run of text delimited by newlines)
+        when /\A.*?(?=\r?\n\s*\r?\n)/m
+          $&
+
         end
       end
     end
