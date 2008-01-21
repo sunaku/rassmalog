@@ -6,6 +6,7 @@
 require 'rake/clean'
 require 'yaml'
 require 'time'
+require 'cgi'
 require 'ostruct'
 require 'erb'
 include ERB::Util
@@ -917,32 +918,3 @@ require 'config/format'
     sh BLOG.uploader.to_s.thru_erb(binding)
   end
 
-
-# utility tasks
-
-  IMPORT_DIR = 'import'
-  directory IMPORT_DIR
-
-  desc "Import blog entries from RSS feed on STDIN."
-  task :import => IMPORT_DIR do
-    require 'cgi'
-    require 'rexml/document'
-
-    REXML::Document.new(STDIN.read).each_element '//item' do |src|
-      name = CGI.unescapeHTML src.elements['title'].text
-      date = src.elements['pubDate'].text rescue Time.now
-      tags = src.get_elements('category').map {|e| e.text} rescue []
-      text = CGI.unescapeHTML src.elements['description'].text
-      from = CGI.unescape src.elements['link'].text
-
-      dstFile = make_file_name('.yaml', date.strftime('%F'), name)
-      dst = File.join(IMPORT_DIR, dstFile)
-
-      entry = %w[from name date tags].
-        map {|var| {var => eval(var)}.to_yaml.sub(/^---\s*$/, '')}.
-        join << "\ntext: |\n#{text.gsub(/^/, '  ')}"
-
-      notify :import, dst
-      write_file dst, entry
-    end
-  end

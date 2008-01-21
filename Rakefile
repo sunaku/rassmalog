@@ -10,3 +10,6 @@ feed 'feed.xml', NEW_ENTRIES, BLOG.name, BLOG.info
 # feed for rassmalog announcements
 feed 'ann.xml', TAGS['history'][0,3], 'Rassmalog releases',
      'Announcements about new Rassmalog releases', true
+
+# plug-ins that provide additional Rake tasks
+require 'plugins/import' # allows you to import blog entries from feeds
