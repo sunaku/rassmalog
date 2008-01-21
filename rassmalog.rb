@@ -26,7 +26,7 @@ require 'config/format'
   # the given name and mouse-hover title.
   def link aUrl, aName = nil, aTitle = nil
     aName ||= aUrl
-    %{<a href="#{h aUrl}"#{%{ title="#{aTitle}"} if aTitle}>#{aName}</a>}
+    %{<a href="#{aUrl}"#{%{ title="#{aTitle}"} if aTitle}>#{aName}</a>}
   end
 
   # Returns a safe file name that is composed of the
