@@ -81,16 +81,20 @@ end
 desc 'Generate translation files.'
 task :translate => TRANSLATE_DIR do
   # get list of strings to translate
-    inputStrings = []
+  inputStrings = []
 
-    FileList['*.rb', 'config/*.*'].each do |file|
-      strings = File.read(file).scan(/LANG\[(\S)(.*?)(\1)/).map {|s| eval(s.join) }
-      inputStrings.concat(strings)
-    end
+  FileList['*.rb', 'config/*.*'].each do |file|
+    strings = File.read(file).
+              scan(/LANG\[(\S)(.*?)(\1)/).
+              map {|s| eval(s.join) }
+    inputStrings.concat(strings)
+  end
 
-    inputStrings.uniq!
-    inputStrings.sort!
+  inputStrings.uniq!
+  inputStrings.sort!
+  puts inputStrings
 
+  # translate the input strings
   `translate-bin -l | grep '^en.*text'`.split(/$/).each do |line|
     if line =~ /->\s+(\S+)\s+([^:]+):/
       lang, desc = $1, $2
@@ -102,6 +106,9 @@ task :translate => TRANSLATE_DIR do
         inputStrings.each do |query|
           result = translate_string(query, lang)
           break if result.empty?
+
+          # restore printf() tokens that were mangled in translation
+          result.gsub! /%\s+s/, '%s'
 
           p query => result
           f.puts "#{query}: #{result}"

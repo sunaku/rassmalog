@@ -651,10 +651,7 @@ require 'config/format'
         body = "body=#{u aBody}" if aBody
 
         rest = [subj, body].compact
-        unless rest.empty?
-          addr << '?' << rest.join('&amp;')
-        end
-
+        addr << '?' << rest.join('&amp;') unless rest.empty?
         addr
       end
     end
@@ -709,7 +706,7 @@ require 'config/format'
   # generate HTML for entry files
     ENTRY_FILES = []
     ENTRY_FILES_EXCLUDED = [] # excluded from processing, so just copy them over
-    entry_by_input_url = {}
+    entryByInputUrl = {}
 
     FileList['{input,entries}/**/*.yaml'].each do |src|
       begin
@@ -724,7 +721,7 @@ require 'config/format'
 
 
           entry = Entry.new(data)
-          entry_by_input_url[srcUrl] = entry
+          entryByInputUrl[srcUrl] = entry
 
           # populate the entry's methods (see Entry class definition)
           entryProp = {
@@ -800,7 +797,7 @@ require 'config/format'
     ENTRIES.sort! # chronological sort
 
   # XXX: search page depends on ALL entries
-    if search = entry_by_input_url['search.yaml']
+    if search = entryByInputUrl['search.yaml']
       file search.output_file => ENTRY_FILES
     end
 
