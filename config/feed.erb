@@ -25,7 +25,7 @@
 <%
   @feed.entries.each do |entry|
     url = entry.absolute_url
-    text = (@feed.summarize ? entry.summary : entry.html).to_s
+    text = entry.to_html :@summarize => @feed.summarize
 
     # resolve relative URLs into absolute URLs
     # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
