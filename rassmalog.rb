@@ -903,13 +903,13 @@ require 'config/format'
     srcLink = link(srcUrl, src)
     srcPath = File.join('output', src)
 
-    file dst => COMMON_DEPS + [srcPath] do
+    file dst => COMMON_DEPS + [srcPath] do |t|
       notify :front_page, srcPath
 
       if srcUrl =~ %r{/}
-        write_file dst, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
+        write_file t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
       else
-        cp srcPath, dst, :preserve => true
+        cp srcPath, t.name, :preserve => true
       end
     end
 
