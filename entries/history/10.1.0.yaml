@@ -1,0 +1,70 @@
+name: Version 10.1.0
+date: Mon Jan 21 18:38:36 PST 2008
+tags: history
+text: |
+  This release adds support for plugins, adds more translations, and fixes
+  some bugs in RSS feed and blog generation.
+
+
+  h1. Thanks
+
+  "Laurent Vallar":http://zbla.net and "Greg Weber":http://thoughtfolder.com
+  contributed patches and suggestions! :-)
+
+
+  h1. Caution
+
+  * The *import* task has been renamed to *import_rss*.
+
+  * The *gen* task is no longer invoked when the <tt>Rakefile</tt> file changes.
+
+  * There is now a separate *search* task for generating the search page.
+
+
+  h1. Improvements
+
+  * Added a <tt>plugins/</tt> directory for non-essential Rake tasks. You can
+    add your own files (which provide Rake tasks) into this directory and load
+    them into your <tt>Rakefile</tt>.
+
+    Currently, there is a plugin that provides a Rake task for importing blog
+    entries from an RSS feed.
+
+  * Laurent Vallar translated more strings from the templates for the French
+    language. I have updated the Telugu and other translation files accordingly.
+
+  * Comments are now omitted when an entry is summarized, because you would like
+    the reader to fully read your blog entry before they make comments about it.
+    {Greg Weber}
+
+  * The @Chapter#[]@ method now raises an error when you try to access an
+    unknown section by name. It also lets you access sections by index or
+    range -- the traditional array access idioms. {Greg Weber}
+
+
+  h1. Repairs
+
+  * The search page was being generated whenever *entry* task was invoked. This
+    defeated the ability to rapidly preview entries while editing them.
+
+  * Entry content was omitted from RSS feed when summary was not available.
+
+  * The "read more" link was omitted for summarized entries in the RSS feed.
+
+  * Greg Weber suggested that the first HTML block-level element should be
+    accepted as the summary of a blog entry (in addition to the current scheme
+    of accepting the first "paragraph" of text) because the current scheme makes
+    strong assumptions about RedCloth's implementation.
+
+  * The URL for author's e-mail (at the bottom of <tt>config/html.erb</tt>) was
+    being escaped twice. {Greg Weber}
+
+  * Laurent Vallar and Greg Weber fixed the renaming of @Rassmalog[:url]@ to
+    @Rassmalog[:website]@. In addition, Greg Weber added protection to raise an
+    error if such mistakes are made in the future.
+
+  * The <tt>index.html</tt> file was not updated when the "front page" file
+    changes.
+
+  * Redundant nested &lt;pre&gt; elements were not being collapsed by
+    <tt>config/format.rb</tt>.
