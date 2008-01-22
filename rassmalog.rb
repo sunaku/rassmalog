@@ -797,9 +797,16 @@ require 'config/format'
 
     ENTRIES.sort! # chronological sort
 
-  # XXX: search page depends on ALL entries
+  # generate the search page
     if search = entryByInputUrl['search.yaml']
-      file search.output_file => ENTRY_FILES
+      dst = search.output_file
+      file dst => ENTRY_FILES # search page depends on ALL entries
+
+      # give the search page its own Rake task, otherwise it is
+      # created every time the :entry task is invoked -- this defeats
+      # the ability to rapidly preview entries while editing them.
+      Rake::Task[:entry].prerequisites.delete dst
+      task :search => dst
     end
 
   # generate list of all entries
@@ -839,6 +846,9 @@ require 'config/format'
 
   desc "Copy files from input/ into output/"
   task :copy
+
+  desc "Generate the blog search page."
+  task :search
 
   desc "Generate HTML for blog entries."
   task :entry
