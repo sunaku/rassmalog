@@ -492,12 +492,14 @@
       # load library for parsing method documentation
       require 'gerbil/rdoc'
 
-      trees = Dir['*.rb'].map {|f| RDoc::gen_parse_trees File.read(f) }.flatten
-      meths = RDoc::gen_method_infos(*trees)
+      RDoc::TopLevel.parse @spec['code']
+      Dir['*.rb'].each do |f|
+        RDoc::TopLevel.parse_file f
+      end
 
-      meths.each do |m|
+      RDoc::TopLevel.all_methods.each do |m|
     %>
-    | @<%= m[:decl] %>@ | <noformat><%= m[:docs_html] %></noformat> |
+    | @<%= m.decl %>@ | <noformat><%= m.comment_html %></noformat> |
     <% end %>
   <% end %>
 <% end %>
