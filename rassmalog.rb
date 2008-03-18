@@ -919,6 +919,14 @@ require 'config/format'
 
 # output publishing stage
 
+  desc "Preview your blog while writing."
+  task :preview do
+    loop do
+      system $0
+      sleep 1
+    end
+  end
+
   desc "Upload the blog to your website."
   task :upload => [:gen, 'output'] do
     whole = 'output'
