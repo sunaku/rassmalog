@@ -1,3 +1,35 @@
+# Provides Rake tasks to validate and correct HTML files.
+#
+# To use this plugin, you need to install the following gems:
+#
+#   gem install xml-simple tidy
+#
+# This code was adapted by Greg Weber, and is originally by Scott Raymond.
+# See http://redgreenblu.com/svn/projects/assert_valid_markup/
+#
+#--
+# Copyright 2008 Greg Weber
+# Copyright 2006 Scott Raymond <sco@scottraymond.net>
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 require 'net/http'
 require 'digest/md5'
 require 'tmpdir'
@@ -5,25 +37,6 @@ require 'cgi'
 require 'rubygems'
 require 'xmlsimple'
 require 'tidy'
-
-# taken from Rails core
-class Array
-  def group_by 
-    inject([]) do |groups, element| 
-      value = yield(element) 
-      if (last_group = groups.last) && last_group.first == value 
-        last_group.last << element 
-      else 
-        groups << [value, [element]] 
-      end 
-      groups 
-    end 
-  end
-end
-
-# == License: MIT
-# == this code adapted by Greg Weber, originally by Scott Raymond
-# http://redgreenblu.com/svn/projects/assert_valid_markup/
 
 def errors_to_output( errors )
   errors.group_by {|error| error['line']}.
@@ -34,11 +47,15 @@ def errors_to_output( errors )
 end
 
 def assert_valid_markup(fragment)
-  filename = File.join Dir.tmpdir, 'markup.' + Digest::MD5.hexdigest(fragment).to_s
+  filename = File.join Dir.tmpdir, 'markup.' +
+    Digest::MD5.hexdigest(fragment).to_s
+
   begin
     response = File.open filename do |f| Marshal.load(f) end
   rescue
-    response = Net::HTTP.start('validator.w3.org').post2('/check', "fragment=#{CGI.escape(fragment)}&output=xml")
+    response = Net::HTTP.start('validator.w3.org').
+      post2('/check', "fragment=#{CGI.escape(fragment)}&output=xml")
+
     File.open( filename, 'w+') { |f| Marshal.dump response, f }
   end
 
@@ -46,7 +63,7 @@ def assert_valid_markup(fragment)
     puts "passed" if $DEBUG
     true
   else
-    "W3C ERRORS:\n" << 
+    "W3C ERRORS:\n" <<
       errors_to_output( XmlSimple.xml_in(response.body)['messages'][0]['msg'].
         map do |msg|
           msg['content'] = "#{CGI.unescapeHTML(msg['content'])}"
@@ -68,7 +85,7 @@ task :validate do
   validate_files do |html|
     res = assert_valid_markup( html )
     if res && res != true
-      puts res 
+      puts res
       true
     end
   end
@@ -108,12 +125,49 @@ def tidy_up( opts={} )
 end
 
 def validate_files
-  puts("#{
-  output_html_files do |html_file|
+  files = output_html_files do |html_file|
     errors = false
-    puts "         #{html_file}"
+    notify :validate, html_file
     html = File.read( html_file )
     puts "\n\n" if yield html
-  end.
-    size.to_s} files validated")
+  end
+
+  puts "#{files.size} files validated"
+end
+
+# taken from Rails core:
+# /trunk/activesupport/lib/active_support/core_ext/enumerable.rb
+#--
+# Copyright (c) 2005-2007 David Heinemeier Hansson
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+class Array
+  def group_by
+    inject([]) do |groups, element|
+      value = yield(element)
+      if (last_group = groups.last) && last_group.first == value
+        last_group.last << element
+      else
+        groups << [value, [element]]
+      end
+      groups
+    end
+  end
 end
