@@ -40,7 +40,7 @@ require 'config/format'
     # Transforms this string into a vaild file name that can be safely used
     # in a URL.  See http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
     def to_file_name
-      downcase.strip.gsub(%r{[/;?#[:space:][:punct:]]+}, '-')
+      downcase.strip.gsub(%r{[/;?#[:space:][:punct:]]+}, '-').gsub(/^-|-$/, '')
     end
 
     # Transforms this UTF-8 string into HTML entities.
