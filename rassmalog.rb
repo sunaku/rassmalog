@@ -364,9 +364,14 @@ require 'config/format'
     end
 
     # Returns a relative hyperlink to this object.
-    def to_link aName = nil
+    #
+    # aName:: sets the name of the hyperlink, if given
+    # aAnchor:: adds a URI fragment to the hyperlink's URL, if given
+    #
+    def to_link aName = nil, aAnchor = nil
+      addr = [url, aAnchor].compact.join('#')
       title = name.to_html
-      link(url, aName || title, aName && title)
+      link(addr, aName || title, aName && title)
     end
   end
 

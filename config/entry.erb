@@ -38,8 +38,10 @@
       toc, content = content.table_of_contents
     end
   end
+
+  anchor = h @entry.url
 %>
-<div class="entry<%= %{ entry-solo} if @solo %>">
+<div id="<%= anchor %>" class="entry<%= ' entry-solo' if @solo %>">
   <%
     if @solo and not @entry.hide?
       nextWord = LANG['Newer']
@@ -52,8 +54,11 @@
 
       prevLink = prevItem.to_link(prevWord) if prevItem
       nextLink = nextItem.to_link(nextWord) if nextItem
+      rootLink = @entry.parent.to_link(nil, anchor)
   %>
-  <div class="menu"><%= [prevLink, nextLink].compact.join(' | ') %></div>
+  <p class="menu"><%=
+    [prevLink, rootLink, nextLink].compact.join(' &middot; ')
+  %></p>
   <% end %>
 
   <h1 class="name"><%=
