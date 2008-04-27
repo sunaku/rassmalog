@@ -15,6 +15,9 @@
   * @solo       - is this entry being rendered alone, on its own page?
 =end
 
+  # prevent Ruby warning about uninitialized @solo variable
+  @solo = false unless defined? @solo
+
   content = @entry.html
 
   if @summarize and summary = @entry.summary

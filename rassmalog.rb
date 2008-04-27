@@ -764,10 +764,11 @@ require 'config/format'
           }
 
           if data['hide']
+            entryProp[:hidden] = true
             entryProp[:tags] = []
             entryProp[:archive] = nil
-            entryProp[:hidden] = true
           else
+            entryProp[:hidden] = false
             entryProp[:tags] =
               [data['tags']].flatten.compact.uniq.sort.map do |name|
                 hookup(entry, tagStore, name, TAGS)
