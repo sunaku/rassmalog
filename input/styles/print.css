@@ -1,115 +1,119 @@
 @import 'screen.css';
 
-/* page layout */
-
-  body,
-  #content,
-  #links
-  {
-    max-width        : none;
-    margin           : 0;
-  }
-
-  #search,
-  #header,
-  #links
-  {
-    display          : none;
-  }
-
-
-/* styles for config/entry.erb */
-
-  .entry .menu,
-  .entry .toc
-  {
-    display          : none;
-  }
-
-  .entry .name
-  {
-    font-size        : 2em;
-  }
-
-  .entry .text
-  {
-    max-width        : none;
-  }
-
-
-/* hyperlinks */
-
-  a:link,
-  a:visited,
-  a:active
-  {
-    color            : #0000FF;
-    font-weight      : bold;
-    text-decoration  : underline;
-  }
-
-  a:after
-  {
-    content          : " (" attr(href) ")";
-    font-family      : sans-serif;
-    font-weight      : normal;
-    font-size        : 90%;
-  }
-
-  .entry .name a:after,
-  .entry .info a:after,
-  a[href^="#"]:after
-  {
-    content          : "";
-  }
-
-  .entry .name a,
-  .entry .info a,
-  a[href^="#"]
-  {
-    color            : #A52A2A;
-    font-weight      : lighter;
-    text-decoration  : none;
-    font-style       : italic;
-  }
-
-  a.toc-link
-  {
-    color            : inherit;
-    .color           : #000000; /* for IE6 and IE7 */
-    font-weight      : inherit;
-    text-decoration  : none;
-    font-style       : normal;
-  }
-
-
 /* source code */
 
-  tt
-  {
-    color            : inherit;
-    background-color : inherit;
-    font-weight      : normal;
-  }
+    tt
+    {
+        color            : inherit;
+        background-color : inherit;
+        font-weight      : normal;
+    }
 
-  pre,
-  .code
-  {
-    border           : none;
-    overflow         : visible;
-    background-color : inherit;
-  }
+    pre,
+    .code
+    {
+        border           : none;
+        overflow         : visible;
+        background-color : inherit;
+    }
 
 
 /* headings */
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  th
-  {
-    font-weight      : normal;
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    th
+    {
+        font-weight      : normal;
+    }
+
+
+/* hyperlinks */
+
+    a:link,
+    a:visited,
+    a:active
+    {
+        color            : #0000FF;
+        font-weight      : bold;
+        text-decoration  : underline;
+    }
+
+    .name a
+    {
+        font-weight      : normal;
+        text-decoration  : none;
+    }
+
+    a:after
+    {
+        content          : " " attr(href);
+        font-family      : Consolas, "Lucida Console", monospace;
+        font-weight      : normal;
+        font-size        : 90%;
+    }
+
+    .name a:after,
+    .menu a:after,
+    .chapter > .cloud a:after,
+    .entry > .info a:after,
+    .entry > .more a:after,
+    a[href^="#"]:after
+    {
+        content          : "";
+    }
+
+    a[href^="#"]
+    {
+        color            : #A52A2A;
+        font-weight      : lighter;
+        text-decoration  : none;
+        font-style       : italic;
+    }
+
+    a.toc-link
+    {
+        color            : inherit;
+        .color           : #000000; /* for IE6 and IE7 */
+        font-weight      : inherit;
+        text-decoration  : none;
+        font-style       : normal;
+    }
+
+
+/* page layout */
+
+    body,
+    #content,
+    #links
+    {
+        max-width        : none;
+        margin           : 0;
+    }
+
+    #header,
+    #search,
+    #navigation,
+    #links,
+    .menu
+    {
+        display          : none;
+    }
+
+
+/* styles for config/entry.erb */
+
+    .entry > .name
+    {
+        font-size        : 2em;
+    }
+
+    .entry > .text
+    {
+        max-width        : none;
+    }
+

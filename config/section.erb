@@ -26,12 +26,15 @@
 
   prevLink = prevItem.to_link(prevWord) if prevItem
   nextLink = nextItem.to_link(nextWord) if nextItem
+  rootLink = @section.parent.to_link
 %>
 
 <div class="section">
-  <h1 class="name"><%= @section.name %></h1>
+  <h1 class="name"><%= @section.to_link %></h1>
 
-  <div class="menu"><%= [prevLink, nextLink].compact.join(' | ') %></div>
+  <div class="menu"><%=
+    [prevLink, rootLink, nextLink].compact.join(' &middot; ')
+  %></div>
 
   <% @section.each do |entry| %>
     <%= entry.to_html %>

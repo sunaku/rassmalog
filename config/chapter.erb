@@ -55,13 +55,13 @@
       <th>Size &uarr;</th>
     </tr>
     <% @chapter.each_index do |i| %>
-    <tr>
-      <td><%= items[i].to_link %></td>
-      <td><%= items[i].length %></td>
-      <td style="border: none"/>
-      <td><%= sizes[i].to_link %></td>
-      <td><%= sizes[i].length %></td>
-    </tr>
+      <tr>
+        <td><%= items[i].to_link %></td>
+        <td><%= items[i].length %></td>
+        <td style="border: none"/>
+        <td><%= sizes[i].to_link %></td>
+        <td><%= sizes[i].length %></td>
+      </tr>
     <% end %>
   </table>
 </div>

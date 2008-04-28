@@ -25,6 +25,7 @@
     content = summary.gsub %r{(href=.)(#)} do
       $1 + @entry.url + $2
     end
+
   else
     # check whether we want to generate the table of contents
     generateTOC =
@@ -41,7 +42,11 @@
 
   anchor = h @entry.url
 %>
+<br style="display: none"/>
+
 <div id="<%= anchor %>" class="entry<%= ' entry-solo' if @solo %>">
+  <h1 class="name"><%= @entry.to_link %></h1>
+
   <%
     if @solo and not @entry.hide?
       nextWord = LANG['Newer']
@@ -61,52 +66,46 @@
   %></p>
   <% end %>
 
-  <h1 class="name"><%=
-    if @solo
-      @entry.name.to_html
-    else
-      @entry.to_link
-    end
-  %></h1>
-
   <% if toc %>
-  <div class="toc">Contents <%= toc %></div>
+    <br style="display: none"/>
+    <div class="toc">Contents <%= toc %></div>
   <% end %>
 
   <div class="text"><%= content %></div>
 
   <% if summary %>
-  <p class="more"><%= @entry.to_link(LANG["Read more..."]) %></p>
+    <p class="more"><%= @entry.to_link LANG["Read more..."] %></p>
   <% end %>
 
   <p class="info">
     <%=
       stamp = @entry.date.strftime("%c")
-      stampLink =
+
+      archiveLink =
         if @entry.hide?
           stamp
         else
           @entry.archive.to_link(stamp)
         end
 
-      LANG["Written on %s.", stampLink]
+      LANG["Written on %s.", archiveLink]
     %>
 
     <% unless @entry.tags.empty? %>
-    <br/>
-    <%=
-      tagList = @entry.tags.map {|t| t.to_link}.join(', ')
-      LANG["Tagged as %s.", tagList]
-    %>
+      <br/>
+      <%=
+        tagList = @entry.tags.map {|t| t.to_link }.join(', ')
+        LANG["Tagged as %s.", tagList]
+      %>
     <% end %>
 
     <% unless @summarize %>
       <% if BLOG.email %>
-      <br/>
-      <%=
-        LANG['You may {send comments by e-mail}.'].
-        sub(/\{(.*?)\}/) { link @entry.comment_url, $1 }
-      %>
+        <br/>
+        <%=
+          LANG['You may {send comments by e-mail}.'].
+          sub(/\{(.*?)\}/) { link @entry.comment_url, $1 }
+        %>
       <% end %>
       <%#
         If you wish to use a JavaScript-based commenting system such as

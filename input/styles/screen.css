@@ -1,477 +1,518 @@
-/* page layout */
-
-  /* the web page itself */
-  body
-  {
-    margin           : 0;
-    margin-left      : auto;
-    margin-right     : auto;
-    padding          : 0.5em;
-    max-width        : 51em; /* 35em (#content) + 1em (space) + 15em (#links) */
-  }
-
-  /* the main content of the web page */
-  #content
-  {
-    float            : left;
-    margin           : 0;
-  }
-
-  #content,
-  #header
-  {
-    max-width        : 35em;
-  }
-
-  /* the 'links' parameter in config/blog.yaml */
-  #links
-  {
-    margin-left      : 36em; /* 35em (#content) + 1em (space) */
-  }
-
-  /* the menu item corresponding to the current web page */
-  #links .current a
-  {
-  }
-
-
-/* styles for config/html.erb */
-
-  /* the banner containing blog name and description */
-  #header
-  {
-    padding-bottom   : 2em;
-  }
-
-  /* the name of your blog */
-  #header .name a:link,
-  #header .name a:visited
-  {
-    color            : inherit;
-    .color           : #000000; /* for IE6 and IE7 */
-  }
-
-  /* the description of your blog */
-  #header .info
-  {
-    font-style       : italic;
-  }
-
-  /* the search form */
-  #search
-  {
-  }
-
-  /* the search box in which the user types their query */
-  #search-query
-  {
-    width            : 60%;
-  }
-
-  /* an area for search results */
-  #search-output,
-  #search-error
-  {
-    border           : thin solid #FF0000;
-    background-color : #FFFAFA;
-    padding          : 1em;
-  }
-
-  /* the main content of the web page */
-  #content
-  {
-  }
-
-  #footer
-  {
-    clear            : both;
-    margin-top       : 5em;
-    text-align       : center;
-  }
-
-
-/* styles for config/entry.erb */
-
-  .entry
-  {
-    margin-bottom    : 7em;
-  }
-
-  /* title of the blog entry */
-  .entry .name
-  {
-    border-bottom    : 1px solid #DCDCDC;
-    padding-bottom   : 0.25em;
-    font-size        : 1.6em;
-  }
-
-  .entry .name a:link,
-  .entry .name a:visited
-  {
-    text-decoration  : none;
-  }
-
-  /* contains links to the next/previous blog entry */
-  .entry .menu
-  {
-    float            : right;
-    margin-left      : 1em;
-  }
-
-  /* table of contents */
-  .entry .toc
-  {
-    margin-bottom    : 2em;
-    background-color : #FAFAFA;
-    padding          : 1em;
-  }
-
-  .entry .toc ul
-  {
-    margin-top       : 0;
-  }
-
-  /* content of the blog entry */
-  .entry .text
-  {
-    margin-left      : 1em;
-  }
-
-  .entry .text a
-  {
-    text-decoration  : underline;
-  }
-
-  .entry .text img
-  {
-    margin           : 1em;
-  }
-
-  /* the "Read more..." link */
-  .entry .more a
-  {
-    float            : right;
-    margin-top       : 0.5em;
-    margin-left      : 2em;
-    margin-bottom    : 2em;
-  }
-
-  /* information about the blog entry */
-  .entry .info
-  {
-    padding-top      : 0.5em;
-    font-size        : small;
-    padding-left     : 0;
-    _margin-left     : 0; /* for IE6 */
-  }
-
-  .entry .info li
-  {
-    list-style-type  : none;
-    margin-left      : 0;
-  }
-
-
-/* additional styles for config/entry.erb when @solo is true
-  (i.e.  when the entry is displayed alone, on its own page) */
-
-  .entry-solo
-  {
-  }
-
-  .entry-solo .text
-  {
-    margin-left      : 0;
-  }
-
-  .entry-solo .info
-  {
-    margin-top       : 2em;
-    border-top       : 1px solid #808080;
-  }
-
-
-/* styles for config/listing.erb */
-
-  .listing
-  {
-  }
-
-  .listing > .name
-  {
-    font-size        : 1.6em;
-  }
-
-
-/* styles for config/section.erb */
-
-  .section
-  {
-  }
-
-  .section > .name
-  {
-    font-size        : 1.6em;
-  }
-
-  /* contains links to the next/previous section */
-  .section > .menu
-  {
-    margin-bottom    : 4em;
-  }
-
-
-/* styles for config/chapter.erb */
-
-  .chapter
-  {
-  }
-
-  .chapter > .name
-  {
-    font-size        : 1.6em;
-  }
-
-  /* tag cloud */
-  .chapter .cloud
-  {
-    padding          : 0;
-    text-align       : center;
-    max-width        : 70%;
-    _width           : 70%; /* for IE6 */
-    margin-left      : auto;
-    margin-right     : auto;
-  }
-
-  .chapter .cloud li
-  {
-    display          : inline;
-    padding-right    : 10px;
-  }
-
-
-/* headings */
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  th
-  {
-    font-weight      : lighter;
-  }
-
-  .entry .text h1,
-  .entry .text h2,
-  .entry .text h3,
-  .entry .text h4,
-  .entry .text h5,
-  .entry .text h6
-  {
-    margin-top       : 2.5em;
-    line-height      : 1.25em;
-  }
-
-  .entry .text h1
-  {
-    font-size        : 2.0em;
-  }
-
-  .entry .text h2
-  {
-    font-size        : 1.8em;
-  }
-
-  .entry .text h3
-  {
-    font-size        : 1.6em;
-  }
-
-  .entry .text h4
-  {
-    font-size        : 1.4em;
-  }
-
-  .entry .text h5
-  {
-    font-size        : 1.2em;
-  }
-
-  .entry .text h6
-  {
-    font-size        : 1.0em;
-  }
-
-
-/* hyperlinks */
-
-  a
-  {
-    color            : #0000FF;
-    text-decoration  : none;
-  }
-
-  a:visited
-  {
-    color            : #4B0082;
-  }
-
-  a:hover
-  {
-    color            : #FF0000;
-    text-decoration  : underline;
-  }
-
-  a:target
-  {
-    color            : #FF0000;
-    text-decoration  : underline;
-  }
-
-  /* the LaTeX-style heading number that links back to the table of contents */
-  a.toc-link:link,
-  a.toc-link:visited
-  {
-    text-decoration  : none;
-  }
-
-
-/* source code */
-
-  tt,
-  code,
-  pre
-  {
-    font-family      : Consolas, "Lucida Console", monospace;
-  }
-
-  tt
-  {
-    font-weight      : bold;
-    color            : #A52A2A;
-    background-color : #FFFAF0;
-  }
-
-  /* output of syntax colorizer */
-  .code
-  {
-    background-color : #FFFFF0;
-  }
-
-  pre
-  {
-    cursor           : text;
-    line-height      : normal;
-    border           : 1px dashed #C0C0C0;
-    background-color : #F5FFDF;
-    padding          : 1em;
-    overflow         : auto;
-  }
+/* emphasis */
+
+    body
+    {
+        color            : #000000;
+        background-color : #FFFFFF;
+        line-height      : 1.5em;
+        font-family      : Calibri, Verdana, sans-serif;
+    }
+
+    em,
+    blockquote
+    {
+        font-family      : Cambria, Georgia, serif;
+    }
+
+    blockquote
+    {
+        margin           : 1em;
+        border           : 5px dotted #C0C0C0;
+        padding          : 1em;
+        color            : #444;
+    }
+
+    hr
+    {
+        color            : #FF0000; /* for IE6 */
+        background-color : #FF0000; /* for Firefox */
+    }
+
+    big
+    {
+        font-size        : larger;
+    }
+
+    table
+    {
+        margin-left      : auto;
+        margin-right     : auto;
+    }
 
 
 /* tables */
 
-  table
-  {
-    border           : none;
-  }
+    table
+    {
+        border           : none;
+        margin           : auto; /* center horizontally */
+    }
 
-  th,
-  td
-  {
-    padding          : 1em;
-    border           : 1px solid #C0C0C0;
-  }
+    th,
+    td
+    {
+        padding          : 1em;
+        border           : 1px solid #C0C0C0;
+        vertical-align   : top;
+        background-color : inherit;
+    }
 
-  th
-  {
-    background-color : #F5F5F5;
-  }
-
-  table
-  {
-    margin-left      : auto;
-    margin-right     : auto;
-  }
+    th
+    {
+        background-color : #F5F5F5;
+    }
 
 
-/* emphasis */
+/* source code */
 
-  body
-  {
-    color            : #000000;
-    background-color : #FFFFFF;
-    line-height      : 1.5em;
-    font-family      : Calibri, Verdana, sans-serif;
-  }
+    tt,
+    code,
+    pre
+    {
+        font-family      : Consolas, "Lucida Console", monospace;
+    }
 
-  em,
-  blockquote
-  {
-    font-family      : Cambria, Georgia, serif;
-  }
+    tt
+    {
+        font-weight      : bold;
+        color            : #A52A2A;
+        background-color : #FFFAF0;
+    }
 
-  blockquote
-  {
-    margin           : 1em;
-    border           : 5px dotted #C0C0C0;
-    padding          : 1em;
-    color            : #444;
-  }
+    /* output of the syntax coloring library */
+    .code
+    {
+        background-color : #FFFFF0;
+    }
 
-  hr
-  {
-    color            : #FF0000; /* for IE6 */
-    background-color : #FF0000; /* for Firefox */
-  }
-
-  big
-  {
-    font-size        : larger;
-  }
-
-  table
-  {
-    margin-left      : auto;
-    margin-right     : auto;
-  }
+    pre
+    {
+        cursor           : text;
+        line-height      : normal;
+        border           : 1px dashed #C0C0C0;
+        background-color : #F5FFDF;
+        padding          : 1em;
+        overflow         : auto;
+    }
 
 
-/* fix annoyances */
+/* headings */
 
-  a img
-  {
-    border           : none;
-  }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    th,
+    .name
+    {
+        font-weight      : lighter;
+        font-family      : Constantia, "Book Antiqua", "URW Bookman L", serif;
+    }
 
-  /* reduce indentation of list items */
-  #links ul,
-  .entry .toc ul
-  {
-    padding-left     : 1em; /* for Firefox */
+    .entry > .text h1,
+    .entry > .text h2,
+    .entry > .text h3,
+    .entry > .text h4,
+    .entry > .text h5,
+    .entry > .text h6
+    {
+        margin-top       : 2.5em;
+        line-height      : 1.25em;
+    }
 
-    .margin-left     : 0.75em; /* for IE6 and IE7 */
-    .padding-left    : 0.25em;
+    .entry > .text h1
+    {
+        font-size        : 2.0em;
+    }
 
-    _margin-left     : 0.25em; /* override for IE6 only */
-    _padding-left    : 1em;
-  }
+    .entry > .text h2
+    {
+        font-size        : 1.8em;
+    }
 
-  /* hide redundant @title because it is indicated by #links .current */
-  .listing > .name,
-  .chapter > .name
-  {
-    display          : none;
-  }
+    .entry > .text h3
+    {
+        font-size        : 1.6em;
+    }
 
-  .entry .toc ul
-  {
-    padding-bottom   : 0.75em;
-  }
+    .entry > .text h4
+    {
+        font-size        : 1.4em;
+    }
 
-  #links ul
-  {
-    margin-bottom    : 1em;
-  }
+    .entry > .text h5
+    {
+        font-size        : 1.2em;
+    }
+
+    .entry > .text h6
+    {
+        font-size        : 1.0em;
+    }
+
+
+/* hyperlinks */
+
+    a > img
+    {
+        border           : none;
+    }
+
+    a:link
+    {
+        color            : #0000FF;
+        text-decoration  : none;
+    }
+
+    a:visited
+    {
+        color            : #9400D3;
+        text-decoration  : none;
+    }
+
+    #navigation a:visited,
+    .chapter a:visited,
+    .menu a:visited,
+    .entry > .info a:visited,
+    .entry > .more a:visited
+    {
+        color            : #0000FF;
+    }
+
+    .name a:link,
+    .name a:visited
+    {
+        color            : #000000;
+    }
+
+    a:hover,
+    .name a:hover,
+    #navigation a:hover,
+    #links a:hover,
+    .entry a:hover,
+    .section a:hover
+    {
+        color            : #FF0000;
+        text-decoration  : underline;
+    }
+
+    a:target
+    {
+        color            : #FF0000;
+        font-weight      : bold;
+    }
+
+    /* the navigation item corresponding to the current web page */
+    #navigation .current a
+    {
+        color            : #C71585;
+    }
+
+    /* hide redundant @title because it is indicated by #navigation .current */
+    .listing > .name,
+    .chapter > .name
+    {
+        display          : none;
+    }
+
+
+/* lists */
+
+    /* reduce indentation of list items */
+    #links ul,
+    .entry > .toc ul
+    {
+        padding-left     : 1em; /* for Firefox */
+
+        .margin-left     : 0.75em; /* for IE6 and IE7 */
+        .padding-left    : 0.25em;
+
+        _margin-left     : 0.25em; /* override for IE6 only */
+        _padding-left    : 1em;
+    }
+
+    /* add space between nested lists for better readability */
+    .entry > .toc ul
+    {
+        padding-bottom   : 0.75em;
+    }
+
+    .entry > .toc ul:last-child
+    {
+        padding-bottom   : 0;
+    }
+
+    #links ul
+    {
+        margin-bottom    : 1em;
+    }
+
+
+/* page layout */
+
+    body
+    {
+        margin           : 0;
+        margin-left      : auto;
+        margin-right     : auto;
+        padding          : 0.5em;
+        max-width        : 51em; /* 35em (#content) + 1em (space) + 15em (#links) */
+    }
+
+    /* the main content of the web page */
+    #content
+    {
+        float            : left;
+        max-width        : 35em;
+    }
+
+    /* the 'links' parameter in config/blog.yaml */
+    #links
+    {
+        float            : right;
+        max-width        : 15em;
+    }
+
+
+/* styles for config/html.erb */
+
+    /* the banner containing blog name and description */
+    #header
+    {
+        margin-bottom    : 2em;
+    }
+
+    /* the name of your blog */
+    #header .name
+    {
+    }
+
+    /* the description of your blog */
+    #header .info
+    {
+        font-style       : italic;
+    }
+
+    /* primary blog navigation menu, located below the #header */
+    #navigation
+    {
+        margin-bottom    : 2em;
+    }
+
+    /* the search form */
+    #search
+    {
+        float            : right;
+    }
+
+    /* the search box in which the user types their query */
+    #search-query
+    {
+        width            : 10em;
+    }
+
+    /* an area for search results */
+    #search-output,
+    #search-error
+    {
+        border           : thin solid #FF0000;
+        background-color : #FFFAFA;
+        padding          : 1em;
+    }
+
+    /* the main content of the web page */
+    #content
+    {
+    }
+
+    /* the 'links' parameter from config/blog.yaml */
+    #links
+    {
+    }
+
+    /* the banner containing blog author and generator */
+    #footer
+    {
+        clear            : both;
+        margin-top       : 5em;
+        text-align       : center;
+    }
+
+
+/* styles for config/entry.erb */
+
+    .entry
+    {
+        margin-bottom    : 4em;
+    }
+
+    /* title of the blog entry */
+    .entry > .name
+    {
+        font-size        : 1.6em;
+    }
+
+    /* contains links to the next/previous blog entry */
+    .entry > .menu
+    {
+        float            : right;
+        margin-left      : 1em;
+    }
+
+    /* table of contents */
+    .entry > .toc
+    {
+        margin-bottom    : 2em;
+        background-color : #FAFAFA;
+        padding          : 1em;
+    }
+
+    .entry > .toc ul
+    {
+        margin-top       : 0;
+    }
+
+    /* content of the blog entry */
+    .entry > .text
+    {
+        background-color : #F8F8FF;
+        padding          : 1em;
+    }
+
+    .entry > .text a
+    {
+        text-decoration  : underline;
+    }
+
+    /* the LaTeX heading number that links back to the table of contents */
+    .entry > .text a.toc-link
+    {
+        text-decoration  : none;
+    }
+
+    .entry > .text img
+    {
+        margin           : 1em;
+    }
+
+    /* the "Read more..." link */
+    .entry > .more a
+    {
+        float            : right;
+        margin-left      : 2em;
+        margin-bottom    : 2em;
+    }
+
+    /* information about the blog entry */
+    .entry > .info
+    {
+        font-size        : small;
+        padding-left     : 0;
+        _margin-left     : 0; /* for IE6 */
+    }
+
+
+/* additional styles for config/entry.erb (when @solo is true)
+    (that is, when the entry is displayed alone, on its own page) */
+
+    .entry-solo
+    {
+    }
+
+    .entry-solo > .name
+    {
+        text-align       : center;
+        border-bottom    : none;
+        padding-bottom   : 0;
+    }
+
+    .entry-solo > .menu
+    {
+        text-align       : center;
+        float            : none;
+        margin-left      : 0;
+        margin-bottom    : 2em;
+    }
+
+    .entry-solo > .toc
+    {
+    }
+
+    .entry-solo > .text
+    {
+        margin-left      : 0;
+
+        background-color : inherit;
+        padding          : 0;
+    }
+
+    .entry-solo > .info
+    {
+        margin-top       : 2em;
+        border-top       : 1px dashed #808080;
+        padding-top      : 0.5em;
+    }
+
+
+/* styles for config/listing.erb */
+
+    .listing
+    {
+    }
+
+    .listing > .name
+    {
+        font-size        : 1.6em;
+    }
+
+
+/* styles for config/section.erb */
+
+    .section
+    {
+    }
+
+    .section > .name
+    {
+        font-size        : 1.6em;
+        text-align       : center;
+    }
+
+    /* contains links to the next/previous section */
+    .section > .menu
+    {
+        margin-bottom    : 4em;
+        text-align       : center;
+    }
+
+
+/* styles for config/chapter.erb */
+
+    .chapter
+    {
+    }
+
+    .chapter > .name
+    {
+        font-size        : 1.6em;
+    }
+
+    /* tag cloud */
+    .chapter > .cloud
+    {
+        padding          : 0;
+        text-align       : center;
+        max-width        : 70%;
+        _width           : 70%; /* for IE6 */
+        margin-left      : auto;
+        margin-right     : auto;
+    }
+
+    .chapter > .cloud li
+    {
+        display          : inline;
+        padding-right    : 10px;
+    }
+
