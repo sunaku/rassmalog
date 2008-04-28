@@ -1,9 +1,5 @@
 # Provides Rake tasks to validate and correct HTML files.
 #
-# To use this plugin, you need to install the following gems:
-#
-#   gem install xml-simple tidy
-#
 # This code was adapted by Greg Weber, and is originally by Scott Raymond.
 # See http://redgreenblu.com/svn/projects/assert_valid_markup/
 #
@@ -35,8 +31,22 @@ require 'digest/md5'
 require 'tmpdir'
 require 'cgi'
 require 'rubygems'
-require 'xmlsimple'
-require 'tidy'
+
+begin
+  require 'xmlsimple'
+  require 'tidy'
+
+rescue LoadError
+  raise <<-EOS
+
+  #{__FILE__}
+
+  To use this plugin, you need to install the following gems:
+
+    gem install xml-simple tidy
+
+  EOS
+end
 
 def errors_to_output( errors )
   errors.group_by {|error| error['line']}.
