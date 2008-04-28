@@ -63,7 +63,7 @@ require 'config/format'
         if code > 0xFF or code.chr =~ /[[:alnum:]\-_:\.]/
           code
         else
-          ?\s
+          32 # ASCII character code for a single space
         end
       end.pack('U*').strip.gsub(/[[:space:]-]+/, '-')
     end
