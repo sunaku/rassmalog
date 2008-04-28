@@ -255,10 +255,13 @@ require 'config/format'
   Feed = Struct.new(:file, :entries, :name, :info, :summarize)
 
   # Registers a new Rake task for generating a feed.
+  #
   # aFile:: path of the output file relative to the output/ directory
   # aItems:: array containing Chapter, Section, Listing, and Entry objects
   # aName:: title of the feed
   # aInfo:: description of the feed
+  # aSummarize:: summarize blog entries in the feed?
+  #
   def feed aFile, aItems, aName, aInfo = nil, aSummarize = BLOG.summarize_entries
     dst = File.join('output', aFile)
     entries = aItems.flatten.uniq
@@ -448,6 +451,7 @@ require 'config/format'
     include TemplateMixin
       alias url output_url
 
+    # aData:: the content of this Entry
     def initialize aData = {}
       merge! aData
     end
@@ -768,12 +772,10 @@ require 'config/format'
             :output_file => File.join('output', dstUrl),
           }
 
-          if data['hide']
-            entryProp[:hidden] = true
+          if entryProp[:hidden] = data['hide']
             entryProp[:tags] = []
             entryProp[:archive] = nil
           else
-            entryProp[:hidden] = false
             entryProp[:tags] =
               [data['tags']].flatten.compact.uniq.sort.map do |name|
                 hookup(entry, tagStore, name, TAGS)
@@ -806,7 +808,7 @@ require 'config/format'
   # generate the search page
     if search = entryByInputUrl['search.yaml']
       dst = search.output_file
-      file dst => ENTRY_FILES # search page depends on ALL entries
+      file dst => ENTRY_FILES # the search page depends on ALL entries
 
       # give the search page its own Rake task, otherwise it is
       # created every time the :entry task is invoked -- this defeats
