@@ -59,9 +59,9 @@
 
     .name a:after,
     .menu a:after,
-    .chapter > .cloud a:after,
-    .entry > .info a:after,
-    .entry > .more a:after,
+    .chapter .cloud a:after,
+    .entry .info a:after,
+    .entry .more a:after,
     a[href^="#"]:after
     {
         content          : "";
@@ -92,7 +92,6 @@
     #links
     {
         max-width        : none;
-        margin           : 0;
     }
 
     #header,
@@ -112,7 +111,7 @@
         font-size        : 2em;
     }
 
-    .entry > .text
+    .entry .text
     {
         max-width        : none;
     }

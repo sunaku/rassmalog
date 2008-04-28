@@ -1,3 +1,11 @@
+/**
+  NOTE: In theory, I should use child selectors (parent > child)
+        for most of these styles. In practice, however, I use
+        them *only* for redundant child elements (such as 'name'
+        and 'menu') because IE6 does not support them. :-(
+*/
+
+
 /* emphasis */
 
     body
@@ -33,12 +41,6 @@
         font-size        : larger;
     }
 
-    table
-    {
-        margin-left      : auto;
-        margin-right     : auto;
-    }
-
 
 /* tables */
 
@@ -55,6 +57,7 @@
         border           : 1px solid #C0C0C0;
         vertical-align   : top;
         background-color : inherit;
+        _background-color : #FFFFFF; /* for IE6 */
     }
 
     th
@@ -111,43 +114,48 @@
         font-family      : Constantia, "Book Antiqua", "URW Bookman L", serif;
     }
 
-    .entry > .text h1,
-    .entry > .text h2,
-    .entry > .text h3,
-    .entry > .text h4,
-    .entry > .text h5,
-    .entry > .text h6
+    .name
+    {
+        font-size        : 1.6em;
+    }
+
+    .entry .text h1,
+    .entry .text h2,
+    .entry .text h3,
+    .entry .text h4,
+    .entry .text h5,
+    .entry .text h6
     {
         margin-top       : 2.5em;
         line-height      : 1.25em;
     }
 
-    .entry > .text h1
+    .entry .text h1
     {
         font-size        : 2.0em;
     }
 
-    .entry > .text h2
+    .entry .text h2
     {
         font-size        : 1.8em;
     }
 
-    .entry > .text h3
+    .entry .text h3
     {
         font-size        : 1.6em;
     }
 
-    .entry > .text h4
+    .entry .text h4
     {
         font-size        : 1.4em;
     }
 
-    .entry > .text h5
+    .entry .text h5
     {
         font-size        : 1.2em;
     }
 
-    .entry > .text h6
+    .entry .text h6
     {
         font-size        : 1.0em;
     }
@@ -155,7 +163,7 @@
 
 /* hyperlinks */
 
-    a > img
+    a img
     {
         border           : none;
     }
@@ -175,8 +183,8 @@
     #navigation a:visited,
     .chapter a:visited,
     .menu a:visited,
-    .entry > .info a:visited,
-    .entry > .more a:visited
+    .entry .info a:visited,
+    .entry .more a:visited
     {
         color            : #0000FF;
     }
@@ -217,12 +225,18 @@
         display          : none;
     }
 
+    .listing .name,
+    .chapter .name
+    {
+        _display         : none; /* for IE6 */
+    }
+
 
 /* lists */
 
     /* reduce indentation of list items */
     #links ul,
-    .entry > .toc ul
+    .entry .toc ul
     {
         padding-left     : 1em; /* for Firefox */
 
@@ -234,12 +248,12 @@
     }
 
     /* add space between nested lists for better readability */
-    .entry > .toc ul
+    .entry .toc ul
     {
         padding-bottom   : 0.75em;
     }
 
-    .entry > .toc ul:last-child
+    .entry .toc ul:last-child
     {
         padding-bottom   : 0;
     }
@@ -287,6 +301,7 @@
     /* the name of your blog */
     #header .name
     {
+        font-size: 2em;
     }
 
     /* the description of your blog */
@@ -354,51 +369,49 @@
         font-size        : 1.6em;
     }
 
-    /* contains links to the next/previous blog entry */
-    .entry > .menu
+    .entry .name
     {
-        float            : right;
-        margin-left      : 1em;
+        _display         : block; /* for IE6 */
     }
 
     /* table of contents */
-    .entry > .toc
+    .entry .toc
     {
         margin-bottom    : 2em;
         background-color : #FAFAFA;
         padding          : 1em;
     }
 
-    .entry > .toc ul
+    .entry .toc ul
     {
         margin-top       : 0;
     }
 
     /* content of the blog entry */
-    .entry > .text
+    .entry .text
     {
         background-color : #F8F8FF;
         padding          : 1em;
     }
 
-    .entry > .text a
+    .entry .text a
     {
         text-decoration  : underline;
     }
 
     /* the LaTeX heading number that links back to the table of contents */
-    .entry > .text a.toc-link
+    .entry .text a.toc-link
     {
         text-decoration  : none;
     }
 
-    .entry > .text img
+    .entry .text img
     {
         margin           : 1em;
     }
 
     /* the "Read more..." link */
-    .entry > .more a
+    .entry .more a
     {
         float            : right;
         margin-left      : 2em;
@@ -406,7 +419,7 @@
     }
 
     /* information about the blog entry */
-    .entry > .info
+    .entry .info
     {
         font-size        : small;
         padding-left     : 0;
@@ -436,19 +449,19 @@
         margin-bottom    : 2em;
     }
 
-    .entry-solo > .toc
+    .entry-solo .toc
     {
     }
 
-    .entry-solo > .text
+    .entry-solo .text
     {
-        margin-left      : 0;
-
         background-color : inherit;
+        _background-color : #FFFFFF; /* for IE6 */
+        margin-left      : 0;
         padding          : 0;
     }
 
-    .entry-solo > .info
+    .entry-solo .info
     {
         margin-top       : 2em;
         border-top       : 1px dashed #808080;
@@ -464,7 +477,6 @@
 
     .listing > .name
     {
-        font-size        : 1.6em;
     }
 
 
@@ -476,7 +488,6 @@
 
     .section > .name
     {
-        font-size        : 1.6em;
         text-align       : center;
     }
 
@@ -496,11 +507,10 @@
 
     .chapter > .name
     {
-        font-size        : 1.6em;
     }
 
     /* tag cloud */
-    .chapter > .cloud
+    .chapter .cloud
     {
         padding          : 0;
         text-align       : center;
@@ -510,7 +520,7 @@
         margin-right     : auto;
     }
 
-    .chapter > .cloud li
+    .chapter .cloud li
     {
         display          : inline;
         padding-right    : 10px;
