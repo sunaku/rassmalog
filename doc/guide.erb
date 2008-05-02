@@ -378,9 +378,30 @@
   <% section "Creating RSS feeds" do %>
     # Open the <tt>Rakefile</tt> in your text editor.
     # You should now see a some code similar to this:
-      <code><%= File.read('Rakefile').split(/^$/).last %></code>
+      <code><%= File.read('Rakefile').grep(/^feed/).first %></code>
       This code invokes the @feed@ method to create an RSS feed.
     # Add your own invocation of the @feed@ method to the bottom of the file (see the API documentation in <%= xref 'hacking.api' %> for help).
+
+    <% example "Adding entries from multiple tags to an RSS feed" do %>
+      The second parameter of the @feed@ method is an arry of @Entry@ objects.  You can take advantage of this fact with some Ruby magic:
+
+      <code>
+      # gather the desired entries
+      entries = TAGS['foo'] + TAGS['bar'] + TAGS['moz']
+
+      # remove duplicate entries
+      entries.uniq!
+
+      # create the feed
+      feed 'example.xml', entries
+      </code>
+
+      Here we gather all blog entries that have the 'foo', 'bar', or 'moz' tag into an array, and keep track of it in the @entries@ variable.
+
+      Next, we call the @uniq@ method on the @entries@ variable to ensure that all entries occur only once in the array (since the same entry could have both 'foo' and 'bar' tags, and would thus appear twice in the array).
+
+      Finally, we create the news feed by calling the @feed@ method.
+    <% end %>
   <% end %>
 <% end %>
 
