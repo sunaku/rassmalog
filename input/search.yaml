@@ -1,121 +1,23 @@
-hide: true
-
-generate_toc: false
+name: <%= LANG['Search'] %>
 
 output_file: <%= LANG['Search'].to_file_name %>.html
 
-name: <%= LANG['Search'] %>
+hide: true
+
+generate_toc: false
 
 # There is a HTML search form in config/html.erb that sends
 # the user to this search page. We then parse the GET query
 # string from the browser URL and try to perform the search.
 text: |
-  <noformat>
-    <div id="search-output" style="display: none"></div>
+  This page displays all entries available on this blog in full length.  Therefore, by searching _within_ this particular page, you can essentially search the entire content of this blog!
 
-    <noscript>
-      <div id="search-error"><%=
-        disabled_message = %{
-          The <strong>search cannot be performed</strong> because your web
-          browser lacks the <code>window.find()</code> JavaScript function. To
-          work around this limitation, follow the instructions shown below.
-        }
-      %></div>
-    </noscript>
-
-    <script defer type="text/javascript">
-    <!--
-      function search(aString, aShowDialog)
-      {
-        window.find(
-          aString,    // aString
-          false,      // aCaseSensitive
-          false,      // aBackwards
-          true,       // aWrapAround
-          false,      // aWholeWord
-          true,       // aSearchInFrames
-          aShowDialog // aShowDialog
-        );
-      }
-
-      function puts(aLine)
-      {
-        var output = document.getElementById('search-output');
-        output.innerHTML += aLine + '<br/>';
-        output.style.display = 'block';
-      }
-
-      function search_handler()
-      {
-        var httpQuery = window.location.search;
-        var searchBox = document.getElementById('search').q;
-        var query;
-
-        if (searchBox.value.length > 0)
-        {
-          query = searchBox.value;
-        }
-        else if (httpQuery)
-        {
-          query = unescape(
-            httpQuery.match(/^[^=]+=([^&]*)/)[1]. // parse query value
-            replace(/\+/g, ' ').                  // unescape() ignores '+'
-            replace(/^\s+|\s+$/g, '')             // strip outer whitespace
-          );
-
-          // propagate GET query string into search box
-          searchBox.value = query;
-        }
-
-        if (query)
-        {
-          // perform the search
-          if (window.find)
-          {
-            search(query, false);
-
-            // show dialog only if something was found
-            if (document.getSelection())
-            {
-              search(query, true);
-            }
-            else
-            {
-              puts('No matches for <u>' + query + '</u> on this page.');
-            }
-          }
-          else
-          {
-            puts(<%= disabled_message.inspect %>);
-          }
-
-          // focus the search box immediately after search is
-          // completed so that the user can do another search
-          searchBox.focus();
-        }
-      }
-
-      if (document.addEventListener)
-      {
-        document.addEventListener("DOMContentLoaded", search_handler, false);
-      }
-      else
-      {
-        search_handler();
-      }
-    -->
-    </script>
-  </noformat>
-
-  This page lists all available blog entries in full length. Please
-  search _within_ this page using your web browser's internal search
-  mechanism, which is typically activated by pressing the *forward
-  slash* key or by pressing the *Control* and *F* keys simultaneously.
+  Please use your web browser's internal search mechanism to search within this page.  In most web browsers, this mechanism is activated by either (1) pressing the *forward slash* key alone or (2) by pressing the *Control* and *F* keys simultaneously.
 
   <br/>
 
   <noformat>
-    <% (ENTRIES - [@entry]).each do |entry| %>
+    <% ENTRIES.each do |entry| %>
       <%= entry.to_html :@summarize => false %>
     <% end %>
   </noformat>

@@ -5,6 +5,7 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * NEW_ENTRIES - array of recent blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
@@ -66,28 +67,12 @@
 
     <br style="display: none"/>
 
-    <form id="search" method="get" <%=
-      if @title == LANG['Search']
-        # avoid having to reload the entire search page (which can
-        # get very large in file size) each time the user submits
-        # the search form when the user is already on the search page
-        %{action="#" onsubmit="search_handler(); return false;"}
-      else
-        %{action="#{LANG['Search'].to_file_name}.html"}
-      end
-    %>>
-      <input type="text" name="q" id="search-query" value="<%= LANG['Search'] %>"/>
-      <input type="submit" value="&crarr;"/>
-    </form>
-
-    <br style="display: none"/>
-
     <div id="navigation">
       <%
         # highlights the given item if it corresponds to the current web page
         def menu_item aItem
-          if (@target.object_id == aItem.object_id) or
-             (@target.is_a? Entry and aItem == ENTRIES) or
+          if (@target.equal? aItem) or
+             (aItem == ENTRIES and ENTRIES.include? @target) or
              (@target.is_a? Section and aItem == @target.parent)
           then
             %{<strong class="current">#{aItem.to_link}</strong>}
@@ -104,6 +89,11 @@
       <%= menu_item(TAGS) %>
       &middot;
       <%= menu_item(ARCHIVES) %>
+
+      <% if SEARCH_PAGE %>
+        &middot;
+        <%= menu_item(SEARCH_PAGE) %>
+      <% end %>
 
       <% unless FEEDS.empty? %>
         &middot;

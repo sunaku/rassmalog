@@ -806,8 +806,8 @@ require 'config/format'
     ENTRIES.sort! # chronological sort
 
   # generate the search page
-    if search = entryByInputUrl['search.yaml']
-      dst = search.output_file
+    if SEARCH_PAGE = entryByInputUrl['search.yaml']
+      dst = SEARCH_PAGE.output_file
       file dst => ENTRY_FILES # the search page depends on ALL entries
 
       # give the search page its own Rake task, otherwise it is

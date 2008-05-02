@@ -312,27 +312,6 @@
         margin-bottom     : 2em;
     }
 
-    /* the search form */
-    #search
-    {
-        float             : right;
-    }
-
-    /* the search box in which the user types their query */
-    #search-query
-    {
-        width             : 10em;
-    }
-
-    /* an area for search results */
-    #search-output,
-    #search-error
-    {
-        border            : thin solid #FF0000;
-        background-color  : #FFFAFA;
-        padding           : 1em;
-    }
-
     /* the main content of the web page */
     #content
     {
