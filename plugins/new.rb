@@ -1,24 +1,32 @@
-# Provides a Rake task to facilitate Lazy Blogging [1].
+# Provides a Rake task to facilitate "Lazy Blogging" [1] where you
+# can easily create a new blog entry source file without having to:
+#
+# * think of and manage unique file names every time
+# * supply the current date and time
+# * remember the entire syntax of a blog entry file
+# * remember the names of all tags you have used thus far
 #
 # The name of the created file follows this format:
 #
 #   "entries/{today's date}+{serial number}.yaml"
 #
-# Usage:
+# To create a new blog entry file that is ready for editing:
 #
-#   # create a new blog entry file that is ready for editing
 #   rake new
 #
-#   # override the default values of blog entry fields
+# To override the default values of blog entry fields:
+#
 #   rake new name='hello world' date='2008 march 17' tags='foo,bar' text='hey!'
 #
-#   # override the tags field (values must be separated by commas)
+# To override the tags field (values must be separated by commas):
+#
 #   rake new tags='foo,bar,hello world'
 #
-#   # override the default location of the created file
+# To override the default location of the created file:
+#
 #   rake new file='hello_world.yaml'
 #
-# [1] "Lazy Blogging" by Josef 'Jupp' Schugt on 2008 March 16; see
+# [1] Josef 'Jupp' Schugt, "Lazy Blogging", 2008 March 16, available at
 #     http://cip.physik.uni-bonn.de/~jupp/2008-03-16-lazy-blogging.html
 #--
 # Copyright 2008 Suraj N. Kurapati

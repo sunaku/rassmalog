@@ -11,6 +11,7 @@
   # local variables for this document
   download_url = 'http://rubyforge.org/frs/?group_id=2737'
   langFiles = Dir['config/lang/*.yaml'].sort
+  pluginFiles = Dir['plugins/*.rb'].sort
 
   def dump_param_info aInputFile, aHeadingDepth
     File.read(aInputFile).scan(/(?:\n#.*)+(?:\n\w+:)?/).map do |s|
@@ -140,47 +141,67 @@
 
     * <tt>rassmalog.rb</tt>
       - the core of Rassmalog.
+
     * <tt id="manifest.doc">doc/</tt>
       - documentation for Rassmalog users
-    ** <tt>guide.erb</tt>
-      - source code of this user guide
+
+      * <tt>doc/guide.erb</tt>
+        - source code of this user guide
+
     * <tt id="manifest.config">config/</tt>
       - directory that contains all configuration files.
-    * <tt>config/blog.yaml</tt>
-      - the primary configuration file for your blog.
-    * <tt>config/feed.erb</tt>
-      - template for generating RSS feeds for the blog.
-    * <tt>config/html.erb</tt>
-      - template for generating a complete HTML web page.
-    * <tt>config/chapter.erb</tt>
-      - template for generating HTML for lists of tags and archives.
-    * <tt>config/section.erb</tt>
-      - template for generating HTML for individual tags and archives.
-    * <tt>config/listing.erb</tt>
-      - template for generating the recent/all lists of blog entries.
-    * <tt>config/entry.erb</tt>
-      - template for generating HTML for a blog entry.
-    * <tt>config/format.rb</tt>
-      - defines how text is transformed into HTML.
-    * <tt id="manifest.lang">config/lang/</tt>
-      - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
-    <% langFiles.each do |file| %>
-    ** <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/\(.*\)/)[0] %>
-    <% end %>
+
+      * <tt>config/blog.yaml</tt>
+        - the primary configuration file for your blog.
+
+      * <tt>config/feed.erb</tt>
+        - template for generating RSS feeds for the blog.
+
+      * <tt>config/html.erb</tt>
+        - template for generating a complete HTML web page.
+
+      * <tt>config/chapter.erb</tt>
+        - template for generating HTML for lists of tags and archives.
+
+      * <tt>config/section.erb</tt>
+        - template for generating HTML for individual tags and archives.
+
+      * <tt>config/listing.erb</tt>
+        - template for generating the recent/all lists of blog entries.
+
+      * <tt>config/entry.erb</tt>
+        - template for generating HTML for a blog entry.
+
+      * <tt>config/format.rb</tt>
+        - defines how text is transformed into HTML.
+
+      * <tt id="manifest.lang">config/lang/</tt>
+        - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
+
+      <% langFiles.each do |file| %>
+        * <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/\(.*\)/)[0] %>
+
+      <% end %>
+
     * <tt id="manifest.output">output/</tt>
       - directory that contains your generated blog.
+
     * <tt id="manifest.input">input/</tt>
       - directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.
 
       A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, a source file's corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.
 
       For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding the "*output_file* parameter":#param.output_file to your blog entry.
-    * <tt>input/styles/screen.css</tt>
-      - the default CSS stylesheet provided with Rassmalog.
-    * <tt>input/styles/print.css</tt>
-      - the default CSS stylesheet provided with Rassmalog.
-    * <tt>input/rassmalog/entry.yaml</tt>
-      - reference of the blog entry file format.
+
+      * <tt>input/styles/screen.css</tt>
+        - the default CSS stylesheet provided with Rassmalog.
+
+      * <tt>input/styles/print.css</tt>
+        - the default CSS stylesheet provided with Rassmalog.
+
+      * <tt>input/rassmalog/entry.yaml</tt>
+        - reference of the blog entry file format.
+
     * <tt id="manifest.entries">entries/</tt>
       - directory that contains blog entry source files whose output files are *automatically calculated* by Rassmalog.
 
@@ -191,6 +212,23 @@
       As you can see, _unlike_ the blog entries in the <tt>input/</tt> directory, blog entries in the <tt>entries/</tt> directory do not have to worry about their original file name influencing the output file name. As a result, you can organize your blog entry files however you want.
 
       For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.
+
+    <% section "plugins/" do %>
+      This directory contains Ruby source files which define additional Rake tasks for Rassmalog.
+
+      <% pluginFiles.each do |file| %>
+        <% section file do %>
+          |_. Command |_. Description |
+          <% `rake -f #{file} -T`.split(/\r?\n/)[1..-1].each do |s| %>
+          | <%= s.split('#').join(' | ') %> |
+          <% end %>
+
+          <noformat><%=
+            File.read(file)[/\A.*?(?=^#--)/m].gsub(/^# ?/, ' ').to_html
+          %></noformat>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <% section 'Version numbering system' do %>
@@ -276,6 +314,20 @@
 
   For example, here is the output you would see when you run the above command:
   <pre><%= `rake -T || rake.bat -T || echo Your system lacks the rake command.` %></pre>
+
+  <% section "Creating a blog entry file" do %>
+    The "_new_ plugin":#plugins/new.rb allows you to easily create a new blog entry source file without having to:
+    * think of and manage unique file names every time
+    * supply the current date and time
+    * remember the entire syntax of a blog entry file
+    * remember the names of all tags you have used thus far
+
+    To use this plugin, run the following command:
+
+      rake new
+
+    After it executes, the command will report the name of the file it created.  You can then edit the created file using your favorite text editor and fill in all the juicy details.
+  <% end %>
 
   <% section "Generating your blog", 'usage.gen' do %>
     To generate your blog, run the following command:
