@@ -6,13 +6,15 @@
 
   # parameters for the HTML format
   $title   = "Rassmalog #{Rassmalog[:version]} user guide"
-  $authors = {'Suraj N. Kurapati' => 'http://snk.tuxfamily.org'}
+  $authors = {'Suraj N. Kurapati' => 'http://www.soe.ucsc.edu/~snk/'}
 
   # local variables for this document
   download_url = 'http://rubyforge.org/frs/?group_id=2737'
   langFiles = Dir['config/lang/*.yaml'].sort
   pluginFiles = Dir['plugins/*.rb'].sort
 
+  # Extracts information about configuration parameters from the given
+  # file and emits the information into sections having the given depth.
   def dump_param_info aInputFile, aHeadingDepth
     File.read(aInputFile).scan(/(?:\n#.*)+(?:\n\w+:)?/).map do |s|
       info, param = s.split /\n(?!#)/
@@ -89,7 +91,7 @@
 
     <% section 'Comments and spam control' do %>
       |_. Dynamic blog engine|_. Rassmalog|
-      |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* (which can be disabled if you want) while taking special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.<br/><br/>If you prefer *web based comments* instead, then "JavaScript-based comments":rassmalog/tricks/dynamic-comments.html are available.|
+      |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* (which can be disabled if you want) while taking special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.<br/><br/>If you prefer *web based comments* instead, then "JavaScript-based comments":../output/2007-09-25-dynamic-web-based-comments.html are available.|
     <% end %>
   <% end %>
 
@@ -246,10 +248,10 @@
 
   You are encouraged to "generate your blog":#usage.gen at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
 
-  <% section 'Parameters' do %>
+  <% section 'Parameters' do |node| %>
     The following subsections describe the configuration parameters available for use in the  <tt>config/blog.yaml</tt> file.
 
-    <%= dump_param_info('config/blog.yaml', 3) %>
+    <%= dump_param_info('config/blog.yaml', node.depth + 1) %>
   <% end %>
 
   <% section 'Localization for foreign languages', 'lang' do %>
@@ -408,10 +410,10 @@
 <% chapter "Writing blog entries" do %>
   This chapter deals with things related to the writing, formatting, and scripting of blog entries.
 
-  <% section "Parameters" do %>
+  <% section "Parameters" do |node| %>
     The following subsections describe the parameters you can use in a blog entry file. For an example of usage, see the <tt>input/rassmalog/entry.yaml</tt> file.
 
-    <%= dump_param_info('entries/example-entry.yaml', 3) %>
+    <%= dump_param_info('entries/example-entry.yaml', node.depth + 1) %>
   <% end %>
 
   <% section "eRuby directives" do %>

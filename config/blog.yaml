@@ -35,11 +35,9 @@ name: <%= Rassmalog %>
 # Description of your blog.
 #
 info: |
-  A static blog engine based on
-      "YAML":http://www.yaml.org/,
-      "eRuby":http://en.wikipedia.org/wiki/Eruby,
-  and "Rake":http://rake.rubyforge.org/.
-  Please see the "comprehensive user guide":../doc/guide.html for more information about Rassmalog.
+  A static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/.
+  <br/>
+  Please see the "comprehensive user guide":../doc/guide.html for more information.
 
 
 ################################################################################
@@ -341,13 +339,15 @@ links:
   - Users:
     - Suraj N. Kurapati: http://snk.tuxfamily.org/web/
     - Josef 'Jupp' Schugt: http://cip.physik.uni-bonn.de/~jupp/
+    - Greg Weber: http://thoughtfolder.com
+    - Sam Broad: http://www.sambroad.com/blog/
+    - Christian Berendt: http://thorlin.de
+    - листп еоод: http://blog.listp.com
+    - Dave Scotto: http://www.yasgursfarm.us/d/
     - Asterisell: http://asterisell.profitoss.com
     - Profitoss: http://profitoss.com
     - ClothRed: http://clothred.rubyforge.org
-    - Dave Scotto: http://www.yasgursfarm.us/d/
     - Spooky Fox: http://blog.iworkroom.com
-    - листп еоод: http://blog.listp.com
-    - Greg Weber: http://thoughtfolder.com
     - Add _your_ blog here!: "<%= BLOG.email.to_url('add Rassmalog blog', 'My blog URL is: ...') %>"
 
   - hey!:

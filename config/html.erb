@@ -18,9 +18,9 @@
   the readability and usability of this web page in text-only web browsers.
 =end
 
-  nameHTML   = BLOG.name.to_html
-  infoHTML   = BLOG.info.to_html
-  authorHTML = BLOG.author.to_html
+  blogName   = BLOG.name.to_html
+  blogInfo   = BLOG.info.to_html
+  blogAuthor = BLOG.author.to_html
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,14 +32,14 @@
       if @target.is_a? Entry and summary = @target.summary
         summary
       else
-        infoHTML
+        blogInfo
       end
     ) %>" />
     <% if @target.is_a? Entry and not @target.tags.empty? %>
       <meta name="keywords" content="<%= @target.tags.map {|t| t.name}.join(', ') %>" />
     <% end %>
     <meta name="date" content="<%= Time.now.rfc822 %>" />
-    <meta name="author" content="<%=h authorHTML %>" />
+    <meta name="author" content="<%=h blogAuthor %>" />
     <meta name="generator" content="<%= Rassmalog %>" />
 
     <% FEEDS.each do |feed| %>
@@ -50,7 +50,7 @@
     <link rel="stylesheet" type="text/css" href="styles/print.css" media="print" />
     <link rel="alternate stylesheet" type="text/css" href="styles/print.css" title="Print Preview" />
 
-    <title><%= @title.to_html %> &mdash; <%= nameHTML %></title>
+    <title><%= @title.to_html %> &mdash; <%= blogName %></title>
   </head>
   <body>
     <p style="display: none">
@@ -60,8 +60,8 @@
     </p>
 
     <div id="header">
-      <h1 class="name"><%= link('index.html', nameHTML) %></h1>
-      <div class="info"><%= infoHTML %></div>
+      <h1 class="name"><%= link('index.html', blogName) %></h1>
+      <div class="info"><%= blogInfo %></div>
     </div>
 
     <br style="display: none"/>
@@ -136,7 +136,7 @@
 
     <%#
       ensure that a horizontal rule is present to
-      separate the content from the stuff below it
+      separate the above content from the stuff below it
     %>
     <% if @content !~ %r{<hr.*?>(</.*?>|<[^/].*?/>|.)*\z}m %>
       <br style="display: none"/>
@@ -147,9 +147,9 @@
       <%=
         author =
           if BLOG.email
-            link BLOG.email.to_url, authorHTML
+            link BLOG.email.to_url, blogAuthor
           else
-            authorHTML
+            blogAuthor
           end
 
         LANG["Authored by %s.", author]
