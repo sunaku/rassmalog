@@ -44,7 +44,7 @@
     <meta name="generator" content="<%= Rassmalog %>" />
 
     <% FEEDS.each do |feed| %>
-      <link rel="alternate" type="application/rss+xml" href="<%= feed.file %>" title="<%= feed.name %>" />
+      <link rel="alternate" type="application/rss+xml" href="<%= feed.file %>" title="<%=h feed.name %>" />
     <% end %>
 
     <link rel="stylesheet" type="text/css" href="styles/screen.css" media="screen" />

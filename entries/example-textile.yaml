@@ -51,8 +51,7 @@ text: |
   ** Sub point 2
 
 
-  Well, that went well. How about we insert an <a href="/" title="watch
-  out">old-fashioned hypertext link</a>? Will the quote marks in the tags
+  Well, that went well. How about we insert an <a href="/" title="watch  out">old-fashioned hypertext link</a>? Will the quote marks in the tags
   get messed up? No!
 
   "This is a link (optional title)":http://www.textism.com
@@ -80,14 +79,12 @@ text: |
   This <code>is some code, "isn't it"</code>. Watch those quote marks! Now
   for some preformatted text:
 
-  <pre>
   <code>
     $text = str_replace("<p>%::%</p>","",$text);
     $text = str_replace("%::%</p>","",$text);
     $text = str_replace("%::%","",$text);
 
   </code>
-  </pre>
 
   This isn't code.
 

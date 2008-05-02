@@ -37,4 +37,4 @@ text: |
   Here is a demonstration of the dynamic commenting service mentioned above. Note that JavaScript is required in order to view this demonstration.
 
   <div class="js-kit-comments" path="<%= @entry.url %>"></div>
-  <script src="http://js-kit.com/comments.js"></script>
+  <script type="text/javascript" src="http://js-kit.com/comments.js"></script>

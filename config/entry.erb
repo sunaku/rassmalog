@@ -43,7 +43,7 @@
     end
   end
 
-  anchor = h @entry.url
+  anchor = @entry.url.to_uri_fragment
 %>
 <br style="display: none"/>
 
