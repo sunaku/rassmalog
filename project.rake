@@ -61,11 +61,6 @@ Rake::PackageTask.new PROJECT_ID, PROJECT_VERSION do |p|
   p.package_files.exclude('_darcs', File.basename(__FILE__)).include('**/*')
 end
 
-desc 'Generate release announcement.'
-task :ann => 'output' do |t|
-  system "w3m -T text/html -dump -cols 60 output/rassmalog/history/#{PROJECT_VERSION}.html"
-end
-
 
 TRANSLATE_DIR = 'translate-output'
 directory TRANSLATE_DIR
