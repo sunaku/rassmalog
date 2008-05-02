@@ -25,7 +25,12 @@
   <%
     @feed.entries.each do |entry|
       url = entry.absolute_url
-      text = entry.to_html :@summarize => @feed.summarize
+      text =
+        if @feed.summarize and summary = entry.summary
+          "#{summary}<p>#{ entry.to_link LANG["Read more..."] }</p>"
+        else
+          entry.html
+        end
 
       # resolve relative URLs into absolute URLs
       # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
