@@ -1,0 +1,67 @@
+name: Version 11.0.0
+date: Thu May  1 22:53:06 PDT 2008
+tags: history
+text: |
+  This release removes needless cruft (keep it simple!), adds new plugins, adds
+  support for Ruby 1.9.0, freshens the default CSS theme, fixes translation
+  files, and updates the documentation.
+
+
+  h1. Thanks
+
+  * Aggelos Orfanakos contributed fixes for the Greek language translation file.
+
+  * Josef 'Jupp' Schugt suggested the "Lazy
+    Blogging":http://cip.physik.uni-bonn.de/~jupp/2008-03-16-lazy-blogging.html
+    feature.
+
+  * Greg Weber suggested creating an official *preview* task and contributed a
+    HTML validation plugin (<tt>plugins/validate.rb</tt>).
+
+
+  h1. Caution
+
+  * Trailing dashes are now correctly removed from generated file names (the
+    result of @String#to_file_name@). As a result, you may need to update
+    hyperlinks to blog entries generated with a previous version of Rassmalog.
+
+  * The entire <tt>config/entry.erb</tt> template is no longer rendered inside
+    the RSS feed. Instead, only the text of the entry (and a "read more" link,
+    if necessary) are rendered.
+
+  * The search page no longer has a JavaScript-based search implementation.
+    Instead, visitors are urged to use their browser's built-in search
+    mechanism, which is _far_ superior to what is possible with JavaScript.
+
+
+  h1. Improvements
+
+  * Added the <tt>plugins/new.rb</tt> plugin which provides a Rake task for
+    easily creating new blog entry source files. See "the
+    documentation":../doc/guide.html#plugins-new.rb for more information.
+
+  * Added an official *preview* task which continuously generates the blog while
+    you write your blog entries.
+
+  * Added documentation about plugin usage, creating mulitple RSS feeds, and the
+    *preview* task to the user guide.
+
+
+  h2. Usability
+
+  * Added an "all entries" link (in between the older/newer navigation links for
+    a blog entry) which takes you to the corresponding place in the list of all
+    entries. This allows users to access nearby entries without fear of having
+    to scroll through the gigantic "all entries" list, just to return to where
+    they were a few pages ago!
+
+  * Enhanced the default CSS style by providing more visual clues about the
+    navigation menu, document structure, and page layout.
+
+
+  h1. Repairs
+
+  * Fixed several Ruby warnings
+
+  * Added support for Ruby 1.9.0
+
