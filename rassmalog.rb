@@ -33,7 +33,7 @@ require 'config/format'
   # Returns a safe file name that is composed of the
   # given words and has the given file extension.
   def make_file_name aExtension, *aWords #:nodoc:
-    aWords.join(' ').to_file_name << aExtension
+    aWords.join(' ').to_file_name.ext(aExtension)
   end
 
   class String
@@ -332,7 +332,7 @@ require 'config/format'
     # Path (relative to the output/ directory)
     # to the HTML output file of this object.
     def url
-      make_file_name('.html', name)
+      make_file_name('html', name)
     end
 
     # Transforms this object into HTML.
@@ -508,7 +508,7 @@ require 'config/format'
       # Path (relative to the output/ directory)
       # to the HTML output file of this object.
       def url
-        make_file_name('.html', @chapter.name, name)
+        make_file_name('html', @chapter.name, name)
       end
 
     # The title of this section.
@@ -761,11 +761,11 @@ require 'config/format'
 
               # for entries in entries/, calculate output file name
               elsif srcDir == 'entries/'
-                make_file_name('.html', entryDate.strftime('%F'), data['name'])
+                make_file_name('html', entryDate.strftime('%F'), data['name'])
 
               # for entries in input/, use the original file name
               else
-                srcUrl.sub(/yaml$/, 'html')
+                srcUrl.ext('html')
               end
             ),
 
