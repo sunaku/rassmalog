@@ -6,8 +6,7 @@ require 'rake/rdoctask'
 require 'rake/packagetask'
 
 
-## project configuration
-
+# project configuration
 require 'version'
 
 PROJECT_ID = :rassmalog
@@ -31,7 +30,7 @@ task :doc => 'doc/guide.html'
 
 desc "Format the user guide."
 file 'doc/guide.html' => 'doc/guide.erb' do |t|
-  system "~/src/gerbil/bin/gerbil html #{t.prerequisites} > #{t.name}"
+  sh "gerbil html #{t.prerequisites} > #{t.name}"
 end
 CLOBBER.include 'doc/guide.html'
 
@@ -49,6 +48,7 @@ end
 file 'output' do
   sh 'rake'
 end
+CLOBBER.include 'output'
 
 Rake::RDocTask.new 'ref' do |t|
   t.rdoc_files.exclude('_darcs', 'pkg').include('**/*.rb')

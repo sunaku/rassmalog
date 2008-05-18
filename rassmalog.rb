@@ -76,7 +76,7 @@ require 'config/format'
     # Transforms this string into an escaped POSIX shell
     # argument whilst preserving Unicode characters.
     def shell_escape
-      inspect.gsub(/\\(\d{3})/) {$1.to_i(8).chr}
+      inspect.gsub(/\\(\d{3})/) { $1.to_i(8).chr }
     end
 
 

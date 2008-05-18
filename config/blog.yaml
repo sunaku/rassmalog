@@ -107,7 +107,7 @@ url: http://rassmalog.rubyforge.org/output/
 #
 # The following predefined variables are available:
 #
-#   <%= whole %> is a path to the directory that must be uploaded.
+#   <%= whole %> is a path to the output/ directory which must be uploaded.
 #
 #   <%= parts %> is a sequence of quoted paths to files that must be uploaded.
 #                For example, the result of this directive is something like:
