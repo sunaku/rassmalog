@@ -1,0 +1,8 @@
+name: Version 11.0.2
+date: Sun May 18 16:58:44 PDT 2008
+tags: history
+text: |
+  This release adds dependencies between chronologically
+  adjacent entries so that the next/prev and older/newer
+  links (emitted by the blog entry template) are coherent
+  in the case of random entry insertion and deletion.
