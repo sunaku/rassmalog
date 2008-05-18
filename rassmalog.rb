@@ -384,14 +384,16 @@ require 'config/format'
   #    the array that contains this object.
   #
   module SequenceMixin
+    attr_writer :next, :prev
+
     # Returns the next section in the chapter.
     def next
-      sibling(+1)
+      @next ||= sibling(+1)
     end
 
     # Returns the previous section in the chapter.
     def prev
-      sibling(-1)
+      @prev ||= sibling(-1)
     end
 
     private
@@ -804,6 +806,21 @@ require 'config/format'
     end
 
     ENTRIES.sort! # chronological sort
+
+  # establish dependencies between chronologically adjacent entries so that
+  # the next/prev | older/newer links (emitted by the blog entry template)
+  # are coherent in the case of random entry insertion and deletion
+    require 'enumerator'
+
+    ENTRIES.each_cons(3) do |(a, b, c)|
+      a.next = b
+      b.prev = a
+
+      b.next = c
+      c.prev = b
+
+      file b.output_file => [a.input_file, c.input_file]
+    end
 
   # generate the search page
     if SEARCH_PAGE = entryByInputUrl['search.yaml']
