@@ -342,13 +342,14 @@ links:
     - Greg Weber: http://thoughtfolder.com
     - Sam Broad: http://www.sambroad.com/blog/
     - Christian Berendt: http://thorlin.de
+    - Renke Grunwald: http://renkobert.de
     - листп еоод: http://blog.listp.com
     - Dave Scotto: http://www.yasgursfarm.us/d/
+    - Fox Chao: http://blog.netinfox.com
     - Asterisell: http://asterisell.profitoss.com
     - Profitoss: http://profitoss.com
     - ClothRed: http://clothred.rubyforge.org
-    - Spooky Fox: http://blog.iworkroom.com
-    - Add _your_ blog here!: "<%= BLOG.email.to_url('add Rassmalog blog', 'My blog URL is: ...') %>"
+    - Add _your_ blog here!: "<%= BLOG.email.to_url('add to Rassmalog blog list', 'My blog URL is http://...') %>"
 
   - hey!:
     - this menu is:
