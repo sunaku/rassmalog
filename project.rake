@@ -10,7 +10,7 @@ require 'rake/packagetask'
 require 'version'
 
 PROJECT_ID = :rassmalog
-PROJECT_SSH_URL = "snk@rubyforge.org:/var/www/gforge-projects/#{PROJECT_ID}"
+PROJECT_SSH_URL = File.expand_path("~/www/lib/#{PROJECT_ID}")
 PROJECT_VERSION = Rassmalog[:version]
 
 
@@ -38,11 +38,6 @@ desc "Upload the project homepage."
 task :web => ['doc', 'ref', 'output'] do |t|
   args = t.prerequisites + [PROJECT_SSH_URL]
   sh 'rsync', '-avz', '--delete', *args
-end
-
-desc 'Connect to website FTP.'
-task :ftp do
-  sh 'lftp', "sftp://#{PROJECT_SSH_URL}"
 end
 
 file 'output' do
