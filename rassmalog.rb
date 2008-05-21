@@ -264,7 +264,7 @@ require 'config/format'
   #
   def feed aFile, aItems, aName, aInfo = nil, aSummarize = BLOG.summarize_entries
     dst = File.join('output', aFile)
-    entries = aItems.flatten.uniq
+    entries = [aItems].flatten.uniq
 
     feedObj = Feed.new(aFile, entries, aName, aInfo, aSummarize)
     FEEDS << feedObj
