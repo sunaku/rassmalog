@@ -268,21 +268,21 @@
         margin-left       : auto;
         margin-right      : auto;
         padding           : 0.5em;
-        max-width         : 51em; /* 35em (#content) + 1em (space) + 15em (#links) */
+        max-width         : 50em; /* 35em (#content) + 1.5em (space) + 13em (#links) + 0.5em (void) */
     }
 
     /* the main content of the web page */
     #content
     {
-        float             : left;
         max-width         : 35em;
     }
 
     /* the 'links' parameter in config/blog.yaml */
     #links
     {
-        float             : right;
-        max-width         : 15em;
+        position          : absolute;
+        margin-left       : 36.5em; /* 35em (#content) + 1.5em (space) */
+        max-width         : 13em;
     }
 
 
