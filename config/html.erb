@@ -109,7 +109,7 @@
       <%# provide a list of all RSS feeds available on this blog %>
       <% if FEEDS.length > 1 %>
         <li>
-          <%= LANG['Subscribe'] %> <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
+          <%= LANG['Subscribe'] %>&nbsp;<img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
           <ul>
             <% FEEDS.each do |feed| %>
               <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_html %></a></li>

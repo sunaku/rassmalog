@@ -33,7 +33,7 @@
       font = fonts[ (mass * scale).round ]
   %>
     <li style="font-size: <%= font %>;" title="<%= size %>">
-      <%= section.to_link %> <span style="display: none">(<%= size %>)</span>
+      <%= section.to_link section.name.to_html.gsub(/\s/, '&nbsp;') %> <span style="display: none">(<%= size %>)</span>
     </li>
   <% end %>
   </ul>
