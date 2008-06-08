@@ -21,7 +21,7 @@ task :default do
 end
 
 desc "Generate release packages."
-task :release => [:clobber, :doc, 'ref', 'output'] do
+task :dist => [:clobber, :doc, 'ref', 'output'] do
   sh 'rake', '-f', __FILE__, 'package'
 end
 
@@ -30,12 +30,12 @@ task :doc => 'doc/guide.html'
 
 desc "Format the user guide."
 file 'doc/guide.html' => 'doc/guide.erb' do |t|
-  sh "gerbil html #{t.prerequisites} > #{t.name}"
+  sh "gerbil -u html #{t.prerequisites} > #{t.name}"
 end
 CLOBBER.include 'doc/guide.html'
 
 desc "Upload the project homepage."
-task :web => ['doc', 'ref', 'output'] do |t|
+task :upload => ['doc', 'ref', 'output'] do |t|
   args = t.prerequisites + [PROJECT_SSH_URL]
   sh 'rsync', '-avz', '--delete', *args
 end
