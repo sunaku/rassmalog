@@ -43,10 +43,10 @@
           match
 
         when /^#/ # relative to this entry
-          a + url + b
+          a << File.join(url, b)
 
         else # relative to this blog
-          a + BLOG.url + b
+          a << File.join(BLOG.url, b)
         end
       end
   %>
