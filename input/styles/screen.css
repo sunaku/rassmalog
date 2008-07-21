@@ -121,34 +121,34 @@
     .entry .text h5,
     .entry .text h6
     {
-        margin-top        : 2.5em;
+        margin-top        : 1.25em;
         line-height       : 1.25em;
     }
 
     .entry .text h1
     {
-        font-size         : 2.0em;
+        font-size         : 1.5em;
     }
 
     .entry .text h2
     {
-        font-size         : 1.8em;
+        font-size         : 1.4em;
     }
 
     .entry .text h3,
     .name
     {
-        font-size         : 1.6em;
+        font-size         : 1.3em;
     }
 
     .entry .text h4
     {
-        font-size         : 1.4em;
+        font-size         : 1.2em;
     }
 
     .entry .text h5
     {
-        font-size         : 1.2em;
+        font-size         : 1.1em;
     }
 
     .entry .text h6
