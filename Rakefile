@@ -20,7 +20,7 @@ task :gen => [ :copy, :entry, :entry_meta, :entry_list, :search, :feed ]
 #
 # See the API documentation for the feed() method in the user guide for help.
 #
-feed 'feed.xml', NEW_ENTRIES, BLOG.name, BLOG.info
+feed 'feed.xml', ENTRIES.first(5), BLOG.name, BLOG.info
 
 #
 # Example of creating additional news feeds for your blog.

@@ -671,8 +671,7 @@ require 'config/format'
 
   TAGS        = Chapter.new LANG['Tags']
   ARCHIVES    = Chapter.new LANG['Archives']
-  ENTRIES     = Listing.new LANG['All entries']
-  NEW_ENTRIES = Listing.new LANG['New entries']
+  ENTRIES     = Listing.new LANG['Entries']
 
 
   tagStore = {}
@@ -813,13 +812,6 @@ require 'config/format'
   # generate list of all entries
     generate_html_task :entry_list, ENTRIES, ENTRY_FILES
 
-  # generate list of recent entries
-    recent = BLOG.new_entries ? ENTRIES[0, BLOG.new_entries] : ENTRIES
-    recentFiles = recent.map {|e| e.input_file}
-
-    NEW_ENTRIES.concat recent
-    generate_html_task :entry_list, NEW_ENTRIES, recentFiles
-
   # generate HTML for tags and archives
     [TAGS, ARCHIVES].each do |chapter|
       chapter.sort!
@@ -899,8 +891,8 @@ require 'config/format'
 
   # generate the front page
     dst     = 'output/index.html'
-    src     = BLOG.front_page || NEW_ENTRIES.url
-    srcUrl  = src.split('/').map {|s| u(s)}.join('/')
+    src     = BLOG.front_page || ENTRIES.first.url
+    srcUrl  = src.split('/').map {|s| u(s) }.join('/')
     srcLink = link(srcUrl, src)
     srcPath = File.join('output', src)
 
