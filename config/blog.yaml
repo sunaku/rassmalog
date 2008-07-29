@@ -231,7 +231,7 @@ locale:
 #
 #   front_page:   # nothing here!
 #
-front_page:
+front_page: <%= ENTRIES.first.url %>
 
 
 #

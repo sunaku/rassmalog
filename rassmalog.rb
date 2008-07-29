@@ -594,18 +594,28 @@ require 'config/format'
       raise_error 'An error occurred when loading the blog configuration file (config/blog.yaml)'
     end
 
-    %w[name info author email url encoding language locale front_page].
-    each do |param|
-      if data.key? param and not data[param].nil?
-        begin
-          data[param] = data[param].to_s.thru_erb
-        rescue Exception
-          raise_error "Unable to parse the #{param.inspect} parameter (which is defined in config/blog.yaml)"
-        end
+    BLOG = OpenStruct.new(data)
+
+    # allow blog parameters whose values are
+    # eRuby templates to be evaluated lazily
+    class << BLOG
+      %w[name info author email url encoding language locale front_page].each do |m|
+        class_eval %{
+          alias old_#{m} #{m}
+
+          def #{m}
+            @#{m} ||=
+              if v = old_#{m}
+                begin
+                  v.to_s.thru_erb
+                rescue Exception
+                  raise_error 'Unable to parse the #{m.inspect} parameter (which is defined in config/blog.yaml)'
+                end
+              end
+          end
+        }
       end
     end
-
-    BLOG = OpenStruct.new(data)
 
     # localize Time formats into user's language
     if locale = BLOG.locale
