@@ -631,47 +631,6 @@ require 'config/format'
       end
     end
 
-    class << BLOG.links
-      # Converts this hierarchical menu of links into HTML.
-      def to_html
-        @html ||= render_menu(self)
-      end
-
-      private
-
-      # Expands the given hierarchical menu into an itemized list of hyperlinks.
-      # * Each link name is first evaluated by ERB and then converted into HTML.
-      # * Each link URL is only evaluated by ERB; there is no HTML conversion.
-      def render_menu aNode
-        result = ''
-
-        if aNode.respond_to? :to_ary
-          aNode.each do |node|
-            result << render_menu(node)
-          end
-
-        elsif aNode.respond_to? :each_pair
-          aNode.each_pair do |name, node|
-            result << "<li>#{
-              name = name.to_s.thru_erb.to_html
-
-              if node.respond_to? :to_ary
-                "#{name} <ul>#{render_menu node}</ul>"
-              else
-                url = node.to_s.thru_erb
-                %{<a href="#{url}">#{name}</a>}
-              end
-            }</li>"
-          end
-
-        else
-          result << "<li>#{aNode}</li>"
-        end
-
-        result
-      end
-    end
-
     class << BLOG.email
       # Converts this e-mail address into an obfuscated 'mailto:' URL.
       def to_url aSubject = nil, aBody = nil

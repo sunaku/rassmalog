@@ -1,0 +1,60 @@
+name: <%= LANG['About %s', BLOG.name] %>
+
+output_file: <%= LANG['About'].to_file_name %>.html
+
+hide: true
+
+text: |
+  <%= BLOG.info.to_html %>
+
+  h1. Project links
+
+  * "What's new?":<%= TAGS['history'].first.url %>
+  * "Previous releases":<%= TAGS['history'].url %>
+  * "Source repository":http://rassmalog.rubyforge.org/src/
+  * "Download packages":http://rubyforge.org/frs/?group_id=2737
+  * "Feedback & support":<%= BLOG.email.to_url %>
+
+  h1. Documentation
+
+  * "User guide":../doc/guide.html
+  * "Tips & tricks":<%= TAGS['tricks'].url %>
+  * "Blog entry format":blog-entry-file-format.html
+  * "Blog entry examples":<%= TAGS['examples'].url %>
+
+  h1. Reference
+
+  * "Rassmalog API":../ref/index.html
+  * "Textile syntax":http://hobix.com/textile/
+  * "YAML syntax":http://yaml4r.sourceforge.net/cookbook/
+  * "eRuby syntax":http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
+
+  h1. Users
+
+  * "Suraj N. Kurapati":http://snk.tuxfamily.org/web/
+  * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/
+  * "Greg Weber":http://thoughtfolder.com
+  * "Sam Broad":http://www.sambroad.com/blog/
+  * "Christian Berendt":http://thorlin.de
+  * "Ants in their tanks":http://ants.rupespad.com
+  * "Renke Grunwald":http://renkobert.de
+  * "листп еоод":http://blog.listp.com
+  * "Dave Scotto":http://www.yasgursfarm.us/d/
+  * "Fox Chao":http://blog.netinfox.com
+  * "Asterisell":http://asterisell.profitoss.com
+  * "Profitoss":http://profitoss.com
+  * "ClothRed":http://clothred.rubyforge.org
+  * <big>"Add _your_ blog here!":<%=
+    BLOG.email.to_url('add Rassmalog user', 'My blog URL is _____')
+  %></big>
+
+  <%# provide a list of all RSS feeds available on this blog %>
+  <% if FEEDS.length > 1 %>
+  h1. <%= LANG['Subscribe'] %> <%= icon 'feed-icon-14x14.png', LANG['RSS feed'] %>
+
+  <ul>
+    <% FEEDS.each do |feed| %>
+      <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_html_lite %></a></li>
+    <% end %>
+  </ul>
+  <% end %>
