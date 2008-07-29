@@ -30,6 +30,13 @@ require 'config/format'
     %{<a href="#{aUrl}"#{%{ title="#{aTitle}"} if aTitle}>#{aName}</a>}
   end
 
+  # Returns HTML for embedding an icon from the input/icons/ directory.
+  def icon aFileName, aAlt = nil, aTitle = nil
+    aTitle ||= aAlt
+
+    %{<img class="icon" src="icons/#{aFileName}" alt="#{aAlt}" title="#{aTitle}" />}
+  end
+
   # Returns a safe file name that is composed of the
   # given words and has the given file extension.
   def make_file_name aExtension, *aWords #:nodoc:
