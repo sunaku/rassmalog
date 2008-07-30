@@ -8,21 +8,12 @@ body
 
 /* emphasis */
 
-    em,
     blockquote
     {
-        font-family       : Cambria, Georgia, serif;
-    }
-
-    blockquote
-    {
-        color             : #333;
-
-        border-left       : thick solid #DCDCDC;
-        padding-left      : 1em;
-
-        border-right      : thick solid #DCDCDC;
-        padding-right     : 1em;
+        background-image  : url(../icons/tango-32x32-apps-internet-group-chat.png);
+        background-repeat : no-repeat;
+        padding-left      : 45px;
+        margin-left       : 2em;
     }
 
     hr
@@ -90,7 +81,6 @@ body
     h4,
     h5,
     h6,
-    th,
     .name
     {
         font-weight       : lighter;
