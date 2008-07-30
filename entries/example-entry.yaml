@@ -146,7 +146,6 @@ your_own_parameter2: ruby rocks!
 # * BLOG           - data from the blog configuration file
 # * LANG           - data from the translation file
 # * ENTRIES        - array of all blog entries (Entry objects)
-# * NEW_ENTRIES - array of recent blog entries (Entry objects)
 # * TAGS           - array of all tags (Section objects)
 # * ARCHIVES       - array of all archives (Section objects)
 # * @entry         - an Entry object representing *THIS* blog entry
