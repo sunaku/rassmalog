@@ -19,7 +19,7 @@ task :import_rss => IMPORT_DIR do
     name = CGI.unescapeHTML src.elements['title'].text.to_s
     date = Time.parse(src.elements['pubDate'].text.to_s) rescue Time.now
     tags = src.get_elements('category').map {|e| e.text.to_s } rescue []
-    text = CGI.unescapeHTML src.elements['description'].text.to_s
+    body = CGI.unescapeHTML src.elements['description'].text.to_s
     from = CGI.unescape src.elements['link'].text.to_s
 
     dstFile = make_file_name('.yaml', date.strftime('%F'), name)
@@ -27,7 +27,7 @@ task :import_rss => IMPORT_DIR do
 
     entry = %w[from name date tags].
       map {|var| {var => eval(var)}.to_yaml.sub(/^---\s*$/, '')}.
-      join << "\ntext: |\n#{text.gsub(/^/, '  ')}"
+      join << "\nbody: |\n#{body.gsub(/^/, '  ')}"
 
     notify :import, dst
     File.write dst, entry

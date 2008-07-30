@@ -16,7 +16,7 @@
 #
 # To override the default values of blog entry fields:
 #
-#   rake new name='hello world' date='2008 march 17' tags='foo,bar' text='hey!'
+#   rake new name='hello world' date='2008 march 17' tags='foo,bar' body='hey!'
 #
 # To override the tags field (values must be separated by commas):
 #
@@ -62,7 +62,7 @@ task :new do
         ENTRIES.map {|e| e.tags.map {|t| t.name } }.flatten.uniq.sort
       end
     },
-    { 'text' => (ENV['text'] || '...') << "\n" } # newline causes paragraph mode
+    { 'body' => (ENV['body'] || '...') << "\n" } # newline causes paragraph mode
   ].map {|x| x.to_yaml.split(/$/, 2)[1] }.join.lstrip
 end
 
