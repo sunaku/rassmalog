@@ -224,14 +224,14 @@ locale:
 # (eRuby)
 #
 # Path to a file in the output/ directory that should be displayed when
-# somebody visits your blog. This is called the "front page" of your blog.
+# somebody visits your blog. This is called the "entrance" of your blog.
 #
-# To have an automatic listing of the most recent entries
-# on the front page, simply leave this parameter blank:
+# To use the newest blog entry as the
+# entrance, simply leave this parameter blank:
 #
-#   front_page:   # nothing here!
+#   entrance:   # nothing here!
 #
-front_page: <%= ENTRIES.first.url %>
+entrance:
 
 
 #

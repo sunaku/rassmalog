@@ -599,7 +599,7 @@ require 'config/format'
     # allow blog parameters whose values are
     # eRuby templates to be evaluated lazily
     class << BLOG
-      %w[name info author email url encoding language locale front_page].each do |m|
+      %w[name info author email url encoding language locale entrance].each do |m|
         class_eval %{
           alias old_#{m} #{m}
 
@@ -891,19 +891,15 @@ require 'config/format'
 
   # generate the front page
     dst     = 'output/index.html'
-    src     = BLOG.front_page || ENTRIES.first.url
+    src     = BLOG.entrance || ( ENTRIES.first || ENTRIES ).url
     srcUrl  = src.split('/').map {|s| u(s) }.join('/')
     srcLink = link(srcUrl, src)
     srcPath = File.join('output', src)
 
     file dst => COMMON_DEPS + [srcPath] do |t|
-      notify :front_page, srcPath
+      notify :Entrance, srcPath
 
-      if srcUrl =~ %r{/}
-        write_file t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
-      else
-        cp srcPath, t.name, :preserve => true
-      end
+      write_file t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
     end
 
     task :entry_list => dst
