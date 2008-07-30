@@ -8,6 +8,7 @@ require 'yaml'
 require 'time'
 require 'cgi'
 require 'ostruct'
+require 'enumerator'
 require 'erb'
 include ERB::Util
 
@@ -407,26 +408,7 @@ require 'config/format'
   #    the array that contains this object.
   #
   module SequenceMixin
-    attr_writer :next, :prev
-
-    # Returns the next section in the chapter.
-    def next
-      @next ||= sibling(+1)
-    end
-
-    # Returns the previous section in the chapter.
-    def prev
-      @prev ||= sibling(-1)
-    end
-
-    private
-
-    def sibling aOffset
-      if src = parent.index(self)
-        dst = src + aOffset
-        parent[dst] unless dst < 0
-      end
-    end
+    attr_accessor :next, :prev
   end
 
   # A single blog entry.
@@ -848,6 +830,12 @@ require 'config/format'
         generate_html_task :entry_meta, section, sectionDeps
 
         chapterDeps.concat sectionDeps
+      end
+
+      # establish previous/next relations for navigation
+      # see SequenceMixin
+      chapter.each_cons(2) do |a, b|
+        a.next, b.prev = b, a
       end
 
       generate_html_task :entry_meta, chapter, chapterDeps
