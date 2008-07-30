@@ -12,7 +12,7 @@ body: |
 
   "RMagick":http://rmagick.rubyforge.org/ is required in order to resize images:
 
-    gem install rmagick
+  pre. gem install rmagick
 
   I had some trouble installing RMagick on my Ubuntu GNU/Linux machine, but "this blog post":http://blog.inlet-media.de/rmagick-does-not-play-well-on-ubuntu helped me through the installation.
 

@@ -2,7 +2,9 @@ name: An entry from the input/ directory
 
 date: 25 Sep 2007
 
-tags: examples
+tags: 
+  - examples
+  - reference
 
 body: |
   This is an entry from the <tt>input/</tt> directory.
@@ -12,10 +14,7 @@ body: |
   * Output file path    : <tt><%= @entry.output_file %></tt>
   * Output relative URL : <tt><%= @entry.output_url  %></tt>
 
-  Notice that this blog entry's output file name was _not_ automatically
-  calculated by Rassmalog to contain its *date* and *name* parameters. Instead,
-  the output file path is simply a mirror of the input file path -- minus the
-  '.yaml' extension.
+  Notice that this blog entry's output file name was _not_ automatically calculated by Rassmalog to contain its *date* and *name* parameters. Instead, the output file path is simply a mirror of the input file path -- minus the '.yaml' extension.
 
 
   h1. Source of this blog entry

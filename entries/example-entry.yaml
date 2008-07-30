@@ -1,9 +1,8 @@
 #
-# This is a blog entry which demonstrates the file
-# format for all blog entries.  Blog entries are
-# _plain text_ files marked up in YAML syntax.
-# They are composed of key-value pairs, known as
-# _parameters_, whose values are defined by you.
+# This is a blog entry which demonstrates the file format for all blog entries.
+# Blog entries are _plain text_ files marked up in YAML syntax. They are
+# composed of key-value pairs, known as _parameters_, whose values are defined
+# by you.
 #
 # The default set of parameters are shown below.  Of these, only the 'name' and
 # 'text' parameters are required; the other parameters are completely optional.
@@ -121,8 +120,7 @@ generate_toc: true
 # you to specify a predefined summary for this blog entry.
 #
 summary: |
-  This is a user-defined placeholder for the summary of this blog entry.
-  See the content of this blog entry for the real summary!
+  This is a user-defined placeholder for the summary of this blog entry. See the content of this blog entry for the real summary!
 
 
 #
@@ -165,18 +163,13 @@ body: |
 
   h1. Adding your own parameters
 
-  You can add arbitrary parameters to a blog entry source file (which is really
-  a YAML file) and use them in the blog entry's content (the *text* parameter).
+  You can add arbitrary parameters to a blog entry source file (which is really a YAML file) and use them in the blog entry's content (the *text* parameter).
 
-  For example, in the source of this blog entry, you will find two custom
-  parameters whose names begin with "your_own_parameter". To insert the values
-  of these parameters into the blog entry's content, we use the following eRuby
-  directive:
+  For example, in the source of this blog entry, you will find two custom parameters whose names begin with "your_own_parameter". To insert the values of these parameters into the blog entry's content, we use the following eRuby directive:
 
     <pre><%%= @entry[ 'name_of_the_parameter' ] %></pre>
 
-  Here, we access a parameter's value by passing the parameter's name into the
-  [] operator of the @@entry@ object.
+  Here, we access a parameter's value by passing the parameter's name into the [] operator of the @@entry@ object.
 
   |_. Expression|_. Result|
   |@<%%= @entry['your_own_parameter1'] %>@|<%= @entry['your_own_parameter1'] %>|

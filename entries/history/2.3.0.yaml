@@ -48,21 +48,21 @@ body: |
 
   To have one archive per year, specify:
 
-    archive_frequency: %Y
+  pre. archive_frequency: %Y
 
   To have one archive per month, specify:
 
-    archive_frequency: %Y-%m
+  pre. archive_frequency: %Y-%m
 
   To have one archive per day, specify:
 
-    archive_frequency: %Y-%m-%d
+  pre. archive_frequency: %Y-%m-%d
 
   In these examples, the %... symbols are "format specifiers" for the
   @Time.strftime@ method. You can see the documentation for this method by
   typing the following command at your terminal:
 
-    ri Time.strftime
+  pre. ri Time.strftime
 
 
   h1. API reference

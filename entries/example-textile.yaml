@@ -2,7 +2,9 @@ name: Formatting with Textile
 
 date: Thu Dec 14 2006
 
-tags: examples
+tags:
+  - reference
+  - examples
 
 body: |
   The following text is "a sample":http://www.textism.com/tools/textile/?sample=2 from the "Textile website":http://www.textism.com/tools/textile/. It will show you how to format your text with Textile.

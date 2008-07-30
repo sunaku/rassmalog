@@ -2,7 +2,9 @@ name: An entry from the entries/ directory
 
 date: 25 Sep 2007
 
-tags: examples
+tags:
+  - reference
+  - examples
 
 body: |
   This is an entry from the <tt>entries/</tt> directory.
@@ -12,8 +14,7 @@ body: |
   * Output file path    : <tt><%= @entry.output_file %></tt>
   * Output relative URL : <tt><%= @entry.output_url  %></tt>
 
-  Notice that this blog entry's output file name was automatically calculated by
-  Rassmalog to contain its *date* and *name* parameters.
+  Notice that this blog entry's output file name was automatically calculated by Rassmalog to contain its *date* and *name* parameters.
 
 
   h1. Source of this blog entry
