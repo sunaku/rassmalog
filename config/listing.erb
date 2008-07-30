@@ -5,6 +5,7 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
   * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
@@ -14,7 +15,7 @@
 =end
 %>
 <div class="listing">
-  <h1 class="name"><%= @listing.name %></h1>
+  <h1 class="name"><%= @listing.name.to_inline_html %></h1>
 
   <% @listing.each do |entry| %>
     <%= entry.to_html %>

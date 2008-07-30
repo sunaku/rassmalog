@@ -5,6 +5,7 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
   * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
@@ -17,7 +18,7 @@
 =end
 %>
 <div class="chapter">
-  <h1 class="name"><%= @chapter.name %></h1>
+  <h1 class="name"><%= @chapter.name.to_inline_html %></h1>
 
   <ul class="cloud">
   <%
@@ -32,12 +33,10 @@
       font = fonts[ (mass * scale).round ]
   %>
     <li style="font-size: <%= font %>;" title="<%= size %>">
-      <%= section.to_link section.name.to_html.gsub(/\s/, '&nbsp;') %> <span style="display: none">(<%= size %>)</span>
+      <%= section.to_link :nbsp => true %> <span style="display: none">(<%= size %>)</span>
     </li>
   <% end %>
   </ul>
-
-  <br/>
 
   <%
     byDate = @chapter == ARCHIVES
@@ -47,13 +46,11 @@
   <table border="1">
     <tr>
       <th colspan="2">Sorted by <%= byDate ? 'date' : 'name' %></th>
-      <td style="border: none"/>
       <th colspan="2">Sorted by size</th>
     </tr>
     <tr>
       <th><%= byDate ? 'Date' : 'Name' %> &darr;</th>
       <th>Size</th>
-      <td style="border: none"/>
       <th>Name</th>
       <th>Size &uarr;</th>
     </tr>
@@ -61,7 +58,6 @@
       <tr>
         <td><%= items[i].to_link %></td>
         <td><%= items[i].length %></td>
-        <td style="border: none"/>
         <td><%= sizes[i].to_link %></td>
         <td><%= sizes[i].length %></td>
       </tr>

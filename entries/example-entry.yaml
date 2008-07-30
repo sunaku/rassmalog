@@ -143,12 +143,17 @@ your_own_parameter2: ruby rocks!
 # In this parameter, you can use the following
 # predefined variables inside eRuby directives:
 #
-# * BLOG           - data from the blog configuration file
-# * LANG           - data from the translation file
-# * ENTRIES        - array of all blog entries (Entry objects)
-# * TAGS           - array of all tags (Section objects)
-# * ARCHIVES       - array of all archives (Section objects)
-# * @entry         - an Entry object representing *THIS* blog entry
+# * BLOG        - data from the blog configuration file
+# * LANG        - data from the translation file
+# * ABOUT_PAGE  - the blog entry corresponding to the about page
+# * SEARCH_PAGE - the blog entry corresponding to the search page
+# * ENTRIES     - array of all blog entries (Entry objects)
+# * TAGS        - array of all tags (Section objects)
+# * ARCHIVES    - array of all archives (Section objects)
+# * FEEDS       - array of all feeds (Feed objects)
+# * @entry      - the Entry object for which we are generating HTML
+# * @summarize  - should this entry be summarized?
+# * @solo       - is this entry being rendered alone, on its own page?
 #
 text: |
   This article serves as a reference for the file format of a blog entry.  Have a look at the source of this blog entry by reading the <tt><%= @entry.input_file %></tt> file (whose contents are "shown below":#source).

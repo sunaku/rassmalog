@@ -5,6 +5,7 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
   * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
@@ -12,29 +13,10 @@
   * FEEDS       - array of all feeds (Feed objects)
   * @section    - the Section object for which we are generating HTML
 =end
-
-  if @section.parent == ARCHIVES
-    nextWord = LANG['Newer']
-    prevWord = LANG['Older']
-  else
-    nextWord = LANG['Next']
-    prevWord = LANG['Previous']
-  end
-
-  nextItem = @section.next
-  prevItem = @section.prev
-
-  prevLink = prevItem.to_link(prevWord) if prevItem
-  nextLink = nextItem.to_link(nextWord) if nextItem
-  rootLink = @section.parent.to_link
 %>
 
 <div class="section">
-  <h1 class="name"><%= @section.to_link %></h1>
-
-  <div class="menu"><%=
-    [prevLink, rootLink, nextLink].compact.join(' &middot; ')
-  %></div>
+  <h1 class="name"><%= @section.name.to_inline_html %></h1>
 
   <% @section.each do |entry| %>
     <%= entry.to_html %>

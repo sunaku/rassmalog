@@ -5,6 +5,8 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
+  * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
   * ARCHIVES    - array of all archives (Section objects)
@@ -22,8 +24,13 @@
 
   content = @entry.html
 
-  if @summarize and summary = @entry.summary
-    # fragment links should take you inside the full (non-summarized) entry
+  if @summarize
+    summary = @entry.summary
+    readMore = summary != content
+  end
+
+  if summary
+    # fragment links should take you inside the full (non-readMore) entry
     content = summary.gsub %r{(href=.)(#)} do
       $1 + @entry.url + $2
     end
@@ -41,69 +48,45 @@
       toc, content = content.table_of_contents
     end
   end
-
-  anchor = @entry.url.to_uri_fragment
 %>
-<br style="display: none"/>
-
-<div id="<%= anchor %>" class="entry<%= ' entry-solo' if @solo %>">
+<div id="<%= @entry.uri_fragment %>" class="entry<%= ' entry-solo' if @solo %>">
   <h1 class="name"><%= @entry.to_link %></h1>
 
-  <%
-    if @solo and not @entry.hide?
-      nextWord = LANG['Newer']
-      prevWord = LANG['Older']
-
-      # these are inverse because ENTRIES is
-      # sorted in *reverse* chronological order
-      nextItem = @entry.prev
-      prevItem = @entry.next
-
-      prevLink = prevItem.to_link(prevWord) if prevItem
-      nextLink = nextItem.to_link(nextWord) if nextItem
-      rootLink = @entry.parent.to_link(nil, anchor)
-  %>
-  <p class="menu"><%=
-    [prevLink, rootLink, nextLink].compact.join(' &middot; ')
-  %></p>
-  <% end %>
-
   <% if toc %>
-    <br style="display: none"/>
-    <div class="toc">Contents <%= toc %></div>
+    <div class="toc"><%= LANG['Contents'] %> <%= toc %></div>
   <% end %>
 
   <div class="text"><%= content %></div>
 
-  <% if summary %>
-    <p class="more"><%= @entry.to_link LANG["Read more..."] %></p>
+  <% if readMore %>
+    <p class="more">
+      <%= icon 'tango-32x32-actions-edit-redo.png', '&rarr;' %>
+      <%= @entry.to_link :body => LANG["Read more..."] %>
+    </p>
   <% end %>
 
   <p class="info">
+    <%= icon 'tango-32x32-apps-office-calendar.png', LANG['Date'] %>
     <%=
-      stamp = @entry.date.strftime("%c")
+      stamp = @entry.date.strftime(BLOG.date_format)
 
-      archiveLink =
-        if @entry.hide?
-          stamp
-        else
-          @entry.archive.to_link(stamp)
-        end
-
-      LANG["Written on %s.", archiveLink]
+      if @entry.hide?
+        stamp
+      else
+        @entry.archive.to_link :body => stamp
+      end
     %>
 
     <% unless @entry.tags.empty? %>
       <br/>
-      <%=
-        tagList = @entry.tags.map {|t| t.to_link }.join(', ')
-        LANG["Tagged as %s.", tagList]
-      %>
+      <%= icon 'tango-32x32-categories-applications-games.png', LANG['Tags'] %>
+      <%= @entry.tags.map {|t| t.to_link }.join(' &middot; ') %>
     <% end %>
 
     <% unless @summarize %>
       <% if BLOG.email %>
         <br/>
+        <%= icon 'tango-32x32-apps-internet-group-chat.png', LANG['Comments'] %>
         <%=
           LANG['You may {send comments by e-mail}.'].
           sub(/\{(.*?)\}/) { link @entry.comment_url, $1 }

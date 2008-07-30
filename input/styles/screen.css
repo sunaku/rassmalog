@@ -1,406 +1,152 @@
-/**
-  NOTE: In theory, I should use child selectors (parent > child) for
-        most of these styles.  In practice, however, I use them *only*
-        for nested child elements ('.entry .name' vs '.section .name'
-        vs '#header .name') because IE6 does not support them.  :-(
-*/
+@import 'common.css';
 
-
-/* emphasis */
-
-    body
-    {
-        color             : #000000;
-        background-color  : #FFFFFF;
-        line-height       : 1.5em;
-        font-family       : Calibri, Verdana, sans-serif;
-    }
-
-    em,
-    blockquote
-    {
-        font-family       : Cambria, Georgia, serif;
-    }
-
-    blockquote
-    {
-        margin            : 1em;
-        border            : 5px dotted #C0C0C0;
-        padding           : 1em;
-        color             : #444;
-    }
-
-    hr
-    {
-        color             : #FF0000; /* for IE6 */
-        background-color  : #FF0000; /* for Firefox */
-    }
-
-    big
-    {
-        font-size         : larger;
-    }
-
-
-/* tables */
-
-    table
-    {
-        border            : none;
-        margin            : auto; /* center horizontally */
-    }
-
-    th,
-    td
-    {
-        padding           : 1em;
-        border            : 1px solid #C0C0C0;
-        vertical-align    : top;
-        background-color  : inherit;
-        _background-color : #FFFFFF; /* for IE6 */
-    }
-
-    th
-    {
-        background-color  : #F5F5F5;
-    }
-
-
-/* source code */
-
-    tt,
-    code,
-    pre
-    {
-        font-family       : Consolas, "Lucida Console", monospace;
-    }
-
-    tt
-    {
-        font-weight       : bold;
-        color             : #A52A2A;
-        background-color  : #FFFAF0;
-    }
-
-    /* output of the syntax coloring library */
-    .code
-    {
-        background-color  : #FFFFF0;
-    }
-
-    pre
-    {
-        cursor            : text;
-        line-height       : normal;
-        border            : 1px dashed #C0C0C0;
-        background-color  : #F5FFDF;
-        padding           : 1em;
-        overflow          : auto;
-    }
-
-
-/* headings */
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    th,
-    .name
-    {
-        font-weight       : lighter;
-        font-family       : Constantia, "Book Antiqua", "URW Bookman L", serif;
-    }
-
-    .entry .text h1,
-    .entry .text h2,
-    .entry .text h3,
-    .entry .text h4,
-    .entry .text h5,
-    .entry .text h6
-    {
-        margin-top        : 1.25em;
-        line-height       : 1.25em;
-    }
-
-    .entry .text h1
-    {
-        font-size         : 1.5em;
-    }
-
-    .entry .text h2
-    {
-        font-size         : 1.4em;
-    }
-
-    .entry .text h3,
-    .name
-    {
-        font-size         : 1.3em;
-    }
-
-    .entry .text h4
-    {
-        font-size         : 1.2em;
-    }
-
-    .entry .text h5
-    {
-        font-size         : 1.1em;
-    }
-
-    .entry .text h6
-    {
-        font-size         : 1.0em;
-    }
-
+body
+{
+    margin              : auto; /* center horizontally */
+    max-width           : 36em;
+    padding             : 0.5em;
+}
 
 /* hyperlinks */
 
-    a img
-    {
-        border            : none;
-    }
-
     a:link
     {
-        color             : #0000FF;
-        text-decoration   : none;
+        color           : #0000FF;
+        text-decoration : none;
     }
 
     a:visited
     {
-        color             : #9400D3;
-        text-decoration   : none;
+        color           : #800080;
+        text-decoration : none;
     }
 
-    #navigation a:visited,
-    .chapter a:visited,
-    .menu a:visited,
-    .entry .info a:visited,
-    .entry .more a:visited
+    a:hover
     {
-        color             : #0000FF;
-    }
-
-    .name a:link,
-    .name a:visited
-    {
-        color             : #000000;
-    }
-
-    a:hover,
-    .name a:hover,
-    #navigation a:hover,
-    #links a:hover,
-    .entry a:hover,
-    .section a:hover
-    {
-        color             : #FF0000;
-        text-decoration   : underline;
+        color           : #FF0000;
+        text-decoration : underline;
     }
 
     a:target
     {
-        color             : #FF0000;
-        font-weight       : bold;
+        color           : #FF0000;
+        font-weight     : bold;
     }
-
-    /* the navigation item corresponding to the current web page */
-    #navigation .current a
-    {
-        color             : #C71585;
-    }
-
-    /* hide redundant @title because it is indicated by #navigation .current */
-    .listing > .name,
-    .chapter > .name
-    {
-        display           : none;
-    }
-
-    .listing .name,
-    .chapter .name
-    {
-        _display          : none; /* for IE6 */
-    }
-
-
-/* lists */
-
-    /* reduce indentation of list items */
-    #links ul,
-    .entry .toc ul
-    {
-        padding-left      : 1em; /* for Firefox */
-
-        .margin-left      : 0.75em; /* for IE6 and IE7 */
-        .padding-left     : 0.25em;
-
-        _margin-left      : 0.25em; /* override for IE6 only */
-        _padding-left     : 1em;
-    }
-
-    /* add space between nested lists for better readability */
-    .entry .toc ul
-    {
-        padding-bottom    : 0.75em;
-    }
-
-    .entry .toc ul:last-child
-    {
-        padding-bottom    : 0;
-    }
-
-    #links ul
-    {
-        margin-bottom     : 1em;
-    }
-
-
-/* page layout */
-
-    body
-    {
-        margin            : 0;
-        margin-left       : auto;
-        margin-right      : auto;
-        padding           : 0.5em;
-        max-width         : 50em; /* 35em (#content) + 1.5em (space) + 13em (#links) + 0.5em (void) */
-    }
-
-    /* the main content of the web page */
-    #content
-    {
-        max-width         : 35em;
-    }
-
-    /* the 'links' parameter in config/blog.yaml */
-    #links
-    {
-        position          : absolute;
-        margin-left       : 36.5em; /* 35em (#content) + 1.5em (space) */
-        max-width         : 13em;
-    }
-
 
 /* styles for config/html.erb */
 
-    /* the banner containing blog name and description */
-    #header
+    /* the main blog navigation menu */
+    .navigation
     {
-        margin-bottom     : 2em;
+        text-align      : center;
+        margin-bottom   : 3em;
     }
 
-    /* the name of your blog */
-    #header .name
+    /* the navigation item corresponding to the current web page */
+    .navigation .current
     {
-        font-size         : 2em;
+        padding-bottom  : 0.75em;
+        border-bottom   : 5px solid #FFA500;
     }
-
-    /* the description of your blog */
-    #header .info
-    {
-        font-style        : italic;
-    }
-
-    /* primary blog navigation menu, located below the #header */
-    #navigation
-    {
-        margin-bottom     : 2em;
-    }
-
-    /* the main content of the web page */
-    #content
-    {
-    }
-
-    /* the 'links' parameter from config/blog.yaml */
-    #links
-    {
-    }
-
-    /* the banner containing blog author and generator */
-    #footer
-    {
-        clear             : both;
-        margin-top        : 5em;
-        text-align        : center;
-    }
-
 
 /* styles for config/entry.erb */
 
     .entry
     {
-        margin-bottom     : 4em;
+        margin-top      : 4em;
     }
 
     /* title of the blog entry */
     .entry > .name
     {
-        font-size         : 1.6em;
+        font-size       : 1.6em;
     }
 
     .entry .name
     {
-        _display          : block; /* for IE6 */
+        _display        : block; /* for IE6 */
+    }
+
+    .entry > .name a:link,
+    .entry > .name a:visited
+    {
+        color           : #000000;
+    }
+
+    .entry .name a:link,
+    .entry .name a:visited
+    {
+        _color          : #000000; /* for IE6 */
     }
 
     /* table of contents */
     .entry .toc
     {
-        margin-bottom     : 2em;
-        background-color  : #FAFAFA;
-        padding           : 1em;
+        float           : right;
+        margin-left     : 2em;
+        margin-bottom   : 2em;
+
+        border          : 1px dashed #C0C0C0;
+        padding         : 1em;
     }
 
-    .entry .toc ul
+    .entry .toc > ul
     {
-        margin-top        : 0;
+        padding-left    : 0;
+        margin-top      : 0.5em;
+    }
+
+    .entry .toc li
+    {
+        list-style-type : none;
+    }
+
+    /* reduce indentation of list items */
+    .entry .toc li ul
+    {
+        padding-left    : 1em; /* for Firefox */
+
+        .margin-left    : 0.75em; /* for IE6 and IE7 */
+        .padding-left   : 0.25em;
+
+        _margin-left    : 0.25em; /* override for IE6 only */
+        _padding-left   : 1em;
+    }
+
+    /* add space between nested lists for better readability */
+    .entry .toc li ul
+    {
+        padding-bottom  : 0.75em;
+    }
+
+    .entry .toc li ul:last-child
+    {
+        padding-bottom  : 0;
     }
 
     /* content of the blog entry */
     .entry .text
     {
-        background-color  : #F8F8FF;
-        padding           : 1em;
     }
 
-    .entry .text a
+    .entry .text > img
     {
-        text-decoration   : underline;
-    }
-
-    /* the LaTeX heading number that links back to the table of contents */
-    .entry .text a.toc-link
-    {
-        text-decoration   : none;
-    }
-
-    .entry .text img
-    {
-        margin            : 1em;
+        margin          : 1em;
     }
 
     /* the "Read more..." link */
-    .entry .more a
+    .entry .more
     {
-        float             : right;
-        margin-left       : 2em;
-        margin-bottom     : 2em;
+        float           : right;
+        margin-left     : 2em;
+        margin-bottom   : 2em;
     }
 
     /* information about the blog entry */
     .entry .info
     {
-        font-size         : small;
-        padding-left      : 0;
-        _margin-left      : 0; /* for IE6 */
+        font-size       : smaller;
     }
-
 
 /* additional styles for config/entry.erb (when @solo is true)
     (that is, when the entry is displayed alone, on its own page) */
@@ -409,40 +155,17 @@
     {
     }
 
-    .entry-solo > .name
-    {
-        text-align        : center;
-        border-bottom     : none;
-        padding-bottom    : 0;
-    }
-
-    .entry-solo > .menu
-    {
-        text-align        : center;
-        float             : none;
-        margin-left       : 0;
-        margin-bottom     : 2em;
-    }
-
     .entry-solo .toc
     {
     }
 
     .entry-solo .text
     {
-        background-color  : inherit;
-        _background-color : #FFFFFF; /* for IE6 */
-        margin-left       : 0;
-        padding           : 0;
     }
 
     .entry-solo .info
     {
-        margin-top        : 2em;
-        border-top        : 1px dashed #808080;
-        padding-top       : 0.5em;
     }
-
 
 /* styles for config/listing.erb */
 
@@ -454,7 +177,6 @@
     {
     }
 
-
 /* styles for config/section.erb */
 
     .section
@@ -463,16 +185,7 @@
 
     .section > .name
     {
-        text-align        : center;
     }
-
-    /* contains links to the next/previous section */
-    .section > .menu
-    {
-        margin-bottom     : 4em;
-        text-align        : center;
-    }
-
 
 /* styles for config/chapter.erb */
 
@@ -487,17 +200,37 @@
     /* tag cloud */
     .chapter .cloud
     {
-        padding           : 0;
-        text-align        : center;
-        max-width         : 70%;
-        _width            : 70%; /* for IE6 */
-        margin-left       : auto;
-        margin-right      : auto;
+        padding         : 0;
+        text-align      : center;
+
+        max-width       : 70%;
+        _width          : 70%; /* for IE6 */
+
+        margin          : auto; /* center horizontally */
+        margin-bottom   : 2em;
     }
 
     .chapter .cloud li
     {
-        display           : inline;
-        padding-right     : 10px;
+        display         : inline;
+        padding-right   : 10px;
+    }
+
+/* styles common to many templates */
+
+    .listing > .name,
+    .chapter > .name,
+    .section > .name
+    {
+        text-align      : center;
+        margin-top      : 2em;
+        margin-bottom   : 2em;
+    }
+
+    .chapter a:visited,
+    .entry .info a:visited,
+    .entry .more a:visited
+    {
+        color           : #0000FF;
     }
 

@@ -35,9 +35,7 @@ name: <%= Rassmalog %>
 # Description of your blog.
 #
 info: |
-  A static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/.
-  <br/>
-  Please see the "comprehensive user guide":../doc/guide.html for more information.
+  Rassmalog is a static blog engine based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/.  Please see the "comprehensive user guide":../doc/guide.html for more information.
 
 
 ################################################################################
@@ -235,32 +233,6 @@ entrance:
 
 
 #
-# Maximum number of entries to display on the "new entries" page.
-#
-# If you want all entries to be displayed (no maximum
-# limit), then simply leave this parameter blank:
-#
-#   new_entries:   # nothing here!
-#
-new_entries: 5
-
-
-#
-# Controls whether entries are summarized in tag
-# pages, archive pages, and the recent entries page.
-#
-# The config/entry.erb template controls how an entry
-# is summarized.  By default, only the first paragraph
-# of an entry is shown when summarization is enabled.
-#
-# To disable this parameter, set its value to "false" like this:
-#
-#   summarize_entries: false
-#
-summarize_entries: true
-
-
-#
 # Controls whether a table of contents is
 # generated, by default, for all blog entries.
 #
@@ -268,6 +240,24 @@ summarize_entries: true
 # its own "generate_toc" parameter in its source file.
 #
 generate_toc: true
+
+
+#
+# Controls how dates are formatted for display in blog entries.
+#
+# To use preferred format for the current system locale, specify:
+#
+#   date_format: %c
+#
+# To display some other information, specify your own value:
+#
+#   date_format: put your own value here
+#
+# For more information, see the documentation of the Time.strftime method:
+#
+#   http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime
+#
+date_format: %Y %B %d, %A %I:%M %p
 
 
 #
@@ -291,7 +281,7 @@ generate_toc: true
 #
 # For more information, see the documentation of the Time.strftime method:
 #
-#   http://www.rubycentral.com/pickaxe/ref_c_time.html#Time.strftime
+#   http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime
 #
 archive_frequency: %B %Y
 

@@ -157,10 +157,10 @@ require 'config/format'
           srcUrl = '#' + src
 
           # forward link from TOC to heading
-          toc << %{<li><a id="#{src}" href="#{dstUrl}">#{title}</a></li>}
+          toc << %{<li>#{index} <a id="#{src}" href="#{dstUrl}">#{title}</a></li>}
 
           # reverse link from heading to TOC
-          %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="toc-link">#{index}</a>&nbsp;&nbsp;#{title}</h#{depth}>}
+          %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="list">#{index}</a>&nbsp;&nbsp;<a href="##{dst}" class="here">#{title}</a></h#{depth}>}
       end
 
       if prevIndex.empty?
@@ -269,7 +269,7 @@ require 'config/format'
   # aInfo:: description of the feed
   # aSummarize:: summarize blog entries in the feed?
   #
-  def feed aFile, aItems, aName, aInfo = nil, aSummarize = BLOG.summarize_entries
+  def feed aFile, aItems, aName, aInfo = nil, aSummarize = true
     dst = File.join('output', aFile)
     entries = [aItems].flatten.uniq
 
@@ -342,9 +342,20 @@ require 'config/format'
       make_file_name('html', name)
     end
 
+    # Returns a URI fragment for this object.
+    def uri_fragment
+      url.to_uri_fragment
+    end
+
+    # Returns a URL to the parent page which takes you
+    # directly to this item inside the parent page.
+    def parent_url
+      parent.url + '#' + self.uri_fragment
+    end
+
     # Transforms this object into HTML.
     def to_html aOpts = {}
-      aOpts[:@summarize] = BLOG.summarize_entries unless aOpts.key? :@summarize
+      aOpts[:@summarize] = true unless aOpts.key? :@summarize
       aOpts[template_ivar] = self
       template.render_with(aOpts)
     end
@@ -373,15 +384,20 @@ require 'config/format'
       html
     end
 
-    # Returns a relative hyperlink to this object.
+    # Returns a relative link to this object,
+    # customized by the following options:
     #
-    # aName:: sets the name of the hyperlink, if given
-    # aAnchor:: adds a URI fragment to the hyperlink's URL, if given
+    # :body   sets the body of the link (the <a> tag), if given.
+    # :nbsp   makes spaces in the link body non-breaking, if true.
     #
-    def to_link aName = nil, aAnchor = nil
-      addr = [url, aAnchor].compact.join('#')
-      title = name.to_html
-      link(addr, aName || title, aName && title)
+    def to_link aOpts = {}
+      addr = self.url
+
+      name = aOpts[:body] || self.name
+      name = name.gsub(/\s/, '&nbsp;') if aOpts[:nbsp]
+      name = name.to_inline_html
+
+      link(addr, aOpts[:body] || name, aOpts[:body] && name)
     end
   end
 
@@ -406,9 +422,10 @@ require 'config/format'
     private
 
     def sibling aOffset
-      src = parent.index(self)
-      dst = src + aOffset
-      parent[dst] unless dst < 0
+      if src = parent.index(self)
+        dst = src + aOffset
+        parent[dst] unless dst < 0
+      end
     end
   end
 
@@ -752,6 +769,11 @@ require 'config/format'
           if entryProp[:hidden] = data['hide']
             entryProp[:tags] = []
             entryProp[:archive] = nil
+
+            # make this an orphan
+            def entry.parent
+              self
+            end
           else
             entryProp[:tags] =
               [data['tags']].flatten.compact.uniq.sort.map do |name|
@@ -801,13 +823,15 @@ require 'config/format'
     if SEARCH_PAGE = entryByInputUrl['search.yaml']
       dst = SEARCH_PAGE.output_file
       file dst => ENTRY_FILES # the search page depends on ALL entries
+      task :search => dst
 
       # give the search page its own Rake task, otherwise it is
       # created every time the :entry task is invoked -- this defeats
       # the ability to rapidly preview entries while editing them.
       Rake::Task[:entry].prerequisites.delete dst
-      task :search => dst
     end
+
+    ABOUT_PAGE = entryByInputUrl['about.yaml']
 
   # generate list of all entries
     generate_html_task :entry_list, ENTRIES, ENTRY_FILES

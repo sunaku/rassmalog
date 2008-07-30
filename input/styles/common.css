@@ -1,0 +1,192 @@
+body
+{
+    color                 : #000000;
+    background-color      : #FFFFFF;
+    line-height           : 1.5em;
+    font-family           : Calibri, Verdana, sans-serif;
+}
+
+/* emphasis */
+
+    em,
+    blockquote
+    {
+        font-family       : Cambria, Georgia, serif;
+    }
+
+    blockquote
+    {
+        color             : #333;
+
+        border-left       : thick solid #DCDCDC;
+        padding-left      : 1em;
+
+        border-right      : thick solid #DCDCDC;
+        padding-right     : 1em;
+    }
+
+    hr
+    {
+        height            : 0;
+        border            : 0;
+        border-top        : 2px solid #FF0000;
+    }
+
+/* source code */
+
+    tt,
+    code,
+    pre
+    {
+        font-family       : Consolas, "Lucida Console", monospace;
+    }
+
+    tt
+    {
+        font-weight       : bold;
+        color             : #A52A2A;
+        background-color  : #FFFAF0;
+    }
+
+    /* output of the syntax coloring library */
+    .code
+    {
+        background-color  : #FFFFF0;
+    }
+
+    pre
+    {
+        cursor            : text;
+        line-height       : normal;
+        border            : 1px dashed #C0C0C0;
+        background-color  : #F5FFDF;
+        padding           : 1em;
+        overflow          : auto;
+    }
+
+/* hyperlinks */
+
+    a > img
+    {
+        border            : none;
+    }
+
+    a img
+    {
+        _border           : none; /* for IE6 */
+    }
+
+    a.here:link,
+    a.here:visited
+    {
+        color             : #000000;
+    }
+
+/* headings */
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    th,
+    .name
+    {
+        font-weight       : lighter;
+        font-family       : Constantia, "Book Antiqua", "URW Bookman L", serif;
+    }
+
+    .entry .text h1,
+    .entry .text h2,
+    .entry .text h3,
+    .entry .text h4,
+    .entry .text h5,
+    .entry .text h6
+    {
+        margin-top        : 1.25em;
+        line-height       : 1.25em;
+    }
+
+    .entry .text h1
+    {
+        font-size         : 1.5em;
+    }
+
+    .entry .text h2
+    {
+        font-size         : 1.4em;
+    }
+
+    .entry .text h3,
+    .name
+    {
+        font-size         : 1.3em;
+    }
+
+    .entry .text h4
+    {
+        font-size         : 1.2em;
+    }
+
+    .entry .text h5
+    {
+        font-size         : 1.1em;
+    }
+
+    .entry .text h6
+    {
+        font-size         : 1.0em;
+    }
+
+/* tables */
+
+    table
+    {
+        border-collapse   : collapse; /* no spacing between cell borders */
+        margin       : auto; /* center horizontally */
+    }
+
+    th,
+    td
+    {
+        padding           : 1em;
+        border            : 1px solid #bbb;
+        vertical-align    : top;
+        background-color  : inherit;
+        _background-color : #FFFFFF; /* for IE6 */
+    }
+
+    th
+    {
+        background-color  : #F5F5F5;
+    }
+
+/* styles for config/html.erb */
+
+    .icon
+    {
+        vertical-align  : middle;
+    }
+
+    /* information about blog author and generator */
+    .credits
+    {
+        margin-top      : 5em;
+        text-align      : center;
+    }
+
+/* styles for config/entry.erb */
+
+    .entry
+    {
+        margin-bottom   : 4em;
+    }
+
+    .entry-solo .info
+    {
+        margin-top      : 1em;
+        border-top      : 1px dashed #808080;
+        padding-top     : 1em;
+    }
+

@@ -5,6 +5,7 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
   * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
@@ -25,16 +26,17 @@
   <%
     @feed.entries.each do |entry|
       url = entry.absolute_url
-      text =
+
+      body =
         if @feed.summarize and summary = entry.summary
-          "#{summary}<p>#{ entry.to_link LANG["Read more..."] }</p>"
+          "#{summary}<p>#{ entry.to_link :body => LANG["Read more..."] }</p>"
         else
           entry.html
         end
 
       # resolve relative URLs into absolute URLs
       # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
-      text.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
+      body.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
         a, b = $1 + $2, $3.to_s << $4
 
         case $3
@@ -54,7 +56,7 @@
       <link><%= url %></link>
       <guid><%= url %></guid>
       <pubDate><%= entry.date.rfc822 %></pubDate>
-      <description><%=h text %></description>
+      <description><%=h body %></description>
 
       <% entry.tags.each do |tag| %>
         <category><%=h tag.name %></category>

@@ -5,6 +5,7 @@
   The following variables are available for use in this template:
   * BLOG        - data from the blog configuration file
   * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
   * SEARCH_PAGE - the blog entry corresponding to the search page
   * ENTRIES     - array of all blog entries (Entry objects)
   * TAGS        - array of all tags (Section objects)
@@ -18,9 +19,98 @@
   the readability and usability of this web page in text-only web browsers.
 =end
 
-  blogName   = BLOG.name.to_html
-  blogInfo   = BLOG.info.to_html
-  blogAuthor = BLOG.author.to_html
+  ##
+  # local variables for this template
+  #
+
+  blog_home_url = 'index.html'
+
+  blog_name = BLOG.name
+  blog_name_html = blog_name.to_inline_html
+
+  blog_info = BLOG.info
+  blog_info_html = blog_info.to_inline_html
+
+  blog_author = BLOG.author
+  blog_author_html = blog_author.to_inline_html
+
+  ##
+  # Navigational hints (things which aid navigation)
+  #
+
+  unless defined? Nav
+    Nav = Struct.new(:rel, :title, :href)
+
+    # A navigational hint; used for creating navigation menus.
+    class Nav
+      # Proper order of relations for insertion in a GUI.
+      RELATION_ORDER = [:first, :prev, :up, :next, :last].freeze
+
+      # Iterates through all relations in proper insertion order.
+      def self.each_rel &blk
+        RELATION_ORDER.each(&blk)
+      end
+
+      LABEL_BY_RELATION = {
+        :first => LANG['First'],
+        :prev  => LANG['Previous'],
+        :up    => LANG['Up'],
+        :next  => LANG['Next'],
+        :last  => LANG['Last'],
+      }.freeze
+
+      # Returns a human readable label for the given relation.
+      def self.rel_label aRel
+        LABEL_BY_RELATION[aRel]
+      end
+
+      alias real_title title
+
+      # Returns a human readable label for this hint's relation.
+      def label
+        LABEL_BY_RELATION[self.rel]
+      end
+
+      # Returns the real title prefixed with the relation.
+      def title
+        label + ': ' + real_title
+      end
+
+      # Returns HTML code for a <link> element
+      # representing this navigational hint.
+      def to_head_link
+        %{<link rel="#{self.rel}" href="#{self.href}" title="#{self.title}" />}
+      end
+    end
+  end
+
+  # determine the navigational hints for this web page
+  @nav_by_rel = {}
+
+  if @target.respond_to? :parent and not (@target.is_a? Entry and @target.hide?)
+    {
+      @target => [:prev, :next],
+      @target.parent => [:first, :last],
+    }.
+    each_pair do |obj, rels|
+      meths =
+        if @target.is_a? Entry
+          # these are inverse because ENTRIES is
+          # sorted in *reverse* chronological order
+          rels.reverse
+        else
+          rels
+        end
+
+      rels.zip(meths).each do |r, m|
+        if e = obj.send(m) and e != @target
+          @nav_by_rel[r] = Nav.new(r, e.name, e.url)
+        end
+      end
+    end
+
+    @nav_by_rel[:up] = Nav.new(:up, @target.parent.name, @target.parent_url)
+  end
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -32,96 +122,122 @@
       if @target.is_a? Entry and summary = @target.summary
         summary
       else
-        blogInfo
+        blog_info_html
       end
     ) %>" />
     <% if @target.is_a? Entry and not @target.tags.empty? %>
       <meta name="keywords" content="<%= @target.tags.map {|t| t.name}.join(', ') %>" />
     <% end %>
     <meta name="date" content="<%= Time.now.rfc822 %>" />
-    <meta name="author" content="<%=h blogAuthor %>" />
+    <meta name="author" content="<%= blog_author %>" />
     <meta name="generator" content="<%= Rassmalog %>" />
-
-    <% FEEDS.each do |feed| %>
-      <link rel="alternate" type="application/rss+xml" href="<%= feed.file %>" title="<%=h feed.name %>" />
-    <% end %>
 
     <link rel="stylesheet" type="text/css" href="styles/screen.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="styles/print.css" media="print" />
     <link rel="alternate stylesheet" type="text/css" href="styles/print.css" title="Print Preview" />
 
-    <title><%= @title.to_html %> &mdash; <%= blogName %></title>
-  </head>
-  <body>
-    <p style="display: none">
-      <a href="#content">Skip to content</a>
-      <br/>
-      <a href="#navigation">Skip to navigation</a>
-    </p>
+    <% FEEDS.each do |feed| %>
+      <link rel="alternate" type="application/rss+xml" href="<%= feed.file %>" title="<%=h feed.name %>" />
+    <% end %>
 
-    <div id="header">
-      <h1 class="name"><%= link('index.html', blogName) %></h1>
-      <div class="info"><%= blogInfo %></div>
-    </div>
-
-    <br style="display: none"/>
-
-    <div id="navigation">
-      <%
-        # highlights the given item if it corresponds to the current web page
-        def menu_item aItem
-          if (@target.equal? aItem) or
-             (aItem == ENTRIES and ENTRIES.include? @target) or
-             (@target.is_a? Section and aItem == @target.parent)
-          then
-            %{<strong class="current">#{aItem.to_link}</strong>}
-          else
-            aItem.to_link
-          end
+    <%# emit navigational hints for this web page %>
+    <% Nav.each_rel do |rel| %>
+      <%=
+        if nav = @nav_by_rel[rel]
+          nav.to_head_link
         end
       %>
+    <% end %>
 
-      <%= menu_item(NEW_ENTRIES) %>
-      &middot;
-      <%= menu_item(ENTRIES) %>
-      &middot;
-      <%= menu_item(TAGS) %>
-      &middot;
-      <%= menu_item(ARCHIVES) %>
+    <title><%= @title.to_inline_html %> &mdash; <%= blog_name_html %></title>
+  </head>
+  <body>
+    <%
+      def menu_item aItem, aUrl, aBody
+        if (@target.equal? aItem) or
+           (@target.respond_to? :parent and aItem == @target.parent)
+        then
+          '<span class="current">' << link(aUrl, aBody) << '</span>'
+        else
+          link(aUrl, aBody)
+        end
+      end
+    %>
+    <div class="navigation">
+      <%= menu_item nil, 'index.html', icon('tango-32x32-actions-go-home.png', LANG['Home']) %>
+
+      <% if ABOUT_PAGE %>
+        &nbsp;
+        <%= menu_item ABOUT_PAGE, ABOUT_PAGE.url, icon('tango-32x32-apps-help-browser.png', LANG['About']) %>
+      <% end %>
+
+      &nbsp;
+      <%= menu_item ENTRIES, ENTRIES.url, icon('tango-32x32-actions-edit-copy.png', ENTRIES.name) %>
+
+      &nbsp;
+      <%= menu_item ARCHIVES, ARCHIVES.url, icon('tango-32x32-apps-office-calendar.png', ARCHIVES.name) %>
+
+      &nbsp;
+      <%= menu_item TAGS, TAGS.url, icon('tango-32x32-categories-applications-games.png', TAGS.name) %>
 
       <% if SEARCH_PAGE %>
-        &middot;
-        <%= menu_item(SEARCH_PAGE) %>
+        &nbsp;
+        <%= menu_item SEARCH_PAGE, SEARCH_PAGE.url, icon('tango-32x32-actions-system-search.png', SEARCH_PAGE.name) %>
       <% end %>
 
       <% unless FEEDS.empty? %>
-        &middot;
-        <a type="application/rss+xml" href="<%= FEEDS.first.file %>">
-          <%= LANG['Subscribe'] %> <img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
-        </a>
+        &nbsp;
+        <a type="application/rss+xml" href="<%= FEEDS.first.file %>"><%=
+          icon 'feed-icon-28x28.png', LANG['Subscribe']
+        %></a>
       <% end %>
+
+      <%#
+        emit a navigation menu in HTML for browsers that do not expose
+        <link>-based navigational hints in their user interface
+      %>
+      <%=
+        unless @nav_by_rel.empty?
+          # fragments of file names of icons that will
+          # graphically represent the navigational hints
+          img_by_rel = {
+            :first => 'first',
+            :prev  => 'previous',
+            :up    => 'up',
+            :next  => 'next',
+            :last  => 'last',
+          }
+
+          controls = []
+
+          # file name of icon used to represent
+          # the absence of a navigational hint
+          img_absent = "tango-32x32-actions-mail-mark-junk.png"
+
+          Nav.each_rel do |rel|
+            img = img_by_rel[rel]
+
+            # file name of icon used to represent
+            # the presence of a navigational hint
+            img_present = "tango-32x32-actions-go-#{img}.png"
+
+            controls <<
+              if nav = @nav_by_rel[rel]
+                link nav.href, icon(img_present, nav.label, nav.title)
+              else
+                icon img_absent, Nav.rel_label(rel)
+              end
+          end
+
+          ('<br/>' * 2) << controls.join(' &nbsp; ')
+        end
+      %>
     </div>
-
-    <ul id="links">
-      <%= BLOG.links.to_html if BLOG.links %>
-
-      <%# provide a list of all RSS feeds available on this blog %>
-      <% if FEEDS.length > 1 %>
-        <li>
-          <%= LANG['Subscribe'] %>&nbsp;<img src="images/feed-icon-14x14.png" alt="RSS feed" title="RSS feed" />
-          <ul>
-            <% FEEDS.each do |feed| %>
-              <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_html %></a></li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
-    </ul>
 
     <br style="display: none"/>
     <hr style="display: none"/>
 
-    <div id="content"><%= @content %></div>
+    <%= @content %>
 
     <%#
       ensure that a horizontal rule is present to
@@ -132,19 +248,23 @@
       <hr style="display: none"/>
     <% end %>
 
-    <p id="footer">
+    <p class="credits">
+      <%= icon 'tango-32x32-apps-system-users.png', LANG['Author'] %>
       <%=
-        author =
-          if BLOG.email
-            link BLOG.email.to_url, blogAuthor
-          else
-            blogAuthor
-          end
+        author = blog_author_html
 
-        LANG["Authored by %s.", author]
+        if BLOG.email
+          link BLOG.email.to_url, author
+        else
+          author
+        end
       %>
       <br/>
-      <%= LANG["Generated by %s.", Rassmalog.to_link] %>
+      <%= icon 'tango-32x32-devices-printer.png', LANG['Generator'] %>
+      <%= Rassmalog.to_link %>
+      <br/>
+      <%= icon 'tango-32x32-categories-applications-graphics.png', LANG['Icons'] %>
+      <%= link 'http://tango.freedesktop.org/Tango_Icon_Library', 'Tango Icon Theme 0.8.1' %>
     </p>
   </body>
 </html>

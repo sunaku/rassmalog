@@ -13,7 +13,7 @@ require 'plugins/import' # allows you to import blog entries from feeds
 # To see a description of the Rake tasks in the
 # list below, please run the "rake -T" command.
 #
-task :gen => [ :copy, :entry, :entry_meta, :entry_list, :search, :feed ]
+task :gen => [ :copy, :entry, :entry_list, :entry_meta, :search, :feed ]
 
 #
 # The primary news feed for your blog.

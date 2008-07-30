@@ -1,22 +1,24 @@
-@import 'screen.css';
+@import 'common.css';
+
+body
+{
+    max-width        : none;
+}
 
 /* source code */
 
     tt
     {
-        color            : inherit;
-        background-color : inherit;
-        font-weight      : normal;
+        background-color  : inherit;
+        font-weight       : normal;
     }
 
     pre,
     .code
     {
-        border           : none;
-        overflow         : visible;
-        background-color : inherit;
+        border            : none;
+        background-color  : inherit;
     }
-
 
 /* headings */
 
@@ -25,93 +27,54 @@
     h3,
     h4,
     h5,
-    h6,
-    th
+    h6
     {
         font-weight      : normal;
     }
-
 
 /* hyperlinks */
 
+    /* blend all hyperlinks with normal text */
     a:link,
-    a:visited,
-    a:active
+    a:visited
     {
-        color            : #0000FF;
-        font-weight      : bold;
-        text-decoration  : underline;
+        color             : #000000;
+        text-decoration   : none;
     }
 
-    .name a
+    /* emphasize external and cross-reference hyperlinks */
+    a:not([href^="#"]):link,
+    a:not([href^="#"]):visited
     {
-        font-weight      : normal;
-        text-decoration  : none;
+        color             : #0000FF;
+        text-decoration   : underline;
+        font-weight       : bolder;
+    }
+
+    /* show URL of destination for external hyperlinks */
+    a:not([href^="#"]):after
+    {
+        content           : " " attr(href);
+        font-family       : Consolas, "Lucida Console", monospace;
     }
 
     a:after
     {
-        content          : " " attr(href);
-        font-family      : Consolas, "Lucida Console", monospace;
-        font-weight      : normal;
-        font-size        : 90%;
+        font-weight       : normal;
+        font-size         : smaller;
     }
 
-    .name a:after,
-    .menu a:after,
-    .chapter .cloud a:after,
-    .entry .info a:after,
-    .entry .more a:after,
-    a[href^="#"]:after
-    {
-        content          : "";
-    }
+/* styles for config/html.erb */
 
-    a[href^="#"]
-    {
-        color            : #A52A2A;
-        font-weight      : lighter;
-        text-decoration  : none;
-        font-style       : italic;
-    }
-
-    a.toc-link
-    {
-        color            : inherit;
-        .color           : #000000; /* for IE6 and IE7 */
-        font-weight      : inherit;
-        text-decoration  : none;
-        font-style       : normal;
-    }
-
-
-/* page layout */
-
-    body,
-    #content,
-    #links
-    {
-        max-width        : none;
-    }
-
-    #header,
-    #navigation,
-    #links,
-    .menu
+    .navigation
     {
         display          : none;
     }
 
+/* styles for config/chapter.erb */
 
-/* styles for config/entry.erb */
-
-    .entry > .name
+    .chapter .cloud
     {
-        font-size        : 2em;
-    }
-
-    .entry .text
-    {
-        max-width        : none;
+        display: none;
     }
 

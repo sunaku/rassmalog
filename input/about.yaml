@@ -54,7 +54,7 @@ text: |
 
   <ul>
     <% FEEDS.each do |feed| %>
-      <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_html_lite %></a></li>
+      <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_inline_html %></a></li>
     <% end %>
   </ul>
   <% end %>
