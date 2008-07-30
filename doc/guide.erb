@@ -270,14 +270,22 @@
   <% end %>
 
   <% section 'Using another text formatting system', 'config.format' do %>
-    To use another text formatting system, simply replace the @String.to_html@ method, which is defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
+    To use another text formatting system, simply replace the @String.to_html@ and @String.to_inline_html@ methods, which are defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
 
-    For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all entries will appear within red boxes in the output.
+    For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all blog entries will appear within red boxes in the output.
 
     <code>
     class String
+      # Transforms this string into HTML while ensuring that the result
+      # contains one or several block-level elements at the root.
       def to_html
         '<p style="border: thin solid red">' + self + '</p>'
+      end
+
+      # Transforms this string into an *inline* HTML string (one that
+      # does not contain block-level HTML elements at the root).
+      def to_inline_html
+        self
       end
     end
     </code>
