@@ -51,7 +51,7 @@ task :new do
   raise "File #{file.inspect} already exists." if File.exist? file
 
   notify :create, file
-  write_file file, [
+  File.write file, [
     { 'name' => ENV['name'] || '...' },
     { 'date' => ENV['date'] || Time.now.rfc822 },
     { 'tags' =>

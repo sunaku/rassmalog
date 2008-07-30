@@ -223,7 +223,7 @@ require 'config/format'
   end
 
   # Writes the given content to the given file.
-  def write_file aPath, aContent
+  def File.write aPath, aContent
     File.open(aPath, 'w') {|f| f << aContent}
   end
 
@@ -246,7 +246,7 @@ require 'config/format'
       notify aPage.class, dst
 
       begin
-        write_file dst, aPage.render(aRenderOpts)
+        File.write dst, aPage.render(aRenderOpts)
       rescue Exception
         raise_error "An error occurred when generating the #{dst.inspect} file"
       end
@@ -278,7 +278,7 @@ require 'config/format'
 
     file dst => COMMON_DEPS + entries.map {|e| e.input_file} do |t|
       notify :feed, t.name
-      write_file t.name, FEED_TEMPLATE.render_with(:@feed => feedObj)
+      File.write t.name, FEED_TEMPLATE.render_with(:@feed => feedObj)
     end
 
     task :feed => dst
@@ -899,7 +899,7 @@ require 'config/format'
     file dst => COMMON_DEPS + [srcPath] do |t|
       notify :Entrance, srcPath
 
-      write_file t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
+      File.write t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
     end
 
     task :entry_list => dst

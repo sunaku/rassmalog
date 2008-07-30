@@ -30,6 +30,6 @@ task :import_rss => IMPORT_DIR do
       join << "\ntext: |\n#{text.gsub(/^/, '  ')}"
 
     notify :import, dst
-    write_file dst, entry
+    File.write dst, entry
   end
 end
