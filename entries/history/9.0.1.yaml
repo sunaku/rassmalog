@@ -1,7 +1,7 @@
 name: Version 9.0.1
 date: Sun Dec  9 16:55:33 PST 2007
 tags: history
-text: |
+body: |
   This release (1) fixes some bugs that were thought to have been fixed by the previous release and (2) shortens the source code down to 567 lines!
 
 

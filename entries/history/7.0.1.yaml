@@ -4,7 +4,7 @@ date: Fri Oct  5 19:40:21 PDT 2007
 
 tags: history
 
-text: |
+body: |
   This release repairs the following defects:
   * Redundant dashes (-) are now squeezed into a single dash in URI fragments.
   * Added consistent padding for *blockquote* in <tt>input/styles/screen.css</tt>

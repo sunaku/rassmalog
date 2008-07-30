@@ -4,7 +4,7 @@ output_file: <%= LANG['About'].to_file_name %>.html
 
 hide: true
 
-text: |
+body: |
   <%= BLOG.info.to_html %>
 
   h1. Project links

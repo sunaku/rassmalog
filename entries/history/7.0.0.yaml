@@ -4,7 +4,7 @@ date: Thu Oct  4 20:44:39 PDT 2007
 
 tags: history
 
-text: |
+body: |
   This release cleans up the configuration, restores support for users with 640x480 screen resolution, repairs some defects, and improves performance, the default CSS theme, and the documentation.
 
 

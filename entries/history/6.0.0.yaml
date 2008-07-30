@@ -4,7 +4,7 @@ date: Tue Sep 25 23:24:01 PDT 2007
 
 tags: history
 
-text: |
+body: |
   This release gives you more control over where blog entries go in the <tt>output/</tt> directory and adds support for truly static web pages so you can build a complete website around your blog.
 
   It also adds a simple JavaScript search engine, makes it possible to use "dynamic blog comments":rassmalog/tricks/dynamic-comments.html, fixes a show-stopper bug on Microsoft Windows, refreshes the default CSS theme, and includes numerous other improvements.

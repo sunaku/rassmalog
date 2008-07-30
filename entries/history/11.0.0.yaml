@@ -1,7 +1,7 @@
 name: Version 11.0.0
 date: Thu May  1 22:53:06 PDT 2008
 tags: history
-text: |
+body: |
   This release removes needless cruft (keep it simple!), adds new plugins, adds
   support for Ruby 1.9.0, freshens the default CSS theme, fixes translation
   files, and updates the documentation.

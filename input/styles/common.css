@@ -97,44 +97,44 @@ body
         font-family       : Constantia, "Book Antiqua", "URW Bookman L", serif;
     }
 
-    .entry .text h1,
-    .entry .text h2,
-    .entry .text h3,
-    .entry .text h4,
-    .entry .text h5,
-    .entry .text h6
+    .entry .body h1,
+    .entry .body h2,
+    .entry .body h3,
+    .entry .body h4,
+    .entry .body h5,
+    .entry .body h6
     {
         margin-top        : 1.25em;
         line-height       : 1.25em;
     }
 
-    .entry .text h1
+    .entry .body h1
     {
         font-size         : 1.5em;
     }
 
-    .entry .text h2
+    .entry .body h2
     {
         font-size         : 1.4em;
     }
 
-    .entry .text h3,
+    .entry .body h3,
     .name
     {
         font-size         : 1.3em;
     }
 
-    .entry .text h4
+    .entry .body h4
     {
         font-size         : 1.2em;
     }
 
-    .entry .text h5
+    .entry .body h5
     {
         font-size         : 1.1em;
     }
 
-    .entry .text h6
+    .entry .body h6
     {
         font-size         : 1.0em;
     }

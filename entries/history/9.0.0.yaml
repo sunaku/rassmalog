@@ -1,7 +1,7 @@
 name: Version 9.0.0
 date: Wed Dec  5 22:50:29 PST 2007
 tags: history
-text: |
+body: |
   This release improves appearance, simplifies the main HTML template, and fixes several bugs.
 
 

@@ -155,7 +155,7 @@ your_own_parameter2: ruby rocks!
 # * @summarize  - should this entry be summarized?
 # * @solo       - is this entry being rendered alone, on its own page?
 #
-text: |
+body: |
   This article serves as a reference for the file format of a blog entry.  Have a look at the source of this blog entry by reading the <tt><%= @entry.input_file %></tt> file (whose contents are "shown below":#source).
 
   Here is the summary of this blog entry:

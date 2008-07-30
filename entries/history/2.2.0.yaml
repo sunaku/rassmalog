@@ -4,7 +4,7 @@ date: Sat Jan 13 17:49:29 PST 2007 @117 /Internet Time/
 
 tags: history
 
-text: |
+body: |
   This release adds LaTeX style numbering of section headings, removes unused Tango images, and cleanses the default CSS design.
 
   * Blog generation is now sensitive to changes in translation files.

@@ -4,7 +4,7 @@ date: 25 Sep 2007
 
 tags: examples
 
-text: |
+body: |
   This is an entry from the <tt>input/</tt> directory.
 
   * Input file path     : <tt><%= @entry.input_file  %></tt>

@@ -1,7 +1,7 @@
 name: Version 10.1.0
 date: Mon Jan 21 18:38:36 PST 2008
 tags: history
-text: |
+body: |
   This release adds support for plugins, adds more translations, and fixes
   some bugs in RSS feed and blog generation.
 

@@ -422,9 +422,9 @@
   <% end %>
 
   <% section "eRuby directives" do %>
-    The text of a blog entry is treated as an eRuby template. Thus, you can use eRuby directives (which appear within @<%%@ and @%>@ tags) in the text of your blog entries.
+    The body of a blog entry is treated as an eRuby template. Thus, you can use eRuby directives (which appear within @<%%@ and @%>@ tags) in the body of your blog entries.
 
-    For example, putting the following text in a blog entry:
+    For example, putting the following content in a blog entry:
 
     <code lang="rhtml">
     <%% 3.times do %>
@@ -440,7 +440,7 @@
     <% end %>
 
     <% section "Including the content of another file" do %>
-      To include the content of another file inside the text of a blog entry, you can use the following eRuby directive:
+      To include the content of another file inside the body of a blog entry, you can use the following eRuby directive:
 
         <%%= File.read('path-to-your-file') %>
 
@@ -477,7 +477,7 @@
   <% end %>
 
   <% section "Table of contents generation", 'entry.toc' do %>
-    A table of contents is _automatically generated_ from headings (@<h1>@ through @<h6>@ for HTML and @h1.@ through @h6.@ for Textile) found in the text of a blog entry.
+    A table of contents is _automatically generated_ from headings (@<h1>@ through @<h6>@ for HTML and @h1.@ through @h6.@ for Textile) found in the body of a blog entry.
 
     Headings are numbered in the style of LaTeX; these numbers contain a hyperlink back to the table of contents for easier navigation.
 

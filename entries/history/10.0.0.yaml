@@ -1,7 +1,7 @@
 name: Version 10.0.0
 date: Fri Jan 11 22:40:37 PST 2008
 tags: history
-text: |
+body: |
   This release improves usability, adds support for multiple feeds, and adds an
   "official user guide":../doc/guide.html.
 

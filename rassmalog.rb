@@ -446,7 +446,7 @@ require 'config/format'
 
     # {String object}
     # Content of this blog entry.
-    attr_reader :text
+    attr_reader :body
 
     # {Array of Section objects}
     # The categories in which this blog entry belongs.
@@ -517,9 +517,9 @@ require 'config/format'
       aOther.date <=> @date
     end
 
-    # Transforms the text of this entry into HTML and returns it.
+    # Transforms the content of this entry into HTML and returns it.
     def html
-      @html ||= Template.new("#{@input_file}:text", @text).render_with(template_ivar => self).to_html
+      @html ||= Template.new("#{@input_file}:body", @body).render_with(template_ivar => self).to_html
     end
 
     # Returns a URL for submiting comments about this entry.
@@ -718,7 +718,7 @@ require 'config/format'
 
         if data.is_a? Hash and
            data.key? 'name' and
-           data.key? 'text'
+           data.key? 'body'
         then
           src =~ %r{^.*?/}
           srcDir, srcUrl = $&, $'
@@ -743,7 +743,7 @@ require 'config/format'
               end
             ),
 
-            :text => data['text'].to_s,
+            :body => data['body'].to_s,
 
             :input_url => srcUrl,
             :input_file => src,

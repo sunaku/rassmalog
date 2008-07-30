@@ -125,11 +125,11 @@ body
     }
 
     /* content of the blog entry */
-    .entry .text
+    .entry .body
     {
     }
 
-    .entry .text > img
+    .entry .body > img
     {
         margin          : 1em;
     }
@@ -159,7 +159,7 @@ body
     {
     }
 
-    .entry-solo .text
+    .entry-solo .body
     {
     }
 

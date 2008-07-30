@@ -4,7 +4,7 @@ date: Fri Dec 15 19:31:30 PST 2006 @188 /Internet Time/
 
 tags: history
 
-text: |
+body: |
   This release adds support for _e-mail based_ comments and fixes some minor annoyances in the default CSS file.
 
   * Added an *email* parameter to the blog configuration file. This allows for posting of comments to blog entries.
