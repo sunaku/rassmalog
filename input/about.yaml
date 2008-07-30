@@ -1,9 +1,6 @@
-name: <%= LANG['About %s', BLOG.name] %>
-
-output_file: <%= LANG['About'].to_file_name %>.html
-
 hide: true
-
+name: <%= LANG['About %s', BLOG.name] %>
+output_file: <%= LANG['About'].to_file_name %>.html
 body: |
   <%= BLOG.info.to_html %>
 

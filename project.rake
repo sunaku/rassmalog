@@ -61,7 +61,7 @@ TRANSLATE_DIR = 'translate-output'
 directory TRANSLATE_DIR
 
 def translate_string aString, aLang
-  IO.popen("translate-bin -f en -t #{aLang}", 'r+') do |pipe|
+  IO.popen("translate-bin -f en -t #{aLang} 2>/dev/null", 'r+') do |pipe|
     pipe.write aString
     pipe.close_write
     pipe.read
@@ -73,9 +73,9 @@ task :translate => TRANSLATE_DIR do
   # get list of strings to translate
   inputStrings = []
 
-  FileList['*.rb', 'config/*.*'].each do |file|
+  FileList['*.rb', 'config/*.*', 'input/*.yaml'].each do |file|
     strings = File.read(file).
-              scan(/LANG\[(\S)(.*?)(\1)/).
+              scan(/LANG\[\s*(\S)(.*?)(\1)/).
               map {|s| eval(s.join) }
     inputStrings.concat(strings)
   end
