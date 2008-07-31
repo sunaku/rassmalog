@@ -257,7 +257,7 @@ generate_toc: true
 #
 #   http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime
 #
-date_format: %Y %B %d &ndash; %A %I:%M %p
+date_format: %Y %B %d, %A %I:%M %p
 
 
 #

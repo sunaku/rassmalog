@@ -167,13 +167,13 @@ body: |
 
   For example, in the source of this blog entry, you will find two custom parameters whose names begin with "your_own_parameter". To insert the values of these parameters into the blog entry's content, we use the following eRuby directive:
 
-    <pre><%%= @entry[ 'name_of_the_parameter' ] %></pre>
+  <code lang="rhtml"><%%= @entry[ 'name_of_the_parameter' ] %></code>
 
   Here, we access a parameter's value by passing the parameter's name into the [] operator of the @@entry@ object.
 
   |_. Expression|_. Result|
-  |@<%%= @entry['your_own_parameter1'] %>@|<%= @entry['your_own_parameter1'] %>|
-  |@<%%= @entry['your_own_parameter2'] %>@|<%= @entry['your_own_parameter2'] %>|
+  |<code lang="rhtml"><%%= @entry['your_own_parameter1'] %></code>|<%= @entry['your_own_parameter1'] %>|
+  |<code lang="rhtml"><%%= @entry['your_own_parameter2'] %></code>|<%= @entry['your_own_parameter2'] %>|
 
 
   h1(#source). Source of this blog entry

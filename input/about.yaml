@@ -28,6 +28,13 @@ body: |
 
   h1. Users
 
+  Here is a list of blogs that are powered by Rassmalog.  If you would like to add your blog to this list, <a href="<%=
+    BLOG.email.to_url(
+      'add Rassmalog user blog',
+      'Put the URL of your blog here'
+    )
+  %>">please notify me</a> accordingly.
+
   * "Suraj N. Kurapati":http://snk.tuxfamily.org/web/
   * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/
   * "Greg Weber":http://thoughtfolder.com
@@ -41,17 +48,12 @@ body: |
   * "Asterisell":http://asterisell.profitoss.com
   * "Profitoss":http://profitoss.com
   * "ClothRed":http://clothred.rubyforge.org
-  * <big>"Add _your_ blog here!":<%=
-    BLOG.email.to_url('add Rassmalog user', 'My blog URL is _____')
-  %></big>
 
   <%# provide a list of all RSS feeds available on this blog %>
   <% if FEEDS.length > 1 %>
   h1. <%= LANG['Subscribe'] %> <%= icon 'feed-icon-14x14.png', LANG['RSS feed'] %>
 
-  <ul>
-    <% FEEDS.each do |feed| %>
-      <li><a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name.to_s.to_inline_html %></a></li>
-    <% end %>
-  </ul>
+  <% FEEDS.each do |feed| %>
+  * <a type="application/rss+xml" href="<%= feed.file %>"><%= feed.name %></a> &mdash; <%= feed.info %>
+  <% end %>
   <% end %>
