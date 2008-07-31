@@ -161,7 +161,7 @@ require 'config/format'
           toc << %{<li>#{index} <a id="#{src}" href="#{dstUrl}">#{title}</a></li>}
 
           # reverse link from heading to TOC
-          %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="list">#{index}</a>&nbsp;&nbsp;<a href="##{dst}" class="here">#{title}</a></h#{depth}>}
+          %{<h#{depth}#{atts}><a id="#{dst}" href="#{srcUrl}" class="list" title="#{LANG['Return to %s', LANG['Contents']]}">#{index}</a>&nbsp;&nbsp;<a href="##{dst}" class="here" title="#{LANG['Permanent hyperlink to this section']}">#{title}</a></h#{depth}>}
       end
 
       if prevIndex.empty?
