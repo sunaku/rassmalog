@@ -25,7 +25,7 @@
     fonts = %w[xx-small x-small small medium large x-large xx-large]
     scale = fonts.length - 1
 
-    largest = @chapter.map { |section| section.length }.max
+    largest = @chapter.map {|section| section.length }.max
 
     @chapter.each do |section|
       size = section.length
@@ -39,20 +39,24 @@
   </ul>
 
   <%
-    byDate = @chapter == ARCHIVES
+    langName = LANG['Name']
+    langDate = LANG['Date']
+    langSize = LANG['Size']
+
+    order = @chapter == ARCHIVES ? langDate : langName
     items = @chapter.sort
-    sizes = @chapter.sort_by { |section| section.length }.reverse
+    sizes = @chapter.sort_by {|section| section.length }.reverse
   %>
   <table border="1">
     <tr>
-      <th colspan="2">Sorted by <%= byDate ? 'date' : 'name' %></th>
-      <th colspan="2">Sorted by size</th>
+      <th colspan="2"><%= LANG['Sorted by %s', order] %></th>
+      <th colspan="2"><%= LANG['Sorted by %s', langSize] %></th>
     </tr>
     <tr>
-      <th><%= byDate ? 'Date' : 'Name' %> &darr;</th>
-      <th>Size</th>
-      <th>Name</th>
-      <th>Size &uarr;</th>
+      <th><%= order %> &darr;</th>
+      <th><%= langSize %></th>
+      <th><%= order %></th>
+      <th><%= langSize %> &uarr;</th>
     </tr>
     <% @chapter.each_index do |i| %>
       <tr>
