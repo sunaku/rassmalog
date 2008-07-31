@@ -29,10 +29,10 @@ feed 'feed.xml', ENTRIES.first(5), BLOG.name, BLOG.info
 # the newest three blog entries tagged as 'tricks'.
 #
 feed(
-  'tricks.xml',                      # feed output file
-  TAGS['tricks'].first(3),           # which entries to include in feed?
-  'Rassmalog tricks & tips',         # feed title
-  'Tricks and tips about Rassmalog', # feed description
-  true                               # summarize the entries in the feed?
+  'examples.xml',                      # feed output file
+  TAGS['examples'].first(3),           # which entries to include in feed?
+  'Rassmalog examples',                # feed title
+  'Examples of how to use Rassmalog.', # feed description
+  true                                 # summarize the entries in the feed?
 )
 
