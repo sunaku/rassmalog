@@ -60,49 +60,67 @@ end
 TRANSLATE_DIR = 'translate-output'
 directory TRANSLATE_DIR
 
-def translate_string aString, aLang
-  IO.popen("translate-bin -f en -t #{aLang} 2>/dev/null", 'r+') do |pipe|
-    pipe.write aString
-    pipe.close_write
-    pipe.read
-  end
+require 'open-uri'
+require 'net/http'
+require 'uri'
+
+require 'rubygems'
+require 'hpricot'
+
+BABEL_FISH = URI.parse('http://babelfish.yahoo.com/translate_txt')
+
+# Returns a list of possible languages available for translation:
+#
+#   [ [command, lang, name]... ]
+#
+def possible_languages
+  open(BABEL_FISH).read.scan(/value="(en_(\w+))">.*?to\s*(.*?)</)
+end
+
+# Returns the translation of the given input using the given command.
+def translate_string aInput, aCommand
+  res = Net::HTTP.post_form BABEL_FISH,
+    :eo => 'utf-8', :lp => aCommand, :trtext => aInput
+
+  doc = Hpricot(res.body)
+  (doc / '#result' / 'div').inner_html
 end
 
 desc 'Generate translation files.'
 task :translate => TRANSLATE_DIR do
   # get list of strings to translate
-  inputStrings = []
+  phrases = []
 
   FileList['*.rb', 'config/*.*', 'input/*.yaml'].each do |file|
-    strings = File.read(file).
-              scan(/LANG\[\s*(\S)(.*?)(\1)/).
-              map {|s| eval(s.join) }
-    inputStrings.concat(strings)
+    phrases.concat \
+      File.read(file).scan(/LANG\[\s*(\S)(.*?)(\1)/).map {|s| eval(s.join) }
   end
 
-  inputStrings.uniq!
-  inputStrings.sort!
-  puts inputStrings
+  phrases.uniq!
+  phrases.sort!
+  puts phrases
 
   # translate the input strings
-  `translate-bin -l | grep '^en.*text'`.split(/$/).each do |line|
-    if line =~ /->\s+(\S+)\s+([^:]+):/
-      lang, desc = $1, $2
-      p lang => desc
+  possible_languages.each do |cmd, lang, desc|
+    p lang => desc
 
-      File.open(File.join(TRANSLATE_DIR, lang + '.yaml'), 'w') do |f|
-        f.puts "# #{lang} #{desc}"
+    File.open(File.join(TRANSLATE_DIR, lang + '.yaml'), 'w') do |f|
+      f.puts "# #{lang} - #{desc}"
 
-        inputStrings.each do |query|
-          result = translate_string(query, lang)
-          break if result.empty?
+      results =
+        translate_string(phrases.join("\n\n\n"), cmd).
 
-          # restore printf() tokens that were mangled in translation
-          result.gsub! /%\s+s/, '%s'
+        # restore printf() tokens that were mangled in translation
+        gsub(/%\s+s/, '%s').
 
-          p query => result
-          f.puts "#{query}: #{result}"
-        end
+        # no need for unicode ellipsis since RedCloth converts them
+        gsub(/\342\200\246/, '...').
+
+        strip.split(/$\s*/)
+
+      phrases.zip(results).each do |src, dst|
+        p src => dst
+        f.puts "#{src}: #{dst}"
       end
     end
   end
