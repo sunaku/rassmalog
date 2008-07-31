@@ -101,7 +101,7 @@
         end
 
       rels.zip(meths).each do |r, m|
-        if e = obj.send(m) and e != @target
+        if e = obj.send(m) and not e.equal? @target
           @nav_by_rel[r] = Nav.new(r, e.name, e.url)
         end
       end
