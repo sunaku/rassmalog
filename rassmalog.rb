@@ -394,11 +394,14 @@ require 'config/format'
     def to_link aOpts = {}
       addr = self.url
 
-      name = aOpts[:body] || self.name
-      name = name.gsub(/\s/, '&nbsp;') if aOpts[:nbsp]
-      name = name.to_inline_html
+      body = aOpts[:body] || self.name
+      body = body.gsub(/\s/, '&nbsp;') if aOpts[:nbsp]
+      body = body.to_inline_html
 
-      link(addr, aOpts[:body] || name, aOpts[:body] && name)
+      # reveal default link body in title when overriden
+      title = aOpts[:body] && self.name
+
+      link(addr, body, title)
     end
   end
 
