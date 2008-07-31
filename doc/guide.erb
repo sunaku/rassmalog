@@ -1,14 +1,28 @@
 <%
   require 'version'
 
-  # parameters for the HTML format
-  $title   = "Rassmalog #{Rassmalog[:version]} user guide"
-  $authors = {'Suraj N. Kurapati' => 'http://snk.tuxfamily.org'}
-
   # local variables for this document
-  download_url = 'http://rubyforge.org/frs/?group_id=2737'
+  pkg_url = File.join(Rassmalog[:website], 'pkg')
+  src_url = File.join(Rassmalog[:website], 'src')
+  ann_url = File.join(Rassmalog[:website], 'ann')
+  dev_url = File.join(Rassmalog[:website], 'dev')
+  log_url = File.join(Rassmalog[:website], 'log')
+
   langFiles = Dir['config/lang/*.yaml'].sort
   pluginFiles = Dir['plugins/*.rb'].sort
+
+  # parameters for the HTML format
+  $title   = "Rassmalog #{Rassmalog[:version]} user guide"
+  $authors = {'Suraj N. Kurapati' => 'http://snk.rubyforge.org'}
+  $feeds   = { ann_url => :rss }
+
+  class String
+    # Marks all two-space indented lines in this
+    # string as <pre> elements for RedCloth 4.0.
+    def indent_to_pre
+      paras.map! {|s| s.sub(/^  /, 'pre. ').gsub(/^  /, '') }.join("\n\n")
+    end
+  end
 
   # Extracts information about configuration parameters from the given
   # file and emits the information into sections having the given depth.
@@ -27,16 +41,39 @@
           emblems = ''
         end
 
-        section "#{param} #{emblems}", "param.#{param}" do info.to_html end
+        section "#{param} #{emblems}", "param.#{param}" do
+          info.indent_to_pre
+        end
       elsif info =~ /^#+$/
         next
       end
-    end.join
+    end
+
+    nil
   end
+
+  intro_paragraph = <<-EOS.strip
+    Rassmalog is a *static blog engine* based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that you can view on your computer or upload to your website.
+  EOS
 %>
 
+<% abstract do %>
+  <%= intro_paragraph %>.
+
+  p=. <%= xref 'Introduction', 'Continue reading...' %>
+
+  <% paragraph "Resources" do %>
+    * "Releases":<%= log_url %> - release notes and project news. "!../output/icons/feed-icon-28x28.png(RSS feed)!":<%= ann_url %>
+    * "Downloads":<%= pkg_url %> - obtain the newest release package.
+    * "Source code":<%= src_url %> - obtain via "Darcs 2":http://darcs.net or browse online.
+    * "Reference":api/index.html - API documentation for source code. "!../output/icons/feed-icon-28x28.png(RSS feed)!":<%= dev_url %>
+
+    To get help or provide feedback, simply <%= xref "License", "contact the author" %>.
+  <% end %>
+<% end %>
+
 <% chapter "Introduction" do %>
-  Rassmalog is a *static blog engine* based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that you can view on your computer or upload to your website.
+  <%= intro_paragraph %>
 
   Rassmalog is *open-source software* (see <%= xref "License" %>) inspired by the "Rog":http://rog.rubyforge.org, "hobix":http://hobix.com, and "nanoblogger":http://nanoblogger.sourceforge.net/ blog engines. Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and somewhat resembles the words "RSS", "YAML", and "blog".
 
@@ -57,7 +94,7 @@
   <% end %>
 
   <% section "License" do %>
-    <%=h File.read('LICENSE') %>
+    <%=h File.read('LICENSE').para_join %>
   <% end %>
 
   <% section "Motivation" do %>
@@ -127,7 +164,7 @@
   <% end %>
 
   <% section "Installation" do %>
-    # Download the newest release package from "the download area":<%= download_url %>.
+    # Download the newest release package from "the download area":<%= pkg_url %>.
     # Extract the release package anywhere you want on your system.
     # Go inside the extracted directory and run the following command:
       <pre>rake regen</pre>
@@ -138,71 +175,49 @@
   <% section "Manifest", 'manifest' do %>
     Now that Rassmalog is installed on your system, let us examine its installation directory. Inside, you will see (among other things) the following items:
 
-    * <tt>rassmalog.rb</tt>
-      - the core of Rassmalog.
+    * <tt>rassmalog.rb</tt> - the core of Rassmalog.
 
-    * <tt id="manifest.doc">doc/</tt>
-      - documentation for Rassmalog users
+    <% section "<tt>doc/</tt>", "manifest.doc" do %>
+      Documentation for Rassmalog users
 
-      * <tt>doc/guide.erb</tt>
-        - source code of this user guide
+      * <tt>doc/guide.erb</tt> - source code of this user guide
+    <% end %>
 
-    * <tt id="manifest.config">config/</tt>
-      - directory that contains all configuration files.
+    <% section "<tt>config/</tt>", "manifest.config" do %>
+      Directory that contains all configuration files.
 
-      * <tt>config/blog.yaml</tt>
-        - the primary configuration file for your blog.
-
-      * <tt>config/feed.erb</tt>
-        - template for generating RSS feeds for the blog.
-
-      * <tt>config/html.erb</tt>
-        - template for generating a complete HTML web page.
-
-      * <tt>config/chapter.erb</tt>
-        - template for generating HTML for lists of tags and archives.
-
-      * <tt>config/section.erb</tt>
-        - template for generating HTML for individual tags and archives.
-
-      * <tt>config/listing.erb</tt>
-        - template for generating the recent/all lists of blog entries.
-
-      * <tt>config/entry.erb</tt>
-        - template for generating HTML for a blog entry.
-
-      * <tt>config/format.rb</tt>
-        - defines how text is transformed into HTML.
-
-      * <tt id="manifest.lang">config/lang/</tt>
-        - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
-
+      * <tt>config/blog.yaml</tt> - the primary configuration file for your blog.
+      * <tt>config/feed.erb</tt> - template for generating RSS feeds for the blog.
+      * <tt>config/html.erb</tt> - template for generating a complete HTML web page.
+      * <tt>config/chapter.erb</tt> - template for generating HTML for lists of tags and archives.
+      * <tt>config/section.erb</tt> - template for generating HTML for individual tags and archives.
+      *  <tt>config/listing.erb</tt> - template for generating the recent/all lists of blog entries.
+      * <tt>config/entry.erb</tt> - template for generating HTML for a blog entry.
+      * <tt>config/format.rb</tt> - defines how text is transformed into HTML.
+      ** <tt id="manifest.lang">config/lang/</tt> - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
       <% langFiles.each do |file| %>
-        * <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/\(.*\)/)[0] %>
-
+        ** <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/-(.*)/)[0] %>
       <% end %>
+    <% end %>
 
-    * <tt id="manifest.output">output/</tt>
-      - directory that contains your generated blog.
+    <% section "<tt>output/</tt>", "manifest.output" do %>
+      Directory that contains your generated blog.
+    <% end %>
 
-    * <tt id="manifest.input">input/</tt>
-      - directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.
+    <% section "<tt>input/</tt>", "manifest.input" do %>
+      Directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.
 
       A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, a source file's corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.
 
       For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding the "*output_file* parameter":#param.output_file to your blog entry.
 
-      * <tt>input/styles/screen.css</tt>
-        - the default CSS stylesheet provided with Rassmalog.
+      * <tt>input/styles/screen.css</tt> - the default CSS stylesheet provided with Rassmalog.
+      * <tt>input/styles/print.css</tt> - the default CSS stylesheet provided with Rassmalog.
+      * <tt>input/rassmalog/entry.yaml</tt> - reference of the blog entry file format.
+    <% end %>
 
-      * <tt>input/styles/print.css</tt>
-        - the default CSS stylesheet provided with Rassmalog.
-
-      * <tt>input/rassmalog/entry.yaml</tt>
-        - reference of the blog entry file format.
-
-    * <tt id="manifest.entries">entries/</tt>
-      - directory that contains blog entry source files whose output files are *automatically calculated* by Rassmalog.
+    <% section "<tt>entries/</tt>", "manifest.entries" do %>
+      Directory that contains blog entry source files whose output files are *automatically calculated* by Rassmalog.
 
       A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, all source files in this directory will have a corresponding output file with a name in the form: "_date_-_name_.html".
 
@@ -211,19 +226,21 @@
       As you can see, _unlike_ the blog entries in the <tt>input/</tt> directory, blog entries in the <tt>entries/</tt> directory do not have to worry about their original file name influencing the output file name. As a result, you can organize your blog entry files however you want.
 
       For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.
+    <% end %>
 
-    <% section "plugins/" do %>
+    <% section "<tt>plugins/</tt>", "manifest.plugins" do %>
       This directory contains Ruby source files which define additional Rake tasks for Rassmalog.
 
       <% pluginFiles.each do |file| %>
-        <% section file do %>
+        <% section "<tt>#{File.basename(file)}</tt>", file do %>
           |_. Command |_. Description |
           <% `rake -f #{file} -T`.split(/\r?\n/)[1..-1].each do |s| %>
           | <%= s.split('#').join(' | ') %> |
           <% end %>
 
           <noformat><%=
-            File.read(file)[/\A.*?(?=^#--)/m].gsub(/^# ?/, ' ').to_html
+            File.read(file)[/\A.*?(?=^#--)/m].
+            gsub(/^# ?/, '').indent_to_pre.to_html
           %></noformat>
         <% end %>
       <% end %>
@@ -298,7 +315,6 @@
 
     # Open the <tt>Rakefile</tt> in your text editor.
     # You should now see a line of code similar to this:
-      <br/>
       @task :gen => [:copy, :entry, :entry_meta, :entry_list, :feed]@
     # Remove the @:feed@ element from the line of code.
 
@@ -317,7 +333,7 @@
 <% chapter "Usage" do %>
   In the location where you installed Rassmalog, run the following command to see a list of available tasks:
 
-    rake -T
+  pre. rake -T
 
   For example, here is the output you would see when you run the above command:
   <pre><%= `rake -T || rake.bat -T || echo Your system lacks the rake command.` %></pre>
@@ -331,7 +347,7 @@
 
     To use this plugin, run the following command:
 
-      rake new
+    pre. rake new
 
     After it executes, the command will report the name of the file it created.  You can then edit the created file using your favorite text editor and fill in all the juicy details.
   <% end %>
@@ -339,37 +355,37 @@
   <% section "Generating your blog", 'usage.gen' do %>
     To generate your blog, run the following command:
 
-      rake
+    pre. rake
 
     Or alternatively, you can run:
 
-      rake gen
+    pre. rake gen
 
     To regenerate your blog from _scratch_ (delete all existing output and generate everything again), run the following command:
 
-      rake regen
+    pre. rake regen
   <% end %>
 
   <% section "Removing generated files" do %>
     To remove all output files that were generated by Rassmalog, run the following command:
 
-      rake clean
+    pre. rake clean
 
     To remove everything inside the <tt>output/</tt> directory, run the following command:
 
-      rake clobber
+    pre. rake clobber
   <% end %>
 
   <% section "Publishing your blog" do %>
     To upload your blog to your website, run the following command:
 
-      rake upload
+    pre. rake upload
   <% end %>
 
   <% section "Preview while you write" do %>
     To continuously preview a blog entry as you write it, run the following command:
 
-      rake preview
+    pre. rake preview
 
     Now, whenever you save your blog entry file, its HTML page will be generated for preview in your web browser.
   <% end %>
@@ -379,7 +395,7 @@
 
     For example, if you have an RSS feed file named <tt>feed.xml</tt> then you would import it into Rassmalog like this:
 
-      rake import < feed.xml
+    pre. rake import < feed.xml
   <% end %>
 
   <% section "Creating RSS feeds" do %>
@@ -442,11 +458,11 @@
     <% section "Including the content of another file" do %>
       To include the content of another file inside the body of a blog entry, you can use the following eRuby directive:
 
-        <%%= File.read('path-to-your-file') %>
+      pre. <%%= File.read('path-to-your-file') %>
 
       If the included file contains characters that might be interpreted as HTML, then we should properly escape those characters using the @ERB::Util#h@ method:
 
-        <%%= h File.read('path-to-your-file') %>
+      pre. <%%= h File.read('path-to-your-file') %>
     <% end %>
   <% end %>
 
@@ -572,14 +588,13 @@
       # load library for parsing method documentation
       require 'gerbil/rdoc'
 
-      RDoc::TopLevel.parse @spec['code']
-      Dir['*.rb'].each do |f|
+      Dir['{,config/}*.rb'].each do |f|
         RDoc::TopLevel.parse_file f
       end
 
       RDoc::TopLevel.all_methods.each do |m|
     %>
-    | @<%= m.decl %>@ | <noformat><%= m.comment_html %></noformat> |
+    | <code><%= m.decl %></code> | <noformat><%= m.comment_html %></noformat> |
     <% end %>
   <% end %>
 <% end %>
