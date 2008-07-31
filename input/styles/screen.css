@@ -4,6 +4,7 @@ body
 {
     margin              : auto; /* center horizontally */
     max-width           : 36em;
+    _width              : 36em; /* for IE6 */
     padding             : 0.5em;
 }
 
@@ -45,7 +46,7 @@ body
     /* the navigation item corresponding to the current web page */
     .navigation .current
     {
-        padding-bottom  : 0.75em;
+        padding-bottom  : 0.5em;
         border-bottom   : 5px solid #FFA500;
     }
 
@@ -77,51 +78,6 @@ body
     .entry .name a:visited
     {
         _color          : #000000; /* for IE6 */
-    }
-
-    /* table of contents */
-    .entry .toc
-    {
-        float           : right;
-        margin-left     : 2em;
-        margin-bottom   : 2em;
-
-        border          : 1px dashed #C0C0C0;
-        padding         : 1em;
-    }
-
-    .entry .toc > ul
-    {
-        padding-left    : 0;
-        margin-top      : 0.5em;
-    }
-
-    .entry .toc li
-    {
-        list-style-type : none;
-    }
-
-    /* reduce indentation of list items */
-    .entry .toc li ul
-    {
-        padding-left    : 1em; /* for Firefox */
-
-        .margin-left    : 0.75em; /* for IE6 and IE7 */
-        .padding-left   : 0.25em;
-
-        _margin-left    : 0.25em; /* override for IE6 only */
-        _padding-left   : 1em;
-    }
-
-    /* add space between nested lists for better readability */
-    .entry .toc li ul
-    {
-        padding-bottom  : 0.75em;
-    }
-
-    .entry .toc li ul:last-child
-    {
-        padding-bottom  : 0;
     }
 
     /* content of the blog entry */
@@ -233,4 +189,3 @@ body
     {
         color           : #0000FF;
     }
-

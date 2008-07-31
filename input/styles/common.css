@@ -13,7 +13,7 @@ body
         background-image  : url(../icons/tango-32x32-apps-internet-group-chat.png);
         background-repeat : no-repeat;
         padding-left      : 45px;
-        margin-left       : 2em;
+        margin-left       : 0;
     }
 
     hr
@@ -134,7 +134,7 @@ body
     table
     {
         border-collapse   : collapse; /* no spacing between cell borders */
-        margin       : auto; /* center horizontally */
+        margin            : auto; /* center horizontally */
     }
 
     th,
@@ -156,27 +156,68 @@ body
 
     .icon
     {
-        vertical-align  : middle;
+        vertical-align    : middle;
     }
 
     /* information about blog author and generator */
     .credits
     {
-        margin-top      : 5em;
-        text-align      : center;
+        margin-top        : 5em;
+        text-align        : center;
     }
 
 /* styles for config/entry.erb */
 
     .entry
     {
-        margin-bottom   : 4em;
+        margin-bottom     : 4em;
     }
 
     .entry-solo .info
     {
-        margin-top      : 1em;
-        border-top      : 1px dashed #808080;
-        padding-top     : 1em;
+        margin-top        : 1em;
+        border-top        : 1px dashed #808080;
+        padding-top       : 1em;
     }
 
+    /* table of contents */
+    .entry .toc
+    {
+        float             : right;
+        margin-left       : 2em;
+        margin-bottom     : 2em;
+
+        border            : 1px dashed #C0C0C0;
+        padding           : 1em;
+    }
+
+    .entry .toc > ul
+    {
+        padding-left      : 0;
+        margin-top        : 0.25em;
+        margin-bottom     : 0;
+    }
+
+    .entry .toc ul
+    {
+        _margin-left      : 0.25em; /* for IE6 */
+        _margin-top       : 0.25em; /* for IE6 */
+        _margin-bottom    : 0; /* for IE6 */
+    }
+
+    .entry .toc li
+    {
+        list-style-type   : none;
+    }
+
+    /* reduce indentation of list items */
+    .entry .toc li ul
+    {
+        padding-left      : 1em; /* for Firefox */
+
+        .margin-left      : 0.75em; /* for IE6 and IE7 */
+        .padding-left     : 0.25em;
+
+        _margin-left      : 0.25em; /* override for IE6 only */
+        _padding-left     : 1em;
+    }
