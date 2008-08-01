@@ -342,10 +342,16 @@
   <% end %>
 
   <% section "Disabling the search page" do %>
-    The search page is just a blog entry; there is nothing special about it.
+    The **search** page is just a blog entry; there is nothing special about it.
 
     # Delete the <tt>input/search.yaml</tt> file.
-    # Remove the HTML search form in the <tt>config/html.erb</tt> template.
+    # Regenerate your blog.
+  <% end %>
+
+  <% section "Disabling the about page" do %>
+    The **about** page is just a blog entry; there is nothing special about it.
+
+    # Delete the <tt>input/about.yaml</tt> file.
     # Regenerate your blog.
   <% end %>
 <% end %>
