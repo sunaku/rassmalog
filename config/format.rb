@@ -15,7 +15,13 @@ require 'digest/sha1'
 
 begin
   require 'rubygems'
-  gem 'RedCloth', '~> 4.0'
+
+  begin
+    gem 'RedCloth', '~> 4.0'
+  rescue LoadError => e
+    puts e
+    exit 1
+  end
 rescue LoadError
 end
 
