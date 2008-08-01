@@ -2,7 +2,7 @@ hide: true
 name: <%= LANG['About %s', BLOG.name] %>
 output_file: <%= LANG['About'].to_file_name %>.html
 body: |
-  <%= BLOG.info.to_html %>
+  <%= BLOG.info %>
 
   h1. Documentation
 
@@ -12,33 +12,37 @@ body: |
 
   h1. Reference
 
-  * "Textile syntax":http://hobix.com/textile/
+  * "Textile syntax":http://redcloth.org/textile/
   * "YAML syntax":http://yaml4r.sourceforge.net/cookbook/
   * "eRuby syntax":http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
   * "Rassmalog API":../ref/index.html
 
   h1. Users
 
-  Here is a list of blogs that are powered by Rassmalog.  If you would like to add your blog to this list, <a href="<%=
+  If you would like to add your blog to this list or make a correction, please <a href="<%=
     BLOG.email.to_url(
       'add Rassmalog user blog',
-      'Put the URL of your blog here'
+      '<your blog URL here>'
     )
-  %>">please tell me</a> the name and URL of your blog.
+  %>">notify me</a>.
 
-  * "Suraj N. Kurapati":http://snk.tuxfamily.org/web/
-  * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/
-  * "Greg Weber":http://thoughtfolder.com
-  * "Sam Broad":http://www.sambroad.com/blog/
+  * "Suraj N. Kurapati":http://snk.rubyforge.org/web/
+  * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/ -- PenPen blog
   * "Christian Berendt":http://thorlin.de
-  * "Ants in their tanks":http://ants.rupespad.com
-  * "Renke Grunwald":http://renkobert.de
+  * "Greg Weber":http://thoughtfolder.com -- Thoughtfolder
+  * "James Kuoski":http://www.ulimits.com -- Ruby.Erlang
+  * "Sam Broad":http://www.sambroad.com/blog/
+  * "Rupert Voelcker":http://ants.rupespad.com -- Ants in their tanks
+  * "Martin Sander":http://cip.physik.uni-bonn.de/~sander/
   * "листп еоод":http://blog.listp.com
-  * "Dave Scotto":http://www.yasgursfarm.us/d/
-  * "Fox Chao":http://blog.netinfox.com
-  * "Asterisell":http://asterisell.profitoss.com
-  * "Profitoss":http://profitoss.com
-  * "ClothRed":http://clothred.rubyforge.org
+  * "Dave Scotto":http://www.yasgursfarm.us/d/ -- ヤスガーズファーム日記
+  * "Massimo Zaniboni":http://asterisell.profitoss.com -- Asterisell project
+  * "Phillip 'CynicalRyan' Gawlowski":http://clothred.rubyforge.org -- ClothRed project
+  * "Bryan JJ Buckley":http://blog.bjjb.org
+  * [-"Renke Grunwald":http://renkobert.de-]
+  * [-"Spooky Fox":http://blog.iworkroom.com-]
+  * [-"Fox Chao":http://blog.netinfox.com-]
+  * [-"Manfred Schreiweis":http://blog.mabitoka.de-]
 
   <%# provide a list of all RSS feeds available on this blog %>
   <% if FEEDS.length > 1 %>

@@ -73,14 +73,14 @@
       if @entry.hide?
         stamp
       else
-        @entry.archive.to_link :body => stamp
+        @entry.archive.to_link :body => stamp, :frag => @entry
       end
     %>
 
     <% unless @entry.tags.empty? %>
       <br/>
       <%= icon 'tango-32x32-categories-applications-games.png', LANG['Tags'] %>
-      <%= @entry.tags.map {|t| t.to_link }.join(' &middot; ') %>
+      <%= @entry.tags.map {|t| t.to_link :frag => @entry }.join(' &middot; ') %>
     <% end %>
 
     <% unless @summarize %>

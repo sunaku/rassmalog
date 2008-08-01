@@ -85,7 +85,9 @@
   # determine the navigational hints for this web page
   @nav_by_rel = {}
 
-  if @target.respond_to? :parent and not (@target.is_a? Entry and @target.hide?)
+  if @target.respond_to? :parent and
+     not (@target.hide? if @target.is_a? Entry) # skip hidden entries
+  then
     {
       @target => [:prev, :next],
       @target.parent => [:first, :last],

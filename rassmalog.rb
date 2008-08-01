@@ -24,6 +24,16 @@ require 'config/format'
     raise aError.class, "#{aMessage}:\n#{aError}", aError.backtrace
   end
 
+  # Notify the user about some action being performed.
+  def notify aAction, aMessage
+    printf "%12s  %s\n", aAction, aMessage
+  end
+
+  # Writes the given content to the given file.
+  def File.write aPath, aContent
+    File.open(aPath, 'w') {|f| f << aContent}
+  end
+
   # Returns a hyperlink to the given URL of
   # the given name and mouse-hover title.
   def link aUrl, aName = nil, aTitle = nil
@@ -96,11 +106,11 @@ require 'config/format'
     end
 
     # Builds a table of contents from XHTML headings (<h1>, <h2>, etc.) found
-    # in this string and returns an array containing [toc, text] where:
+    # in this string and returns an array containing [toc, html] where:
     #
     # toc::   the generated table of contents
     #
-    # text::  a modified version of this string which
+    # html::  a modified version of this string which
     #         contains anchors for the hyperlinks in
     #         the table of contents (so that the TOC
     #         can link to the content in this string)
@@ -110,7 +120,7 @@ require 'config/format'
       prevDepth = 0
       prevIndex = ''
 
-      text = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
+      html = gsub %r{<h(\d)(.*?)>(.*?)</h\1>$}m do
         depth, atts, title = $1.to_i, $2, $3.strip
 
         # generate a LaTeX-style index (section number) for the heading
@@ -179,7 +189,7 @@ require 'config/format'
         end
       end
 
-      [toc, text]
+      [toc, html]
     end
   end
 
@@ -218,16 +228,7 @@ require 'config/format'
   end
 
 
-  # Notify the user about some action being performed.
-  def notify aAction, aMessage
-    printf "%12s  %s\n", aAction, aMessage
-  end
-
-  # Writes the given content to the given file.
-  def File.write aPath, aContent
-    File.open(aPath, 'w') {|f| f << aContent}
-  end
-
+  # dependencies that are common to many Rake tasks that are established below
   COMMON_DEPS = FileList[__FILE__, 'output', 'config/**/*.{yaml,*rb}']
 
   # Registers a new Rake task for generating a HTML
@@ -288,7 +289,7 @@ require 'config/format'
 
 # data structures
 
-  # Interface to translations of English strings used in the core of Rassmalog.
+  # Interface to translations of English strings used in Rassmalog.
   class Language < Hash
     def initialize aData = {}
       merge! aData
@@ -388,11 +389,15 @@ require 'config/format'
     # Returns a relative link to this object,
     # customized by the following options:
     #
+    # :frag   a URI fragment that is appended to the URL, if given.
     # :body   sets the body of the link (the <a> tag), if given.
     # :nbsp   makes spaces in the link body non-breaking, if true.
     #
     def to_link aOpts = {}
-      addr = self.url
+      frag = aOpts[:frag]
+      frag = frag.uri_fragment if frag.respond_to? :uri_fragment
+
+      addr = [self.url, frag].compact.join('#')
 
       body = aOpts[:body] || self.name
       body = body.gsub(/\s/, '&nbsp;') if aOpts[:nbsp]
@@ -469,7 +474,7 @@ require 'config/format'
 
     # Returns true if this entry is hidden (the 'hide' parameter is enabled).
     def hide?
-      @hidden
+      @hide
     end
 
     # Returns the summarized HTML content of this blog entry.  If there
@@ -504,7 +509,8 @@ require 'config/format'
 
     # Transforms the content of this entry into HTML and returns it.
     def html
-      @html ||= Template.new("#{@input_file}:body", @body).render_with(template_ivar => self).to_html
+      @html ||= Template.new("#{@input_file}:body", @body).
+                render_with(template_ivar => self).to_html
     end
 
     # Returns a URL for submiting comments about this entry.
@@ -515,13 +521,6 @@ require 'config/format'
 
   # A grouping of Entry objects based on some criteria, such as tag or archive.
   class Section < Array
-    include TemplateMixin
-      # Path (relative to the output/ directory)
-      # to the HTML output file of this object.
-      def url
-        make_file_name('html', @chapter.name, name)
-      end
-
     # The title of this section.
     attr_reader :name
 
@@ -531,6 +530,13 @@ require 'config/format'
     include SequenceMixin
       alias parent chapter
 
+    include TemplateMixin
+      # Path (relative to the output/ directory)
+      # to the HTML output file of this object.
+      def url
+        make_file_name('html', @chapter.name, name)
+      end
+
     def initialize aName, aChapter
       @name = aName
       @chapter = aChapter
@@ -538,7 +544,7 @@ require 'config/format'
 
     # Sort alphabetically.
     def <=> aOther
-      if parent == ARCHIVES
+      if @chapter == ARCHIVES
         first.date <=> aOther.first.date
       else
         @name <=> aOther.name
@@ -556,7 +562,7 @@ require 'config/format'
     def initialize aName
       @name = aName
       @cache = Hash.new do |h,k|
-        h[k] = find {|s| s.name == k} or raise \
+        h[k] = find {|s| s.name == k } or raise \
         "could not find section #{k.inspect} in chapter #{aName.inspect}"
       end
     end
@@ -590,10 +596,12 @@ require 'config/format'
 # configuration stage
 
   # load blog configuration
+    BLOG_CONFIG_FILE = 'config/blog.yaml'
+
     begin
-      data = YAML.load_file('config/blog.yaml')
+      data = YAML.load_file(BLOG_CONFIG_FILE)
     rescue Exception
-      raise_error 'An error occurred when loading the blog configuration file (config/blog.yaml)'
+      raise_error "An error occurred when loading the blog configuration file: #{BLOG_CONFIG_FILE}"
     end
 
     BLOG = OpenStruct.new(data)
@@ -611,7 +619,7 @@ require 'config/format'
                 begin
                   v.to_s.thru_erb
                 rescue Exception
-                  raise_error 'Unable to parse the #{m.inspect} parameter (which is defined in config/blog.yaml)'
+                  raise_error 'Unable to parse the #{m.inspect} parameter (which is defined in #{BLOG_CONFIG_FILE})'
                 end
               end
           end
@@ -626,10 +634,10 @@ require 'config/format'
         Locale.setlocale(Locale::LC_ALL, locale)
 
       rescue SystemCallError
-        raise "Your system does not support the #{locale.inspect} locale (which is defined by the 'locale' parameter in config/blog.yaml)."
+        raise "Your system does not support the #{locale.inspect} locale (which is defined by the 'locale' parameter in #{BLOG_CONFIG_FILE})."
 
       rescue LoadError
-        raise "Cannot activate the #{locale.inspect} locale (which is defined by the 'locale' parameter in config/blog.yaml) because your system does not have the ruby-locale library."
+        raise "Cannot activate the #{locale.inspect} locale (which is defined by the 'locale' parameter in #{BLOG_CONFIG_FILE}) because your system does not have the ruby-locale library."
       end
     end
 
@@ -681,21 +689,21 @@ require 'config/format'
 
   # hooks up the given entry with the given section (by
   # name) and chapter.  then returns the section object.
-  def hookup aEntry, aStore, aName, aChapter #:nodoc:
-    unless aStore.key? aName
+  def hookup aEntry, aSectionByName, aName, aChapter #:nodoc:
+    unless s = aSectionByName[aName]
       s = Section.new(aName, aChapter)
       aChapter << s
-      aStore[aName] = s
+      aSectionByName[aName] = s
     end
 
-    aStore[aName] << aEntry
+    s << aEntry
   end
 
 
   # generate HTML for entry files
     ENTRY_FILES = []
     ENTRY_FILES_EXCLUDED = [] # excluded from processing, so just copy them over
-    entryByInputUrl = {}
+    ENTRY_BY_INPUT_URL = {}
 
     FileList['{input,entries}/**/*.yaml'].each do |src|
       begin
@@ -710,7 +718,7 @@ require 'config/format'
 
 
           entry = Entry.new(data)
-          entryByInputUrl[srcUrl] = entry
+          ENTRY_BY_INPUT_URL[srcUrl] = entry
 
           # populate the entry's methods (see Entry class definition)
           entryProp = {
@@ -751,7 +759,7 @@ require 'config/format'
             :output_file => File.join('output', dstUrl),
           }
 
-          if entryProp[:hidden] = data['hide']
+          if entryProp[:hide] = data['hide']
             entryProp[:tags] = []
             entryProp[:archive] = nil
 
@@ -792,20 +800,15 @@ require 'config/format'
   # establish dependencies between chronologically adjacent entries so that
   # the next/prev | older/newer links (emitted by the blog entry template)
   # are coherent in the case of random entry insertion and deletion
-    require 'enumerator'
+    ENTRIES.each_cons(2) do |a, b|
+      a.next, b.prev = b, a
 
-    ENTRIES.each_cons(3) do |(a, b, c)|
-      a.next = b
-      b.prev = a
-
-      b.next = c
-      c.prev = b
-
-      file b.output_file => [a.input_file, c.input_file]
+      file a.output_file => b.input_file
+      file b.output_file => a.input_file
     end
 
   # generate the search page
-    if SEARCH_PAGE = entryByInputUrl['search.yaml']
+    if SEARCH_PAGE = ENTRY_BY_INPUT_URL['search.yaml']
       dst = SEARCH_PAGE.output_file
       file dst => ENTRY_FILES # the search page depends on ALL entries
       task :search => dst
@@ -816,7 +819,7 @@ require 'config/format'
       Rake::Task[:entry].prerequisites.delete dst
     end
 
-    ABOUT_PAGE = entryByInputUrl['about.yaml']
+    ABOUT_PAGE = ENTRY_BY_INPUT_URL['about.yaml']
 
   # generate list of all entries
     generate_html_task :entry_list, ENTRIES, ENTRY_FILES
@@ -836,7 +839,6 @@ require 'config/format'
       end
 
       # establish previous/next relations for navigation
-      # see SequenceMixin
       chapter.each_cons(2) do |a, b|
         a.next, b.prev = b, a
       end
@@ -904,7 +906,7 @@ require 'config/format'
       end
     end
 
-  # generate the front page
+  # generate the entrance page
     dst     = 'output/index.html'
     src     = BLOG.entrance || ( ENTRIES.first || ENTRIES ).url
     srcUrl  = src.split('/').map {|s| u(s) }.join('/')
@@ -914,7 +916,7 @@ require 'config/format'
     file dst => COMMON_DEPS + [srcPath] do |t|
       notify :Entrance, srcPath
 
-      File.write t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body><p>#{LANG['You are now being redirected to %s.', srcLink]}</p></body></html>}
+      File.write t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body>#{LANG['You are now being redirected to %s.', srcLink]}</body></html>}
     end
 
     task :entry_list => dst

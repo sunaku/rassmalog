@@ -63,6 +63,7 @@
   p=. <%= xref 'Introduction', 'Continue reading...' %>
 
   <% paragraph "Resources" do %>
+    * "Preview":../output/index.html - live demonstration of Rassmalog's output.
     * "Releases":<%= log_url %> - release notes and project news. "!../output/icons/feed-icon-28x28.png(RSS feed)!":<%= ann_url %>
     * "Downloads":<%= pkg_url %> - obtain the newest release package.
     * "Source code":<%= src_url %> - obtain via "Darcs 2":http://darcs.net or browse online.
@@ -154,7 +155,7 @@
     |_. Software                                                  |_. Notes                                                                                                                                                                                         |
     | "Ruby":http://ruby-lang.org                                 | version 1.8.x or newer is required                                                                                                                                                              |
     | "Rake":http://docs.rubyrake.org                             | version 0.7 or newer is required                                                                                                                                                                |
-    | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/       | not required if you want to "use a different formatting system":#config.format                                                                                                                  |
+    | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/       | not required if you want to "use a different formatting system":#config.format.  Otherwise version 4.x.x is required.                                                                           |
     | "CodeRay":http://coderay.rubychan.de/                       | not required if you want to "use a different formatting system":#config.format                                                                                                                  |
     | "ruby-locale":http://raa.ruby-lang.org/project/ruby-locale/ | required if you want to use the "locale parameter":#param.locale.  This library is also available in "Debian":http://debian.org and "Ubuntu":http://ubuntu.com under the name "liblocale-ruby". |
 
@@ -273,7 +274,8 @@
 
     <pre><%= File.read('config/lang/es.yaml') %></pre>
 
-    Here, English phrases are written on the left and their corresponding Spanish phrases are written on the right.
+    * English phrases are written on the left and their corresponding Spanish phrases are written on the right.
+    * The @%s@ things are placeholders for arbitrary text.  Think of them as "blanks" on an exam paper that students will "fill in" later on; i.e. to "fill in the blanks".
 
     <% section 'Enabling a translation file' do %>
       The <tt>config/lang/</tt> directory contains translation files ("there are <%= langFiles.length %> of them":#manifest.lang, at present) for English text used in the core of Rassmalog. To enable one of these files, set the value of the *language* parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.
@@ -365,7 +367,7 @@
   <pre><%= `rake -T || rake.bat -T || echo Your system lacks the rake command.` %></pre>
 
   <% section "Creating a blog entry file" do %>
-    The "_new_ plugin":#plugins/new.rb allows you to easily create a new blog entry source file without having to:
+    The "_new_ plugin":#plugins-new.rb allows you to easily create a new blog entry source file without having to:
     * think of and manage unique file names every time
     * supply the current date and time
     * remember the entire syntax of a blog entry file
