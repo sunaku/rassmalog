@@ -125,7 +125,7 @@
 
     <% section 'Comments and spam control' do %>
       |_. Dynamic blog engine|_. Rassmalog|
-      |Provides *web based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* (which can be disabled if you want) while taking special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.<br/><br/>If you prefer *web based comments* instead, then "JavaScript-based comments":../output/2007-09-25-dynamic-web-based-comments.html are available.|
+      |Provides *web-based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* by default, while taking special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.<br/><br/>*If you prefer web-based comments* instead, see <%= xref 'config.comments' %> for solutions.|
     <% end %>
   <% end %>
 
@@ -308,6 +308,26 @@
     </code>
 
     In this manner, you can make Rassmalog use any formatting system you wish!
+  <% end %>
+
+  <% section 'Using dynamic Javascript-based comments', 'config.comments' do %>
+    There are several JavaScript-based commenting  _services_ available:
+    * "js-kit":http://js-kit.com/comments/
+    * "Disqus":http://disqus.com
+    * "HaloScan":http://www.haloscan.com/
+    * "Intense Debate":http://www.intensedebate.com/
+    * and so on...
+
+    To use these services with Rassmalog, simply replace the default "comments" section of the <tt>config/entry.erb</tt> template (which appears like this: <code lang="rhtml"><%= `sed -n '/BEGIN/,/END/p' config/entry.erb` %></code>) with the activation logic provided by the commenting service.
+
+    For example, to make use of the **js-kit** commenting service in Rassmalog, replace the default "comments" section (shown above) with the following activation logic:
+
+    <code lang="rhtml">
+    <div class="js-kit-comments" path="<%%= @entry.url %>"></div>
+    <script type="text/javascript" src="http://js-kit.com/comments.js"></script>
+    </code>
+
+    Notice that we pass the blog entry's relative URL (obtained by invoking the @url@ method on the @@entry@ object: <code lang="rhtml"><%%= @entry.url %></code>) as a unique identifier to the **js-kit** commenting service.  Other commenting services may require you to do something similar as well.
   <% end %>
 
   <% section "Disabling parts of a blog" do %>

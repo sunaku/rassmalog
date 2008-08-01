@@ -84,6 +84,7 @@
     <% end %>
 
     <% unless @summarize %>
+    <%# BEGIN COMMENTS SECTION %>
       <% if BLOG.email %>
         <br/>
         <%= icon 'tango-32x32-apps-internet-group-chat.png', LANG['Comments'] %>
@@ -93,10 +94,11 @@
         %>
       <% end %>
       <%#
-        If you wish to use a JavaScript-based commenting system such as
-        disqus, instense debate, js-kit, and so on, then simply replace
-        this eRuby comment with the appropriate JavaScript code.
+        If you wish to use a JavaScript-based commenting service such as disqus,
+        instense debate, js-kit, and so on, then simply replace this section
+        with the appropriate JavaScript code provided by the commenting service.
       %>
+    <%# END COMMENTS SECTION %>
     <% end %>
   </p>
 </div>
