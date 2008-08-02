@@ -917,7 +917,7 @@ require 'config/format'
     srcLink = link(srcUrl, src)
     srcPath = File.join('output', src)
 
-    file dst => BLOG_CONFIG_FILE do |t|
+    file dst => srcPath do |t|
       notify :Entrance, srcPath
 
       File.write t.name, %{<html><head><meta http-equiv="refresh" content="0; url=#{srcUrl}"/></head><body>#{LANG['You are now being redirected to %s.', srcLink]}</body></html>}
