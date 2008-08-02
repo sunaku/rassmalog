@@ -17,7 +17,7 @@
 <?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
 <rss version="2.0">
 <channel>
-  <title><%=h @feed.name.to_s.to_html %></title>
+  <title><%=h @feed.name.to_s.to_inline_html %></title>
   <link><%= BLOG.url %></link>
   <description><%=h @feed.info.to_s.to_html %></description>
   <language><%=h BLOG.language %></language>
@@ -52,7 +52,7 @@
       end
   %>
     <item>
-      <title><%=h entry.name.to_html %></title>
+      <title><%=h entry.name.to_inline_html %></title>
       <link><%= url %></link>
       <guid><%= url %></guid>
       <pubDate><%= entry.date.rfc822 %></pubDate>
