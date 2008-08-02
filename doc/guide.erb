@@ -249,12 +249,13 @@
   <% end %>
 
   <% section 'Version numbering system' do %>
-    Rassmalog uses the "RubyGems rational versioning policy":http://www.rubygems.org/read/chapter/7 to number its releases. This *major.minor.patch* numbering policy "is summarized":http://ablog.apress.com/?p=738 as follows.
+    Rassmalog uses the "RubyGems rational versioning policy":http://www.rubygems.org/read/chapter/7 to number its releases. This *major.minor.patch* numbering policy "is summarized":http://ablog.apress.com/?p=738 as follows:
 
-    | Version number components: |_. Major |_. Minor |_. Patch |
-    |_. Backwards compatible?    | no      | yes     | yes     |
-    |_. New features?            | yes     | yes     | no      |
-    |_. Bug fixes?               | yes     | yes     | yes     |
+    |/2. What happened? |\3. What are the consequences? |
+    |_. Backwards compatible? |_. New features? |_. Bug fixes? |
+    |_. The _major_ number increased |{background-color: MistyRose}. No | Yes | Yes |
+    |_. The _minor_ number increased | Yes | Yes | Yes |
+    |_. The _patch_ number increased | Yes |{background-color: MistyRose}. No | Yes |
   <% end %>
 <% end %>
 
