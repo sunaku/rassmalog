@@ -8,12 +8,26 @@ body
 
 /* emphasis */
 
+    em,
+    blockquote
+    {
+        font-family       : Cambria, Georgia, serif;
+    }
+
+    em
+    {
+        background-color  : #FFFFE0;
+    }
+
     blockquote
     {
         background-image  : url(../icons/tango-32x32-apps-internet-group-chat.png);
         background-repeat : no-repeat;
         padding-left      : 45px;
         margin-left       : 0;
+
+        color             : #333;
+        font-style        : italic;
     }
 
     hr
@@ -34,9 +48,7 @@ body
 
     tt
     {
-        font-weight       : bold;
-        color             : #A52A2A;
-        background-color  : #FFFAF0;
+        background-color  : #F0F8FF;
     }
 
     /* output of the syntax coloring library */
