@@ -12,7 +12,8 @@ body: |
 
   h1. Reference
 
-  * "Textile syntax":http://redcloth.org/textile/
+  * "Basic Textile syntax":http://redcloth.org/textile/
+  * "Advanced Textile syntax":http://hobix.com/textile/
   * "YAML syntax":http://yaml4r.sourceforge.net/cookbook/
   * "eRuby syntax":http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
   * "Rassmalog API":../ref/index.html

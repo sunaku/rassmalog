@@ -389,9 +389,9 @@ require 'config/format'
     # Returns a relative link to this object,
     # customized by the following options:
     #
-    # :frag   a URI fragment that is appended to the URL, if given.
-    # :body   sets the body of the link (the <a> tag), if given.
-    # :nbsp   makes spaces in the link body non-breaking, if true.
+    # frag:: a URI fragment that is appended to the URL, if given.
+    # body:: sets the body of the link (the <a> tag), if given.
+    # nbsp:: makes spaces in the link body non-breaking, if true.
     #
     def to_link aOpts = {}
       frag = aOpts[:frag]
@@ -814,12 +814,12 @@ require 'config/format'
     if SEARCH_PAGE = ENTRY_BY_INPUT_URL['search.yaml']
       dst = SEARCH_PAGE.output_file
       file dst => ENTRY_FILES # the search page depends on ALL entries
-      task :search => dst
 
       # give the search page its own Rake task, otherwise it is
       # created every time the :entry task is invoked -- this defeats
       # the ability to rapidly preview entries while editing them.
       Rake::Task[:entry].prerequisites.delete dst
+      task :search => dst
     end
 
     ABOUT_PAGE = ENTRY_BY_INPUT_URL['about.yaml']

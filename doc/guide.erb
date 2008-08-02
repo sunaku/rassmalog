@@ -58,12 +58,10 @@
 %>
 
 <% abstract do %>
-  <%= intro_paragraph %>.
-
-  p=. <%= xref 'Introduction', 'Continue reading...' %>
+  <%= intro_paragraph %>. <%= xref 'Introduction', '[Continue reading...]' %>
 
   <% paragraph "Resources" do %>
-    * "Preview":../output/index.html - live demonstration of Rassmalog's output.
+    * "Preview":../output/index.html - live demonstration of Rassmalog.
     * "Releases":<%= log_url %> - release notes and project news. "!../output/icons/feed-icon-28x28.png(RSS feed)!":<%= ann_url %>
     * "Downloads":<%= pkg_url %> - obtain the newest release package.
     * "Source code":<%= src_url %> - obtain via "Darcs 2":http://darcs.net or browse online.
@@ -153,22 +151,21 @@
     Your system needs the following software to run Rassmalog.
 
     |_. Software                                                  |_. Notes                                                                                                                                                                                         |
-    | "Ruby":http://ruby-lang.org                                 | version 1.8.x or newer is required                                                                                                                                                              |
-    | "Rake":http://docs.rubyrake.org                             | version 0.7 or newer is required                                                                                                                                                                |
-    | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/       | not required if you want to "use a different formatting system":#config.format.  Otherwise version 4.x.x is required.                                                                           |
-    | "CodeRay":http://coderay.rubychan.de/                       | not required if you want to "use a different formatting system":#config.format                                                                                                                  |
-    | "ruby-locale":http://raa.ruby-lang.org/project/ruby-locale/ | required if you want to use the "locale parameter":#param.locale.  This library is also available in "Debian":http://debian.org and "Ubuntu":http://ubuntu.com under the name "liblocale-ruby". |
+    | "Ruby":http://ruby-lang.org                                 | Version 1.8.x or 1.9.x is required                                                                                                                                                              |
+    | "Rake":http://docs.rubyrake.org                             | Version 0.7 or newer is required                                                                                                                                                                |
+    | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/       | Not required if you want to "use a different formatting system":#config.format.  Otherwise version 4.x.x is required.                                                                           |
+    | "CodeRay":http://coderay.rubychan.de/                       | Not required if you want to "use a different formatting system":#config.format. Otherwise version 0.7 or newer is required.                                                                                                                  |
+    | "ruby-locale":http://raa.ruby-lang.org/project/ruby-locale/ | Required if you want to use the "locale parameter":#param.locale.  This library is also available in "Debian":http://debian.org and "Ubuntu":http://ubuntu.com under the name "liblocale-ruby". |
 
     If your system has "RubyGems":http://rubygems.org/, then you can install Rake, RedCloth, and CodeRay by running the following command:
 
-      gem install rake RedCloth coderay
+    pre. gem install rake RedCloth coderay
   <% end %>
 
   <% section "Installation" do %>
     # Download the newest release package from "the download area":<%= pkg_url %>.
     # Extract the release package anywhere you want on your system.
-    # Go inside the extracted directory and run the following command:
-      <pre>rake regen</pre>
+    # Go inside the extracted directory and run the following command: <pre>rake regen</pre>
 
     If the installation was successful, then you will see output like this: <pre><%=h `rake regen` %></pre>
   <% end %>
@@ -178,13 +175,13 @@
 
     * <tt>rassmalog.rb</tt> - the core of Rassmalog.
 
-    <% section "<tt>doc/</tt>", "manifest.doc" do %>
+    <% section "doc/", "manifest.doc" do %>
       Documentation for Rassmalog users
 
       * <tt>doc/guide.erb</tt> - source code of this user guide
     <% end %>
 
-    <% section "<tt>config/</tt>", "manifest.config" do %>
+    <% section "config/", "manifest.config" do %>
       Directory that contains all configuration files.
 
       * <tt>config/blog.yaml</tt> - the primary configuration file for your blog.
@@ -195,17 +192,21 @@
       *  <tt>config/listing.erb</tt> - template for generating the recent/all lists of blog entries.
       * <tt>config/entry.erb</tt> - template for generating HTML for a blog entry.
       * <tt>config/format.rb</tt> - defines how text is transformed into HTML.
-      ** <tt id="manifest.lang">config/lang/</tt> - directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
-      <% langFiles.each do |file| %>
-        ** <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/-(.*)/)[0] %>
+
+      <% section "config/lang/", "manifest.lang" do %>
+        Directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
+
+        <% langFiles.each do |file| %>
+          * <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/-(.*)/)[0] %>
+        <% end %>
       <% end %>
     <% end %>
 
-    <% section "<tt>output/</tt>", "manifest.output" do %>
+    <% section "output/", "manifest.output" do %>
       Directory that contains your generated blog.
     <% end %>
 
-    <% section "<tt>input/</tt>", "manifest.input" do %>
+    <% section "input/", "manifest.input" do %>
       Directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.
 
       A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, a source file's corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.
@@ -217,7 +218,7 @@
       * <tt>input/rassmalog/entry.yaml</tt> - reference of the blog entry file format.
     <% end %>
 
-    <% section "<tt>entries/</tt>", "manifest.entries" do %>
+    <% section "entries/", "manifest.entries" do %>
       Directory that contains blog entry source files whose output files are *automatically calculated* by Rassmalog.
 
       A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, all source files in this directory will have a corresponding output file with a name in the form: "_date_-_name_.html".
@@ -229,11 +230,11 @@
       For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.
     <% end %>
 
-    <% section "<tt>plugins/</tt>", "manifest.plugins" do %>
+    <% section "plugins/", "manifest.plugins" do %>
       This directory contains Ruby source files which define additional Rake tasks for Rassmalog.
 
       <% pluginFiles.each do |file| %>
-        <% section "<tt>#{File.basename(file)}</tt>", file do %>
+        <% section file do %>
           |_. Command |_. Description |
           <% `rake -f #{file} -T`.split(/\r?\n/)[1..-1].each do |s| %>
           | <%= s.split('#').join(' | ') %> |
@@ -283,7 +284,7 @@
 
       For example, if you wish to enable the <tt>config/lang/foobar.yaml</tt> translation file, then you would set the *language* parameter as follows:
 
-          language: foobar
+      pre. language: foobar
 
       In this manner, you can add or edit translation files for your own languages and use them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can also enjoy your translations! :-)
     <% end %>
@@ -296,14 +297,14 @@
 
     <code>
     class String
-      # Transforms this string into HTML while ensuring that the result
-      # contains one or several block-level elements at the root.
+      # Transforms this string into HTML while ensuring that the
+      # result contains one or more block-level elements at the root.
       def to_html
         '<p style="border: thin solid red">' + self + '</p>'
       end
 
       # Transforms this string into an *inline* HTML string (one that
-      # does not contain block-level HTML elements at the root).
+      # does not contain any block-level HTML elements at the root).
       def to_inline_html
         self
       end
@@ -609,7 +610,7 @@
 <% chapter "Hacking" do %>
   You can obtain the latest source code from the "Darcs":http://darcs.net repository:
 
-    darcs get http://rassmalog.rubyforge.org/src/ rassmalog
+  pre. darcs get http://rassmalog.rubyforge.org/src/ rassmalog
 
   <% section "API documentation", 'hacking.api' do %>
     |_. Method declaration |_. Description |
