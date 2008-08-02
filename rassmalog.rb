@@ -702,7 +702,8 @@ require 'config/format'
 
   # generate HTML for entry files
     ENTRY_FILES = []
-    ENTRY_FILES_EXCLUDED = [] # excluded from processing, so just copy them over
+    ENTRY_FILES_HIDE = []
+    ENTRY_FILES_SKIP = [] # excluded from processing, so just copy them over
     ENTRY_BY_INPUT_URL = {}
 
     FileList['{input,entries}/**/*.yaml'].each do |src|
@@ -767,6 +768,8 @@ require 'config/format'
             def entry.parent
               self
             end
+
+            ENTRY_FILES_HIDE << src
           else
             entryProp[:tags] =
               [data['tags']].flatten.compact.uniq.sort.map do |name|
@@ -777,17 +780,17 @@ require 'config/format'
             entryProp[:archive] = hookup(entry, archiveStore, name, ARCHIVES)
 
             ENTRIES << entry
+            ENTRY_FILES << src
           end
 
           entryProp.each_pair do |prop, value|
             entry.instance_variable_set("@#{prop}", value)
           end
 
-          ENTRY_FILES << src
           generate_html_task :entry, entry, [src], :@summarize => false, :@solo => true
         else
           notify :skip, src
-          ENTRY_FILES_EXCLUDED << src
+          ENTRY_FILES_SKIP << src
         end
 
       rescue Exception
@@ -879,9 +882,10 @@ require 'config/format'
   CLOBBER.include 'output'
 
   # copy everything from input/ into output/
-    srcList = Dir.glob('input/**/*', File::FNM_DOTMATCH).reject do
-                |s| File.directory? s and Dir.entries(s) != %w[. ..]
-              end - ENTRY_FILES + ENTRY_FILES_EXCLUDED
+    srcList = ENTRY_FILES_SKIP + # including skipped YAML files
+      Dir.glob('input/**/*', File::FNM_DOTMATCH).reject do |s|
+        File.directory? s and Dir.entries(s) != %w[. ..]
+      end - (ENTRY_FILES + ENTRY_FILES_HIDE) # excluding loaded YAML files
 
     dstList = srcList.map {|s| s.sub 'input', 'output'}
 
