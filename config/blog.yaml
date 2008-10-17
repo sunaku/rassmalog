@@ -229,7 +229,7 @@ locale:
 #
 #   entrance:   # nothing here!
 #
-entrance:
+entrance: about.html
 
 
 #
