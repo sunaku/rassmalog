@@ -18,14 +18,9 @@ body: |
   * "eRuby syntax":http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html#S2
   * "Rassmalog API":../ref/index.html
 
-  h1. Users
+  h1. User blogs
 
-  If you would like to add your blog to this list or make a correction, please <a href="<%=
-    BLOG.email.to_url(
-      'add Rassmalog user blog',
-      '<your blog URL here>'
-    )
-  %>">notify me</a>.
+  Below is a list of all known Rassmalog blogs, sorted alphabetically by the names of their owners.  If you would like to *add your blog* to this list or *make a correction*, then please notify me via e-mail.
 
   * "Suraj N. Kurapati":http://snk.rubyforge.org/web/
   * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/ -- PenPen blog

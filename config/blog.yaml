@@ -125,9 +125,9 @@ url: http://rassmalog.rubyforge.org/output/
 #
 # These examples assume that your website is located in a directory
 # named "public_html" on a server named "host" that is accessible
-# by a user named "user" with a password of "password" via FTP.
+# by a user named "user" with a password of "pass" via FTP.
 #
-#   uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
+#   uploader: lftp host -u 'user,pass' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
 #
 uploader: rsync -avz --delete <%= whole %> snk@rubyforge.org:/var/www/gforge-projects/rassmalog
 
