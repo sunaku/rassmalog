@@ -22,23 +22,32 @@ body: |
 
   Below is a list of all known Rassmalog blogs, sorted alphabetically by the names of their owners.  If you would like to *add your blog* to this list or *make a correction*, then please notify me via e-mail.
 
-  * "Suraj N. Kurapati":http://snk.rubyforge.org/web/
-  * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/ -- PenPen blog
-  * "Christian Berendt":http://thorlin.de
-  * "Greg Weber":http://thoughtfolder.com -- Thoughtfolder
-  * "James Kuoski":http://www.ulimits.com -- Ruby.Erlang
-  * "Sam Broad":http://www.sambroad.com/blog/
-  * "Rupert Voelcker":http://ants.rupespad.com -- Ants in their tanks
-  * "Martin Sander":http://cip.physik.uni-bonn.de/~sander/
-  * "листп еоод":http://blog.listp.com
+  Present users
+  * "Cyril Mougel":http://blog.shingara.fr/en/
   * "Dave Scotto":http://www.yasgursfarm.us/d/ -- ヤスガーズファーム日記
+  * "Franco Azzano":http://fraazz.freecontrib.org/npni/
+  * "Greg Weber":http://thoughtfolder.com
+  * "James Kuoski":http://www.ulimits.com -- Ruby.Erlang
+  * "Jean-Michel Bessot":http://www.lacomte.net
+  * "Josef 'Jupp' Schugt":http://cip.physik.uni-bonn.de/~jupp/
+  * "Mamading Ceesay":http://evangineer.agoraworx.com/blog/
+  * "Martin Sander":http://cip.physik.uni-bonn.de/~sander/
   * "Massimo Zaniboni":http://asterisell.profitoss.com -- Asterisell project
   * "Phillip 'CynicalRyan' Gawlowski":http://clothred.rubyforge.org -- ClothRed project
+  * "Rupert Voelcker":http://ants.rupespad.com -- Ants in their tanks
+  * "Sam Broad":http://www.sambroad.com/blog/
+  * "Suraj N. Kurapati":http://snk.rubyforge.org/web/
+  * "Tero Hasu":http://www.niksula.cs.hut.fi/~thasu/blog/
+  * "листп еоод":http://blog.listp.com
+
+  Past users
   * "Bryan JJ Buckley":http://blog.bjjb.org
-  * [-"Renke Grunwald":http://renkobert.de-]
-  * [-"Spooky Fox":http://blog.iworkroom.com-]
-  * [-"Fox Chao":http://blog.netinfox.com-]
-  * [-"Manfred Schreiweis":http://blog.mabitoka.de-]
+  * "Christian Berendt":http://thorlin.de
+  * "Florian Haßler":http://blog.florian-hassler.net
+  * "Fox Chao":http://blog.netinfox.com
+  * "Manfred Schreiweis":http://blog.mabitoka.de
+  * "Renke Grunwald":http://renkobert.de
+  * "Spooky Fox":http://blog.iworkroom.com
 
   <%# provide a list of all RSS feeds available on this blog %>
   <% if FEEDS.length > 1 %>
