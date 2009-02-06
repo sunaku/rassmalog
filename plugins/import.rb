@@ -1,7 +1,4 @@
 # Rake tasks for importing blog entries from feeds.
-#--
-# Copyright 2007 Suraj N. Kurapati
-# See the file named LICENSE for details.
 
 require 'time'
 require 'cgi'

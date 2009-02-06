@@ -5,10 +5,6 @@
 # Textile formatting system (RedCloth),
 # syntax coloring (CodeRay), and smart source
 # code sizing (block versus inline display).
-#
-#--
-# Copyright 2006 Suraj N. Kurapati
-# See the file named LICENSE for details.
 
 require 'cgi'
 require 'digest/sha1'

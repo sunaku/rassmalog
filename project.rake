@@ -1,6 +1,3 @@
-# Copyright 2006 Suraj N. Kurapati
-# See the file named LICENSE for details.
-
 require 'rake/clean'
 require 'rake/rdoctask'
 require 'rake/packagetask'

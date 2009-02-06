@@ -28,9 +28,6 @@
 #
 # [1] Josef 'Jupp' Schugt, "Lazy Blogging", 2008 March 16, available at
 #     http://cip.physik.uni-bonn.de/~jupp/2008-03-16-lazy-blogging.html
-#--
-# Copyright 2008 Suraj N. Kurapati
-# See the file named LICENSE for details.
 
 require 'date'
 require 'yaml'

@@ -1,7 +1,4 @@
 # project information
-#--
-# Copyright 2006 Suraj N. Kurapati
-# See the file named LICENSE for details.
 
 Rassmalog = {
   :name     => 'Rassmalog',
