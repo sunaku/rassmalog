@@ -1,1 +1,13 @@
-Please see the ./doc/guide.html file in your Web browser.
+Rassmalog : static blogging with YAML and eRuby
+===============================================
+
+Rassmalog is a static blog engine written in Ruby. It produces 
+valid XHTML files that you can view on your computer or upload 
+to your website.
+
+Blog entries are YAML documents that can use (1) any text-to-HTML
+formatting system imaginable, including Markdown and Textile, and
+(2) eRuby directives for scripting and dynamic content generation.
+
+Please see the ./doc/guide.html file in your Web browser or visit
+http://snk.tuxfamily.org/lib/rassmalog/ for more information.
