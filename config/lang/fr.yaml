@@ -1,6 +1,6 @@
 # fr - French
-About: A propos de
-About %s: A propos de %s
+About: Au sujet de
+About %s: Au sujet du %s
 Archives: Archives
 Author: Auteur
 Comments: Commentaires
@@ -14,16 +14,16 @@ Icons: Icônes
 Last: Dernier
 Name: Nom
 Next: Suivant
-Permanent hyperlink to this section: Lien hypertexte permanent à cette section
+Permanent hyperlink to this section: Lien hypertexte permanent liant cette section
 Previous: Précédent
-RSS feed: Fil RSS
-Read more...: La suite...
-Return to %s: Retour à %s
+RSS feed: Flux RSS
+Read more...: Lire la suite...
+Return to %s: Revener à %s
 Search: Recherche
 Size: Taille
-Sorted by %s: Trié par %s
-Subscribe: S'abonner
-Tags: Étiquettes
-Up: Début des entrées
+Sorted by %s: Triées par %s
+Subscribe: Souscriver
+Tags: Étiquette
+Up: Monter dans la hiérarchie du site
 You are now being redirected to %s.: Vous êtes maintenant redirigé vers %s.
-You may {send comments by e-mail}.: Vous pouvez {envoyer des commentaires par courriel}.
+You may {send comments by e-mail}.: Vous pouvez {envoyer un commentaire par courriel}.
